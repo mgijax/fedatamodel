@@ -23,6 +23,7 @@ public class Location implements SortableObject {
 	public Location() {}
 
 	@Id
+	@Column(name="id")
 	public int getUniqueKey() {
 		return uniqueKey;
 	}

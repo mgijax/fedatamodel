@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class MarkerLocation extends Location implements SortableObject {
 	protected Integer markerKey;
 
+	@Column(name = "marker_key")
 	public Integer getMarkerKey() {
 		return markerKey;
 	}

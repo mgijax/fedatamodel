@@ -32,7 +32,7 @@ public class Reference implements SortableObject {
 	private String shortCitation;
 	private String refAbstract;
 	private Set<ReferenceID> ids;
-	private Set<Marker> markerKeys;
+	//private Set<Marker> markerKeys;
 	private String bookEditor;
 	private String bookTitle;
 	private String bookEdition;
@@ -40,6 +40,13 @@ public class Reference implements SortableObject {
 	private String bookPublisher;
 	private List<MarkerReferenceAssociation> markerAssociations;
 	private Integer countOfMarkers;
+	private Integer countOfProbes;
+	private Integer countOfGXDAssays;
+	private Integer countOfGXDResults;
+	private Integer countOfMappingResults;
+	private Integer countOfSequences;
+	private Integer countOfAlleles;
+	private Integer countOfGXDIndex;
 	
 	public static String JNUM = "Reference.Jnum";
 	public static String YEAR = "Reference.Year";
@@ -152,7 +159,7 @@ public class Reference implements SortableObject {
 		this.refAbstract = refAbstract;
 	}
 
-	@OneToMany (targetEntity=Marker.class)
+/*	@OneToMany (targetEntity=Marker.class)
 	@JoinTable (name="markerToReference",
 			joinColumns=@JoinColumn(name="referenceKey"),
 			inverseJoinColumns=@JoinColumn(name="markerKey")
@@ -164,7 +171,7 @@ public class Reference implements SortableObject {
 	public void setMarkerKeys(Set<Marker> markerKeys) {
 		this.markerKeys = markerKeys;
 	}
-
+*/
 	@OneToMany (targetEntity=ReferenceID.class)
 	@JoinColumn (name="referenceKey")
 	public Set<ReferenceID> getIds() {
@@ -265,6 +272,76 @@ public class Reference implements SortableObject {
 		this.countOfMarkers = countOfMarkers;
 	}
 
+    @Column(table="referenceCounts", name="probeCount")
+    @JoinColumn(name="referenceKey")
+    public Integer getCountOfProbes() {
+        return countOfProbes;
+    }
+
+    public void setCountOfProbes(Integer countOfProbes) {
+        this.countOfProbes = countOfProbes;
+    }
+    
+    @Column(table="referenceCounts", name="gxdAssayCount")
+    @JoinColumn(name="referenceKey")
+    public Integer getCountOfGXDAssays() {
+        return countOfGXDAssays;
+    }
+
+    public void setCountOfGXDAssays(Integer countOfGXDAssays) {
+        this.countOfGXDAssays = countOfGXDAssays;
+    }
+    
+    @Column(table="referenceCounts", name="gxdResultCount")
+    @JoinColumn(name="referenceKey")
+    public Integer getCountOfGXDResults() {
+        return countOfGXDResults;
+    }
+
+    public void setCountOfGXDResults(Integer countOfGXDResults) {
+        this.countOfGXDResults = countOfGXDResults;
+    }    
+    
+    @Column(table="referenceCounts", name="mappingExptCount")
+    @JoinColumn(name="referenceKey")
+    public Integer getCountOfMappingResults() {
+        return countOfMappingResults;
+    }
+
+    public void setCountOfMappingResults(Integer countOfMappingResults) {
+        this.countOfMappingResults = countOfMappingResults;
+    }      
+    
+    @Column(table="referenceCounts", name="sequenceCount")
+    @JoinColumn(name="referenceKey")
+    public Integer getCountOfSequenceResults() {
+        return countOfSequences;
+    }
+
+    public void setCountOfSequenceResults(Integer countOfSequences) {
+        this.countOfSequences = countOfSequences;
+    }     
+    
+    @Column(table="referenceCounts", name="alleleCount")
+    @JoinColumn(name="referenceKey")
+    public Integer getCountOfAlleles() {
+        return countOfAlleles;
+    }
+
+    public void setCountOfAlleles(Integer countOfAlleles) {
+        this.countOfAlleles = countOfAlleles;
+    }   
+    
+    @Column(table="referenceCounts", name="gxdIndexCount")
+    @JoinColumn(name="referenceKey")
+    public Integer getCountOfGXDIndex() {
+        return countOfGXDIndex;
+    }
+
+    public void setCountOfGXDIndex(Integer countOfGXDIndex) {
+        this.countOfGXDIndex = countOfGXDIndex;
+    } 
+    
 	@Override
 	public String toString() {
 		return "Reference ["
@@ -286,9 +363,9 @@ public class Reference implements SortableObject {
 				+ jnumNumeric
 				+ ", "
 				+ (journal != null ? "journal=" + journal + ", " : "")
-//				+ (markerAssociations != null ? "markerAssociations="
-	//					+ markerAssociations + ", " : "")
-		//		+ (markerKeys != null ? "markerKeys=" + markerKeys + ", " : "")
+				+ (markerAssociations != null ? "markerAssociations="
+						+ markerAssociations + ", " : "")
+				//+ (markerKeys != null ? "markerKeys=" + markerKeys + ", " : "")
 				+ (pages != null ? "pages=" + pages + ", " : "")
 				+ (primaryAuthor != null ? "primaryAuthor=" + primaryAuthor
 						+ ", " : "")

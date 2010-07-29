@@ -1,11 +1,23 @@
 package mgi.frontend.datamodel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
+import javax.persistence.SecondaryTables;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="marker")
@@ -222,7 +234,7 @@ public class Marker implements SortableObject {
 	}
 
 	@OneToMany (targetEntity=MarkerLocation.class)
-	@JoinColumn(name="markerKey")
+	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
 	public List<MarkerLocation> getLocations() {
 		return locations;

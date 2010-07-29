@@ -35,7 +35,7 @@ public class MarkerReferenceAssociation extends Association implements SortableO
 		return "MarkerReferenceAssociation ["
 				+ (qualifier != null ? "qualifier=" + qualifier + ", " : "")
 				+ "sequenceNumFwd="
-				+ sequenceNumFwd + ", sequenceNumRev=" + sequenceNumRev
+				//+ sequenceNumFwd + ", sequenceNumRev=" + sequenceNumRev
 				+ ", uniqueKey=" + uniqueKey + "]";
 	}
 }

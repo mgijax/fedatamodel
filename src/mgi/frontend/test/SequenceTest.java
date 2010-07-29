@@ -1,11 +1,14 @@
 package mgi.frontend.test;
 
-import java.util.*;
-import mgi.frontend.datamodel.*;
-import mgi.persistence.*;
+import java.util.Iterator;
+import java.util.List;
+
+import mgi.frontend.datamodel.Sequence;
+import mgi.persistence.HibernateUtil;
 import mgi.reporting.Timer;
 
-import org.hibernate.*;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class SequenceTest {
 	public static void main(String[] argv) {
