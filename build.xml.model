@@ -9,21 +9,11 @@
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
   <property name="deploy" location="dist"/>
-   <property name="classpath" value="./lib/antlr-2.7.6.jar;
-    	./lib/c3p0-0.9.1.jar;
-    	./lib/cglib-2.2.jar;
-    	./lib/commons-collections-3.1.jar;
-    	./lib/dom4j-1.6.1.jar;
-    	./lib/hibernate3.jar;
-    	./lib/javassist.jar;
-    	./lib/jta-1.1.jar;
-    	./lib/log4j.jar;
-    	./lib/ejb3-persistence.jar;
-    	./lib/hibernate-commons-annotations.jar;
-    	./lib/hibernate-core.jar;
-    	./lib/hibernate-annotations.jar;
-    	./lib/slf4j-api-1.5.8.jar;
-    	./lib/slf4j-log4j12.jar;"/>
+  <path id="class.path">
+    <fileset dir="lib">
+      <include name="**/*.jar" />
+    </fileset>
+  </path>
 
   <!-- init -->
   <target name="init">
@@ -31,12 +21,25 @@
     <mkdir dir="${dist}"/>
   </target>
 
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} directory tree -->
+    <delete dir="${build}"/>
+  </target>  
+
   
 
   <!-- compile -->
-  <target name="compile" depends="init" >
-    <javac srcdir="${src}" destdir="${build}" classpath="${classpath}" />
+  <target name="compile" depends="clean, init" >
+    <javac debug="on" srcdir="${src}" destdir="${build}" >
+	<classpath>
+		<fileset dir="lib">
+			<include name="**/*.jar"/>
+		</fileset>
+        </classpath>
+    </javac>
   </target>
+  
   
   <target name="jar" depends="compile"
           description="Generates a jar.">
