@@ -5,12 +5,13 @@ import java.util.Set;
 import javax.persistence.*;
 
 @Entity
+@Table (name="sequence")
 @SecondaryTables (
-		{ @SecondaryTable (name="sequencecounts", pkJoinColumns= {
+		{ @SecondaryTable (name="sequenceCounts", pkJoinColumns= {
 			@PrimaryKeyJoinColumn(name="sequenceKey", referencedColumnName="sequenceKey") } ),
-		  @SecondaryTable (name="sequencegenemodel", pkJoinColumns= {
+		  @SecondaryTable (name="sequenceGeneModel", pkJoinColumns= {
 		  	@PrimaryKeyJoinColumn(name="sequenceKey", referencedColumnName="sequenceKey") } ),
-		  @SecondaryTable (name="sequencegenetrap", pkJoinColumns= {
+		  @SecondaryTable (name="sequenceGeneTrap", pkJoinColumns= {
 		  	@PrimaryKeyJoinColumn(name="sequenceKey", referencedColumnName="sequenceKey") } )
 		} )
 public class Sequence implements SortableObject {
@@ -24,7 +25,7 @@ public class Sequence implements SortableObject {
 	private String description;
 	private String version;
 	private String division;
-	private boolean isVirtual;
+/*	private boolean isVirtual;*/
 	private String sequenceDate;
 	private String recordDate;
 	private String primaryID;
@@ -46,6 +47,8 @@ public class Sequence implements SortableObject {
 	private Integer goodHitCount;
 	private Float pointCoordinate;
 	private Set<SequenceID> ids;
+	private List<Reference> references;
+	
 /*	private List<MarkerSequenceAssociation> markerAssociations;*/
 /*	private List<SequenceLocation> locations;*/
 	
@@ -139,13 +142,13 @@ public class Sequence implements SortableObject {
 		this.division = division;
 	}
 
-	public boolean isVirtual() {
+/*	public boolean isVirtual() {
 		return isVirtual;
 	}
 
 	public void setVirtual(boolean isVirtual) {
 		this.isVirtual = isVirtual;
-	}
+	}*/
 
 	public String getSequenceDate() {
 		return sequenceDate;
@@ -227,7 +230,7 @@ public class Sequence implements SortableObject {
 		this.cellLine = cellLine;
 	}
 
-	@Column(table="sequencecounts", name="markerCount")
+	@Column(table="sequenceCounts", name="markerCount")
 	@JoinColumn(name="sequenceKey")
 	public Integer getCountOfMarkers() {
 		return countOfMarkers;
@@ -237,7 +240,7 @@ public class Sequence implements SortableObject {
 		this.countOfMarkers = countOfMarkers;
 	}
 
-	@Column(table="sequencegenemodel")
+	@Column(table="sequenceGeneModel")
 	@JoinColumn(name="sequenceKey")
 	public String getMarkerType() {
 		return markerType;
@@ -247,7 +250,7 @@ public class Sequence implements SortableObject {
 		this.markerType = markerType;
 	}
 
-	@Column(table="sequencegenemodel")
+	@Column(table="sequenceGeneModel")
 	@JoinColumn(name="sequenceKey")
 	public String getBiotype() {
 		return biotype;
@@ -257,7 +260,7 @@ public class Sequence implements SortableObject {
 		this.biotype = biotype;
 	}
 
-	@Column(table="sequencegenemodel")
+	@Column(table="sequenceGeneModel")
 	@JoinColumn(name="sequenceKey")
 	public Integer getExonCount() {
 		return exonCount;
@@ -267,7 +270,7 @@ public class Sequence implements SortableObject {
 		this.exonCount = exonCount;
 	}
 
-	@Column(table="sequencegenemodel")
+	@Column(table="sequenceGeneModel")
 	@JoinColumn(name="sequenceKey")
 	public Integer getTranscriptCount() {
 		return transcriptCount;
@@ -277,7 +280,7 @@ public class Sequence implements SortableObject {
 		this.transcriptCount = transcriptCount;
 	}
 
-	@Column(table="sequencegenetrap")
+	@Column(table="sequenceGeneTrap")
 	@JoinColumn(name="sequenceKey")
 	public String getTagMethod() {
 		return tagMethod;
@@ -287,7 +290,7 @@ public class Sequence implements SortableObject {
 		this.tagMethod = tagMethod;
 	}
 
-	@Column(table="sequencegenetrap")
+	@Column(table="sequenceGeneTrap")
 	@JoinColumn(name="sequenceKey")
 	public String getVectorEnd() {
 		return vectorEnd;
@@ -297,7 +300,7 @@ public class Sequence implements SortableObject {
 		this.vectorEnd = vectorEnd;
 	}
 
-	@Column(table="sequencegenetrap")
+	@Column(table="sequenceGeneTrap")
 	@JoinColumn(name="sequenceKey")
 	public String getReverseComplement() {
 		return reverseComplement;
@@ -307,7 +310,7 @@ public class Sequence implements SortableObject {
 		this.reverseComplement = reverseComplement;
 	}
 
-	@Column(table="sequencegenetrap")
+	@Column(table="sequenceGeneTrap")
 	@JoinColumn(name="sequenceKey")
 	public Integer getGoodHitCount() {
 		return goodHitCount;
@@ -317,7 +320,7 @@ public class Sequence implements SortableObject {
 		this.goodHitCount = goodHitCount;
 	}
 
-	@Column(table="sequencegenetrap")
+	@Column(table="sequenceGeneTrap")
 	@JoinColumn(name="sequenceKey")
 	public Float getPointCoordinate() {
 		return pointCoordinate;
@@ -337,6 +340,20 @@ public class Sequence implements SortableObject {
 		this.ids = ids;
 	}
 
+    @OneToMany
+    @JoinTable (name="referenceToSequence",
+            joinColumns=@JoinColumn(name="sequenceKey"),
+            inverseJoinColumns=@JoinColumn(name="referenceKey")
+            )
+    @OrderBy("year, jnumNumeric")
+    public List<Reference> getReferences() {
+        return references;
+    }
+
+    public void setReferences(List<Reference> references) {
+        this.references = references;
+    }	
+	
 /*	public List<MarkerSequenceAssociation> getMarkerAssociations() {
 		return markerAssociations;
 	}
