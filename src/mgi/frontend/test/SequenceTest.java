@@ -19,7 +19,8 @@ public class SequenceTest {
 
 		Timer.write ("ready for initial query");
 		
-		List<Sequence> seqs = (List<Sequence>) session.createQuery ("from Sequence where primaryID = 'AK047243' order by primaryID").setMaxResults(50).list();
+		//List<Sequence> seqs = (List<Sequence>) session.createQuery ("from Sequence where primaryID = 'AK047243' order by primaryID").setMaxResults(50).list();
+		List<Sequence> seqs = (List<Sequence>) session.createQuery ("from Sequence order by primaryID").setMaxResults(50).list();
 		Timer.write ("retrieved " + seqs.size() + " sequence(s)");
 
 		Sequence seq;
@@ -36,19 +37,22 @@ public class SequenceTest {
 			System.out.println(seq.getLibrary());
 			System.out.println(seq.getTissue());
 			
-          for (Iterator iter2 = seq.getReferences().iterator(); iter2.hasNext(); ) {
-              Reference mra = (Reference) iter2.next();
-              System.out.println (" --> " + mra.getTitle());
-              }
+         for (Iterator <Reference> iter2 = seq.getReferences().iterator(); iter2.hasNext(); ) {
+             Reference mra = (Reference) iter2.next();
+             System.out.println (" --> " + mra.getTitle());
+             }
           
-          for (Iterator iter2 = seq.getLocations().iterator(); iter2.hasNext(); ) {
-              SequenceLocation loc = (SequenceLocation) iter2.next();
-              System.out.println (" --> " + loc.getChromosome());
-              }
-			//System.out.println(seq.);  Chromosome stuff that isn't there yet.
-			//System.out.println(seq.get);
-			//System.out.println(seq.get);
-			System.out.println("-------------------");
+         for (Iterator <SequenceLocation> iter2 = seq.getLocations().iterator(); iter2.hasNext(); ) {
+             SequenceLocation loc = (SequenceLocation) iter2.next();
+             System.out.println (" Location --> " + loc.getChromosome());
+             System.out.println (" Location --> " + loc.getStartCoordinate());
+             System.out.println (" Location --> " + loc.getEndCoordinate());
+             System.out.println (" Location --> " + loc.getProvider());
+             System.out.println (" Location --> " + loc.getLocationType());
+             System.out.println (" Location --> " + loc.getBuildIdentifier());
+             }
+
+		 System.out.println("-------------------");
 		}
 		Timer.write ("wrote sequence(s)");
 		

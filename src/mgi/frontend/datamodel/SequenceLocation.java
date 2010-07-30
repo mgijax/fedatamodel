@@ -3,10 +3,20 @@ package mgi.frontend.datamodel;
 import javax.persistence.*;
 
 @Entity
-@Table (name="sequencelocation")
+@Table (name="sequenceLocation")
 public class SequenceLocation extends Location implements SortableObject {
 	protected Integer sequenceKey;
+	//private int uniqueKey;
+	
+/*	@Id
+    public int getUniqueKey() {
+        return uniqueKey;
+    }
 
+    public void setUniqueKey(int uniqueKey) {
+        this.uniqueKey = uniqueKey;
+    }*/
+	
 	public Integer getSequenceKey() {
 		return sequenceKey;
 	}

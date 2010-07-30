@@ -8,22 +8,23 @@ public class Location implements SortableObject {
 	public static String SEQUENCE_NUM = "Location.SequenceNum";
 	
 	// subclasses will need to add their particular objects and getter/setter methods
-	protected int uniqueKey;
+	//protected int uniqueKey;
 	protected int sequenceNum;
 	protected String chromosome;
-	protected float cmOffset;
-	protected String cytogeneticOffset;
+	//protected float cmOffset;
+	//protected String cytogeneticOffset;
 	protected float startCoordinate;
 	protected float endCoordinate;
 	protected String buildIdentifier;
 	protected String locationType;
 	protected String mapUnits;
 	protected String provider;
+	protected int uniqueKey;
 	
 	public Location() {}
 
 	@Id
-	@Column(name="id")
+	@Column(name="uniqueKey")
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
@@ -48,21 +49,21 @@ public class Location implements SortableObject {
 		this.chromosome = chromosome;
 	}
 
-	public float getCmOffset() {
+/*	public float getCmOffset() {
 		return cmOffset;
 	}
 
 	public void setCmOffset(float cmOffset) {
 		this.cmOffset = cmOffset;
 	}
-
-	public String getCytogeneticOffset() {
+*/
+/*	public String getCytogeneticOffset() {
 		return cytogeneticOffset;
 	}
 
 	public void setCytogeneticOffset(String cytogeneticOffset) {
 		this.cytogeneticOffset = cytogeneticOffset;
-	}
+	}*/
 
 	public float getStartCoordinate() {
 		return startCoordinate;
@@ -126,11 +127,7 @@ public class Location implements SortableObject {
 				+ (buildIdentifier != null ? "buildIdentifier="
 						+ buildIdentifier + ", " : "")
 				+ (chromosome != null ? "chromosome=" + chromosome + ", " : "")
-				+ "cmOffset="
-				+ cmOffset
 				+ ", "
-				+ (cytogeneticOffset != null ? "cytogeneticOffset="
-						+ cytogeneticOffset + ", " : "")
 				+ "endCoordinate="
 				+ endCoordinate
 				+ ", "
@@ -139,6 +136,6 @@ public class Location implements SortableObject {
 				+ (mapUnits != null ? "mapUnits=" + mapUnits + ", " : "")
 				+ (provider != null ? "provider=" + provider + ", " : "")
 				+ "sequenceNum=" + sequenceNum + ", startCoordinate="
-				+ startCoordinate + ", uniqueKey=" + uniqueKey + "]";
+				+ startCoordinate + "]";
 	}
 }

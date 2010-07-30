@@ -48,6 +48,7 @@ public class Sequence implements SortableObject {
 	private Float pointCoordinate;
 	private Set<SequenceID> ids;
 	private List<Reference> references;
+	private List<SequenceLocation> locations;
 	
 /*	private List<MarkerSequenceAssociation> markerAssociations;*/
 /*	private List<SequenceLocation> locations;*/
@@ -363,13 +364,16 @@ public class Sequence implements SortableObject {
 		this.markerAssociations = markerAssociations;
 	}*/
 
-/*	public List<SequenceLocation> getLocations() {
+    @OneToMany (targetEntity=SequenceLocation.class)
+    @JoinColumn(name="sequenceKey")
+    @OrderBy("sequenceNum")
+	public List<SequenceLocation> getLocations() {
 		return locations;
 	}
 
 	public void setLocations(List<SequenceLocation> locations) {
 		this.locations = locations;
-	}*/
+	}
 
 	@Override
 	public Comparable getComparableValue(String fieldname) throws NoSuchFieldException {

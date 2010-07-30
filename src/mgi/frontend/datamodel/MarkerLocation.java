@@ -6,7 +6,18 @@ import javax.persistence.*;
 @Table (name="marker_location")
 public class MarkerLocation extends Location implements SortableObject {
 	protected Integer markerKey;
+	private int uniqueKey;
+	
+	@Id
+    @Column(name="uniqueKey")
+    public int getUniqueKey() {
+        return uniqueKey;
+    }
 
+    public void setUniqueKey(int uniqueKey) {
+        this.uniqueKey = uniqueKey;
+    }
+	
 	@Column(name = "marker_key")
 	public Integer getMarkerKey() {
 		return markerKey;
@@ -23,11 +34,7 @@ public class MarkerLocation extends Location implements SortableObject {
 				+ (buildIdentifier != null ? "buildIdentifier="
 						+ buildIdentifier + ", " : "")
 				+ (chromosome != null ? "chromosome=" + chromosome + ", " : "")
-				+ "cmOffset="
-				+ cmOffset
 				+ ", "
-				+ (cytogeneticOffset != null ? "cytogeneticOffset="
-						+ cytogeneticOffset + ", " : "")
 				+ "endCoordinate="
 				+ endCoordinate
 				+ ", "
