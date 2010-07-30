@@ -19,16 +19,17 @@ import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 @Entity
 @Table(name="marker")
 @SecondaryTables (
 		{ @SecondaryTable (name="markerCounts", pkJoinColumns= {
 			@PrimaryKeyJoinColumn(name="markerKey", referencedColumnName="markerKey") } ) 
-			
+		} )
 @JsonIgnoreProperties({"ids", "synonyms", "references", "annotations", 
 		"orthologousMarkers", "referenceAssociations", "notes", "sortedReferenceAssociations", 
 		"comparableValue", "countOfReferences", "countOfSequences"})
-		} )
 public class Marker implements SortableObject {
 	private int markerKey;
 	private String symbol;
