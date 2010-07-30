@@ -5,6 +5,7 @@ import java.util.List;
 
 import mgi.frontend.datamodel.Reference;
 import mgi.frontend.datamodel.Sequence;
+import mgi.frontend.datamodel.SequenceID;
 import mgi.frontend.datamodel.SequenceLocation;
 import mgi.persistence.HibernateUtil;
 import mgi.reporting.Timer;
@@ -19,23 +20,35 @@ public class SequenceTest {
 
 		Timer.write ("ready for initial query");
 		
-		//List<Sequence> seqs = (List<Sequence>) session.createQuery ("from Sequence where primaryID = 'AK047243' order by primaryID").setMaxResults(50).list();
-		List<Sequence> seqs = (List<Sequence>) session.createQuery ("from Sequence order by primaryID").setMaxResults(50).list();
+		List<Sequence> seqs = (List<Sequence>) session.createQuery ("from Sequence where primaryID in ('AK047243', 'X65997') order by primaryID").setMaxResults(50).list();
+		//List<Sequence> seqs = (List<Sequence>) session.createQuery ("from Sequence order by primaryID").setMaxResults(50).list();
 		Timer.write ("retrieved " + seqs.size() + " sequence(s)");
 
 		Sequence seq;
 		for (Iterator iter = seqs.iterator(); iter.hasNext(); ) {
 			seq = (Sequence) iter.next();
 			System.out.println("-------------------");
-			System.out.println(seq.getPrimaryID());
-			System.out.println(seq.getSequenceType());
-			System.out.println(seq.getLength());
-			System.out.println(seq.getStrain());
-			System.out.println(seq.getDescription());
-			System.out.println(seq.getProvider());
-			System.out.println(seq.getOrganism());
-			System.out.println(seq.getLibrary());
-			System.out.println(seq.getTissue());
+			System.out.println("Primary ID: " + seq.getPrimaryID());
+			System.out.println("Sequence Type: " + seq.getSequenceType());
+			System.out.println("Length: " + seq.getLength());
+			System.out.println("Strain: " + seq.getStrain());
+			System.out.println("Description: " + seq.getDescription());
+			System.out.println("Provider: " + seq.getProvider());
+			System.out.println("CellLine: " + seq.getCellLine());
+			System.out.println("Version: " + seq.getVersion());
+			System.out.println("Status: " + seq.getStatus());
+			System.out.println("Organism: " + seq.getOrganism());
+			System.out.println("Age: " + seq.getAge());
+			System.out.println("Sex: " + seq.getSex());
+			System.out.println("library: " + seq.getLibrary());
+			System.out.println("Tissue: " + seq.getTissue());
+
+	     for (Iterator <SequenceID> iter2 = seq.getIds().iterator(); iter2.hasNext(); ) {
+	         SequenceID sid = (SequenceID) iter2.next();
+    	     if (!sid.isPreferred()) {
+    	         System.out.println ("All Sequence ID's --> " + sid.getAccID());
+    	         }
+	         }			
 			
          for (Iterator <Reference> iter2 = seq.getReferences().iterator(); iter2.hasNext(); ) {
              Reference mra = (Reference) iter2.next();
