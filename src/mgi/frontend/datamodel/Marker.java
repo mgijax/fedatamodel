@@ -24,6 +24,10 @@ import javax.persistence.Transient;
 @SecondaryTables (
 		{ @SecondaryTable (name="markerCounts", pkJoinColumns= {
 			@PrimaryKeyJoinColumn(name="markerKey", referencedColumnName="markerKey") } ) 
+			
+@JsonIgnoreProperties({"ids", "synonyms", "references", "annotations", 
+		"orthologousMarkers", "referenceAssociations", "notes", "sortedReferenceAssociations", 
+		"comparableValue", "countOfReferences", "countOfSequences"})
 		} )
 public class Marker implements SortableObject {
 	private int markerKey;
