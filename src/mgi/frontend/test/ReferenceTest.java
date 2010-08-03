@@ -26,6 +26,7 @@ public class ReferenceTest {
 			ref = (Reference) iter.next();
 			System.out.println("----------------");
 			System.out.println (ref.getJnumID());
+			System.out.println (ref.getPubMedID());
 			System.out.println (ref.getAuthors());
 			System.out.println (ref.getTitle());
 			System.out.println (ref.getJournal());

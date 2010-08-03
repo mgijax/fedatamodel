@@ -12,7 +12,7 @@ import javax.persistence.*;
 		  @SecondaryTable (name="sequenceGeneModel", pkJoinColumns= {
 		  	@PrimaryKeyJoinColumn(name="sequenceKey", referencedColumnName="sequenceKey") } ),
 		  @SecondaryTable (name="sequenceGeneTrap", pkJoinColumns= {
-		  	@PrimaryKeyJoinColumn(name="sequenceKey", referencedColumnName="sequenceKey") } )
+		  	@PrimaryKeyJoinColumn(name="sequenceKey", referencedColumnName="sequenceKey") } )	  
 		} )
 public class Sequence implements SortableObject {
 	private int sequenceKey;	
@@ -30,12 +30,12 @@ public class Sequence implements SortableObject {
 	private String recordDate;
 	private String primaryID;
 	private String logicalDB;
-	private String strain;
+/*	private String strain;
 	private String tissue;
 	private String age;
-	private String sex;
+	private String sex;*/
 	private String library;
-	private String cellLine;
+/*	private String cellLine;*/
 	private Integer countOfMarkers;
 	private String markerType;
 	private String biotype;
@@ -47,6 +47,7 @@ public class Sequence implements SortableObject {
 	private Integer goodHitCount;
 	private Float pointCoordinate;
 	private Set<SequenceID> ids;
+	private List<SequenceSource> sources;
 	private List<Reference> references;
 	private List<SequenceLocation> locations;
 	
@@ -183,6 +184,8 @@ public class Sequence implements SortableObject {
 		this.logicalDB = logicalDB;
 	}
 
+/*    @Column(table="sequencesource", name="strain")
+    @JoinColumn(name="sequenceKey")	
 	public String getStrain() {
 		return strain;
 	}
@@ -191,6 +194,8 @@ public class Sequence implements SortableObject {
 		this.strain = strain;
 	}
 
+    @Column(table="sequencesource", name="tissue")
+    @JoinColumn(name="sequenceKey")
 	public String getTissue() {
 		return tissue;
 	}
@@ -199,6 +204,8 @@ public class Sequence implements SortableObject {
 		this.tissue = tissue;
 	}
 
+    @Column(table="sequencesource", name="age")
+    @JoinColumn(name="sequenceKey")	
 	public String getAge() {
 		return age;
 	}
@@ -207,6 +214,8 @@ public class Sequence implements SortableObject {
 		this.age = age;
 	}
 
+    @Column(table="sequencesource", name="sex")
+    @JoinColumn(name="sequenceKey")	
 	public String getSex() {
 		return sex;
 	}
@@ -214,7 +223,7 @@ public class Sequence implements SortableObject {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-
+*/
 	public String getLibrary() {
 		return library;
 	}
@@ -223,13 +232,15 @@ public class Sequence implements SortableObject {
 		this.library = library;
 	}
 
+/*    @Column(table="sequenceSource", name="celline")
+    @JoinColumn(name="sequenceKey")
 	public String getCellLine() {
 		return cellLine;
 	}
 
 	public void setCellLine(String cellLine) {
 		this.cellLine = cellLine;
-	}
+	}*/
 
 	@Column(table="sequenceCounts", name="markerCount")
 	@JoinColumn(name="sequenceKey")
@@ -364,6 +375,16 @@ public class Sequence implements SortableObject {
 		this.markerAssociations = markerAssociations;
 	}*/
 
+    @OneToMany (targetEntity=SequenceSource.class)
+    @JoinColumn(name="sequenceKey")
+    public List<SequenceSource> getSources() {
+        return sources;
+    }
+
+    public void setSources(List<SequenceSource> sources) {
+        this.sources = sources;
+    }
+    
     @OneToMany (targetEntity=SequenceLocation.class)
     @JoinColumn(name="sequenceKey")
     @OrderBy("sequenceNum")
@@ -387,10 +408,6 @@ public class Sequence implements SortableObject {
 			value = this.getLength();
 		} else if (fieldname.equals(SEQUENCE_TYPE)) {
 			value = this.getSequenceType();
-		} else if (fieldname.equals(TISSUE)) {
-			value = this.getTissue();
-		} else if (fieldname.equals(STRAIN)) {
-			value = this.getStrain();
 		} else {
 			throw new NoSuchFieldException("Unknown field: " + fieldname);
 		}

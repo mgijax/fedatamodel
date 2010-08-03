@@ -27,6 +27,7 @@ public class Reference implements SortableObject {
 	private String year;
 	private String pages;
 	private String jnumID;
+	private String pubmedid;
 	private int jnumNumeric;
 	private String citation;
 	private String shortCitation;
@@ -128,6 +129,12 @@ public class Reference implements SortableObject {
 	public void setJnumID(String jnumID) {
 		this.jnumID = jnumID;
 	}
+    public String getPubMedID() {
+        return pubmedid;
+    }
+    public void setPubMedID(String pubmedid) {
+        this.pubmedid = pubmedid;
+    }	
 	public int getJnumNumeric() {
 		return jnumNumeric;
 	}

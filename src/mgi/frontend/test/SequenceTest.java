@@ -7,6 +7,7 @@ import mgi.frontend.datamodel.Reference;
 import mgi.frontend.datamodel.Sequence;
 import mgi.frontend.datamodel.SequenceID;
 import mgi.frontend.datamodel.SequenceLocation;
+import mgi.frontend.datamodel.SequenceSource;
 import mgi.persistence.HibernateUtil;
 import mgi.reporting.Timer;
 
@@ -31,17 +32,17 @@ public class SequenceTest {
 			System.out.println("Primary ID: " + seq.getPrimaryID());
 			System.out.println("Sequence Type: " + seq.getSequenceType());
 			System.out.println("Length: " + seq.getLength());
-			System.out.println("Strain: " + seq.getStrain());
+//			System.out.println("Strain: " + seq.getStrain());
 			System.out.println("Description: " + seq.getDescription());
 			System.out.println("Provider: " + seq.getProvider());
-			System.out.println("CellLine: " + seq.getCellLine());
+//			System.out.println("CellLine: " + seq.getCellLine());
 			System.out.println("Version: " + seq.getVersion());
 			System.out.println("Status: " + seq.getStatus());
 			System.out.println("Organism: " + seq.getOrganism());
-			System.out.println("Age: " + seq.getAge());
-			System.out.println("Sex: " + seq.getSex());
+//			System.out.println("Age: " + seq.getAge());
+//			System.out.println("Sex: " + seq.getSex());
 			System.out.println("library: " + seq.getLibrary());
-			System.out.println("Tissue: " + seq.getTissue());
+//			System.out.println("Tissue: " + seq.getTissue());
 
 	     for (Iterator <SequenceID> iter2 = seq.getIds().iterator(); iter2.hasNext(); ) {
 	         SequenceID sid = (SequenceID) iter2.next();
@@ -64,6 +65,15 @@ public class SequenceTest {
              System.out.println (" Location --> " + loc.getLocationType());
              System.out.println (" Location --> " + loc.getBuildIdentifier());
              }
+         
+         for (Iterator <SequenceSource> iter2 = seq.getSources().iterator(); iter2.hasNext(); ) {
+             SequenceSource source = (SequenceSource) iter2.next();
+             System.out.println (" Source --> " + source.getAge());
+             System.out.println (" Source --> " + source.getStrain());
+             System.out.println (" Source --> " + source.getTissue());
+             System.out.println (" Source --> " + source.getCellLine());
+             System.out.println (" Source --> " + source.getSex());
+             }         
 
 		 System.out.println("-------------------");
 		}
