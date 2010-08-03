@@ -25,17 +25,11 @@ public class Sequence implements SortableObject {
 	private String description;
 	private String version;
 	private String division;
-/*	private boolean isVirtual;*/
 	private String sequenceDate;
 	private String recordDate;
 	private String primaryID;
 	private String logicalDB;
-/*	private String strain;
-	private String tissue;
-	private String age;
-	private String sex;*/
 	private String library;
-/*	private String cellLine;*/
 	private Integer countOfMarkers;
 	private String markerType;
 	private String biotype;
@@ -144,14 +138,6 @@ public class Sequence implements SortableObject {
 		this.division = division;
 	}
 
-/*	public boolean isVirtual() {
-		return isVirtual;
-	}
-
-	public void setVirtual(boolean isVirtual) {
-		this.isVirtual = isVirtual;
-	}*/
-
 	public String getSequenceDate() {
 		return sequenceDate;
 	}
@@ -184,46 +170,6 @@ public class Sequence implements SortableObject {
 		this.logicalDB = logicalDB;
 	}
 
-/*    @Column(table="sequencesource", name="strain")
-    @JoinColumn(name="sequenceKey")	
-	public String getStrain() {
-		return strain;
-	}
-
-	public void setStrain(String strain) {
-		this.strain = strain;
-	}
-
-    @Column(table="sequencesource", name="tissue")
-    @JoinColumn(name="sequenceKey")
-	public String getTissue() {
-		return tissue;
-	}
-
-	public void setTissue(String tissue) {
-		this.tissue = tissue;
-	}
-
-    @Column(table="sequencesource", name="age")
-    @JoinColumn(name="sequenceKey")	
-	public String getAge() {
-		return age;
-	}
-
-	public void setAge(String age) {
-		this.age = age;
-	}
-
-    @Column(table="sequencesource", name="sex")
-    @JoinColumn(name="sequenceKey")	
-	public String getSex() {
-		return sex;
-	}
-
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
-*/
 	public String getLibrary() {
 		return library;
 	}
@@ -231,16 +177,6 @@ public class Sequence implements SortableObject {
 	public void setLibrary(String library) {
 		this.library = library;
 	}
-
-/*    @Column(table="sequenceSource", name="celline")
-    @JoinColumn(name="sequenceKey")
-	public String getCellLine() {
-		return cellLine;
-	}
-
-	public void setCellLine(String cellLine) {
-		this.cellLine = cellLine;
-	}*/
 
 	@Column(table="sequenceCounts", name="markerCount")
 	@JoinColumn(name="sequenceKey")
