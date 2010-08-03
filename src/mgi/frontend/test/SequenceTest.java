@@ -32,17 +32,12 @@ public class SequenceTest {
 			System.out.println("Primary ID: " + seq.getPrimaryID());
 			System.out.println("Sequence Type: " + seq.getSequenceType());
 			System.out.println("Length: " + seq.getLength());
-//			System.out.println("Strain: " + seq.getStrain());
 			System.out.println("Description: " + seq.getDescription());
 			System.out.println("Provider: " + seq.getProvider());
-//			System.out.println("CellLine: " + seq.getCellLine());
 			System.out.println("Version: " + seq.getVersion());
 			System.out.println("Status: " + seq.getStatus());
 			System.out.println("Organism: " + seq.getOrganism());
-//			System.out.println("Age: " + seq.getAge());
-//			System.out.println("Sex: " + seq.getSex());
 			System.out.println("library: " + seq.getLibrary());
-//			System.out.println("Tissue: " + seq.getTissue());
 
 	     for (Iterator <SequenceID> iter2 = seq.getIds().iterator(); iter2.hasNext(); ) {
 	         SequenceID sid = (SequenceID) iter2.next();
