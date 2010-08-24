@@ -3,7 +3,7 @@ package mgi.frontend.datamodel;
 import javax.persistence.*;
 
 @Entity
-@Table(name="markerOrthology")
+@Table(name="marker_orthology")
 public class MarkerOrthology {
 	private int uniqueKey;
 	private int mouseMarkerKey;
@@ -14,6 +14,7 @@ public class MarkerOrthology {
 	public MarkerOrthology() {}
 
 	@Id
+	@Column(name="unique_key")
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
@@ -22,6 +23,7 @@ public class MarkerOrthology {
 		this.uniqueKey = uniqueKey;
 	}
 
+	@Column(name="mouse_marker_key")
 	public int getMouseMarkerKey() {
 		return mouseMarkerKey;
 	}
@@ -30,6 +32,7 @@ public class MarkerOrthology {
 		this.mouseMarkerKey = mouseMarkerKey;
 	}
 
+	@Column(name="other_marker_key")
 	public int getOtherMarkerKey() {
 		return otherMarkerKey;
 	}
@@ -38,6 +41,7 @@ public class MarkerOrthology {
 		this.otherMarkerKey = otherMarkerKey;
 	}
 
+	@Column(name="other_symbol")
 	public String getOtherSymbol() {
 		return otherSymbol;
 	}
@@ -46,6 +50,7 @@ public class MarkerOrthology {
 		this.otherSymbol = otherSymbol;
 	}
 
+	@Column(name="other_organism")
 	public String getOtherOrganism() {
 		return otherOrganism;
 	}

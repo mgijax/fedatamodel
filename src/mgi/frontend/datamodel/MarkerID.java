@@ -3,10 +3,11 @@ package mgi.frontend.datamodel;
 import javax.persistence.*;
 
 @Entity
-@Table (name="markerID")
+@Table (name="marker_id")
 public class MarkerID extends AccessionID {
 	private int markerKey;
 
+	@Column(name="marker_key")
 	public int getMarkerKey() {
 		return markerKey;
 	}

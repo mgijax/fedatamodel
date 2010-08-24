@@ -3,10 +3,11 @@ package mgi.frontend.datamodel;
 import javax.persistence.*;
 
 @Entity
-@Table (name="markernote")
+@Table (name="marker_note")
 public class MarkerNote extends Note {
 	protected Integer markerKey;
 
+	@Column(name="marker_key")
 	public Integer getMarkerKey() {
 		return markerKey;
 	}

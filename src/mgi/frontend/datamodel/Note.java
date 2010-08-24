@@ -16,6 +16,7 @@ public class Note implements SortableObject {
 	public Note() {}
 
 	@Id
+	@Column(name="unique_key")
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
@@ -24,6 +25,7 @@ public class Note implements SortableObject {
 		this.uniqueKey = uniqueKey;
 	}
 
+	@Column(name="note_type")
 	public String getNoteType() {
 		return noteType;
 	}

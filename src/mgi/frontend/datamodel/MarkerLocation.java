@@ -9,7 +9,7 @@ public class MarkerLocation extends Location implements SortableObject {
 	private int uniqueKey;
 	
 	@Id
-    @Column(name="uniqueKey")
+    @Column(name="unique_key")
     public int getUniqueKey() {
         return uniqueKey;
     }

@@ -7,12 +7,12 @@ import javax.persistence.*;
 @Entity
 @Table (name="reference")
 @SecondaryTables (
-	{ @SecondaryTable (name="referenceAbstract", pkJoinColumns= {
-		@PrimaryKeyJoinColumn(name="referenceKey", referencedColumnName="referenceKey") } ),
-	  @SecondaryTable (name="referenceCounts", pkJoinColumns= {
-		@PrimaryKeyJoinColumn(name="referenceKey", referencedColumnName="referenceKey") } ),
-	  @SecondaryTable (name="referenceBook", pkJoinColumns= {
-		@PrimaryKeyJoinColumn(name="referenceKey", referencedColumnName="referenceKey") } ) 
+	{ @SecondaryTable (name="reference_abstract", pkJoinColumns= {
+		@PrimaryKeyJoinColumn(name="reference_key", referencedColumnName="reference_key") } ),
+	  @SecondaryTable (name="reference_counts", pkJoinColumns= {
+		@PrimaryKeyJoinColumn(name="reference_key", referencedColumnName="reference_key") } ),
+	  @SecondaryTable (name="reference_book", pkJoinColumns= {
+		@PrimaryKeyJoinColumn(name="reference_key", referencedColumnName="reference_key") } ) 
 	} )
 public class Reference implements SortableObject {
 	private int referenceKey;
@@ -33,13 +33,13 @@ public class Reference implements SortableObject {
 	private String shortCitation;
 	private String refAbstract;
 	private Set<ReferenceID> ids;
-	//private Set<Marker> markerKeys;
+	private Set<Marker> markers;
 	private String bookEditor;
 	private String bookTitle;
 	private String bookEdition;
 	private String bookPlace;
 	private String bookPublisher;
-	private List<MarkerReferenceAssociation> markerAssociations;
+//	private List<MarkerReferenceAssociation> markerAssociations;
 	private Integer countOfMarkers;
 	private Integer countOfProbes;
 	private Integer countOfGXDAssays;
@@ -56,19 +56,27 @@ public class Reference implements SortableObject {
 	
 	public Reference() {}
 	
-	@Id
+	@Id 
+	@Column(name = "reference_key")
 	public int getReferenceKey() {
 		return referenceKey;
 	}
 	public void setReferenceKey(int referenceKey) {
 		this.referenceKey = referenceKey;
 	}
+	@Column(name="reference_type")
 	public String getReferenceType() {
 		return referenceType;
 	}
 	public void setReferenceType(String referenceType) {
 		this.referenceType = referenceType;
 	}
+
+	@Transient
+	public Boolean isBook() {
+	    return this.referenceType.equals("BOOK");
+	}
+	@Column(name="primary_author")
 	public String getPrimaryAuthor() {
 		return primaryAuthor;
 	}
@@ -105,6 +113,7 @@ public class Reference implements SortableObject {
 	public void setIssue(String issue) {
 		this.issue = issue;
 	}
+	@Column(name="pub_date")
 	public String getPubDate() {
 		return pubDate;
 	}
@@ -123,18 +132,21 @@ public class Reference implements SortableObject {
 	public void setPages(String pages) {
 		this.pages = pages;
 	}
+	@Column(name="jnum_id")
 	public String getJnumID() {
 		return jnumID;
 	}
 	public void setJnumID(String jnumID) {
 		this.jnumID = jnumID;
 	}
+	@Column(name="pubmed_id")
     public String getPubMedID() {
         return pubmedid;
     }
     public void setPubMedID(String pubmedid) {
         this.pubmedid = pubmedid;
     }	
+    @Column(name="jnum_numeric")
 	public int getJnumNumeric() {
 		return jnumNumeric;
 	}
@@ -148,7 +160,7 @@ public class Reference implements SortableObject {
 		this.citation = citation;
 	}
 	
-	@Column(name="shortCitation")
+	@Column(name="short_citation")
 	public String getShortCitation() {
 		return shortCitation;
 	}
@@ -156,8 +168,8 @@ public class Reference implements SortableObject {
 		this.shortCitation = shortCitation;
 	}
 
-	@Column(table="referenceAbstract")
-	@JoinColumn(name="referenceKey")
+	@Column(table="reference_abstract")
+	@JoinColumn(name="reference_key")
 	public String getAbstract() {
 		return refAbstract;
 	}
@@ -166,21 +178,21 @@ public class Reference implements SortableObject {
 		this.refAbstract = refAbstract;
 	}
 
-/*	@OneToMany (targetEntity=Marker.class)
-	@JoinTable (name="markerToReference",
-			joinColumns=@JoinColumn(name="referenceKey"),
-			inverseJoinColumns=@JoinColumn(name="markerKey")
+	@OneToMany (targetEntity=Marker.class)
+	@JoinTable (name="marker_to_reference",
+			joinColumns=@JoinColumn(name="reference_key"),
+			inverseJoinColumns=@JoinColumn(name="marker_key")
 			)
-	public Set<Marker> getMarkerKeys() {
-		return markerKeys;
+	public Set<Marker> getMarkers() {
+		return markers;
 	}
 
-	public void setMarkerKeys(Set<Marker> markerKeys) {
-		this.markerKeys = markerKeys;
+	public void setMarkers(Set<Marker> markers) {
+		this.markers = markers;
 	}
-*/
+
 	@OneToMany (targetEntity=ReferenceID.class)
-	@JoinColumn (name="referenceKey")
+	@JoinColumn (name="reference_key")
 	public Set<ReferenceID> getIds() {
 		return ids;
 	}
@@ -189,8 +201,8 @@ public class Reference implements SortableObject {
 		this.ids = ids;
 	}
 
-	@Column(table="referenceBook", name="editor")
-	@JoinColumn(name="referenceKey")
+	@Column(table="reference_book", name="editor")
+	@JoinColumn(name="reference_key")
 	public String getBookEditor() {
 		return bookEditor;
 	}
@@ -199,8 +211,8 @@ public class Reference implements SortableObject {
 		this.bookEditor = bookEditor;
 	}
 
-	@Column(table="referenceBook")
-	@JoinColumn(name="referenceKey")
+	@Column(table="reference_book", name="book_title")
+	@JoinColumn(name="reference_key")
 	public String getBookTitle() {
 		return bookTitle;
 	}
@@ -209,8 +221,8 @@ public class Reference implements SortableObject {
 		this.bookTitle = bookTitle;
 	}
 
-	@Column(table="referenceBook", name="edition")
-	@JoinColumn(name="referenceKey")
+	@Column(table="reference_book", name="edition")
+	@JoinColumn(name="reference_key")
 	public String getBookEdition() {
 		return bookEdition;
 	}
@@ -219,8 +231,8 @@ public class Reference implements SortableObject {
 		this.bookEdition = bookEdition;
 	}
 
-	@Column(table="referenceBook", name="place")
-	@JoinColumn(name="referenceKey")
+	@Column(table="reference_book", name="place")
+	@JoinColumn(name="reference_key")
 	public String getBookPlace() {
 		return bookPlace;
 	}
@@ -229,8 +241,8 @@ public class Reference implements SortableObject {
 		this.bookPlace = bookPlace;
 	}
 
-	@Column(table="referenceBook", name="publisher")
-	@JoinColumn(name="referenceKey")
+	@Column(table="reference_book", name="publisher")
+	@JoinColumn(name="reference_key")
 	public String getBookPublisher() {
 		return bookPublisher;
 	}
@@ -240,8 +252,8 @@ public class Reference implements SortableObject {
 	}
 
 
-	@OneToMany (fetch=FetchType.LAZY)
-	@JoinColumn(name="referenceKey")
+/*	@OneToMany (fetch=FetchType.LAZY)
+	@JoinColumn(name="reference_key")
 	@OrderBy ("sequenceNumRev")
 	public List<MarkerReferenceAssociation> getMarkerAssociations() {
 		return markerAssociations;
@@ -250,7 +262,7 @@ public class Reference implements SortableObject {
 	public void setMarkerAssociations(
 			List<MarkerReferenceAssociation> markerAssociations) {
 		this.markerAssociations = markerAssociations;
-	}
+	}*/
 
 	@Override
 	public Comparable getComparableValue(String fieldname) throws NoSuchFieldException {
@@ -269,8 +281,8 @@ public class Reference implements SortableObject {
 		return value;
 	}
 
-	@Column(table="referenceCounts", name="markerCount")
-	@JoinColumn(name="referenceKey")
+	@Column(table="reference_counts", name="marker_count")
+	@JoinColumn(name="reference_key")
 	public Integer getCountOfMarkers() {
 		return countOfMarkers;
 	}
@@ -279,8 +291,8 @@ public class Reference implements SortableObject {
 		this.countOfMarkers = countOfMarkers;
 	}
 
-    @Column(table="referenceCounts", name="probeCount")
-    @JoinColumn(name="referenceKey")
+    @Column(table="reference_counts", name="probe_count")
+    @JoinColumn(name="reference_key")
     public Integer getCountOfProbes() {
         return countOfProbes;
     }
@@ -289,8 +301,8 @@ public class Reference implements SortableObject {
         this.countOfProbes = countOfProbes;
     }
     
-    @Column(table="referenceCounts", name="gxdAssayCount")
-    @JoinColumn(name="referenceKey")
+    @Column(table="reference_counts", name="gxd_assay_count")
+    @JoinColumn(name="reference_key")
     public Integer getCountOfGXDAssays() {
         return countOfGXDAssays;
     }
@@ -299,8 +311,8 @@ public class Reference implements SortableObject {
         this.countOfGXDAssays = countOfGXDAssays;
     }
     
-    @Column(table="referenceCounts", name="gxdResultCount")
-    @JoinColumn(name="referenceKey")
+    @Column(table="reference_counts", name="gxd_result_count")
+    @JoinColumn(name="reference_key")
     public Integer getCountOfGXDResults() {
         return countOfGXDResults;
     }
@@ -309,8 +321,8 @@ public class Reference implements SortableObject {
         this.countOfGXDResults = countOfGXDResults;
     }    
     
-    @Column(table="referenceCounts", name="mappingExptCount")
-    @JoinColumn(name="referenceKey")
+    @Column(table="reference_counts", name="mapping_expt_count")
+    @JoinColumn(name="reference_key")
     public Integer getCountOfMappingResults() {
         return countOfMappingResults;
     }
@@ -319,8 +331,8 @@ public class Reference implements SortableObject {
         this.countOfMappingResults = countOfMappingResults;
     }      
     
-    @Column(table="referenceCounts", name="sequenceCount")
-    @JoinColumn(name="referenceKey")
+    @Column(table="reference_counts", name="sequence_count")
+    @JoinColumn(name="reference_key")
     public Integer getCountOfSequenceResults() {
         return countOfSequences;
     }
@@ -329,8 +341,8 @@ public class Reference implements SortableObject {
         this.countOfSequences = countOfSequences;
     }     
     
-    @Column(table="referenceCounts", name="alleleCount")
-    @JoinColumn(name="referenceKey")
+    @Column(table="reference_counts", name="allele_count")
+    @JoinColumn(name="reference_key")
     public Integer getCountOfAlleles() {
         return countOfAlleles;
     }
@@ -339,8 +351,8 @@ public class Reference implements SortableObject {
         this.countOfAlleles = countOfAlleles;
     }   
     
-    @Column(table="referenceCounts", name="gxdIndexCount")
-    @JoinColumn(name="referenceKey")
+    @Column(table="reference_counts", name="gxd_index_count")
+    @JoinColumn(name="reference_key")
     public Integer getCountOfGXDIndex() {
         return countOfGXDIndex;
     }
@@ -370,9 +382,6 @@ public class Reference implements SortableObject {
 				+ jnumNumeric
 				+ ", "
 				+ (journal != null ? "journal=" + journal + ", " : "")
-				+ (markerAssociations != null ? "markerAssociations="
-						+ markerAssociations + ", " : "")
-				//+ (markerKeys != null ? "markerKeys=" + markerKeys + ", " : "")
 				+ (pages != null ? "pages=" + pages + ", " : "")
 				+ (primaryAuthor != null ? "primaryAuthor=" + primaryAuthor
 						+ ", " : "")

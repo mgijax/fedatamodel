@@ -3,10 +3,11 @@ package mgi.frontend.datamodel;
 import javax.persistence.*;
 
 @Entity
-@Table (name="referenceID")
+@Table (name="reference_id")
 public class ReferenceID extends AccessionID {
 	private int referenceKey;
 
+	@Column(name="reference_key")
 	public int getReferenceKey() {
 		return referenceKey;
 	}

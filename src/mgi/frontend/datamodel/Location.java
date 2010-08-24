@@ -13,8 +13,8 @@ public class Location implements SortableObject {
 	protected String chromosome;
 	//protected float cmOffset;
 	//protected String cytogeneticOffset;
-	protected float startCoordinate;
-	protected float endCoordinate;
+	protected Float startCoordinate;
+	protected Float endCoordinate;
 	protected String buildIdentifier;
 	protected String locationType;
 	protected String mapUnits;
@@ -24,7 +24,7 @@ public class Location implements SortableObject {
 	public Location() {}
 
 	@Id
-	@Column(name="uniqueKey")
+	@Column(name="unique_key")
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
@@ -33,6 +33,7 @@ public class Location implements SortableObject {
 		this.uniqueKey = uniqueKey;
 	}
 
+	@Column(name="sequence_num")
 	public int getSequenceNum() {
 		return sequenceNum;
 	}
@@ -65,22 +66,25 @@ public class Location implements SortableObject {
 		this.cytogeneticOffset = cytogeneticOffset;
 	}*/
 
-	public float getStartCoordinate() {
+	@Column(name="start_coordinate")
+	public Float getStartCoordinate() {
 		return startCoordinate;
 	}
 
-	public void setStartCoordinate(float startCoordinate) {
+	public void setStartCoordinate(Float startCoordinate) {
 		this.startCoordinate = startCoordinate;
 	}
 
-	public float getEndCoordinate() {
+	@Column(name="end_coordinate")
+	public Float getEndCoordinate() {
 		return endCoordinate;
 	}
 
-	public void setEndCoordinate(float endCoordinate) {
+	public void setEndCoordinate(Float endCoordinate) {
 		this.endCoordinate = endCoordinate;
 	}
-
+	
+	@Column(name="build_identifier")
 	public String getBuildIdentifier() {
 		return buildIdentifier;
 	}
@@ -89,6 +93,7 @@ public class Location implements SortableObject {
 		this.buildIdentifier = buildIdentifier;
 	}
 
+	@Column(name="location_type")
 	public String getLocationType() {
 		return locationType;
 	}
@@ -97,6 +102,7 @@ public class Location implements SortableObject {
 		this.locationType = locationType;
 	}
 
+	@Column(name="map_units")
 	public String getMapUnits() {
 		return mapUnits;
 	}

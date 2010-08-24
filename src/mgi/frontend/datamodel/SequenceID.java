@@ -3,10 +3,11 @@ package mgi.frontend.datamodel;
 import javax.persistence.*;
 
 @Entity
-@Table (name="sequenceID")
+@Table (name="sequence_id")
 public class SequenceID extends AccessionID {
 	private int sequenceKey;
 
+	@Column(name="sequence_key")
 	public int getSequenceKey() {
 		return sequenceKey;
 	}

@@ -3,12 +3,12 @@ package mgi.frontend.datamodel;
 import javax.persistence.*;
 
 @Entity
-@Table (name="sequencesource")
+@Table (name="sequence_source")
 public class SequenceSource extends Source implements SortableObject {
 	protected Integer sequenceKey;
 	//private int uniqueKey;
 	
-	
+	@Column(name="sequence_key")
 	public Integer getSequenceKey() {
 		return sequenceKey;
 	}

@@ -13,6 +13,7 @@ public class AccessionID {
 	public AccessionID() {}
 
 	@Id
+	@Column(name="unique_key")
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
@@ -21,6 +22,7 @@ public class AccessionID {
 		this.uniqueKey = uniqueKey;
 	}
 
+	@Column(name="logical_db")
 	public String getLogicalDB() {
 		return logicalDB;
 	}
@@ -29,6 +31,7 @@ public class AccessionID {
 		this.logicalDB = logicalDB;
 	}
 
+	@Column(name="acc_id")
 	public String getAccID() {
 		return accID;
 	}

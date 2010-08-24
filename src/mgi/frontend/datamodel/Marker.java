@@ -24,8 +24,8 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @Entity
 @Table(name="marker")
 @SecondaryTables (
-		{ @SecondaryTable (name="markerCounts", pkJoinColumns= {
-			@PrimaryKeyJoinColumn(name="markerKey", referencedColumnName="markerKey") } ) 
+		{ @SecondaryTable (name="marker_counts", pkJoinColumns= {
+			@PrimaryKeyJoinColumn(name="marker_key", referencedColumnName="marker_key") } ) 
 		} )
 @JsonIgnoreProperties({"ids", "synonyms", "references", "annotations", 
 		"orthologousMarkers", "referenceAssociations", "notes", "sortedReferenceAssociations", 
@@ -58,6 +58,7 @@ public class Marker implements SortableObject {
 	public Marker() {}
 	
 	@Id
+	@Column(name="marker_key")
 	public int getMarkerKey() {
 		return markerKey;
 	}
@@ -76,12 +77,14 @@ public class Marker implements SortableObject {
 	public void setName(String name) {
 		this.name = name;
 	}
+	@Column(name="marker_type")
 	public String getMarkerType() {
 		return markerType;
 	}
 	public void setMarkerType(String markerType) {
 		this.markerType = markerType;
 	}
+	@Column(name="marker_subtype")
 	public String getMarkerSubtype() {
 		return markerSubtype;
 	}
@@ -94,9 +97,12 @@ public class Marker implements SortableObject {
 	public void setOrganism(String organism) {
 		this.organism = organism;
 	}
+	
+	@Column(name="primary_id")
 	public String getPrimaryID() {
 		return primaryID;
 	}
+
 	public void setPrimaryID(String primaryID) {
 		this.primaryID = primaryID;
 	}
@@ -108,7 +114,7 @@ public class Marker implements SortableObject {
 	}
 
 	@OneToMany (targetEntity=MarkerID.class)
-	@JoinColumn(name="markerKey")
+	@JoinColumn(name="marker_key")
 	public Set<MarkerID> getIds() {
 		return ids;
 	}
@@ -118,7 +124,7 @@ public class Marker implements SortableObject {
 	}
 
 	@OneToMany (targetEntity=MarkerSynonym.class)
-	@JoinColumn(name="markerKey")
+	@JoinColumn(name="marker_key")
 	public Set<MarkerSynonym> getSynonyms() {
 		return synonyms;
 	}
@@ -128,9 +134,9 @@ public class Marker implements SortableObject {
 	}
 
 	@OneToMany
-	@JoinTable (name="markerToReference",
-			joinColumns=@JoinColumn(name="markerKey"),
-			inverseJoinColumns=@JoinColumn(name="referenceKey")
+	@JoinTable (name="marker_to_reference",
+			joinColumns=@JoinColumn(name="marker_key"),
+			inverseJoinColumns=@JoinColumn(name="reference_key")
 			)
 	@OrderBy("year, jnumNumeric")
 	public List<Reference> getReferences() {
@@ -142,7 +148,7 @@ public class Marker implements SortableObject {
 	}
 	
 	@OneToMany
-	@JoinColumn(name="mouseMarkerKey")
+	@JoinColumn(name="mouse_marker_key")
 	public Set<MarkerOrthology> getOrthologousMarkers() {
 		return orthologousMarkers;
 	}
@@ -169,7 +175,7 @@ public class Marker implements SortableObject {
 	}
 	
 	@OneToMany (fetch=FetchType.LAZY)
-	@JoinColumn(name="markerKey")
+	@JoinColumn(name="marker_key")
 	@OrderBy ("sequenceNumFwd")
 	public List<MarkerReferenceAssociation> getReferenceAssociations() {
 		return referenceAssociations;
@@ -198,8 +204,8 @@ public class Marker implements SortableObject {
 		return value;
 	}
 
-	@Column(table="markerCounts", name="referenceCount")
-	@JoinColumn(name="markerKey")
+	@Column(table="marker_counts", name="reference_count")
+	@JoinColumn(name="marker_key")
 	public Integer getCountOfReferences() {
 		return countOfReferences;
 	}
@@ -208,8 +214,8 @@ public class Marker implements SortableObject {
 		this.countOfReferences = countOfReferences;
 	}
 
-	@Column(table="markerCounts", name="sequenceCount")
-	@JoinColumn(name="markerKey")
+	@Column(table="marker_counts", name="sequence_count")
+	@JoinColumn(name="marker_key")
 	public Integer getCountOfSequences() {
 		return countOfSequences;
 	}
@@ -219,7 +225,7 @@ public class Marker implements SortableObject {
 	}
 
 	@OneToMany (targetEntity=MarkerAnnotation.class)
-	@JoinColumn(name="markerKey")
+	@JoinColumn(name="marker_key")
 	public List<MarkerAnnotation> getAnnotations() {
 		return annotations;
 	}
@@ -229,7 +235,7 @@ public class Marker implements SortableObject {
 	}
 
 	@OneToMany (targetEntity=MarkerNote.class)
-	@JoinColumn(name="markerKey")
+	@JoinColumn(name="marker_key")
 	public List<MarkerNote> getNotes() {
 		return notes;
 	}

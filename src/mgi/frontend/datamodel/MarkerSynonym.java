@@ -3,7 +3,7 @@ package mgi.frontend.datamodel;
 import javax.persistence.*;
 
 @Entity
-@Table(name="markerSynonym")
+@Table(name="marker_synonym")
 public class MarkerSynonym {
 	private int uniqueKey;
 	private int markerKey;
@@ -14,6 +14,7 @@ public class MarkerSynonym {
 	public MarkerSynonym() {}
 
 	@Id
+	@Column(name="unique_key")
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
@@ -22,6 +23,7 @@ public class MarkerSynonym {
 		this.uniqueKey = uniqueKey;
 	}
 
+	@Column(name="marker_key")
 	public int getMarkerKey() {
 		return markerKey;
 	}
@@ -38,6 +40,7 @@ public class MarkerSynonym {
 		this.synonym = synonym;
 	}
 
+	@Column(name="synonym_type")
 	public String getSynonymType() {
 		return synonymType;
 	}
@@ -46,6 +49,7 @@ public class MarkerSynonym {
 		this.synonymType = synonymType;
 	}
 
+	@Column(name="jnum_id")
 	public String getJnumID() {
 		return jnumID;
 	}

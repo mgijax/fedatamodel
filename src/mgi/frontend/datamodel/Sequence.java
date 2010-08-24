@@ -2,17 +2,28 @@ package mgi.frontend.datamodel;
 
 import java.util.List;
 import java.util.Set;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
+import javax.persistence.SecondaryTables;
+import javax.persistence.Table;
 
 @Entity
 @Table (name="sequence")
 @SecondaryTables (
-		{ @SecondaryTable (name="sequenceCounts", pkJoinColumns= {
-			@PrimaryKeyJoinColumn(name="sequenceKey", referencedColumnName="sequenceKey") } ),
-		  @SecondaryTable (name="sequenceGeneModel", pkJoinColumns= {
-		  	@PrimaryKeyJoinColumn(name="sequenceKey", referencedColumnName="sequenceKey") } ),
-		  @SecondaryTable (name="sequenceGeneTrap", pkJoinColumns= {
-		  	@PrimaryKeyJoinColumn(name="sequenceKey", referencedColumnName="sequenceKey") } )	  
+		{ @SecondaryTable (name="sequence_counts", pkJoinColumns= {
+			@PrimaryKeyJoinColumn(name="sequence_key", referencedColumnName="sequence_key") } ),
+		  @SecondaryTable (name="sequence_gene_model", pkJoinColumns= {
+		  	@PrimaryKeyJoinColumn(name="sequence_key", referencedColumnName="sequence_key") } ),
+		  @SecondaryTable (name="sequence_gene_trap", pkJoinColumns= {
+		  	@PrimaryKeyJoinColumn(name="sequence_key", referencedColumnName="sequence_key") } )	  
 		} )
 public class Sequence implements SortableObject {
 	private int sequenceKey;	
@@ -44,6 +55,8 @@ public class Sequence implements SortableObject {
 	private List<SequenceSource> sources;
 	private List<Reference> references;
 	private List<SequenceLocation> locations;
+	private Set<Marker> markers;
+	//private Set<Probe> probes;
 	
 /*	private List<MarkerSequenceAssociation> markerAssociations;*/
 /*	private List<SequenceLocation> locations;*/
@@ -58,6 +71,7 @@ public class Sequence implements SortableObject {
 	public Sequence() {}
 	
 	@Id
+	@Column(name="sequence_key")
 	public int getSequenceKey() {
 		return sequenceKey;
 	}
@@ -66,6 +80,7 @@ public class Sequence implements SortableObject {
 		this.sequenceKey = sequenceKey;
 	}
 
+	@Column(name="sequence_type")
 	public String getSequenceType() {
 		return sequenceType;
 	}
@@ -138,6 +153,7 @@ public class Sequence implements SortableObject {
 		this.division = division;
 	}
 
+	@Column(name="sequence_date")
 	public String getSequenceDate() {
 		return sequenceDate;
 	}
@@ -146,6 +162,7 @@ public class Sequence implements SortableObject {
 		this.sequenceDate = sequenceDate;
 	}
 
+	@Column(name="record_date")
 	public String getRecordDate() {
 		return recordDate;
 	}
@@ -154,6 +171,7 @@ public class Sequence implements SortableObject {
 		this.recordDate = recordDate;
 	}
 
+	@Column(name="primary_id")
 	public String getPrimaryID() {
 		return primaryID;
 	}
@@ -162,6 +180,7 @@ public class Sequence implements SortableObject {
 		this.primaryID = primaryID;
 	}
 
+	@Column(name="logical_db")
 	public String getLogicalDB() {
 		return logicalDB;
 	}
@@ -178,8 +197,8 @@ public class Sequence implements SortableObject {
 		this.library = library;
 	}
 
-	@Column(table="sequenceCounts", name="markerCount")
-	@JoinColumn(name="sequenceKey")
+	@Column(table="sequence_counts", name="marker_count")
+	@JoinColumn(name="sequence_key")
 	public Integer getCountOfMarkers() {
 		return countOfMarkers;
 	}
@@ -188,8 +207,8 @@ public class Sequence implements SortableObject {
 		this.countOfMarkers = countOfMarkers;
 	}
 
-	@Column(table="sequenceGeneModel")
-	@JoinColumn(name="sequenceKey")
+	@Column(name="marker_type", table="sequence_gene_model")
+	@JoinColumn(name="sequence_key")
 	public String getMarkerType() {
 		return markerType;
 	}
@@ -198,8 +217,8 @@ public class Sequence implements SortableObject {
 		this.markerType = markerType;
 	}
 
-	@Column(table="sequenceGeneModel")
-	@JoinColumn(name="sequenceKey")
+	@Column(table="sequence_gene_model")
+	@JoinColumn(name="sequence_key")
 	public String getBiotype() {
 		return biotype;
 	}
@@ -208,8 +227,8 @@ public class Sequence implements SortableObject {
 		this.biotype = biotype;
 	}
 
-	@Column(table="sequenceGeneModel")
-	@JoinColumn(name="sequenceKey")
+	@Column(name="exon_count", table="sequence_gene_model")
+	@JoinColumn(name="sequence_key")
 	public Integer getExonCount() {
 		return exonCount;
 	}
@@ -218,8 +237,8 @@ public class Sequence implements SortableObject {
 		this.exonCount = exonCount;
 	}
 
-	@Column(table="sequenceGeneModel")
-	@JoinColumn(name="sequenceKey")
+	@Column(name="transcript_count", table="sequence_gene_model")
+	@JoinColumn(name="sequence_key")
 	public Integer getTranscriptCount() {
 		return transcriptCount;
 	}
@@ -228,8 +247,8 @@ public class Sequence implements SortableObject {
 		this.transcriptCount = transcriptCount;
 	}
 
-	@Column(table="sequenceGeneTrap")
-	@JoinColumn(name="sequenceKey")
+	@Column(name="tag_method", table="sequence_gene_trap")
+	@JoinColumn(name="sequence_key")
 	public String getTagMethod() {
 		return tagMethod;
 	}
@@ -238,8 +257,8 @@ public class Sequence implements SortableObject {
 		this.tagMethod = tagMethod;
 	}
 
-	@Column(table="sequenceGeneTrap")
-	@JoinColumn(name="sequenceKey")
+	@Column(name="vector_end", table="sequence_gene_trap")
+	@JoinColumn(name="sequence_key")
 	public String getVectorEnd() {
 		return vectorEnd;
 	}
@@ -248,8 +267,8 @@ public class Sequence implements SortableObject {
 		this.vectorEnd = vectorEnd;
 	}
 
-	@Column(table="sequenceGeneTrap")
-	@JoinColumn(name="sequenceKey")
+	@Column(name="reverse_complement", table="sequence_gene_trap")
+	@JoinColumn(name="sequence_key")
 	public String getReverseComplement() {
 		return reverseComplement;
 	}
@@ -258,8 +277,8 @@ public class Sequence implements SortableObject {
 		this.reverseComplement = reverseComplement;
 	}
 
-	@Column(table="sequenceGeneTrap")
-	@JoinColumn(name="sequenceKey")
+	@Column(name="good_hit_count", table="sequence_gene_trap")
+	@JoinColumn(name="sequence_key")
 	public Integer getGoodHitCount() {
 		return goodHitCount;
 	}
@@ -268,8 +287,8 @@ public class Sequence implements SortableObject {
 		this.goodHitCount = goodHitCount;
 	}
 
-	@Column(table="sequenceGeneTrap")
-	@JoinColumn(name="sequenceKey")
+	@Column(name="point_coordinate", table="sequence_gene_trap")
+	@JoinColumn(name="sequence_key")
 	public Float getPointCoordinate() {
 		return pointCoordinate;
 	}
@@ -279,7 +298,7 @@ public class Sequence implements SortableObject {
 	}
 
 	@OneToMany (targetEntity=SequenceID.class)
-	@JoinColumn(name="sequenceKey")
+	@JoinColumn(name="sequence_key")
 	public Set<SequenceID> getIds() {
 		return ids;
 	}
@@ -289,9 +308,9 @@ public class Sequence implements SortableObject {
 	}
 
     @OneToMany
-    @JoinTable (name="referenceToSequence",
-            joinColumns=@JoinColumn(name="sequenceKey"),
-            inverseJoinColumns=@JoinColumn(name="referenceKey")
+    @JoinTable (name="reference_to_sequence",
+            joinColumns=@JoinColumn(name="sequence_key"),
+            inverseJoinColumns=@JoinColumn(name="reference_key")
             )
     @OrderBy("year, jnumNumeric")
     public List<Reference> getReferences() {
@@ -302,17 +321,21 @@ public class Sequence implements SortableObject {
         this.references = references;
     }	
 	
-/*	public List<MarkerSequenceAssociation> getMarkerAssociations() {
-		return markerAssociations;
-	}
+    @OneToMany (targetEntity=Marker.class)
+    @JoinTable (name="marker_to_sequence",
+            joinColumns=@JoinColumn(name="sequence_key"),
+            inverseJoinColumns=@JoinColumn(name="marker_key")
+            )
+    public Set<Marker> getMarkers() {
+        return markers;
+    }
 
-	public void setMarkerAssociations(
-			List<MarkerSequenceAssociation> markerAssociations) {
-		this.markerAssociations = markerAssociations;
-	}*/
-
+    public void setMarkers(Set<Marker> markers) {
+        this.markers = markers;
+    }    
+    
     @OneToMany (targetEntity=SequenceSource.class)
-    @JoinColumn(name="sequenceKey")
+    @JoinColumn(name="sequence_key")
     public List<SequenceSource> getSources() {
         return sources;
     }
@@ -322,7 +345,7 @@ public class Sequence implements SortableObject {
     }
     
     @OneToMany (targetEntity=SequenceLocation.class)
-    @JoinColumn(name="sequenceKey")
+    @JoinColumn(name="sequence_key")
     @OrderBy("sequenceNum")
 	public List<SequenceLocation> getLocations() {
 		return locations;

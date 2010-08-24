@@ -16,6 +16,7 @@ public class Source implements SortableObject {
 	public Source() {}
 
 	@Id
+	@Column(name="unique_key")
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
@@ -56,6 +57,7 @@ public class Source implements SortableObject {
         this.sex = sex;
     }
 
+    @Column(name="cell_line")
     public String getCellLine() {
         return cellline;
     }
