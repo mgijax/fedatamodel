@@ -3,7 +3,7 @@ package mgi.frontend.test;
 import java.util.Iterator;
 import java.util.List;
 
-import mgi.frontend.datamodel.Reference;
+import mgi.frontend.datamodel.Marker;
 import mgi.frontend.datamodel.Reference;
 import mgi.persistence.HibernateUtil;
 import mgi.reporting.Timer;
@@ -18,7 +18,8 @@ public class ReferenceTest {
 
 		Timer.write ("ready for initial query");
 		
-		List refs = session.createQuery ("from Reference order by jnumNumeric").setMaxResults(200).list();
+		//List refs = session.createQuery ("from Reference order by jnumNumeric").setMaxResults(200).list();
+		List refs = session.createQuery ("from Reference where referenceKey = 614 order by jnumNumeric").setMaxResults(200).list();
 		Timer.write ("retrieved " + refs.size() + " reference(s)");
 		
 		Reference ref;
@@ -42,6 +43,7 @@ public class ReferenceTest {
 			System.out.println ("Count of Mapping Results: " +ref.getCountOfMappingResults());
 			System.out.println ("Count of Sequence: " +ref.getCountOfSequenceResults());
 			System.out.println ("Count of Alleles: " +ref.getCountOfAlleles());
+			System.out.println ("Is a Book?: " + ref.isBook());
 			System.out.println ("Book Editor: " + ref.getBookEditor());
 			System.out.println ("Book Title: " + ref.getBookTitle());
 			System.out.println ("Book Publisher: " + ref.getBookPublisher());
@@ -50,10 +52,10 @@ public class ReferenceTest {
 			
 			System.out.println("----------------");
 //			System.out.println (ref.getJnumID() + " : " + ref.getShortCitation());
-//			for (Iterator iter2 = ref.getMarkerAssociations().iterator(); iter2.hasNext(); ) {
-//				MarkerReferenceAssociation mra = (MarkerReferenceAssociation) iter2.next();
-//				System.out.println (" --> " + mra.getMarker().getSymbol());
-//			}
+			for (Iterator iter2 = ref.getMarkers().iterator(); iter2.hasNext(); ) {
+				Marker mra = (Marker) iter2.next();
+				System.out.println (" Marker: --> " + mra);
+			}
 		}
 		Timer.write ("wrote reference(s)");
 

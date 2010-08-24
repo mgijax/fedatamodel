@@ -3,6 +3,7 @@ package mgi.frontend.test;
 import java.util.Iterator;
 import java.util.List;
 
+import mgi.frontend.datamodel.Marker;
 import mgi.frontend.datamodel.Reference;
 import mgi.frontend.datamodel.Sequence;
 import mgi.frontend.datamodel.SequenceID;
@@ -38,6 +39,7 @@ public class SequenceTest {
 			System.out.println("Status: " + seq.getStatus());
 			System.out.println("Organism: " + seq.getOrganism());
 			System.out.println("library: " + seq.getLibrary());
+			System.out.println("marker count: " + seq.getCountOfMarkers());
 
 	     for (Iterator <SequenceID> iter2 = seq.getIds().iterator(); iter2.hasNext(); ) {
 	         SequenceID sid = (SequenceID) iter2.next();
@@ -70,6 +72,11 @@ public class SequenceTest {
              System.out.println (" Source --> " + source.getSex());
              }         
 
+         for (Iterator <Marker> iter2 = seq.getMarkers().iterator(); iter2.hasNext(); ) {
+             Marker marker = (Marker) iter2.next();
+             System.out.println ("Marker Symbol --> " + marker.getSymbol());
+             }         
+         
 		 System.out.println("-------------------");
 		}
 		Timer.write ("wrote sequence(s)");
