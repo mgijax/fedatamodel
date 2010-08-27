@@ -1,4 +1,4 @@
-<project name="hibernateExample" default="jar" basedir=".">
+<project name="fedatamodel" default="jar" basedir=".">
   <!-- somewhat bogus build.xml file - still learning ant -->
 	
   <description>
