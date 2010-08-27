@@ -4,6 +4,8 @@ import java.util.Set;
 import java.util.List;
 import javax.persistence.*;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 @Entity
 @Table (name="reference")
 @SecondaryTables (
@@ -14,6 +16,7 @@ import javax.persistence.*;
 	  @SecondaryTable (name="reference_book", pkJoinColumns= {
 		@PrimaryKeyJoinColumn(name="reference_key", referencedColumnName="reference_key") } ) 
 	} )
+@JsonIgnoreProperties({"markers"})
 public class Reference implements SortableObject {
 	private int referenceKey;
 	private String referenceType;
