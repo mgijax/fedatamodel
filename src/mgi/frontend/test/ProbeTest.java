@@ -18,7 +18,7 @@ public class ProbeTest {
 
 		Timer.write ("ready for initial query");
 		
-		List<Probe> probes = (List<Probe>) session.createQuery ("from Probe where probekey = 1854082 order by probekey").setMaxResults(50).list();
+		List<Probe> probes = (List<Probe>) session.createQuery ("from Probe where probe_key = 1854082 order by probe_key").setMaxResults(50).list();
 		//List<Sequence> seqs = (List<Sequence>) session.createQuery ("from Sequence order by primaryID").setMaxResults(50).list();
 		Timer.write ("retrieved " + probes.size() + " sequence(s)");
 
