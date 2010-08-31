@@ -2,6 +2,7 @@ package mgi.frontend.datamodel;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -22,6 +23,7 @@ public class Probe implements SortableObject {
     private Set<ProbeCloneCollection> probeCloneCollection;
     
     @Id
+    @Column(name="probe_key")
     public int getProbeKey() {
         return probeKey;
     }
@@ -38,6 +40,7 @@ public class Probe implements SortableObject {
         this.name = name;
     }
 
+    @Column(name="segment_type")
     public String getSegmenttype() {
         return segmenttype;
     }
@@ -46,6 +49,7 @@ public class Probe implements SortableObject {
         this.segmenttype = segmenttype;
     }
 
+    @Column(name="primary_id")
     public String getPrimaryid() {
         return primaryid;
     }
@@ -54,6 +58,7 @@ public class Probe implements SortableObject {
         this.primaryid = primaryid;
     }
 
+    @Column(name="logical_db")
     public String getLogicaldb() {
         return logicaldb;
     }
@@ -62,6 +67,7 @@ public class Probe implements SortableObject {
         this.logicaldb = logicaldb;
     }
 
+    @Column(name="clone_id")
     public String getCloneid() {
         return cloneid;
     }
@@ -71,7 +77,7 @@ public class Probe implements SortableObject {
     }
 
     @OneToMany (targetEntity=ProbeCloneCollection.class)
-    @JoinColumn(name="probeKey")
+    @JoinColumn(name="probe_key")
     public Set<ProbeCloneCollection> getProbeCloneCollection() {
         return probeCloneCollection;
     }
