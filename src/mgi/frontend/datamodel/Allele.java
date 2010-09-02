@@ -7,7 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
@@ -38,6 +40,7 @@ public class Allele {
     private Set<AlleleSynonym> synonyms;
     private Integer countOfMarkers;
     private Integer countOfReferences;
+    private List<Reference> references;
     
     @Id
     @Column(name="allele_key")
@@ -179,6 +182,20 @@ public class Allele {
 
     public void setSynonyms(Set<AlleleSynonym> synonyms) {
         this.synonyms = synonyms;
+    }
+    
+    @OneToMany
+    @JoinTable (name="allele_to_reference",
+            joinColumns=@JoinColumn(name="allele_key"),
+            inverseJoinColumns=@JoinColumn(name="reference_key")
+            )
+    @OrderBy("year, jnumNumeric")
+    public List<Reference> getReferences() {
+        return references;
+    }
+    
+    public void setReferences(List<Reference> references) {
+        this.references = references;
     }
     
     @Override
