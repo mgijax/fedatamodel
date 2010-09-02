@@ -1,0 +1,25 @@
+package mgi.frontend.datamodel;
+
+import javax.persistence.*;
+
+@Entity
+@Table (name="allele_id")
+public class AlleleID extends AccessionID {
+	private int alleleKey;
+
+	@Column(name="allele_key")
+	public int getAlleleKey() {
+		return alleleKey;
+	}
+
+	public void setAlleleKey(int alleleKey) {
+		this.alleleKey = alleleKey;
+	}
+
+	@Override
+    public String toString() {
+        return "AlleleID [alleleKey=" + alleleKey + ", accID=" + accID
+                + ", isPreferred=" + isPreferred + ", isPrivate=" + isPrivate
+                + ", logicalDB=" + logicalDB + ", uniqueKey=" + uniqueKey + "]";
+    }
+}
