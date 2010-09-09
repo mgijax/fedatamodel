@@ -1,5 +1,7 @@
 package mgi.frontend.datamodel;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -26,6 +28,7 @@ public class AlleleSystemAssayResult {
     private String probeName;
     private String antibodyID;
     private String antibodyName;
+    private List<AlleleSystemAssayResultImagePane> panes;
     
 
     @Column(name="allele_system_key")
@@ -177,6 +180,14 @@ public class AlleleSystemAssayResult {
     }
     public void setAntibodyName(String antibodyName) {
         this.antibodyName = antibodyName;
+    }
+    @OneToMany (targetEntity=AlleleSystemAssayResultImagePane.class)
+    @JoinColumn(name="result_key")
+    public List<AlleleSystemAssayResultImagePane> getPanes() {
+        return panes;
+    }
+    public void setPanes(List<AlleleSystemAssayResultImagePane> panes) {
+        this.panes = panes;
     }
     @Override
     public String toString() {

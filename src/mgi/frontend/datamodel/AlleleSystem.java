@@ -20,6 +20,8 @@ public class AlleleSystem {
     private String system;
     private List<AlleleSystemAssayResult> alleleSystemAssayResults;
     private List<Image> images;
+    private List<AlleleSystemOtherAllele> otherAlleles;
+    private List<AlleleSystemOtherSystem> otherSystems;
     
     @Column(name="allele_key")
     public int getAlleleKey() {
@@ -60,7 +62,6 @@ public class AlleleSystem {
             joinColumns=@JoinColumn(name="allele_system_key"),
             inverseJoinColumns=@JoinColumn(name="image_key")
             )
-//    @OrderBy("sequence_num")
     public List<Image> getImages() {
         return images;
     }
@@ -69,6 +70,25 @@ public class AlleleSystem {
         this.images = images;
     }
     
+    // This stuff currently brings back duplicate entries.. for whatever reason.
+    
+    @OneToMany (targetEntity=AlleleSystemOtherAllele.class)
+    @JoinColumn(name="allele_system_key")
+    public List<AlleleSystemOtherAllele> getOtherAlleles() {
+        return otherAlleles;
+    }
+    public void setOtherAlleles(List<AlleleSystemOtherAllele> alleles) {
+        this.otherAlleles = alleles;
+    }
+    
+    @OneToMany (targetEntity=AlleleSystemOtherSystem.class)
+    @JoinColumn(name="allele_system_key")
+    public List<AlleleSystemOtherSystem> getOtherSystems() {
+        return otherSystems;
+    }
+    public void setOtherSystems(List<AlleleSystemOtherSystem> systems) {
+        this.otherSystems = systems;
+    }
     @Override
     public String toString() {
         return "AlleleSystem [alleleKey=" + alleleKey
