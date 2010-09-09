@@ -41,6 +41,7 @@ public class Allele {
     private Integer countOfMarkers;
     private Integer countOfReferences;
     private List<Reference> references;
+    private List<AlleleSystem> alleleSystems;
     
     @Id
     @Column(name="allele_key")
@@ -196,6 +197,19 @@ public class Allele {
     
     public void setReferences(List<Reference> references) {
         this.references = references;
+    }
+    
+    @OneToMany
+    @JoinTable (name="recombinase_allele_system",
+            joinColumns=@JoinColumn(name="allele_key"),
+            inverseJoinColumns=@JoinColumn(name="allele_system_key")
+            )
+    public List<AlleleSystem> getAlleleSystems() {
+        return alleleSystems;
+    }
+    
+    public void setAlleleSystems(List<AlleleSystem> alleleSystems) {
+        this.alleleSystems = alleleSystems;
     }
     
     @Override
