@@ -56,7 +56,7 @@ public class Sequence implements SortableObject {
 	private List<Reference> references;
 	private List<SequenceLocation> locations;
 	private Set<Marker> markers;
-	//private Set<Probe> probes;
+	private Set<Probe> probes;
 	
 /*	private List<MarkerSequenceAssociation> markerAssociations;*/
 /*	private List<SequenceLocation> locations;*/
@@ -355,7 +355,20 @@ public class Sequence implements SortableObject {
 		this.locations = locations;
 	}
 
-	@Override
+    @OneToMany (targetEntity=Probe.class)
+    @JoinTable (name="probe_to_sequence",
+            joinColumns=@JoinColumn(name="sequence_key"),
+            inverseJoinColumns=@JoinColumn(name="probe_key")
+            )
+	public Set<Probe> getProbes() {
+        return probes;
+    }
+
+    public void setProbes(Set<Probe> probes) {
+        this.probes = probes;
+    }
+
+    @Override
 	public Comparable getComparableValue(String fieldname) throws NoSuchFieldException {
 		Comparable value;
 		
