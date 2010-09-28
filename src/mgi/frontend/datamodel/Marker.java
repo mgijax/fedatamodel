@@ -49,6 +49,10 @@ public class Marker implements SortableObject {
 	private List<MarkerLocation> locations;
 	private Integer countOfReferences;
 	private Integer countOfSequences;
+	private Integer countOfAlleles;
+	private Integer countOfOrthologs;
+    private Integer countOfGOTerms;
+    private Integer countOfGXDAssays;
 	
 	public static String SYMBOL = "Marker.Symbol";
 	public static String NAME = "Marker.Name";
@@ -219,10 +223,50 @@ public class Marker implements SortableObject {
 	public Integer getCountOfSequences() {
 		return countOfSequences;
 	}
+	
+    public void setCountOfSequences(Integer countOfSequences) {
+        this.countOfSequences = countOfSequences;
+    } 	
 
-	public void setCountOfSequences(Integer countOfSequences) {
-		this.countOfSequences = countOfSequences;
+	public void setCountOfAlleles(Integer countOfAlleles) {
+		this.countOfAlleles = countOfAlleles;
 	}
+	
+    @Column(table="marker_counts", name="allele_count")
+    @JoinColumn(name="marker_key")
+    public Integer getCountOfAlleles() {
+        return countOfAlleles;
+    }
+
+    public void setCountOfOrthologs(Integer countOfOrthologs) {
+        this.countOfOrthologs = countOfOrthologs;
+    }
+    
+    @Column(table="marker_counts", name="ortholog_count")
+    @JoinColumn(name="marker_key")
+    public Integer getCountOfOrthologs() {
+        return countOfOrthologs;
+    }   
+    
+    public void setCountOfGOTerms(Integer countOfGOTerms) {
+        this.countOfGOTerms = countOfGOTerms;
+    }
+    
+    @Column(table="marker_counts", name="go_term_count")
+    @JoinColumn(name="marker_key")
+    public Integer getCountOfGOTerms() {
+        return countOfGOTerms;
+    }   
+    
+    public void setCountOfGXDAssays(Integer countOfGXDAssays) {
+        this.countOfGXDAssays = countOfGXDAssays;
+    }
+    
+    @Column(table="marker_counts", name="gxd_assay_count")
+    @JoinColumn(name="marker_key")
+    public Integer getCountOfGXDAssays() {
+        return countOfGXDAssays;
+    }  
 
 	@OneToMany (targetEntity=MarkerAnnotation.class)
 	@JoinColumn(name="marker_key")
