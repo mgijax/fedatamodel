@@ -14,6 +14,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table (name="sequence")
@@ -23,10 +24,10 @@ import javax.persistence.Table;
 		  @SecondaryTable (name="sequence_gene_model", pkJoinColumns= {
 		  	@PrimaryKeyJoinColumn(name="sequence_key", referencedColumnName="sequence_key") } ),
 		  @SecondaryTable (name="sequence_gene_trap", pkJoinColumns= {
-		  	@PrimaryKeyJoinColumn(name="sequence_key", referencedColumnName="sequence_key") } )	  
+		  	@PrimaryKeyJoinColumn(name="sequence_key", referencedColumnName="sequence_key") } )
 		} )
 public class Sequence implements SortableObject {
-	private int sequenceKey;	
+	private int sequenceKey;
 	private String sequenceType;
 	private String quality;
 	private String status;
@@ -57,19 +58,19 @@ public class Sequence implements SortableObject {
 	private List<SequenceLocation> locations;
 	private Set<Marker> markers;
 	private Set<Probe> probes;
-	
+
 /*	private List<MarkerSequenceAssociation> markerAssociations;*/
 /*	private List<SequenceLocation> locations;*/
-	
+
 	public static String PROVIDER = "Sequence.Provider";
 	public static String LENGTH = "Sequence.Length";
 	public static String ID = "Sequence.ID";
 	public static String SEQUENCE_TYPE = "Sequence.Type";
 	public static String TISSUE = "Sequence.Tissue";
 	public static String STRAIN = "Sequence.Strain";
-	
+
 	public Sequence() {}
-	
+
 	@Id
 	@Column(name="sequence_key")
 	public int getSequenceKey() {
@@ -319,8 +320,8 @@ public class Sequence implements SortableObject {
 
     public void setReferences(List<Reference> references) {
         this.references = references;
-    }	
-	
+    }
+
     @OneToMany (targetEntity=Marker.class)
     @JoinTable (name="marker_to_sequence",
             joinColumns=@JoinColumn(name="sequence_key"),
@@ -332,8 +333,8 @@ public class Sequence implements SortableObject {
 
     public void setMarkers(Set<Marker> markers) {
         this.markers = markers;
-    }    
-    
+    }
+
     @OneToMany (targetEntity=SequenceSource.class)
     @JoinColumn(name="sequence_key")
     public List<SequenceSource> getSources() {
@@ -343,7 +344,7 @@ public class Sequence implements SortableObject {
     public void setSources(List<SequenceSource> sources) {
         this.sources = sources;
     }
-    
+
     @OneToMany (targetEntity=SequenceLocation.class)
     @JoinColumn(name="sequence_key")
     @OrderBy("sequenceNum")
@@ -368,10 +369,20 @@ public class Sequence implements SortableObject {
         this.probes = probes;
     }
 
+	@Transient
+	public String getLengthUnit() {
+
+        String lengthUnit = "bp";
+        if (sequenceType.equals("Polypeptide")) {
+			lengthUnit = "aa";
+		}
+        return lengthUnit;
+	}
+
     @Override
 	public Comparable getComparableValue(String fieldname) throws NoSuchFieldException {
 		Comparable value;
-		
+
 		if (fieldname.equals(PROVIDER)) {
 			value = this.getProvider();
 		} else if (fieldname.equals(ID)) {
