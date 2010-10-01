@@ -15,6 +15,8 @@ import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 @Entity
 @Table(name="Allele")
 @SecondaryTables (
@@ -22,6 +24,7 @@ import javax.persistence.Table;
       @SecondaryTable (name="allele_counts", pkJoinColumns= {
         @PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } ) 
     } )
+@JsonIgnoreProperties({"references", "notes", "molecularDescription", "ids"})
 public class Allele {
     private int alleleKey;
     private String symbol;
@@ -33,7 +36,7 @@ public class Allele {
     private String alleleSubType;
     private int isRecombinase;
     private String driver;
-    private String inducableNote;
+    private String inducibleNote;
     private String molecularDescription;
     private Set<AlleleID> ids;
     private List<AlleleNote> notes;
@@ -121,11 +124,11 @@ public class Allele {
     }
     
     @Column(name="inducible_note")
-    public String getInducableNote() {
-        return inducableNote;
+    public String getInducibleNote() {
+        return inducibleNote;
     }
-    public void setInducableNote(String inducableNote) {
-        this.inducableNote = inducableNote;
+    public void setInducibleNote(String inducibleNote) {
+        this.inducibleNote = inducibleNote;
     }
     
     @Column(name="molecular_description")
@@ -218,8 +221,8 @@ public class Allele {
                 + alleleSubType + ", alleleType=" + alleleType
                 + ", countOfMarkers=" + countOfMarkers + ", countOfReferences="
                 + countOfReferences + ", driver=" + driver + ", geneName="
-                + geneName + ", ids=" + ids + ", inducableNote="
-                + inducableNote + ", isRecombinase=" + isRecombinase
+                + geneName + ", ids=" + ids + ", inducibleNote="
+                + inducibleNote + ", isRecombinase=" + isRecombinase
                 + ", molecularDescription=" + molecularDescription + ", name="
                 + name + ", onlyAlleleSymbol=" + onlyAlleleSymbol
                 + ", primaryID=" + primaryID + ", symbol=" + symbol + "]";
