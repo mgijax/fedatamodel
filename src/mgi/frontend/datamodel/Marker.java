@@ -21,6 +21,12 @@ import javax.persistence.Transient;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+/**
+ * Marker
+ * @author mhall
+ * This is the core Marker object.
+ */
+
 @Entity
 @Table(name="marker")
 @SecondaryTables (
@@ -30,113 +36,170 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties({"ids", "synonyms", "references", "annotations", 
 		"orthologousMarkers", "referenceAssociations", "notes", "sortedReferenceAssociations", 
 		"comparableValue", "countOfReferences", "countOfSequences"})
-public class Marker implements SortableObject {
-	private int markerKey;
-	private String symbol;
-	private String name;
-	private String markerType;
-	private String markerSubtype;
-	private String organism;
-	private String primaryID;
-	private String status;
-	private Set<MarkerID> ids;
-	private Set<MarkerSynonym> synonyms;
-	private List<Reference> references;
+public class Marker {
+
 	private List<MarkerAnnotation> annotations;
-	private Set<MarkerOrthology> orthologousMarkers;
-	private List<MarkerReferenceAssociation> referenceAssociations;
-	private List<MarkerNote> notes;
-	private List<MarkerLocation> locations;
+	private Integer countOfAlleles;
+	private Integer countOfGOTerms;
+	private Integer countOfGXDAssays;
+	private Integer countOfOrthologs;
 	private Integer countOfReferences;
 	private Integer countOfSequences;
-	private Integer countOfAlleles;
-	private Integer countOfOrthologs;
-    private Integer countOfGOTerms;
-    private Integer countOfGXDAssays;
+	private Set<MarkerID> ids;
+	private List<MarkerLocation> locations;
+	private int markerKey;
+	private String markerSubtype;
+	private String markerType;
+	private String name;
+	private List<MarkerNote> notes;
+	private String organism;
+	private Set<MarkerOrthology> orthologousMarkers;
+    private String primaryID;
+    private List<MarkerReferenceAssociation> referenceAssociations;	
+	private List<Reference> references;
+	private String status;
+	private String symbol;
+	private Set<MarkerSynonym> synonyms;
 	
-	public static String SYMBOL = "Marker.Symbol";
-	public static String NAME = "Marker.Name";
-	public static String ID = "Marker.ID";
-	public static String MARKER_TYPE = "Marker.Type";
+    // ================= Getters and Setters ===================== //
 	
-	public Marker() {}
+	/**
+	 * Returns a collection of marker annotation objects, which 
+	 * extend the base annotation class.
+	 */
+	
+	@OneToMany (targetEntity=MarkerAnnotation.class)
+	@JoinColumn(name="marker_key")
+	public List<MarkerAnnotation> getAnnotations() {
+		return annotations;
+	}
+
+	@Column(table="marker_counts", name="allele_count")
+    @JoinColumn(name="marker_key")
+    public Integer getCountOfAlleles() {
+        return countOfAlleles;
+    }
+	@Column(table="marker_counts", name="go_term_count")
+    @JoinColumn(name="marker_key")
+    public Integer getCountOfGOTerms() {
+        return countOfGOTerms;
+    }
+	@Column(table="marker_counts", name="gxd_assay_count")
+    @JoinColumn(name="marker_key")
+    public Integer getCountOfGXDAssays() {
+        return countOfGXDAssays;
+    }
+	@Column(table="marker_counts", name="ortholog_count")
+    @JoinColumn(name="marker_key")
+    public Integer getCountOfOrthologs() {
+        return countOfOrthologs;
+    }
+	@Column(table="marker_counts", name="reference_count")
+	@JoinColumn(name="marker_key")
+	public Integer getCountOfReferences() {
+		return countOfReferences;
+	}
+	@Column(table="marker_counts", name="sequence_count")
+	@JoinColumn(name="marker_key")
+	public Integer getCountOfSequences() {
+		return countOfSequences;
+	}
+	
+	/**
+	 * Returns a collection representing all possible ID's for 
+	 * this marker.
+	 * @return
+	 */
+	
+	@OneToMany (targetEntity=MarkerID.class)
+	@JoinColumn(name="marker_key")
+	public Set<MarkerID> getIds() {
+		return ids;
+	}
+	
+	/**
+	 * Returns a collection representing all possible locations for 
+	 * a given marker.
+	 * @return
+	 * 
+	 * This collection is ordered by sequence number, with the location 
+	 * that is most likely needed for a display page first. 
+	 * 
+	 */
+	
+	@OneToMany (targetEntity=MarkerLocation.class)
+	@JoinColumn(name="marker_key")
+	@OrderBy("sequenceNum")
+	public List<MarkerLocation> getLocations() {
+		return locations;
+	}
 	
 	@Id
 	@Column(name="marker_key")
 	public int getMarkerKey() {
 		return markerKey;
 	}
-	public void setMarkerKey(int markerKey) {
-		this.markerKey = markerKey;
-	}
-	public String getSymbol() {
-		return symbol;
-	}
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	@Column(name="marker_type")
-	public String getMarkerType() {
-		return markerType;
-	}
-	public void setMarkerType(String markerType) {
-		this.markerType = markerType;
-	}
+	
 	@Column(name="marker_subtype")
 	public String getMarkerSubtype() {
 		return markerSubtype;
 	}
-	public void setMarkerSubtype(String markerSubtype) {
-		this.markerSubtype = markerSubtype;
+	
+	@Column(name="marker_type")
+	public String getMarkerType() {
+		return markerType;
+	}
+
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * A collection of possible marker notes for a marker.
+	 * @return
+	 * This object extends the note class.
+	 */
+	@OneToMany (targetEntity=MarkerNote.class)
+	@JoinColumn(name="marker_key")
+	public List<MarkerNote> getNotes() {
+		return notes;
 	}
 	public String getOrganism() {
 		return organism;
 	}
-	public void setOrganism(String organism) {
-		this.organism = organism;
+
+	/**
+	 * Return a collection of marker orthologs.
+	 * @return
+	 */
+	@OneToMany
+	@JoinColumn(name="mouse_marker_key")
+	public Set<MarkerOrthology> getOrthologousMarkers() {
+		return orthologousMarkers;
 	}
-	
+
 	@Column(name="primary_id")
 	public String getPrimaryID() {
 		return primaryID;
 	}
 
-	public void setPrimaryID(String primaryID) {
-		this.primaryID = primaryID;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	@OneToMany (targetEntity=MarkerID.class)
+	/**
+	 * Returns reference associations.
+	 * @return
+	 * This might be no longer needed.
+	 */
+	@OneToMany (fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")
-	public Set<MarkerID> getIds() {
-		return ids;
+	@OrderBy ("sequenceNumFwd")
+	public List<MarkerReferenceAssociation> getReferenceAssociations() {
+		return referenceAssociations;
 	}
 
-	public void setIds(Set<MarkerID> ids) {
-		this.ids = ids;
-	}
-
-	@OneToMany (targetEntity=MarkerSynonym.class)
-	@JoinColumn(name="marker_key")
-	public Set<MarkerSynonym> getSynonyms() {
-		return synonyms;
-	}
-
-	public void setSynonyms(Set<MarkerSynonym> synonyms) {
-		this.synonyms = synonyms;
-	}
-
+	/**
+	 * Return a collection of references
+	 * @return
+	 * This is order by year and then jnum
+	 */
 	@OneToMany
 	@JoinTable (name="marker_to_reference",
 			joinColumns=@JoinColumn(name="marker_key"),
@@ -147,28 +210,11 @@ public class Marker implements SortableObject {
 		return references;
 	}
 
-	public void setReferences(List<Reference> references) {
-		this.references = references;
-	}
-	
-	@OneToMany
-	@JoinColumn(name="mouse_marker_key")
-	public Set<MarkerOrthology> getOrthologousMarkers() {
-		return orthologousMarkers;
-	}
-
-	public void setOrthologousMarkers(Set<MarkerOrthology> orthologousMarkers) {
-		this.orthologousMarkers = orthologousMarkers;
-	}
-
-	@Transient
+/*	@Transient
 	public List<MarkerReferenceAssociation> getSortedReferenceAssociations() {
 		List<MarkerReferenceAssociation> refs = 
 			this.getReferenceAssociations();
-		
-		// note that we need to copy the list and sort the copy, rather
-		// than sorting the original in-place
-		
+				
 		List<MarkerReferenceAssociation> refsCopy = 
 			new ArrayList<MarkerReferenceAssociation>();
 		Collections.copy (refsCopy, refs);
@@ -176,13 +222,88 @@ public class Marker implements SortableObject {
 			new MarkerReferenceAssociationComparator (
 				MarkerReferenceAssociationComparator.BY_REFERENCE));
 		return refsCopy;
+	}*/
+
+	public String getStatus() {
+		return status;
 	}
 	
-	@OneToMany (fetch=FetchType.LAZY)
+	public String getSymbol() {
+		return symbol;
+	}
+
+	@OneToMany (targetEntity=MarkerSynonym.class)
 	@JoinColumn(name="marker_key")
-	@OrderBy ("sequenceNumFwd")
-	public List<MarkerReferenceAssociation> getReferenceAssociations() {
-		return referenceAssociations;
+	public Set<MarkerSynonym> getSynonyms() {
+		return synonyms;
+	}
+
+	public void setAnnotations(List<MarkerAnnotation> annotations) {
+		this.annotations = annotations;
+	}
+	
+	public void setCountOfAlleles(Integer countOfAlleles) {
+		this.countOfAlleles = countOfAlleles;
+	}
+
+	public void setCountOfGOTerms(Integer countOfGOTerms) {
+        this.countOfGOTerms = countOfGOTerms;
+    }
+
+	public void setCountOfGXDAssays(Integer countOfGXDAssays) {
+        this.countOfGXDAssays = countOfGXDAssays;
+    }
+
+	public void setCountOfOrthologs(Integer countOfOrthologs) {
+        this.countOfOrthologs = countOfOrthologs;
+    }
+
+	public void setCountOfReferences(Integer countOfReferences) {
+		this.countOfReferences = countOfReferences;
+	}
+
+	public void setCountOfSequences(Integer countOfSequences) {
+        this.countOfSequences = countOfSequences;
+    }
+	
+    public void setIds(Set<MarkerID> ids) {
+		this.ids = ids;
+	} 	
+
+	public void setLocations(List<MarkerLocation> locations) {
+		this.locations = locations;
+	}
+	
+    public void setMarkerKey(int markerKey) {
+		this.markerKey = markerKey;
+	}
+
+    public void setMarkerSubtype(String markerSubtype) {
+		this.markerSubtype = markerSubtype;
+	}
+    
+    public void setMarkerType(String markerType) {
+		this.markerType = markerType;
+	}   
+    
+    public void setName(String name) {
+		this.name = name;
+	}
+    
+    public void setNotes(List<MarkerNote> notes) {
+		this.notes = notes;
+	}   
+    
+    public void setOrganism(String organism) {
+		this.organism = organism;
+	}
+    
+    public void setOrthologousMarkers(Set<MarkerOrthology> orthologousMarkers) {
+		this.orthologousMarkers = orthologousMarkers;
+	}  
+
+	public void setPrimaryID(String primaryID) {
+		this.primaryID = primaryID;
 	}
 
 	public void setReferenceAssociations(
@@ -190,113 +311,20 @@ public class Marker implements SortableObject {
 		this.referenceAssociations = referenceAssociations;
 	}
 
-	@Override
-	public Comparable getComparableValue(String fieldname) throws NoSuchFieldException {
-		Comparable value;
-		
-		if (fieldname.equals(SYMBOL)) {
-			value = this.getSymbol().toLowerCase();
-		} else if (fieldname.equals(ID)) {
-			value = this.getPrimaryID();
-		} else if (fieldname.equals(NAME)) {
-			value = this.getName();
-		} else if (fieldname.equals(MARKER_TYPE)) {
-			value = this.getMarkerType();
-		} else {
-			throw new NoSuchFieldException("Unknown field: " + fieldname);
-		}
-		return value;
+	public void setReferences(List<Reference> references) {
+		this.references = references;
 	}
 
-	@Column(table="marker_counts", name="reference_count")
-	@JoinColumn(name="marker_key")
-	public Integer getCountOfReferences() {
-		return countOfReferences;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
-	public void setCountOfReferences(Integer countOfReferences) {
-		this.countOfReferences = countOfReferences;
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
 	}
 
-	@Column(table="marker_counts", name="sequence_count")
-	@JoinColumn(name="marker_key")
-	public Integer getCountOfSequences() {
-		return countOfSequences;
-	}
-	
-    public void setCountOfSequences(Integer countOfSequences) {
-        this.countOfSequences = countOfSequences;
-    } 	
-
-	public void setCountOfAlleles(Integer countOfAlleles) {
-		this.countOfAlleles = countOfAlleles;
-	}
-	
-    @Column(table="marker_counts", name="allele_count")
-    @JoinColumn(name="marker_key")
-    public Integer getCountOfAlleles() {
-        return countOfAlleles;
-    }
-
-    public void setCountOfOrthologs(Integer countOfOrthologs) {
-        this.countOfOrthologs = countOfOrthologs;
-    }
-    
-    @Column(table="marker_counts", name="ortholog_count")
-    @JoinColumn(name="marker_key")
-    public Integer getCountOfOrthologs() {
-        return countOfOrthologs;
-    }   
-    
-    public void setCountOfGOTerms(Integer countOfGOTerms) {
-        this.countOfGOTerms = countOfGOTerms;
-    }
-    
-    @Column(table="marker_counts", name="go_term_count")
-    @JoinColumn(name="marker_key")
-    public Integer getCountOfGOTerms() {
-        return countOfGOTerms;
-    }   
-    
-    public void setCountOfGXDAssays(Integer countOfGXDAssays) {
-        this.countOfGXDAssays = countOfGXDAssays;
-    }
-    
-    @Column(table="marker_counts", name="gxd_assay_count")
-    @JoinColumn(name="marker_key")
-    public Integer getCountOfGXDAssays() {
-        return countOfGXDAssays;
-    }  
-
-	@OneToMany (targetEntity=MarkerAnnotation.class)
-	@JoinColumn(name="marker_key")
-	public List<MarkerAnnotation> getAnnotations() {
-		return annotations;
-	}
-
-	public void setAnnotations(List<MarkerAnnotation> annotations) {
-		this.annotations = annotations;
-	}
-
-	@OneToMany (targetEntity=MarkerNote.class)
-	@JoinColumn(name="marker_key")
-	public List<MarkerNote> getNotes() {
-		return notes;
-	}
-
-	public void setNotes(List<MarkerNote> notes) {
-		this.notes = notes;
-	}
-
-	@OneToMany (targetEntity=MarkerLocation.class)
-	@JoinColumn(name="marker_key")
-	@OrderBy("sequenceNum")
-	public List<MarkerLocation> getLocations() {
-		return locations;
-	}
-
-	public void setLocations(List<MarkerLocation> locations) {
-		this.locations = locations;
+	public void setSynonyms(Set<MarkerSynonym> synonyms) {
+		this.synonyms = synonyms;
 	}
 
 	@Override
@@ -316,9 +344,6 @@ public class Marker implements SortableObject {
 				+ (orthologousMarkers != null ? "orthologousMarkers="
 						+ orthologousMarkers + ", " : "")
 				+ (primaryID != null ? "primaryID=" + primaryID + ", " : "")
-		//		+ (referenceAssociations != null ? "referenceAssociations="
-			//			+ referenceAssociations + ", " : "")
-			//	+ (references != null ? "references=" + references + ", " : "")
 				+ (status != null ? "status=" + status + ", " : "")
 				+ (symbol != null ? "symbol=" + symbol + ", " : "")
 				+ (synonyms != null ? "synonyms=" + synonyms : "") + "]";

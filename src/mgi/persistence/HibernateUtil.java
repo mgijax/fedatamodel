@@ -3,6 +3,11 @@ package mgi.persistence;
 import org.hibernate.*;
 import org.hibernate.cfg.*;
 
+/**
+ * Basic Hibernate connection utility class
+ * @author jsb
+ * This is used in the test harnesses.
+ */
 public class HibernateUtil {
 	private static SessionFactory sessionFactory;
 	

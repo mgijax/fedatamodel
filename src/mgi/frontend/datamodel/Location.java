@@ -2,77 +2,36 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
-@MappedSuperclass
-public class Location implements SortableObject {
+/**
+ * Base object for location. 
+ * @author mhall
+ *
+ */
 
-	public static String SEQUENCE_NUM = "Location.SequenceNum";
+@MappedSuperclass
+public class Location {
 	
 	// subclasses will need to add their particular objects and getter/setter methods
-	//protected int uniqueKey;
-	protected int sequenceNum;
-	protected String chromosome;
-	//protected float cmOffset;
-	//protected String cytogeneticOffset;
-	protected Float startCoordinate;
-	protected Float endCoordinate;
+
 	protected String buildIdentifier;
+	protected String chromosome;
+	protected Float endCoordinate;
 	protected String locationType;
 	protected String mapUnits;
 	protected String provider;
+	protected int sequenceNum;
+	protected Float startCoordinate;
 	protected int uniqueKey;
 	
-	public Location() {}
+    // ================= Getters and Setters ===================== //
 
-	@Id
-	@Column(name="unique_key")
-	public int getUniqueKey() {
-		return uniqueKey;
-	}
-
-	public void setUniqueKey(int uniqueKey) {
-		this.uniqueKey = uniqueKey;
-	}
-
-	@Column(name="sequence_num")
-	public int getSequenceNum() {
-		return sequenceNum;
-	}
-
-	public void setSequenceNum(int sequenceNum) {
-		this.sequenceNum = sequenceNum;
+	@Column(name="build_identifier")
+	public String getBuildIdentifier() {
+		return buildIdentifier;
 	}
 
 	public String getChromosome() {
 		return chromosome;
-	}
-
-	public void setChromosome(String chromosome) {
-		this.chromosome = chromosome;
-	}
-
-/*	public float getCmOffset() {
-		return cmOffset;
-	}
-
-	public void setCmOffset(float cmOffset) {
-		this.cmOffset = cmOffset;
-	}
-*/
-/*	public String getCytogeneticOffset() {
-		return cytogeneticOffset;
-	}
-
-	public void setCytogeneticOffset(String cytogeneticOffset) {
-		this.cytogeneticOffset = cytogeneticOffset;
-	}*/
-
-	@Column(name="start_coordinate")
-	public Float getStartCoordinate() {
-		return startCoordinate;
-	}
-
-	public void setStartCoordinate(Float startCoordinate) {
-		this.startCoordinate = startCoordinate;
 	}
 
 	@Column(name="end_coordinate")
@@ -80,26 +39,9 @@ public class Location implements SortableObject {
 		return endCoordinate;
 	}
 
-	public void setEndCoordinate(Float endCoordinate) {
-		this.endCoordinate = endCoordinate;
-	}
-	
-	@Column(name="build_identifier")
-	public String getBuildIdentifier() {
-		return buildIdentifier;
-	}
-
-	public void setBuildIdentifier(String buildIdentifier) {
-		this.buildIdentifier = buildIdentifier;
-	}
-
 	@Column(name="location_type")
 	public String getLocationType() {
 		return locationType;
-	}
-
-	public void setLocationType(String locationType) {
-		this.locationType = locationType;
 	}
 
 	@Column(name="map_units")
@@ -107,24 +49,67 @@ public class Location implements SortableObject {
 		return mapUnits;
 	}
 
-	public void setMapUnits(String mapUnits) {
-		this.mapUnits = mapUnits;
-	}
-
 	public String getProvider() {
 		return provider;
+	}
+
+	/**
+	 * Returns the sequence number.  These have been placed into the database in 
+	 * a specific order, with the one needed for display getting the first sequence
+	 * number.
+	 * @return
+	 */
+	
+	@Column(name="sequence_num")
+	public int getSequenceNum() {
+		return sequenceNum;
+	}
+
+	@Column(name="start_coordinate")
+	public Float getStartCoordinate() {
+		return startCoordinate;
+	}
+
+	@Id
+	@Column(name="unique_key")
+	public int getUniqueKey() {
+		return uniqueKey;
+	}
+
+	public void setBuildIdentifier(String buildIdentifier) {
+		this.buildIdentifier = buildIdentifier;
+	}
+	
+	public void setChromosome(String chromosome) {
+		this.chromosome = chromosome;
+	}
+
+	public void setEndCoordinate(Float endCoordinate) {
+		this.endCoordinate = endCoordinate;
+	}
+
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
+	}
+
+	public void setMapUnits(String mapUnits) {
+		this.mapUnits = mapUnits;
 	}
 
 	public void setProvider(String provider) {
 		this.provider = provider;
 	}
 
-	@Override
-	public Comparable getComparableValue(String fieldname) throws NoSuchFieldException {
-		if (fieldname.equals (SEQUENCE_NUM)) {
-			return this.getSequenceNum();
-		}
-		throw new NoSuchFieldException ("Unknown field: " + fieldname);
+	public void setSequenceNum(int sequenceNum) {
+		this.sequenceNum = sequenceNum;
+	}
+
+	public void setStartCoordinate(Float startCoordinate) {
+		this.startCoordinate = startCoordinate;
+	}
+
+	public void setUniqueKey(int uniqueKey) {
+		this.uniqueKey = uniqueKey;
 	}
 
 	@Override

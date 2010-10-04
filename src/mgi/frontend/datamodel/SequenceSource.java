@@ -2,11 +2,18 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+/**
+ * SequenceSource
+ * @author mhall
+ * Returns a source for a sequence, this object extends the source 
+ * base object.  
+ */
 @Entity
 @Table (name="sequence_source")
-public class SequenceSource extends Source implements SortableObject {
+public class SequenceSource extends Source {
 	protected Integer sequenceKey;
-	//private int uniqueKey;
+	
+    // ================= Getters and Setters ===================== //
 	
 	@Column(name="sequence_key")
 	public Integer getSequenceKey() {
@@ -17,22 +24,4 @@ public class SequenceSource extends Source implements SortableObject {
 		this.sequenceKey = sequenceKey;
 	}
 
-/*	@Override
-	public String toString() {
-		return "SequenceLocation ["
-				+ (sequenceKey != null ? "sequenceKey=" + sequenceKey + ", "
-						: "")
-				+ (buildIdentifier != null ? "buildIdentifier="
-						+ buildIdentifier + ", " : "")
-				+ (chromosome != null ? "chromosome=" + chromosome + ", " : "")
-				+ "endCoordinate="
-				+ endCoordinate
-				+ ", "
-				+ (locationType != null ? "locationType=" + locationType + ", "
-						: "")
-				+ (mapUnits != null ? "mapUnits=" + mapUnits + ", " : "")
-				+ (provider != null ? "provider=" + provider + ", " : "")
-				+ "startCoordinate=" + startCoordinate + ", uniqueKey="
-				+ uniqueKey + "]";
-	}*/
 }

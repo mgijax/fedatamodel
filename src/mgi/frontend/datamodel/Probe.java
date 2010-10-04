@@ -10,70 +10,42 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * Probe
+ * @author mhall, jsb
+ * Core Probe object.  
+ */
 @Entity
 @Table (name="Probe")
-public class Probe implements SortableObject {
+public class Probe {
 
-    private int probeKey;
-    private String name;
-    private String segmenttype;
-    private String primaryid;
-    private String logicaldb;
     private String cloneid;
+    private String logicaldb;
+    private String name;
+    private String primaryid;
     private Set<ProbeCloneCollection> probeCloneCollection;
+    private int probeKey;
+    private String segmenttype;
     
-    @Id
-    @Column(name="probe_key")
-    public int getProbeKey() {
-        return probeKey;
+    // ================= Getters and Setters ===================== //
+    
+    @Column(name="clone_id")
+    public String getCloneid() {
+        return cloneid;
     }
-
-    public void setProbeKey(int probeKey) {
-        this.probeKey = probeKey;
+    
+    @Column(name="logical_db")
+    public String getLogicaldb() {
+        return logicaldb;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Column(name="segment_type")
-    public String getSegmenttype() {
-        return segmenttype;
-    }
-
-    public void setSegmenttype(String segmenttype) {
-        this.segmenttype = segmenttype;
-    }
-
     @Column(name="primary_id")
     public String getPrimaryid() {
         return primaryid;
-    }
-
-    public void setPrimaryid(String primaryid) {
-        this.primaryid = primaryid;
-    }
-
-    @Column(name="logical_db")
-    public String getLogicaldb() {
-        return logicaldb;
-    }
-
-    public void setLogicaldb(String logicaldb) {
-        this.logicaldb = logicaldb;
-    }
-
-    @Column(name="clone_id")
-    public String getCloneid() {
-        return cloneid;
-    }
-
-    public void setCloneid(String cloneid) {
-        this.cloneid = cloneid;
     }
 
     @OneToMany (targetEntity=ProbeCloneCollection.class)
@@ -82,15 +54,43 @@ public class Probe implements SortableObject {
         return probeCloneCollection;
     }
 
+    @Id
+    @Column(name="probe_key")
+    public int getProbeKey() {
+        return probeKey;
+    }
+
+    @Column(name="segment_type")
+    public String getSegmenttype() {
+        return segmenttype;
+    }
+
+    public void setCloneid(String cloneid) {
+        this.cloneid = cloneid;
+    }
+
+    public void setLogicaldb(String logicaldb) {
+        this.logicaldb = logicaldb;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrimaryid(String primaryid) {
+        this.primaryid = primaryid;
+    }
+
     public void setProbeCloneCollection(Set<ProbeCloneCollection> probeCloneCollection) {
         this.probeCloneCollection = probeCloneCollection;
+    }
+
+    public void setProbeKey(int probeKey) {
+        this.probeKey = probeKey;
     }    
     
-    @Override
-    public Comparable getComparableValue(String fieldname)
-            throws NoSuchFieldException {
-        // TODO Auto-generated method stub
-        return null;
+    public void setSegmenttype(String segmenttype) {
+        this.segmenttype = segmenttype;
     }
 
 }

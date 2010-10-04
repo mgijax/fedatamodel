@@ -17,170 +17,231 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 		@PrimaryKeyJoinColumn(name="reference_key", referencedColumnName="reference_key") } ) 
 	} )
 @JsonIgnoreProperties({"markers"})
-public class Reference implements SortableObject {
-	private int referenceKey;
-	private String referenceType;
-	private String primaryAuthor;
+public class Reference {
+
 	private String authors;
-	private String title;
-	private String journal;
-	private String vol;
-	private String issue;
-	private String pubDate;
-	private String year;
-	private String pages;
-	private String jnumID;
-	private String pubmedid;
-	private int jnumNumeric;
-	private String citation;
-	private String shortCitation;
-	private String refAbstract;
-	private Set<ReferenceID> ids;
-	private Set<Marker> markers;
-	private String bookEditor;
-	private String bookTitle;
 	private String bookEdition;
+	private String bookEditor;
 	private String bookPlace;
 	private String bookPublisher;
-//	private List<MarkerReferenceAssociation> markerAssociations;
-	private Integer countOfMarkers;
-	private Integer countOfProbes;
+	private String bookTitle;
+	private String citation;
+	private Integer countOfAlleles;
 	private Integer countOfGXDAssays;
+	private Integer countOfGXDIndex;
 	private Integer countOfGXDResults;
 	private Integer countOfMappingResults;
+	private Integer countOfMarkers;
+	private Integer countOfProbes;
 	private Integer countOfSequences;
-	private Integer countOfAlleles;
-	private Integer countOfGXDIndex;
+	private Set<ReferenceID> ids;
+	private String issue;
+	private String jnumID;
+	private int jnumNumeric;
+	private String journal;
+	private Set<Marker> markers;
+	private String pages;
+	private String primaryAuthor;
+	private String pubDate;
+	private String pubmedid;
+	private String refAbstract;
+	private int referenceKey;
+	private String referenceType;
+	private String shortCitation;
+	private String title;
+	private String vol;
+	private String year;
 	
-	public static String JNUM = "Reference.Jnum";
-	public static String YEAR = "Reference.Year";
-	public static String AUTHORS = "Reference.Authors";
-	public static String TITLE = "Reference.Title";
+    // ================= Getters and Setters ===================== //
 	
-	public Reference() {}
-	
-	@Id 
-	@Column(name = "reference_key")
-	public int getReferenceKey() {
-		return referenceKey;
-	}
-	public void setReferenceKey(int referenceKey) {
-		this.referenceKey = referenceKey;
-	}
-	@Column(name="reference_type")
-	public String getReferenceType() {
-		return referenceType;
-	}
-	public void setReferenceType(String referenceType) {
-		this.referenceType = referenceType;
-	}
-
-	@Transient
-	public Boolean isBook() {
-	    return this.referenceType.equals("BOOK");
-	}
-	@Column(name="primary_author")
-	public String getPrimaryAuthor() {
-		return primaryAuthor;
-	}
-	public void setPrimaryAuthor(String primaryAuthor) {
-		this.primaryAuthor = primaryAuthor;
-	}
-	public String getAuthors() {
-		return authors;
-	}
-	public void setAuthors(String authors) {
-		this.authors = authors;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getJournal() {
-		return journal;
-	}
-	public void setJournal(String journal) {
-		this.journal = journal;
-	}
-	public String getVol() {
-		return vol;
-	}
-	public void setVol(String vol) {
-		this.vol = vol;
-	}
-	public String getIssue() {
-		return issue;
-	}
-	public void setIssue(String issue) {
-		this.issue = issue;
-	}
-	@Column(name="pub_date")
-	public String getPubDate() {
-		return pubDate;
-	}
-	public void setPubDate(String pubDate) {
-		this.pubDate = pubDate;
-	}
-	public String getYear() {
-		return year;
-	}
-	public void setYear(String year) {
-		this.year = year;
-	}
-	public String getPages() {
-		return pages;
-	}
-	public void setPages(String pages) {
-		this.pages = pages;
-	}
-	@Column(name="jnum_id")
-	public String getJnumID() {
-		return jnumID;
-	}
-	public void setJnumID(String jnumID) {
-		this.jnumID = jnumID;
-	}
-	@Column(name="pubmed_id")
-    public String getPubMedID() {
-        return pubmedid;
-    }
-    public void setPubMedID(String pubmedid) {
-        this.pubmedid = pubmedid;
-    }	
-    @Column(name="jnum_numeric")
-	public int getJnumNumeric() {
-		return jnumNumeric;
-	}
-	public void setJnumNumeric(int jnumNumeric) {
-		this.jnumNumeric = jnumNumeric;
-	}
-	public String getCitation() {
-		return citation;
-	}
-	public void setCitation(String citation) {
-		this.citation = citation;
-	}
-	
-	@Column(name="short_citation")
-	public String getShortCitation() {
-		return shortCitation;
-	}
-	public void setShortCitation(String shortCitation) {
-		this.shortCitation = shortCitation;
-	}
-
+	/**
+	 * Return the abstract, via the reference_key
+	 */
 	@Column(table="reference_abstract")
 	@JoinColumn(name="reference_key")
 	public String getAbstract() {
 		return refAbstract;
 	}
-
-	public void setAbstract(String refAbstract) {
-		this.refAbstract = refAbstract;
+	
+	public String getAuthors() {
+		return authors;
+	}
+	
+	/**
+	 * Returns the edition, joined via the reference_key
+	 * @return
+	 */
+	@Column(table="reference_book", name="edition")
+	@JoinColumn(name="reference_key")
+	public String getBookEdition() {
+		return bookEdition;
+	}
+	
+	/**
+	 * Returns the editor, joined via the reference_key
+	 * @return
+	 */
+	
+	@Column(table="reference_book", name="editor")
+	@JoinColumn(name="reference_key")
+	public String getBookEditor() {
+		return bookEditor;
 	}
 
+	/**
+	 * Returns the place the book was published, joined by 
+	 * reference key
+	 * @return
+	 */
+	@Column(table="reference_book", name="place")
+	@JoinColumn(name="reference_key")
+	public String getBookPlace() {
+		return bookPlace;
+	}
+	
+	/**
+	 * Returns the publisher, joined by the reference_key
+	 * @return
+	 */
+	@Column(table="reference_book", name="publisher")
+	@JoinColumn(name="reference_key")
+	public String getBookPublisher() {
+		return bookPublisher;
+	}
+	
+	/**
+	 * Returns the book title, joined by the reference_key
+	 * @return
+	 */
+	@Column(table="reference_book", name="book_title")
+	@JoinColumn(name="reference_key")
+	public String getBookTitle() {
+		return bookTitle;
+	}
+	
+	public String getCitation() {
+		return citation;
+	}
+	
+	/**
+	 * Return the count of associated alleles, joined by reference_key
+	 * @return
+	 */
+	@Column(table="reference_counts", name="allele_count")
+    @JoinColumn(name="reference_key")
+    public Integer getCountOfAlleles() {
+        return countOfAlleles;
+    }
+
+	/**
+     * Return the count of associated gxd assays, 
+     * joined by reference_key
+     * @return
+     */
+	@Column(table="reference_counts", name="gxd_assay_count")
+    @JoinColumn(name="reference_key")
+    public Integer getCountOfGXDAssays() {
+        return countOfGXDAssays;
+    }
+
+    /**
+     * Return the count of associated gxd index items, 
+     * joined by reference_key
+     * @return
+     */	
+	@Column(table="reference_counts", name="gxd_index_count")
+    @JoinColumn(name="reference_key")
+    public Integer getCountOfGXDIndex() {
+        return countOfGXDIndex;
+    }
+
+    /**
+     * Return the count of associated gxd assay results, 
+     * joined by reference_key
+     * @return
+     */	
+	@Column(table="reference_counts", name="gxd_result_count")
+    @JoinColumn(name="reference_key")
+    public Integer getCountOfGXDResults() {
+        return countOfGXDResults;
+    }
+	
+    /**
+     * Return the count of associated mapping experiments, 
+     * joined by reference_key
+     * @return
+     */	
+	@Column(table="reference_counts", name="mapping_expt_count")
+    @JoinColumn(name="reference_key")
+    public Integer getCountOfMappingResults() {
+        return countOfMappingResults;
+    }
+	
+    /**
+     * Return the count of associated markers, 
+     * joined by reference_key
+     * @return
+     */	
+	@Column(table="reference_counts", name="marker_count")
+	@JoinColumn(name="reference_key")
+	public Integer getCountOfMarkers() {
+		return countOfMarkers;
+	}
+	
+    /**
+     * Return the count of associated probes, 
+     * joined by reference_key
+     * @return
+     */	
+	@Column(table="reference_counts", name="probe_count")
+    @JoinColumn(name="reference_key")
+    public Integer getCountOfProbes() {
+        return countOfProbes;
+    }
+	
+    /**
+     * Return the count of associated sequences, 
+     * joined by reference_key
+     * @return
+     */	
+	@Column(table="reference_counts", name="sequence_count")
+    @JoinColumn(name="reference_key")
+    public Integer getCountOfSequenceResults() {
+        return countOfSequences;
+    }
+	
+	/**
+	 * Return a collection of all possible reference IDs.
+	 * @return
+	 */
+	@OneToMany (targetEntity=ReferenceID.class)
+	@JoinColumn (name="reference_key")
+	public Set<ReferenceID> getIds() {
+		return ids;
+	}
+	
+	public String getIssue() {
+		return issue;
+	}
+	
+	@Column(name="jnum_id")
+	public String getJnumID() {
+		return jnumID;
+	}
+	
+	@Column(name="jnum_numeric")
+	public int getJnumNumeric() {
+		return jnumNumeric;
+	}
+	
+	public String getJournal() {
+		return journal;
+	}
+	
+	/**
+	 * Returns a collection of markers
+	 * @return
+	 */
 	@OneToMany (targetEntity=Marker.class)
 	@JoinTable (name="marker_to_reference",
 			joinColumns=@JoinColumn(name="reference_key"),
@@ -189,180 +250,186 @@ public class Reference implements SortableObject {
 	public Set<Marker> getMarkers() {
 		return markers;
 	}
-
-	public void setMarkers(Set<Marker> markers) {
-		this.markers = markers;
+	
+	public String getPages() {
+		return pages;
+	}
+	
+	@Column(name="primary_author")
+	public String getPrimaryAuthor() {
+		return primaryAuthor;
+	}
+	
+	@Column(name="pub_date")
+	public String getPubDate() {
+		return pubDate;
+	}
+	
+	@Column(name="pubmed_id")
+    public String getPubMedID() {
+        return pubmedid;
+    }
+	
+    @Id 
+	@Column(name = "reference_key")
+	public int getReferenceKey() {
+		return referenceKey;
+	}
+    
+    @Column(name="reference_type")
+	public String getReferenceType() {
+		return referenceType;
+	}
+    
+	@Column(name="short_citation")
+	public String getShortCitation() {
+		return shortCitation;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	public String getVol() {
+		return vol;
+	}
+	
+	public String getYear() {
+		return year;
+	}
+	
+	@Transient
+	public Boolean isBook() {
+	    return this.referenceType.equals("BOOK");
 	}
 
-	@OneToMany (targetEntity=ReferenceID.class)
-	@JoinColumn (name="reference_key")
-	public Set<ReferenceID> getIds() {
-		return ids;
+	public void setAbstract(String refAbstract) {
+		this.refAbstract = refAbstract;
 	}
 
-	public void setIds(Set<ReferenceID> ids) {
-		this.ids = ids;
-	}
-
-	@Column(table="reference_book", name="editor")
-	@JoinColumn(name="reference_key")
-	public String getBookEditor() {
-		return bookEditor;
-	}
-
-	public void setBookEditor(String bookEditor) {
-		this.bookEditor = bookEditor;
-	}
-
-	@Column(table="reference_book", name="book_title")
-	@JoinColumn(name="reference_key")
-	public String getBookTitle() {
-		return bookTitle;
-	}
-
-	public void setBookTitle(String bookTitle) {
-		this.bookTitle = bookTitle;
-	}
-
-	@Column(table="reference_book", name="edition")
-	@JoinColumn(name="reference_key")
-	public String getBookEdition() {
-		return bookEdition;
+	public void setAuthors(String authors) {
+		this.authors = authors;
 	}
 
 	public void setBookEdition(String bookEdition) {
 		this.bookEdition = bookEdition;
 	}
 
-	@Column(table="reference_book", name="place")
-	@JoinColumn(name="reference_key")
-	public String getBookPlace() {
-		return bookPlace;
+	public void setBookEditor(String bookEditor) {
+		this.bookEditor = bookEditor;
 	}
 
 	public void setBookPlace(String bookPlace) {
 		this.bookPlace = bookPlace;
 	}
 
-	@Column(table="reference_book", name="publisher")
-	@JoinColumn(name="reference_key")
-	public String getBookPublisher() {
-		return bookPublisher;
-	}
-
 	public void setBookPublisher(String bookPublisher) {
 		this.bookPublisher = bookPublisher;
 	}
 
-
-/*	@OneToMany (fetch=FetchType.LAZY)
-	@JoinColumn(name="reference_key")
-	@OrderBy ("sequenceNumRev")
-	public List<MarkerReferenceAssociation> getMarkerAssociations() {
-		return markerAssociations;
+	public void setBookTitle(String bookTitle) {
+		this.bookTitle = bookTitle;
 	}
 
-	public void setMarkerAssociations(
-			List<MarkerReferenceAssociation> markerAssociations) {
-		this.markerAssociations = markerAssociations;
-	}*/
-
-	@Override
-	public Comparable getComparableValue(String fieldname) throws NoSuchFieldException {
-		Comparable value;
-		if (fieldname.equals(JNUM)) {
-			value = new Integer (this.getJnumNumeric());
-		} else if (fieldname.equals(AUTHORS)) {
-			value = this.getAuthors();
-		} else if (fieldname.equals(YEAR)) {
-			value = this.getYear();
-		} else if (fieldname.equals(TITLE)) {
-			value = this.getTitle();
-		} else {
-			throw new NoSuchFieldException ("Unknown field: " + fieldname);
-		}
-		return value;
+	public void setCitation(String citation) {
+		this.citation = citation;
 	}
 
-	@Column(table="reference_counts", name="marker_count")
-	@JoinColumn(name="reference_key")
-	public Integer getCountOfMarkers() {
-		return countOfMarkers;
-	}
+	public void setCountOfAlleles(Integer countOfAlleles) {
+        this.countOfAlleles = countOfAlleles;
+    }
+
+	public void setCountOfGXDAssays(Integer countOfGXDAssays) {
+        this.countOfGXDAssays = countOfGXDAssays;
+    }
+
+	public void setCountOfGXDIndex(Integer countOfGXDIndex) {
+        this.countOfGXDIndex = countOfGXDIndex;
+    }
+
+	public void setCountOfGXDResults(Integer countOfGXDResults) {
+        this.countOfGXDResults = countOfGXDResults;
+    }
+
+	public void setCountOfMappingResults(Integer countOfMappingResults) {
+        this.countOfMappingResults = countOfMappingResults;
+    }
 
 	public void setCountOfMarkers(Integer countOfMarkers) {
 		this.countOfMarkers = countOfMarkers;
 	}
 
-    @Column(table="reference_counts", name="probe_count")
-    @JoinColumn(name="reference_key")
-    public Integer getCountOfProbes() {
-        return countOfProbes;
-    }
-
-    public void setCountOfProbes(Integer countOfProbes) {
+	public void setCountOfProbes(Integer countOfProbes) {
         this.countOfProbes = countOfProbes;
     }
-    
-    @Column(table="reference_counts", name="gxd_assay_count")
-    @JoinColumn(name="reference_key")
-    public Integer getCountOfGXDAssays() {
-        return countOfGXDAssays;
+
+	public void setCountOfSequenceResults(Integer countOfSequences) {
+        this.countOfSequences = countOfSequences;
     }
 
-    public void setCountOfGXDAssays(Integer countOfGXDAssays) {
-        this.countOfGXDAssays = countOfGXDAssays;
-    }
-    
-    @Column(table="reference_counts", name="gxd_result_count")
-    @JoinColumn(name="reference_key")
-    public Integer getCountOfGXDResults() {
-        return countOfGXDResults;
-    }
+	public void setIds(Set<ReferenceID> ids) {
+		this.ids = ids;
+	}
 
-    public void setCountOfGXDResults(Integer countOfGXDResults) {
-        this.countOfGXDResults = countOfGXDResults;
-    }    
-    
-    @Column(table="reference_counts", name="mapping_expt_count")
-    @JoinColumn(name="reference_key")
-    public Integer getCountOfMappingResults() {
-        return countOfMappingResults;
-    }
+	public void setIssue(String issue) {
+		this.issue = issue;
+	}
 
-    public void setCountOfMappingResults(Integer countOfMappingResults) {
-        this.countOfMappingResults = countOfMappingResults;
+    public void setJnumID(String jnumID) {
+		this.jnumID = jnumID;
+	}
+
+    public void setJnumNumeric(int jnumNumeric) {
+		this.jnumNumeric = jnumNumeric;
+	}
+    
+    public void setJournal(String journal) {
+		this.journal = journal;
+	}
+
+    public void setMarkers(Set<Marker> markers) {
+		this.markers = markers;
+	}
+    
+    public void setPages(String pages) {
+		this.pages = pages;
+	}
+
+    public void setPrimaryAuthor(String primaryAuthor) {
+		this.primaryAuthor = primaryAuthor;
+	}    
+    
+    public void setPubDate(String pubDate) {
+		this.pubDate = pubDate;
+	}
+
+    public void setPubMedID(String pubmedid) {
+        this.pubmedid = pubmedid;
     }      
     
-    @Column(table="reference_counts", name="sequence_count")
-    @JoinColumn(name="reference_key")
-    public Integer getCountOfSequenceResults() {
-        return countOfSequences;
-    }
+    public void setReferenceKey(int referenceKey) {
+		this.referenceKey = referenceKey;
+	}
 
-    public void setCountOfSequenceResults(Integer countOfSequences) {
-        this.countOfSequences = countOfSequences;
-    }     
+    public void setReferenceType(String referenceType) {
+		this.referenceType = referenceType;
+	}     
     
-    @Column(table="reference_counts", name="allele_count")
-    @JoinColumn(name="reference_key")
-    public Integer getCountOfAlleles() {
-        return countOfAlleles;
-    }
+    public void setShortCitation(String shortCitation) {
+		this.shortCitation = shortCitation;
+	}
 
-    public void setCountOfAlleles(Integer countOfAlleles) {
-        this.countOfAlleles = countOfAlleles;
-    }   
+    public void setTitle(String title) {
+		this.title = title;
+	}   
     
-    @Column(table="reference_counts", name="gxd_index_count")
-    @JoinColumn(name="reference_key")
-    public Integer getCountOfGXDIndex() {
-        return countOfGXDIndex;
-    }
+    public void setVol(String vol) {
+		this.vol = vol;
+	}
 
-    public void setCountOfGXDIndex(Integer countOfGXDIndex) {
-        this.countOfGXDIndex = countOfGXDIndex;
-    } 
+    public void setYear(String year) {
+		this.year = year;
+	} 
     
 	@Override
 	public String toString() {

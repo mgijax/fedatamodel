@@ -1,12 +1,19 @@
 package mgi.frontend.datamodel;
 
 import javax.persistence.*;
-
+/**
+ * An object representing a single allele id
+ * @author mhall
+ * This extends the accession id object, and inherits almost all of its
+ * methods from it.
+ */
 @Entity
 @Table (name="allele_id")
 public class AlleleID extends AccessionID {
 	private int alleleKey;
 
+    // ================= Getters and Setters ===================== //
+	
 	@Column(name="allele_key")
 	public int getAlleleKey() {
 		return alleleKey;

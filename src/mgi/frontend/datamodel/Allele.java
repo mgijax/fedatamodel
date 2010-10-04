@@ -17,6 +17,13 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+/**
+ * Base object alleles.  This is represented by a core in our flower schema.
+ * @author mhall, jsb
+ * Base Allele object.  Tricky parts are commented inline.
+ */
+
+
 @Entity
 @Table(name="Allele")
 @SecondaryTables (
@@ -27,125 +34,56 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties({"references", "notes", "molecularDescription", "ids"})
 public class Allele {
     private int alleleKey;
-    private String symbol;
-    private String name;
-    private String onlyAlleleSymbol;
-    private String geneName;
-    private String primaryID;
-    private String alleleType;
     private String alleleSubType;
-    private int isRecombinase;
-    private String driver;
-    private String inducibleNote;
-    private String molecularDescription;
-    private Set<AlleleID> ids;
-    private List<AlleleNote> notes;
-    private Set<AlleleSynonym> synonyms;
+    private List<AlleleSystem> alleleSystems;
+    private String alleleType;
     private Integer countOfMarkers;
     private Integer countOfReferences;
+    private String driver;
+    private String geneName;
+    private Set<AlleleID> ids;
+    private String inducibleNote;
+    private int isRecombinase;
+    private String molecularDescription;
+    private String name;
+    private List<AlleleNote> notes;
+    private String onlyAlleleSymbol;
+    private String primaryID;
     private List<Reference> references;
-    private List<AlleleSystem> alleleSystems;
+    private String symbol;
+    private Set<AlleleSynonym> synonyms;
+    
+    // ================= Getters and Setters ===================== //
     
     @Id
     @Column(name="allele_key")
     public int getAlleleKey() {
         return alleleKey;
     }
-    public void setAlleleKey(int alleleKey) {
-        this.alleleKey = alleleKey;
-    }
-    public String getSymbol() {
-        return symbol;
-    }
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    @Column(name="only_allele_symbol")
-    public String getOnlyAlleleSymbol() {
-        return onlyAlleleSymbol;
-    }
-    public void setOnlyAlleleSymbol(String onlyAlleleSymbol) {
-        this.onlyAlleleSymbol = onlyAlleleSymbol;
-    }
-    
-    @Column(name="gene_name")
-    public String getGeneName() {
-        return geneName;
-    }
-    public void setGeneName(String geneName) {
-        this.geneName = geneName;
-    }
-    
-    @Column(name="primary_id")
-    public String getPrimaryID() {
-        return primaryID;
-    }
-    public void setPrimaryID(String primaryID) {
-        this.primaryID = primaryID;
-    }
-    
-    @Column(name="allele_type")
-    public String getAlleleType() {
-        return alleleType;
-    }
-    public void setAlleleType(String alleleType) {
-        this.alleleType = alleleType;
-    }
     
     @Column(name="allele_subtype")
     public String getAlleleSubType() {
         return alleleSubType;
     }
-    public void setAlleleSubType(String alleleSubType) {
-        this.alleleSubType = alleleSubType;
+    
+    /**
+     * Return the allesystem objects.  This is only really
+     * relevant if its a cre allele.
+     * @return
+     */
+    
+    @OneToMany
+    @JoinTable (name="recombinase_allele_system",
+            joinColumns=@JoinColumn(name="allele_key"),
+            inverseJoinColumns=@JoinColumn(name="allele_system_key")
+            )
+    public List<AlleleSystem> getAlleleSystems() {
+        return alleleSystems;
     }
     
-    @Column(name="is_recombinase")
-    public int getIsRecombinase() {
-        return isRecombinase;
-    }
-    public void setIsRecombinase(int isRecombinase) {
-        this.isRecombinase = isRecombinase;
-    }
-    
-    
-    public String getDriver() {
-        return driver;
-    }
-    public void setDriver(String driver) {
-        this.driver = driver;
-    }
-    
-    @Column(name="inducible_note")
-    public String getInducibleNote() {
-        return inducibleNote;
-    }
-    public void setInducibleNote(String inducibleNote) {
-        this.inducibleNote = inducibleNote;
-    }
-    
-    @Column(name="molecular_description")
-    public String getMolecularDescription() {
-        return molecularDescription;
-    }
-    public void setMolecularDescription(String molecularDescription) {
-        this.molecularDescription = molecularDescription;
-    }
-    
-    @OneToMany (targetEntity=AlleleID.class)
-    @JoinColumn (name="allele_key")
-    public Set<AlleleID> getIds() {
-        return ids;
-    }
-    public void setIds(Set<AlleleID> ids) {
-        this.ids = ids;
+    @Column(name="allele_type")
+    public String getAlleleType() {
+        return alleleType;
     }
     
     @Column(table="allele_counts", name="marker_count")
@@ -153,39 +91,85 @@ public class Allele {
     public Integer getCountOfMarkers() {
         return countOfMarkers;
     }
-
-    public void setCountOfMarkers(Integer countOfMarkers) {
-        this.countOfMarkers = countOfMarkers;
-    }
     
     @Column(table="allele_counts", name="reference_count")
     @JoinColumn(name="allele_key")
     public Integer getCountOfReferences() {
         return countOfReferences;
     }
-
-    public void setCountOfReferences(Integer countOfReferences) {
-        this.countOfReferences = countOfReferences;
+    
+    public String getDriver() {
+        return driver;
     }
+    
+    /**
+     * Return the gene name for the gene this allele is part of.
+     * @return
+     */
+    
+    @Column(name="gene_name")
+    public String getGeneName() {
+        return geneName;
+    }
+    
+    /**
+     * Return all of the possible allele id's.  This class is based
+     * off of the accession id class.
+     * @return
+     */
+    @OneToMany (targetEntity=AlleleID.class)
+    @JoinColumn (name="allele_key")
+    public Set<AlleleID> getIds() {
+        return ids;
+    }
+    
+    @Column(name="inducible_note")
+    public String getInducibleNote() {
+        return inducibleNote;
+    }
+    
+    /**
+     * Is this a cre allele?
+     * @return
+     */
+    @Column(name="is_recombinase")
+    public int getIsRecombinase() {
+        return isRecombinase;
+    }
+    
+    @Column(name="molecular_description")
+    public String getMolecularDescription() {
+        return molecularDescription;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    /**
+     * return all of the allele notes.  This class is based off of the notes 
+     * class.
+     * @return
+     */
     
     @OneToMany (targetEntity=AlleleNote.class)
     @JoinColumn(name="allele_key")
     public List<AlleleNote> getNotes() {
         return notes;
     }
-
-    public void setNotes(List<AlleleNote> notes) {
-        this.notes = notes;
-    }
     
-    @OneToMany (targetEntity=AlleleSynonym.class)
-    @JoinColumn(name="allele_key")
-    public Set<AlleleSynonym> getSynonyms() {
-        return synonyms;
+    /**
+     * String representation of the allele only part of the allele symbol
+     * @return
+     */
+    
+    @Column(name="only_allele_symbol")
+    public String getOnlyAlleleSymbol() {
+        return onlyAlleleSymbol;
     }
-
-    public void setSynonyms(Set<AlleleSynonym> synonyms) {
-        this.synonyms = synonyms;
+    @Column(name="primary_id")
+    public String getPrimaryID() {
+        return primaryID;
     }
     
     @OneToMany
@@ -197,22 +181,87 @@ public class Allele {
     public List<Reference> getReferences() {
         return references;
     }
+    public String getSymbol() {
+        return symbol;
+    }
+    
+    
+    @OneToMany (targetEntity=AlleleSynonym.class)
+    @JoinColumn(name="allele_key")
+    public Set<AlleleSynonym> getSynonyms() {
+        return synonyms;
+    }
+    public void setAlleleKey(int alleleKey) {
+        this.alleleKey = alleleKey;
+    }
+    
+    public void setAlleleSubType(String alleleSubType) {
+        this.alleleSubType = alleleSubType;
+    }
+    public void setAlleleSystems(List<AlleleSystem> alleleSystems) {
+        this.alleleSystems = alleleSystems;
+    }
+    
+    public void setAlleleType(String alleleType) {
+        this.alleleType = alleleType;
+    }
+    public void setCountOfMarkers(Integer countOfMarkers) {
+        this.countOfMarkers = countOfMarkers;
+    }
+    
+    public void setCountOfReferences(Integer countOfReferences) {
+        this.countOfReferences = countOfReferences;
+    }
+    public void setDriver(String driver) {
+        this.driver = driver;
+    }
+    
+    public void setGeneName(String geneName) {
+        this.geneName = geneName;
+    }
+
+    public void setIds(Set<AlleleID> ids) {
+        this.ids = ids;
+    }
+    
+    public void setInducibleNote(String inducibleNote) {
+        this.inducibleNote = inducibleNote;
+    }
+
+    public void setIsRecombinase(int isRecombinase) {
+        this.isRecombinase = isRecombinase;
+    }
+    
+    public void setMolecularDescription(String molecularDescription) {
+        this.molecularDescription = molecularDescription;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public void setNotes(List<AlleleNote> notes) {
+        this.notes = notes;
+    }
+
+    public void setOnlyAlleleSymbol(String onlyAlleleSymbol) {
+        this.onlyAlleleSymbol = onlyAlleleSymbol;
+    }
+    
+    public void setPrimaryID(String primaryID) {
+        this.primaryID = primaryID;
+    }
     
     public void setReferences(List<Reference> references) {
         this.references = references;
     }
     
-    @OneToMany
-    @JoinTable (name="recombinase_allele_system",
-            joinColumns=@JoinColumn(name="allele_key"),
-            inverseJoinColumns=@JoinColumn(name="allele_system_key")
-            )
-    public List<AlleleSystem> getAlleleSystems() {
-        return alleleSystems;
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
     
-    public void setAlleleSystems(List<AlleleSystem> alleleSystems) {
-        this.alleleSystems = alleleSystems;
+    public void setSynonyms(Set<AlleleSynonym> synonyms) {
+        this.synonyms = synonyms;
     }
     
     @Override

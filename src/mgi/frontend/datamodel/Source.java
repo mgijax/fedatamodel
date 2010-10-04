@@ -2,80 +2,73 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+/**
+ * Source
+ * @author mhall
+ * This base object is used for a generic source, currently its 
+ * only being used by sequences.
+ */
 @MappedSuperclass
-public class Source implements SortableObject {
+public class Source {
 	
-	// subclasses will need to add their particular objects and getter/setter methods
-	protected int uniqueKey;
-	protected String strain;
-	protected String tissue;
 	protected String age;
-    protected String sex;
-    protected String cellline;
+	protected String cellline;
+	protected String sex;
+	protected String strain;
+    protected String tissue;
+	protected int uniqueKey;
 	
-	public Source() {}
-
-	@Id
-	@Column(name="unique_key")
-	public int getUniqueKey() {
-		return uniqueKey;
-	}
-
-	public void setUniqueKey(int uniqueKey) {
-		this.uniqueKey = uniqueKey;
-	}
-
-	public String getStrain() {
-        return strain;
+    // ================= Getters and Setters ===================== //
+	
+	public String getAge() {
+        return age;
     }
 
-    public void setStrain(String strain) {
-        this.strain = strain;
+	@Column(name="cell_line")
+    public String getCellLine() {
+        return cellline;
+    }
+
+	public String getSex() {
+        return sex;
+    }
+
+    public String getStrain() {
+        return strain;
     }
 
     public String getTissue() {
         return tissue;
     }
 
-    public void setTissue(String tissue) {
-        this.tissue = tissue;
-    }
-
-    public String getAge() {
-        return age;
-    }
+    @Id
+	@Column(name="unique_key")
+	public int getUniqueKey() {
+		return uniqueKey;
+	}
 
     public void setAge(String age) {
         this.age = age;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    @Column(name="cell_line")
-    public String getCellLine() {
-        return cellline;
     }
 
     public void setCellLine(String celline) {
         this.cellline = celline;
     }
 
-    @Override
-	public Comparable getComparableValue(String fieldname) throws NoSuchFieldException {
-		Comparable out;
-		return null;
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public void setStrain(String strain) {
+        this.strain = strain;
+    }
+
+    public void setTissue(String tissue) {
+        this.tissue = tissue;
+    }
+
+    public void setUniqueKey(int uniqueKey) {
+		this.uniqueKey = uniqueKey;
 	}
-	/*
-	@Override
-	public String toString() {
-		return "Note [" + (note != null ? "note=" + note + ", " : "")
-				+ (noteType != null ? "noteType=" + noteType + ", " : "")
-				+ "uniqueKey=" + uniqueKey + "]";
-	}*/
-	}
+
+}

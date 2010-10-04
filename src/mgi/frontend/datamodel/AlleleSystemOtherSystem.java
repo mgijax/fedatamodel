@@ -18,18 +18,19 @@ public class AlleleSystemOtherSystem {
     private int alleleSystemKey;
     private String system;
     
-
+    // ================= Getters and Setters ===================== //
+    
     @Id
     @Column(name="allele_system_key")
     public int getAlleleSystemKey() {
         return alleleSystemKey;
     }
-    public void setAlleleSystemKey(int alleleSystemKey) {
-        this.alleleSystemKey = alleleSystemKey;
-    }
-        
     public String getSystem() {
         return system;
+    }
+        
+    public void setAlleleSystemKey(int alleleSystemKey) {
+        this.alleleSystemKey = alleleSystemKey;
     }
     public void setSystem(String system) {
         this.system = system;

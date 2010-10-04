@@ -2,11 +2,20 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+/**
+ * MarkerNote
+ * @author mhall
+ * This extends the Note class, so most of its methods come from
+ * that class.
+ */
 @Entity
 @Table (name="marker_note")
 public class MarkerNote extends Note {
-	protected Integer markerKey;
+	
+    protected Integer markerKey;
 
+    // ================= Getters and Setters ===================== //
+    
 	@Column(name="marker_key")
 	public Integer getMarkerKey() {
 		return markerKey;

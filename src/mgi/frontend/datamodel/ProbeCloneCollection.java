@@ -5,36 +5,36 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * ProbeCloneCollection
+ * @author mhall
+ * Returns a collection of probes and clones.
+ */
 @Entity
 @Table (name="probe_clone_collection")
-public class ProbeCloneCollection implements SortableObject {
+public class ProbeCloneCollection {
 
-    private int probeKey;
     private String collection;
+    private int probeKey;
     
+    // ================= Getters and Setters ===================== //
+    
+    public String getCollection() {
+        return collection;
+    }
+
     @Id
     @Column(name="probe_key")
     public int getProbeKey() {
         return probeKey;
     }
 
-    public void setProbeKey(int probeKey) {
-        this.probeKey = probeKey;
-    }
-
-    public String getCollection() {
-        return collection;
-    }
-
     public void setCollection(String collection) {
         this.collection = collection;
     }
 
-    @Override
-    public Comparable getComparableValue(String fieldname)
-            throws NoSuchFieldException {
-        // TODO Auto-generated method stub
-        return null;
+    public void setProbeKey(int probeKey) {
+        this.probeKey = probeKey;
     }
 
 }

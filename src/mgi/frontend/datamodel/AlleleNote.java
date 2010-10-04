@@ -2,11 +2,18 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+/**
+ * Object representing allele notes
+ * @author mhall
+ * This inherits almost all of its methods from the note object.
+ */
 @Entity
 @Table (name="allele_note")
 public class AlleleNote extends Note {
 	protected Integer alleleKey;
 
+    // ================= Getters and Setters ===================== //
+	
 	@Column(name="allele_key")
 	public Integer getAlleleKey() {
 		return alleleKey;

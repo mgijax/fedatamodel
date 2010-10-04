@@ -2,25 +2,26 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+/**
+ * MarkerSynonym
+ * @author mhall
+ * An object representing a MarkerSynonym.
+ */
 @Entity
 @Table(name="marker_synonym")
 public class MarkerSynonym {
-	private int uniqueKey;
+    
+	private String jnumID;
 	private int markerKey;
 	private String synonym;
 	private String synonymType;
-	private String jnumID;
+	private int uniqueKey;
+
+    // ================= Getters and Setters ===================== //
 	
-	public MarkerSynonym() {}
-
-	@Id
-	@Column(name="unique_key")
-	public int getUniqueKey() {
-		return uniqueKey;
-	}
-
-	public void setUniqueKey(int uniqueKey) {
-		this.uniqueKey = uniqueKey;
+	@Column(name="jnum_id")
+	public String getJnumID() {
+		return jnumID;
 	}
 
 	@Column(name="marker_key")
@@ -28,16 +29,8 @@ public class MarkerSynonym {
 		return markerKey;
 	}
 
-	public void setMarkerKey(int markerKey) {
-		this.markerKey = markerKey;
-	}
-
 	public String getSynonym() {
 		return synonym;
-	}
-
-	public void setSynonym(String synonym) {
-		this.synonym = synonym;
 	}
 
 	@Column(name="synonym_type")
@@ -45,17 +38,30 @@ public class MarkerSynonym {
 		return synonymType;
 	}
 
-	public void setSynonymType(String synonymType) {
-		this.synonymType = synonymType;
-	}
-
-	@Column(name="jnum_id")
-	public String getJnumID() {
-		return jnumID;
+	@Id
+	@Column(name="unique_key")
+	public int getUniqueKey() {
+		return uniqueKey;
 	}
 
 	public void setJnumID(String jnumID) {
 		this.jnumID = jnumID;
+	}
+
+	public void setMarkerKey(int markerKey) {
+		this.markerKey = markerKey;
+	}
+
+	public void setSynonym(String synonym) {
+		this.synonym = synonym;
+	}
+
+	public void setSynonymType(String synonymType) {
+		this.synonymType = synonymType;
+	}
+
+	public void setUniqueKey(int uniqueKey) {
+		this.uniqueKey = uniqueKey;
 	}
 
 	@Override

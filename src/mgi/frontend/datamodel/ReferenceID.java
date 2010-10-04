@@ -2,11 +2,19 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+/**
+ * ReferenceID
+ * @author mhall
+ * An object representing a generic reference id.
+ */
 @Entity
 @Table (name="reference_id")
 public class ReferenceID extends AccessionID {
+    
 	private int referenceKey;
 
+    // ================= Getters and Setters ===================== //
+	
 	@Column(name="reference_key")
 	public int getReferenceKey() {
 		return referenceKey;

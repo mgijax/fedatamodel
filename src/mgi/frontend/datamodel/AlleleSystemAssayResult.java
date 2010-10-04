@@ -8,35 +8,106 @@ import javax.persistence.*;
 @Table (name="recombinase_assay_result")
 public class AlleleSystemAssayResult {
 
-    private int alleleSystemKey;
-    private Integer resultKey;
-    private String structure;
     private String age;
-    private String level;
-    private String pattern;
-    private String jnumID;
-    private String assayType;
-    private String reporterGene;
-    private String detectionMethod;
-    private String sex;
+    private int alleleSystemKey;
     private String allelicComposition;
-    private String backgroundStrain;
-    private String assayNote;
-    private String resultNote;
-    private String specimenNote;
-    private String probeID;
-    private String probeName;
     private String antibodyID;
     private String antibodyName;
+    private String assayNote;
+    private String assayType;
+    private String backgroundStrain;
+    private String detectionMethod;
+    private String jnumID;
+    private String level;
     private List<AlleleSystemAssayResultImagePane> panes;
+    private String pattern;
+    private String probeID;
+    private String probeName;
+    private String reporterGene;
+    private Integer resultKey;
+    private String resultNote;
+    private String sex;
+    private String specimenNote;
+    private String structure;
     
 
+    // ================= Getters and Setters ===================== //
+    
+    public String getAge() {
+        return age;
+    }
+    
+    /**
+     * Return the allele system key for this assay result
+     * @return
+     */
     @Column(name="allele_system_key")
     public int getAlleleSystemKey() {
         return alleleSystemKey;
     }
-    public void setAlleleSystemKey(int alleleSystemKey) {
-        this.alleleSystemKey = alleleSystemKey;
+    
+    /**
+     * Returns the allele pairs
+     * @return
+     */
+    @Column(name="allelic_composition")
+    public String getAllelicComposition() {
+        return allelicComposition;
+    }
+    
+    @Column(name="antibody_id")
+    public String getAntibodyID() {
+        return antibodyID;
+    }
+    
+    @Column(name="antibody_name")
+    public String getAntibodyName() {
+        return antibodyName;
+    }
+    @Column(name="assay_note")
+    public String getAssayNote() {
+        return assayNote;
+    }
+    @Column(name="assay_type")
+    public String getAssayType() {
+        return assayType;
+    }
+    @Column(name="background_strain")
+    public String getBackgroundStrain() {
+        return backgroundStrain;
+    }
+    @Column(name="detection_method")
+    public String getDetectionMethod() {
+        return detectionMethod;
+    }
+    @Column(name="jnum_id")
+    public String getJnumID() {
+        return jnumID;
+    }
+    public String getLevel() {
+        return level;
+    }
+    @OneToMany (targetEntity=AlleleSystemAssayResultImagePane.class)
+    @JoinColumn(name="result_key")
+    public List<AlleleSystemAssayResultImagePane> getPanes() {
+        return panes;
+    }
+    
+    public String getPattern() {
+        return pattern;
+    }
+    @Column(name="probe_id")
+    public String getProbeID() {
+        return probeID;
+    }
+    
+    @Column(name="probe_name")
+    public String getProbeName() {
+        return probeName;
+    }
+    @Column(name="reporter_gene")
+    public String getReporterGene() {
+        return reporterGene;
     }
     
     @Id
@@ -44,150 +115,92 @@ public class AlleleSystemAssayResult {
     public Integer getResultKey() {
         return resultKey;
     }
-    public void setResultKey(Integer resultKey) {
-        this.resultKey = resultKey;
+    @Column(name="result_note")
+    public String getResultNote() {
+        return resultNote;
+    }
+    
+    public String getSex() {
+        return sex;
+    }
+    @Column(name="specimen_note")
+    public String getSpecimenNote() {
+        return specimenNote;
     }
     public String getStructure() {
         return structure;
     }
-    public void setStructure(String structure) {
-        this.structure = structure;
-    }
-    public String getAge() {
-        return age;
-    }
     public void setAge(String age) {
         this.age = age;
     }
-    public String getLevel() {
-        return level;
-    }
-    public void setLevel(String level) {
-        this.level = level;
-    }
-    public String getPattern() {
-        return pattern;
-    }
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
-    }
     
-    @Column(name="jnum_id")
-    public String getJnumID() {
-        return jnumID;
-    }
-    public void setJnumID(String jnumID) {
-        this.jnumID = jnumID;
-    }
-    
-    @Column(name="assay_type")
-    public String getAssayType() {
-        return assayType;
-    }
-    public void setAssayType(String assayType) {
-        this.assayType = assayType;
-    }
-    
-    @Column(name="reporter_gene")
-    public String getReporterGene() {
-        return reporterGene;
-    }
-    public void setReporterGene(String reporterGene) {
-        this.reporterGene = reporterGene;
-    }
-    
-    @Column(name="detection_method")
-    public String getDetectionMethod() {
-        return detectionMethod;
-    }
-    public void setDetectionMethod(String detectionMethod) {
-        this.detectionMethod = detectionMethod;
-    }
-    public String getSex() {
-        return sex;
-    }
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-    
-    @Column(name="allelic_composition")
-    public String getAllelicComposition() {
-        return allelicComposition;
+    public void setAlleleSystemKey(int alleleSystemKey) {
+        this.alleleSystemKey = alleleSystemKey;
     }
     public void setAllelicComposition(String allelicComposition) {
         this.allelicComposition = allelicComposition;
     }
     
-    @Column(name="background_strain")
-    public String getBackgroundStrain() {
-        return backgroundStrain;
+    public void setAntibodyID(String antibodyID) {
+        this.antibodyID = antibodyID;
     }
-    public void setBackgroundStrain(String backgroundStrain) {
-        this.backgroundStrain = backgroundStrain;
+    public void setAntibodyName(String antibodyName) {
+        this.antibodyName = antibodyName;
     }
     
-    @Column(name="assay_note")
-    public String getAssayNote() {
-        return assayNote;
-    }
     public void setAssayNote(String assayNote) {
         this.assayNote = assayNote;
     }
-    
-    @Column(name="result_note")
-    public String getResultNote() {
-        return resultNote;
-    }
-    public void setResultNote(String resultNote) {
-        this.resultNote = resultNote;
+    public void setAssayType(String assayType) {
+        this.assayType = assayType;
     }
     
-    @Column(name="specimen_note")
-    public String getSpecimenNote() {
-        return specimenNote;
+    public void setBackgroundStrain(String backgroundStrain) {
+        this.backgroundStrain = backgroundStrain;
     }
-    public void setSpecimenNote(String specimenNote) {
-        this.specimenNote = specimenNote;
+    public void setDetectionMethod(String detectionMethod) {
+        this.detectionMethod = detectionMethod;
     }
     
-    @Column(name="probe_id")
-    public String getProbeID() {
-        return probeID;
+    public void setJnumID(String jnumID) {
+        this.jnumID = jnumID;
     }
+    public void setLevel(String level) {
+        this.level = level;
+    }
+    
+    public void setPanes(List<AlleleSystemAssayResultImagePane> panes) {
+        this.panes = panes;
+    }
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+    
     public void setProbeID(String probeID) {
         this.probeID = probeID;
-    }
-    
-    @Column(name="probe_name")
-    public String getProbeName() {
-        return probeName;
     }
     public void setProbeName(String probeName) {
         this.probeName = probeName;
     }
     
-    @Column(name="antibody_id")
-    public String getAntibodyID() {
-        return antibodyID;
+    public void setReporterGene(String reporterGene) {
+        this.reporterGene = reporterGene;
     }
-    public void setAntibodyID(String antibodyID) {
-        this.antibodyID = antibodyID;
+    public void setResultKey(Integer resultKey) {
+        this.resultKey = resultKey;
     }
     
-    @Column(name="antibody_name")
-    public String getAntibodyName() {
-        return antibodyName;
+    public void setResultNote(String resultNote) {
+        this.resultNote = resultNote;
     }
-    public void setAntibodyName(String antibodyName) {
-        this.antibodyName = antibodyName;
+    public void setSex(String sex) {
+        this.sex = sex;
     }
-    @OneToMany (targetEntity=AlleleSystemAssayResultImagePane.class)
-    @JoinColumn(name="result_key")
-    public List<AlleleSystemAssayResultImagePane> getPanes() {
-        return panes;
+    public void setSpecimenNote(String specimenNote) {
+        this.specimenNote = specimenNote;
     }
-    public void setPanes(List<AlleleSystemAssayResultImagePane> panes) {
-        this.panes = panes;
+    public void setStructure(String structure) {
+        this.structure = structure;
     }
     @Override
     public String toString() {

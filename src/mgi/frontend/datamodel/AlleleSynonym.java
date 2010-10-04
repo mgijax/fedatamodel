@@ -2,51 +2,65 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+/**
+ * Return an allele synonym object
+ * @author mhall
+ *
+ */
 @Entity
 @Table(name="allele_synonym")
 public class AlleleSynonym {
-	private int uniqueKey;
 	private int alleleKey;
+	private String jnumID;
 	private String synonym;
 	private String synonymType;
-	private String jnumID;
+	private int uniqueKey;
 	
-	public AlleleSynonym() {}
-
-	@Id
-	@Column(name="unique_key")
-	public int getUniqueKey() {
-		return uniqueKey;
-	}
-
-	public void setUniqueKey(int uniqueKey) {
-		this.uniqueKey = uniqueKey;
-	}
-
+    // ================= Getters and Setters ===================== //
+	
 	@Column(name="allele_key")
 	public int getAlleleKey() {
 		return alleleKey;
-	}
-
-	public void setAlleleKey(int alleleKey) {
-		this.alleleKey = alleleKey;
 	}
 
 	public String getSynonym() {
 		return synonym;
 	}
 
-	public void setSynonym(String synonym) {
-		this.synonym = synonym;
-	}
-
+	/**
+	 * Returns the synonym type (name, symbol etc)
+	 * @return
+	 */
 	@Column(name="synonym_type")
 	public String getSynonymType() {
 		return synonymType;
 	}
 
+	/**
+	 * Internal database key for front end database.  No
+	 * use in the front end.
+	 * @return
+	 */
+	@Id
+	@Column(name="unique_key")
+	public int getUniqueKey() {
+		return uniqueKey;
+	}
+
+	public void setAlleleKey(int alleleKey) {
+		this.alleleKey = alleleKey;
+	}
+
+	public void setSynonym(String synonym) {
+		this.synonym = synonym;
+	}
+
 	public void setSynonymType(String synonymType) {
 		this.synonymType = synonymType;
+	}
+
+	public void setUniqueKey(int uniqueKey) {
+		this.uniqueKey = uniqueKey;
 	}
 
 	@Override

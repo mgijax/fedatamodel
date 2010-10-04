@@ -2,20 +2,18 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+/**
+ * SequenceLocation
+ * @author mhall
+ * This class extends the Location class, so most of its 
+ * methods are taken from it.
+ */
 @Entity
 @Table (name="sequence_location")
-public class SequenceLocation extends Location implements SortableObject {
+public class SequenceLocation extends Location {
 	protected Integer sequenceKey;
-	//private int uniqueKey;
 	
-/*	@Id
-    public int getUniqueKey() {
-        return uniqueKey;
-    }
-
-    public void setUniqueKey(int uniqueKey) {
-        this.uniqueKey = uniqueKey;
-    }*/
+    // ================= Getters and Setters ===================== //
 	
 	@Column(name="sequence_key")
 	public Integer getSequenceKey() {

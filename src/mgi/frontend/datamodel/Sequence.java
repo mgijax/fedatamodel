@@ -26,176 +26,46 @@ import javax.persistence.Transient;
 		  @SecondaryTable (name="sequence_gene_trap", pkJoinColumns= {
 		  	@PrimaryKeyJoinColumn(name="sequence_key", referencedColumnName="sequence_key") } )
 		} )
-public class Sequence implements SortableObject {
+public class Sequence {
+    
+	private String biotype;
+	private Integer countOfMarkers;
+	private String description;
+	private String division;
+	private Integer exonCount;
+	private Integer goodHitCount;
+	private Set<SequenceID> ids;
+	private Integer length;
+	private String library;
+	private List<SequenceLocation> locations;
+	private String logicalDB;
+	private Set<Marker> markers;
+	private String markerType;
+	private String organism;
+	private Float pointCoordinate;
+	private String primaryID;
+	private Set<Probe> probes;
+	private String provider;
+	private String quality;
+	private String recordDate;
+	private List<Reference> references;
+	private String reverseComplement;
+	private String sequenceDate;
 	private int sequenceKey;
 	private String sequenceType;
-	private String quality;
-	private String status;
-	private String provider;
-	private String organism;
-	private Integer length;
-	private String description;
-	private String version;
-	private String division;
-	private String sequenceDate;
-	private String recordDate;
-	private String primaryID;
-	private String logicalDB;
-	private String library;
-	private Integer countOfMarkers;
-	private String markerType;
-	private String biotype;
-	private Integer exonCount;
-	private Integer transcriptCount;
-	private String tagMethod;
-	private String vectorEnd;
-	private String reverseComplement;
-	private Integer goodHitCount;
-	private Float pointCoordinate;
-	private Set<SequenceID> ids;
 	private List<SequenceSource> sources;
-	private List<Reference> references;
-	private List<SequenceLocation> locations;
-	private Set<Marker> markers;
-	private Set<Probe> probes;
+	private String status;
+	private String tagMethod;
+	private Integer transcriptCount;
+	private String vectorEnd;
+	private String version;
 
-/*	private List<MarkerSequenceAssociation> markerAssociations;*/
-/*	private List<SequenceLocation> locations;*/
-
-	public static String PROVIDER = "Sequence.Provider";
-	public static String LENGTH = "Sequence.Length";
-	public static String ID = "Sequence.ID";
-	public static String SEQUENCE_TYPE = "Sequence.Type";
-	public static String TISSUE = "Sequence.Tissue";
-	public static String STRAIN = "Sequence.Strain";
-
-	public Sequence() {}
-
-	@Id
-	@Column(name="sequence_key")
-	public int getSequenceKey() {
-		return sequenceKey;
-	}
-
-	public void setSequenceKey(int sequenceKey) {
-		this.sequenceKey = sequenceKey;
-	}
-
-	@Column(name="sequence_type")
-	public String getSequenceType() {
-		return sequenceType;
-	}
-
-	public void setSequenceType(String sequenceType) {
-		this.sequenceType = sequenceType;
-	}
-
-	public String getQuality() {
-		return quality;
-	}
-
-	public void setQuality(String quality) {
-		this.quality = quality;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getProvider() {
-		return provider;
-	}
-
-	public void setProvider(String provider) {
-		this.provider = provider;
-	}
-
-	public String getOrganism() {
-		return organism;
-	}
-
-	public void setOrganism(String organism) {
-		this.organism = organism;
-	}
-
-	public Integer getLength() {
-		return length;
-	}
-
-	public void setLength(Integer length) {
-		this.length = length;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	public String getDivision() {
-		return division;
-	}
-
-	public void setDivision(String division) {
-		this.division = division;
-	}
-
-	@Column(name="sequence_date")
-	public String getSequenceDate() {
-		return sequenceDate;
-	}
-
-	public void setSequenceDate(String sequenceDate) {
-		this.sequenceDate = sequenceDate;
-	}
-
-	@Column(name="record_date")
-	public String getRecordDate() {
-		return recordDate;
-	}
-
-	public void setRecordDate(String recordDate) {
-		this.recordDate = recordDate;
-	}
-
-	@Column(name="primary_id")
-	public String getPrimaryID() {
-		return primaryID;
-	}
-
-	public void setPrimaryID(String primaryID) {
-		this.primaryID = primaryID;
-	}
-
-	@Column(name="logical_db")
-	public String getLogicalDB() {
-		return logicalDB;
-	}
-
-	public void setLogicalDB(String logicalDB) {
-		this.logicalDB = logicalDB;
-	}
-
-	public String getLibrary() {
-		return library;
-	}
-
-	public void setLibrary(String library) {
-		this.library = library;
+    // ================= Getters and Setters ===================== //
+	
+	@Column(table="sequence_gene_model")
+	@JoinColumn(name="sequence_key")
+	public String getBiotype() {
+		return biotype;
 	}
 
 	@Column(table="sequence_counts", name="marker_count")
@@ -204,28 +74,12 @@ public class Sequence implements SortableObject {
 		return countOfMarkers;
 	}
 
-	public void setCountOfMarkers(Integer countOfMarkers) {
-		this.countOfMarkers = countOfMarkers;
+	public String getDescription() {
+		return description;
 	}
 
-	@Column(name="marker_type", table="sequence_gene_model")
-	@JoinColumn(name="sequence_key")
-	public String getMarkerType() {
-		return markerType;
-	}
-
-	public void setMarkerType(String markerType) {
-		this.markerType = markerType;
-	}
-
-	@Column(table="sequence_gene_model")
-	@JoinColumn(name="sequence_key")
-	public String getBiotype() {
-		return biotype;
-	}
-
-	public void setBiotype(String biotype) {
-		this.biotype = biotype;
+	public String getDivision() {
+		return division;
 	}
 
 	@Column(name="exon_count", table="sequence_gene_model")
@@ -234,141 +88,32 @@ public class Sequence implements SortableObject {
 		return exonCount;
 	}
 
-	public void setExonCount(Integer exonCount) {
-		this.exonCount = exonCount;
-	}
-
-	@Column(name="transcript_count", table="sequence_gene_model")
-	@JoinColumn(name="sequence_key")
-	public Integer getTranscriptCount() {
-		return transcriptCount;
-	}
-
-	public void setTranscriptCount(Integer transcriptCount) {
-		this.transcriptCount = transcriptCount;
-	}
-
-	@Column(name="tag_method", table="sequence_gene_trap")
-	@JoinColumn(name="sequence_key")
-	public String getTagMethod() {
-		return tagMethod;
-	}
-
-	public void setTagMethod(String tagMethod) {
-		this.tagMethod = tagMethod;
-	}
-
-	@Column(name="vector_end", table="sequence_gene_trap")
-	@JoinColumn(name="sequence_key")
-	public String getVectorEnd() {
-		return vectorEnd;
-	}
-
-	public void setVectorEnd(String vectorEnd) {
-		this.vectorEnd = vectorEnd;
-	}
-
-	@Column(name="reverse_complement", table="sequence_gene_trap")
-	@JoinColumn(name="sequence_key")
-	public String getReverseComplement() {
-		return reverseComplement;
-	}
-
-	public void setReverseComplement(String reverseComplement) {
-		this.reverseComplement = reverseComplement;
-	}
-
 	@Column(name="good_hit_count", table="sequence_gene_trap")
 	@JoinColumn(name="sequence_key")
 	public Integer getGoodHitCount() {
 		return goodHitCount;
 	}
 
-	public void setGoodHitCount(Integer goodHitCount) {
-		this.goodHitCount = goodHitCount;
-	}
-
-	@Column(name="point_coordinate", table="sequence_gene_trap")
-	@JoinColumn(name="sequence_key")
-	public Float getPointCoordinate() {
-		return pointCoordinate;
-	}
-
-	public void setPointCoordinate(Float pointCoordinate) {
-		this.pointCoordinate = pointCoordinate;
-	}
-
+	/**
+	 * Return the a collection of all possible sequence IDs
+	 * for a sequence.
+	 * 
+	 * @return
+	 */
 	@OneToMany (targetEntity=SequenceID.class)
 	@JoinColumn(name="sequence_key")
 	public Set<SequenceID> getIds() {
 		return ids;
 	}
 
-	public void setIds(Set<SequenceID> ids) {
-		this.ids = ids;
+	public Integer getLength() {
+		return length;
 	}
 
-    @OneToMany
-    @JoinTable (name="reference_to_sequence",
-            joinColumns=@JoinColumn(name="sequence_key"),
-            inverseJoinColumns=@JoinColumn(name="reference_key")
-            )
-    @OrderBy("year, jnumNumeric")
-    public List<Reference> getReferences() {
-        return references;
-    }
-
-    public void setReferences(List<Reference> references) {
-        this.references = references;
-    }
-
-    @OneToMany (targetEntity=Marker.class)
-    @JoinTable (name="marker_to_sequence",
-            joinColumns=@JoinColumn(name="sequence_key"),
-            inverseJoinColumns=@JoinColumn(name="marker_key")
-            )
-    public Set<Marker> getMarkers() {
-        return markers;
-    }
-
-    public void setMarkers(Set<Marker> markers) {
-        this.markers = markers;
-    }
-
-    @OneToMany (targetEntity=SequenceSource.class)
-    @JoinColumn(name="sequence_key")
-    public List<SequenceSource> getSources() {
-        return sources;
-    }
-
-    public void setSources(List<SequenceSource> sources) {
-        this.sources = sources;
-    }
-
-    @OneToMany (targetEntity=SequenceLocation.class)
-    @JoinColumn(name="sequence_key")
-    @OrderBy("sequenceNum")
-	public List<SequenceLocation> getLocations() {
-		return locations;
-	}
-
-	public void setLocations(List<SequenceLocation> locations) {
-		this.locations = locations;
-	}
-
-    @OneToMany (targetEntity=Probe.class)
-    @JoinTable (name="probe_to_sequence",
-            joinColumns=@JoinColumn(name="sequence_key"),
-            inverseJoinColumns=@JoinColumn(name="probe_key")
-            )
-	public Set<Probe> getProbes() {
-        return probes;
-    }
-
-    public void setProbes(Set<Probe> probes) {
-        this.probes = probes;
-    }
-
+	/**
+	 * Returns a string given the sequence type.
+	 * @return
+	 */
 	@Transient
 	public String getLengthUnit() {
 
@@ -379,22 +124,280 @@ public class Sequence implements SortableObject {
         return lengthUnit;
 	}
 
-    @Override
-	public Comparable getComparableValue(String fieldname) throws NoSuchFieldException {
-		Comparable value;
+	public String getLibrary() {
+		return library;
+	}
 
-		if (fieldname.equals(PROVIDER)) {
-			value = this.getProvider();
-		} else if (fieldname.equals(ID)) {
-			value = this.getPrimaryID();
-		} else if (fieldname.equals(LENGTH)) {
-			value = this.getLength();
-		} else if (fieldname.equals(SEQUENCE_TYPE)) {
-			value = this.getSequenceType();
-		} else {
-			throw new NoSuchFieldException("Unknown field: " + fieldname);
-		}
-		return value;
+	/**
+	 * Return the location for sequences, ordered by sequence number
+	 * @return
+	 * The locations are placed into the database in a specific order
+	 * with the preferred location being first, second most second.. etc.
+	 */
+	
+	@OneToMany (targetEntity=SequenceLocation.class)
+    @JoinColumn(name="sequence_key")
+    @OrderBy("sequenceNum")
+	public List<SequenceLocation> getLocations() {
+		return locations;
+	}
+
+	@Column(name="logical_db")
+	public String getLogicalDB() {
+		return logicalDB;
+	}
+
+	/**
+	 * Return a collection of markers
+	 * @return
+	 */
+	@OneToMany (targetEntity=Marker.class)
+    @JoinTable (name="marker_to_sequence",
+            joinColumns=@JoinColumn(name="sequence_key"),
+            inverseJoinColumns=@JoinColumn(name="marker_key")
+            )
+    public Set<Marker> getMarkers() {
+        return markers;
+    }
+
+	@Column(name="marker_type", table="sequence_gene_model")
+	@JoinColumn(name="sequence_key")
+	public String getMarkerType() {
+		return markerType;
+	}
+
+	public String getOrganism() {
+		return organism;
+	}
+
+	@Column(name="point_coordinate", table="sequence_gene_trap")
+	@JoinColumn(name="sequence_key")
+	public Float getPointCoordinate() {
+		return pointCoordinate;
+	}
+
+	@Column(name="primary_id")
+	public String getPrimaryID() {
+		return primaryID;
+	}
+
+	/**
+	 * Return a collection of probes
+	 * @return
+	 */
+	@OneToMany (targetEntity=Probe.class)
+    @JoinTable (name="probe_to_sequence",
+            joinColumns=@JoinColumn(name="sequence_key"),
+            inverseJoinColumns=@JoinColumn(name="probe_key")
+            )
+	public Set<Probe> getProbes() {
+        return probes;
+    }
+
+	public String getProvider() {
+		return provider;
+	}
+
+	public String getQuality() {
+		return quality;
+	}
+
+	@Column(name="record_date")
+	public String getRecordDate() {
+		return recordDate;
+	}
+
+	/**
+	 * Return a collection of references, ordered by 
+	 * year and then jnum.
+	 * @return
+	 */
+	@OneToMany
+    @JoinTable (name="reference_to_sequence",
+            joinColumns=@JoinColumn(name="sequence_key"),
+            inverseJoinColumns=@JoinColumn(name="reference_key")
+            )
+    @OrderBy("year, jnumNumeric")
+    public List<Reference> getReferences() {
+        return references;
+    }
+
+	@Column(name="reverse_complement", table="sequence_gene_trap")
+	@JoinColumn(name="sequence_key")
+	public String getReverseComplement() {
+		return reverseComplement;
+	}
+
+	@Column(name="sequence_date")
+	public String getSequenceDate() {
+		return sequenceDate;
+	}
+
+	@Id
+	@Column(name="sequence_key")
+	public int getSequenceKey() {
+		return sequenceKey;
+	}
+
+	@Column(name="sequence_type")
+	public String getSequenceType() {
+		return sequenceType;
+	}
+
+	@OneToMany (targetEntity=SequenceSource.class)
+    @JoinColumn(name="sequence_key")
+    public List<SequenceSource> getSources() {
+        return sources;
+    }
+
+	public String getStatus() {
+		return status;
+	}
+
+	@Column(name="tag_method", table="sequence_gene_trap")
+	@JoinColumn(name="sequence_key")
+	public String getTagMethod() {
+		return tagMethod;
+	}
+
+	@Column(name="transcript_count", table="sequence_gene_model")
+	@JoinColumn(name="sequence_key")
+	public Integer getTranscriptCount() {
+		return transcriptCount;
+	}
+
+	@Column(name="vector_end", table="sequence_gene_trap")
+	@JoinColumn(name="sequence_key")
+	public String getVectorEnd() {
+		return vectorEnd;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setBiotype(String biotype) {
+		this.biotype = biotype;
+	}
+
+	public void setCountOfMarkers(Integer countOfMarkers) {
+		this.countOfMarkers = countOfMarkers;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setDivision(String division) {
+		this.division = division;
+	}
+
+	public void setExonCount(Integer exonCount) {
+		this.exonCount = exonCount;
+	}
+
+	public void setGoodHitCount(Integer goodHitCount) {
+		this.goodHitCount = goodHitCount;
+	}
+
+	public void setIds(Set<SequenceID> ids) {
+		this.ids = ids;
+	}
+
+	public void setLength(Integer length) {
+		this.length = length;
+	}
+
+	public void setLibrary(String library) {
+		this.library = library;
+	}
+
+	public void setLocations(List<SequenceLocation> locations) {
+		this.locations = locations;
+	}
+
+	public void setLogicalDB(String logicalDB) {
+		this.logicalDB = logicalDB;
+	}
+
+	public void setMarkers(Set<Marker> markers) {
+        this.markers = markers;
+    }
+
+	public void setMarkerType(String markerType) {
+		this.markerType = markerType;
+	}
+
+	public void setOrganism(String organism) {
+		this.organism = organism;
+	}
+
+	public void setPointCoordinate(Float pointCoordinate) {
+		this.pointCoordinate = pointCoordinate;
+	}
+
+	public void setPrimaryID(String primaryID) {
+		this.primaryID = primaryID;
+	}
+
+	public void setProbes(Set<Probe> probes) {
+        this.probes = probes;
+    }
+
+	public void setProvider(String provider) {
+		this.provider = provider;
+	}
+
+	public void setQuality(String quality) {
+		this.quality = quality;
+	}
+
+	public void setRecordDate(String recordDate) {
+		this.recordDate = recordDate;
+	}
+
+    public void setReferences(List<Reference> references) {
+        this.references = references;
+    }
+
+    public void setReverseComplement(String reverseComplement) {
+		this.reverseComplement = reverseComplement;
+	}
+
+    public void setSequenceDate(String sequenceDate) {
+		this.sequenceDate = sequenceDate;
+	}
+
+    public void setSequenceKey(int sequenceKey) {
+		this.sequenceKey = sequenceKey;
+	}
+
+    public void setSequenceType(String sequenceType) {
+		this.sequenceType = sequenceType;
+	}
+
+    public void setSources(List<SequenceSource> sources) {
+        this.sources = sources;
+    }
+
+    public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setTagMethod(String tagMethod) {
+		this.tagMethod = tagMethod;
+	}
+
+    public void setTranscriptCount(Integer transcriptCount) {
+		this.transcriptCount = transcriptCount;
+	}
+
+    public void setVectorEnd(String vectorEnd) {
+		this.vectorEnd = vectorEnd;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 	@Override

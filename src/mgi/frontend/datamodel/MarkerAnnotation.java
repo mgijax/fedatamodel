@@ -2,11 +2,19 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+/**
+ * MarkerAnnotation
+ * @author mhall, jsb
+ * This class extends the annotation class, so most of its methods are 
+ * inherited.
+ */
 @Entity
 @Table (name="markerannotation")
 public class MarkerAnnotation extends Annotation {
 	protected Integer markerKey;
 
+    // ================= Getters and Setters ===================== //
+	
 	public Integer getMarkerKey() {
 		return markerKey;
 	}

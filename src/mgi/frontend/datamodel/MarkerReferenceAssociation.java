@@ -2,13 +2,29 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+/**
+ * Implements the MarkerReferenecAssociation object.
+ * @author mhall
+ * This object mapped an early idea of a marker->Reference association.
+ * 
+ * This object extends the association base object, so most of its methods
+ * are inherited from this.
+ * 
+ * This may be depreciated now.
+ */
+
 @Entity
 @Table (name="markerToReference")
-public class MarkerReferenceAssociation extends Association implements SortableObject {
-	protected Marker marker;
-
-	public static String SYMBOL = "MarkerReferenceAssociation.Symbol";
+public class MarkerReferenceAssociation extends Association {
 	
+    protected Marker marker;
+    
+    // ================= Getters and Setters ===================== //
+	
+	/**
+	 * Return the marker for this association.
+	 * @return
+	 */
 	@ManyToOne (targetEntity=Marker.class, fetch=FetchType.LAZY)
 	@JoinColumn (name="markerKey")
 	public Marker getMarker() {
@@ -20,22 +36,10 @@ public class MarkerReferenceAssociation extends Association implements SortableO
 	}
 
 	@Override
-	public Comparable getComparableValue(String fieldname) throws NoSuchFieldException {
-		Comparable out;
-		if (fieldname.equals(SYMBOL)) {
-			out = this.marker.getComparableValue(Marker.SYMBOL);
-		} else {
-			out = super.getComparableValue(fieldname);
-		}
-		return out;
-	}
-
-	@Override
 	public String toString() {
 		return "MarkerReferenceAssociation ["
 				+ (qualifier != null ? "qualifier=" + qualifier + ", " : "")
 				+ "sequenceNumFwd="
-				//+ sequenceNumFwd + ", sequenceNumRev=" + sequenceNumRev
 				+ ", uniqueKey=" + uniqueKey + "]";
 	}
 }

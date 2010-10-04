@@ -2,27 +2,23 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+/**
+ * Note
+ * @author mhall
+ * Base Note class.  All tables that carry note information carry at least
+ * these fields.
+ */
 @MappedSuperclass
-public class Note implements SortableObject {
-
-	public static String NOTE_TYPE = "Note.NoteType";
-	public static String NOTE = "Note.Note";
+public class Note {
 	
-	// subclasses will need to add their particular objects and getter/setter methods
-	protected int uniqueKey;
-	protected String noteType;
 	protected String note;
+	protected String noteType;
+	protected int uniqueKey;
+
+    // ================= Getters and Setters ===================== //
 	
-	public Note() {}
-
-	@Id
-	@Column(name="unique_key")
-	public int getUniqueKey() {
-		return uniqueKey;
-	}
-
-	public void setUniqueKey(int uniqueKey) {
-		this.uniqueKey = uniqueKey;
+	public String getNote() {
+		return note;
 	}
 
 	@Column(name="note_type")
@@ -30,30 +26,22 @@ public class Note implements SortableObject {
 		return noteType;
 	}
 
-	public void setNoteType(String noteType) {
-		this.noteType = noteType;
-	}
-
-	public String getNote() {
-		return note;
+	@Id
+	@Column(name="unique_key")
+	public int getUniqueKey() {
+		return uniqueKey;
 	}
 
 	public void setNote(String note) {
 		this.note = note;
 	}
 
-	@Override
-	public Comparable getComparableValue(String fieldname) throws NoSuchFieldException {
-		Comparable out;
-		if (fieldname.equals (NOTE_TYPE)) {
-			out = this.getNoteType();
-		}
-		else if (fieldname.equals(NOTE)) {
-			out = this.getNote();
-		} else {
-			throw new NoSuchFieldException ("Unknown field: " + fieldname);
-		}
-		return out;
+	public void setNoteType(String noteType) {
+		this.noteType = noteType;
+	}
+
+	public void setUniqueKey(int uniqueKey) {
+		this.uniqueKey = uniqueKey;
 	}
 
 	@Override

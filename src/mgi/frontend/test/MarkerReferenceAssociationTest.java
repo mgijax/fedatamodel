@@ -17,9 +17,6 @@ public class MarkerReferenceAssociationTest {
 		
 		List<MarkerReferenceAssociation> assocList = (List<MarkerReferenceAssociation>) session.createQuery ("from MarkerReferenceAssociation").setMaxResults(1000).list();
 		Timer.write ("retrieved " + assocList.size() + " association(s)");
-
-		Collections.sort (assocList, 
-			new SortableObjectComparator (new String[] { Marker.SYMBOL, Reference.JNUM } ) );
 		
 		MarkerReferenceAssociation assoc;
 		for (Iterator iter = assocList.iterator(); iter.hasNext(); ) {

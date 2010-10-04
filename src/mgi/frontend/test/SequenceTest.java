@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mgi.frontend.datamodel.Marker;
+import mgi.frontend.datamodel.Probe;
 import mgi.frontend.datamodel.Reference;
 import mgi.frontend.datamodel.Sequence;
 import mgi.frontend.datamodel.SequenceID;
@@ -75,7 +76,12 @@ public class SequenceTest {
          for (Iterator <Marker> iter2 = seq.getMarkers().iterator(); iter2.hasNext(); ) {
              Marker marker = (Marker) iter2.next();
              System.out.println ("Marker Symbol --> " + marker.getSymbol());
-             }         
+             }     
+         
+         for (Iterator <Probe> iter2 = seq.getProbes().iterator(); iter2.hasNext(); ) {
+             Probe probe = (Probe) iter2.next();
+             System.out.println (probe);
+             }    
          
 		 System.out.println("-------------------");
 		}
