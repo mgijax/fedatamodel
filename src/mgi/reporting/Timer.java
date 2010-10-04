@@ -1,5 +1,10 @@
 package mgi.reporting;
 
+/**
+ * Timer
+ * @author jsb
+ * This helper class prints out string representations of time passed.
+ */
 public class Timer {
     private static long lastTime = System.currentTimeMillis();
     private static long firstTime = lastTime;
