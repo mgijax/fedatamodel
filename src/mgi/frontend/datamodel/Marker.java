@@ -190,7 +190,6 @@ public class Marker {
 	 */
 	@OneToMany (fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")
-	@OrderBy ("sequenceNumFwd")
 	public List<MarkerReferenceAssociation> getReferenceAssociations() {
 		return referenceAssociations;
 	}

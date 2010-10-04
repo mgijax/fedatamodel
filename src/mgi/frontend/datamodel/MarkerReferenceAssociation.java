@@ -14,7 +14,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table (name="markerToReference")
+@Table (name="marker_to_reference")
 public class MarkerReferenceAssociation extends Association {
 	
     protected Marker marker;
@@ -26,7 +26,7 @@ public class MarkerReferenceAssociation extends Association {
 	 * @return
 	 */
 	@ManyToOne (targetEntity=Marker.class, fetch=FetchType.LAZY)
-	@JoinColumn (name="markerKey")
+	@JoinColumn (name="marker_key")
 	public Marker getMarker() {
 		return marker;
 	}
