@@ -10,6 +10,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  * Recombinase Allele System Objects
@@ -19,6 +20,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table (name="recombinase_allele_system")
+@JsonIgnoreProperties({"images"})
 public class AlleleSystem {
 
     private int alleleKey;
