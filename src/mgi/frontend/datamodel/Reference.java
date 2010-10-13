@@ -30,11 +30,13 @@ public class Reference {
 	private Integer countOfGXDAssays;
 	private Integer countOfGXDIndex;
 	private Integer countOfGXDResults;
+	private Integer countOfGXDStructures;
 	private Integer countOfMappingResults;
-	private Integer countOfMarkers;
-	private Integer countOfProbes;
-	private Integer countOfSequences;
-	private Set<ReferenceID> ids;
+    private Integer countOfMarkers;
+    private Integer countOfOrthologs;
+    private Integer countOfProbes;
+    private Integer countOfSequences;
+    private Set<ReferenceID> ids;
 	private String issue;
 	private String jnumID;
 	private int jnumNumeric;
@@ -51,9 +53,6 @@ public class Reference {
 	private String title;
 	private String vol;
 	private String year;
-	
-    // ================= Getters and Setters ===================== //
-	
 	/**
 	 * Return the abstract, via the reference_key
 	 */
@@ -62,11 +61,9 @@ public class Reference {
 	public String getAbstract() {
 		return refAbstract;
 	}
-	
 	public String getAuthors() {
 		return authors;
 	}
-	
 	/**
 	 * Returns the edition, joined via the reference_key
 	 * @return
@@ -76,7 +73,6 @@ public class Reference {
 	public String getBookEdition() {
 		return bookEdition;
 	}
-	
 	/**
 	 * Returns the editor, joined via the reference_key
 	 * @return
@@ -87,7 +83,9 @@ public class Reference {
 	public String getBookEditor() {
 		return bookEditor;
 	}
-
+	
+    // ================= Getters and Setters ===================== //
+	
 	/**
 	 * Returns the place the book was published, joined by 
 	 * reference key
@@ -122,7 +120,7 @@ public class Reference {
 	public String getCitation() {
 		return citation;
 	}
-	
+
 	/**
 	 * Return the count of associated alleles, joined by reference_key
 	 * @return
@@ -132,7 +130,7 @@ public class Reference {
     public Integer getCountOfAlleles() {
         return countOfAlleles;
     }
-
+	
 	/**
      * Return the count of associated gxd assays, 
      * joined by reference_key
@@ -143,8 +141,8 @@ public class Reference {
     public Integer getCountOfGXDAssays() {
         return countOfGXDAssays;
     }
-
-    /**
+	
+	/**
      * Return the count of associated gxd index items, 
      * joined by reference_key
      * @return
@@ -154,8 +152,8 @@ public class Reference {
     public Integer getCountOfGXDIndex() {
         return countOfGXDIndex;
     }
-
-    /**
+	
+	/**
      * Return the count of associated gxd assay results, 
      * joined by reference_key
      * @return
@@ -166,7 +164,18 @@ public class Reference {
         return countOfGXDResults;
     }
 	
-    /**
+	/**
+     * Return the count of associated gxd structures(tissues?), 
+     * joined by reference_key
+     * @return
+     */ 
+	@Column(table="reference_counts", name="gxd_structure_count")
+	@JoinColumn(name="reference_key")
+    public Integer getCountOfGXDStructures() {
+        return countOfGXDStructures;
+    }
+
+	/**
      * Return the count of associated mapping experiments, 
      * joined by reference_key
      * @return
@@ -176,8 +185,8 @@ public class Reference {
     public Integer getCountOfMappingResults() {
         return countOfMappingResults;
     }
-	
-    /**
+
+	 /**
      * Return the count of associated markers, 
      * joined by reference_key
      * @return
@@ -187,6 +196,16 @@ public class Reference {
 	public Integer getCountOfMarkers() {
 		return countOfMarkers;
 	}
+
+	/**
+	 * Return the count of Orthologs, this currently isn't 
+	 * in the database, so will have to be overriden when it is. 
+	 * @return
+	 */
+	@Transient
+    public Integer getCountOfOrthologs() {
+        return 0;
+    }
 	
     /**
      * Return the count of associated probes, 
@@ -210,7 +229,7 @@ public class Reference {
         return countOfSequences;
     }
 	
-	/**
+    /**
 	 * Return a collection of all possible reference IDs.
 	 * @return
 	 */
@@ -220,7 +239,7 @@ public class Reference {
 		return ids;
 	}
 	
-	public String getIssue() {
+    public String getIssue() {
 		return issue;
 	}
 	
@@ -270,26 +289,26 @@ public class Reference {
         return pubmedid;
     }
 	
-    @Id 
+	@Id 
 	@Column(name = "reference_key")
 	public int getReferenceKey() {
 		return referenceKey;
 	}
-    
-    @Column(name="reference_type")
+	
+	@Column(name="reference_type")
 	public String getReferenceType() {
 		return referenceType;
 	}
-    
-	@Column(name="short_citation")
+	
+    @Column(name="short_citation")
 	public String getShortCitation() {
 		return shortCitation;
 	}
-	
-	public String getTitle() {
+    
+    public String getTitle() {
 		return title;
 	}
-	
+    
 	public String getVol() {
 		return vol;
 	}
@@ -302,11 +321,11 @@ public class Reference {
 	public Boolean isBook() {
 	    return this.referenceType.equals("BOOK");
 	}
-
+	
 	public void setAbstract(String refAbstract) {
 		this.refAbstract = refAbstract;
 	}
-
+	
 	public void setAuthors(String authors) {
 		this.authors = authors;
 	}
@@ -351,6 +370,10 @@ public class Reference {
         this.countOfGXDResults = countOfGXDResults;
     }
 
+	public void setCountOfGXDStructures(Integer countOfGXDStructures) {
+        this.countOfGXDStructures = countOfGXDStructures;
+    }
+
 	public void setCountOfMappingResults(Integer countOfMappingResults) {
         this.countOfMappingResults = countOfMappingResults;
     }
@@ -358,6 +381,10 @@ public class Reference {
 	public void setCountOfMarkers(Integer countOfMarkers) {
 		this.countOfMarkers = countOfMarkers;
 	}
+
+	public void setCountOfOrthologs(Integer countOfOrthologs) {
+        this.countOfOrthologs = countOfOrthologs;
+    }
 
 	public void setCountOfProbes(Integer countOfProbes) {
         this.countOfProbes = countOfProbes;
