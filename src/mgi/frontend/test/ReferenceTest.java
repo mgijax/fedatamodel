@@ -26,29 +26,7 @@ public class ReferenceTest {
 		for (Iterator iter = refs.iterator(); iter.hasNext(); ) {
 			ref = (Reference) iter.next();
 			System.out.println("----------------");
-			System.out.println (ref.getJnumID());
-			System.out.println (ref.getPubMedID());
-			System.out.println (ref.getAuthors());
-			System.out.println (ref.getTitle());
-			System.out.println (ref.getJournal());
-			System.out.println (ref.getYear());
-			System.out.println (ref.getVol());
-			System.out.println (ref.getIssue());
-			System.out.println (ref.getPages());
-			System.out.println ("Count of Markers: " +ref.getCountOfMarkers());
-			System.out.println ("Count of Probes: " +ref.getCountOfProbes());
-			System.out.println ("Count of GXD Assays: " +ref.getCountOfGXDAssays());
-			System.out.println ("Count of GXD Assays Results: " +ref.getCountOfGXDResults());
-			System.out.println ("Count of GXD Index Records: " +ref.getCountOfGXDIndex());
-			System.out.println ("Count of Mapping Results: " +ref.getCountOfMappingResults());
-			System.out.println ("Count of Sequence: " +ref.getCountOfSequenceResults());
-			System.out.println ("Count of Alleles: " +ref.getCountOfAlleles());
-			System.out.println ("Is a Book?: " + ref.isBook());
-			System.out.println ("Book Editor: " + ref.getBookEditor());
-			System.out.println ("Book Title: " + ref.getBookTitle());
-			System.out.println ("Book Publisher: " + ref.getBookPublisher());
-			System.out.println ("Book Edition: " + ref.getBookEdition());
-			System.out.println ("Book Place: " + ref.getBookPlace());
+			System.out.println (ref);
 			
 			System.out.println("----------------");
 //			System.out.println (ref.getJnumID() + " : " + ref.getShortCitation());
