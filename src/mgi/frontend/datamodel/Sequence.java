@@ -191,7 +191,7 @@ public class Sequence {
             joinColumns=@JoinColumn(name="sequence_key"),
             inverseJoinColumns=@JoinColumn(name="probe_key")
             )
-    @OrderBy("symbol")            
+    @OrderBy("name")            
 	public Set<Probe> getProbes() {
         return probes;
     }
