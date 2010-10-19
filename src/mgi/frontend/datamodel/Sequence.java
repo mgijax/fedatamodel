@@ -156,6 +156,7 @@ public class Sequence {
             joinColumns=@JoinColumn(name="sequence_key"),
             inverseJoinColumns=@JoinColumn(name="marker_key")
             )
+    @OrderBy("symbol")
     public Set<Marker> getMarkers() {
         return markers;
     }
@@ -190,6 +191,7 @@ public class Sequence {
             joinColumns=@JoinColumn(name="sequence_key"),
             inverseJoinColumns=@JoinColumn(name="probe_key")
             )
+    @OrderBy("symbol")            
 	public Set<Probe> getProbes() {
         return probes;
     }

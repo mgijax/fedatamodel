@@ -25,23 +25,24 @@ public class Reference {
 	private String bookPlace;
 	private String bookPublisher;
 	private String bookTitle;
-	private String citation;
 	private Integer countOfAlleles;
 	private Integer countOfGXDAssays;
 	private Integer countOfGXDIndex;
-	private Integer countOfGXDResults;
-	private Integer countOfGXDStructures;
+    private Integer countOfGXDResults;
+    private Integer countOfGXDStructures;
 	private Integer countOfMappingResults;
-    private Integer countOfMarkers;
-    private Integer countOfOrthologs;
-    private Integer countOfProbes;
-    private Integer countOfSequences;
+	private Integer countOfMarkers;
+	private Integer countOfOrthologs;
+	private Integer countOfProbes;
+	private Integer countOfSequences;
     private Set<ReferenceID> ids;
-	private String issue;
-	private String jnumID;
-	private int jnumNumeric;
-	private String journal;
+    private String issue;
+    private String jnumID;
+    private int jnumNumeric;
+    private String journal;
+	private String longCitation;
 	private Set<Marker> markers;
+	private String miniCitation;
 	private String pages;
 	private String primaryAuthor;
 	private String pubDate;
@@ -83,9 +84,6 @@ public class Reference {
 	public String getBookEditor() {
 		return bookEditor;
 	}
-	
-    // ================= Getters and Setters ===================== //
-	
 	/**
 	 * Returns the place the book was published, joined by 
 	 * reference key
@@ -96,7 +94,6 @@ public class Reference {
 	public String getBookPlace() {
 		return bookPlace;
 	}
-	
 	/**
 	 * Returns the publisher, joined by the reference_key
 	 * @return
@@ -106,6 +103,8 @@ public class Reference {
 	public String getBookPublisher() {
 		return bookPublisher;
 	}
+	
+    // ================= Getters and Setters ===================== //
 	
 	/**
 	 * Returns the book title, joined by the reference_key
@@ -117,10 +116,6 @@ public class Reference {
 		return bookTitle;
 	}
 	
-	public String getCitation() {
-		return citation;
-	}
-
 	/**
 	 * Return the count of associated alleles, joined by reference_key
 	 * @return
@@ -152,7 +147,7 @@ public class Reference {
     public Integer getCountOfGXDIndex() {
         return countOfGXDIndex;
     }
-	
+
 	/**
      * Return the count of associated gxd assay results, 
      * joined by reference_key
@@ -174,7 +169,7 @@ public class Reference {
     public Integer getCountOfGXDStructures() {
         return countOfGXDStructures;
     }
-
+	
 	/**
      * Return the count of associated mapping experiments, 
      * joined by reference_key
@@ -185,8 +180,8 @@ public class Reference {
     public Integer getCountOfMappingResults() {
         return countOfMappingResults;
     }
-
-	 /**
+	
+	/**
      * Return the count of associated markers, 
      * joined by reference_key
      * @return
@@ -196,7 +191,7 @@ public class Reference {
 	public Integer getCountOfMarkers() {
 		return countOfMarkers;
 	}
-
+	
 	/**
 	 * Return the count of Orthologs, this currently isn't 
 	 * in the database, so will have to be overriden when it is. 
@@ -206,8 +201,8 @@ public class Reference {
     public Integer getCountOfOrthologs() {
         return 0;
     }
-	
-    /**
+
+	/**
      * Return the count of associated probes, 
      * joined by reference_key
      * @return
@@ -217,8 +212,8 @@ public class Reference {
     public Integer getCountOfProbes() {
         return countOfProbes;
     }
-	
-    /**
+
+	 /**
      * Return the count of associated sequences, 
      * joined by reference_key
      * @return
@@ -228,8 +223,8 @@ public class Reference {
     public Integer getCountOfSequenceResults() {
         return countOfSequences;
     }
-	
-    /**
+
+	/**
 	 * Return a collection of all possible reference IDs.
 	 * @return
 	 */
@@ -243,19 +238,24 @@ public class Reference {
 		return issue;
 	}
 	
-	@Column(name="jnum_id")
+    @Column(name="jnum_id")
 	public String getJnumID() {
 		return jnumID;
 	}
 	
-	@Column(name="jnum_numeric")
+    @Column(name="jnum_numeric")
 	public int getJnumNumeric() {
 		return jnumNumeric;
 	}
 	
-	public String getJournal() {
+    public String getJournal() {
 		return journal;
 	}
+	
+	@Column(name="long_citation")
+	public String getLongCitation() {
+        return longCitation;
+    }
 	
 	/**
 	 * Returns a collection of markers
@@ -268,6 +268,11 @@ public class Reference {
 			)
 	public Set<Marker> getMarkers() {
 		return markers;
+	}
+	
+	@Column(name="mini_citation")
+	public String getMiniCitation() {
+		return miniCitation;
 	}
 	
 	public String getPages() {
@@ -300,19 +305,19 @@ public class Reference {
 		return referenceType;
 	}
 	
-    @Column(name="short_citation")
+	@Column(name="short_citation")
 	public String getShortCitation() {
 		return shortCitation;
 	}
-    
+	
     public String getTitle() {
 		return title;
 	}
     
-	public String getVol() {
+    public String getVol() {
 		return vol;
 	}
-	
+    
 	public String getYear() {
 		return year;
 	}
@@ -329,7 +334,7 @@ public class Reference {
 	public void setAuthors(String authors) {
 		this.authors = authors;
 	}
-
+	
 	public void setBookEdition(String bookEdition) {
 		this.bookEdition = bookEdition;
 	}
@@ -348,10 +353,6 @@ public class Reference {
 
 	public void setBookTitle(String bookTitle) {
 		this.bookTitle = bookTitle;
-	}
-
-	public void setCitation(String citation) {
-		this.citation = citation;
 	}
 
 	public void setCountOfAlleles(Integer countOfAlleles) {
@@ -402,20 +403,28 @@ public class Reference {
 		this.issue = issue;
 	}
 
-    public void setJnumID(String jnumID) {
+	public void setJnumID(String jnumID) {
 		this.jnumID = jnumID;
 	}
 
-    public void setJnumNumeric(int jnumNumeric) {
+	public void setJnumNumeric(int jnumNumeric) {
 		this.jnumNumeric = jnumNumeric;
 	}
-    
+
     public void setJournal(String journal) {
 		this.journal = journal;
 	}
 
+    public void setLongCitation(String longCitation) {
+        this.longCitation = longCitation;
+    }
+    
     public void setMarkers(Set<Marker> markers) {
 		this.markers = markers;
+	}
+
+    public void setMiniCitation(String citation) {
+		this.miniCitation = citation;
 	}
     
     public void setPages(String pages) {
@@ -469,7 +478,7 @@ public class Reference {
 				+ (bookPublisher != null ? "bookPublisher=" + bookPublisher
 						+ ", " : "")
 				+ (bookTitle != null ? "bookTitle=" + bookTitle + ", " : "")
-				+ (citation != null ? "citation=" + citation + ", " : "")
+				+ (miniCitation != null ? "citation=" + miniCitation + ", " : "")
 				+ (countOfMarkers != null ? "countOfMarkers=" + countOfMarkers
 						+ ", " : "")
 				+ (ids != null ? "ids=" + ids + ", " : "")
