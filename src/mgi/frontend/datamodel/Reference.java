@@ -468,41 +468,27 @@ public class Reference {
 	} 
     
 	@Override
-	public String toString() {
-		return "Reference ["
-				+ (authors != null ? "authors=" + authors + ", " : "")
-				+ (bookEdition != null ? "bookEdition=" + bookEdition + ", "
-						: "")
-				+ (bookEditor != null ? "bookEditor=" + bookEditor + ", " : "")
-				+ (bookPlace != null ? "bookPlace=" + bookPlace + ", " : "")
-				+ (bookPublisher != null ? "bookPublisher=" + bookPublisher
-						+ ", " : "")
-				+ (bookTitle != null ? "bookTitle=" + bookTitle + ", " : "")
-				+ (miniCitation != null ? "citation=" + miniCitation + ", " : "")
-				+ (countOfMarkers != null ? "countOfMarkers=" + countOfMarkers
-						+ ", " : "")
-				+ (ids != null ? "ids=" + ids + ", " : "")
-				+ (issue != null ? "issue=" + issue + ", " : "")
-				+ (jnumID != null ? "jnumID=" + jnumID + ", " : "")
-				+ "jnumNumeric="
-				+ jnumNumeric
-				+ ", "
-				+ (journal != null ? "journal=" + journal + ", " : "")
-				+ (pages != null ? "pages=" + pages + ", " : "")
-				+ (primaryAuthor != null ? "primaryAuthor=" + primaryAuthor
-						+ ", " : "")
-				+ (pubDate != null ? "pubDate=" + pubDate + ", " : "")
-				+ (refAbstract != null ? "refAbstract=" + refAbstract + ", "
-						: "")
-				+ "referenceKey="
-				+ referenceKey
-				+ ", "
-				+ (referenceType != null ? "referenceType=" + referenceType
-						+ ", " : "")
-				+ (shortCitation != null ? "shortCitation=" + shortCitation
-						+ ", " : "")
-				+ (title != null ? "title=" + title + ", " : "")
-				+ (vol != null ? "vol=" + vol + ", " : "")
-				+ (year != null ? "year=" + year : "") + "]";
-	}
+    public String toString() {
+        return "Reference [authors=" + authors + ", bookEdition=" + bookEdition
+                + ", bookEditor=" + bookEditor + ", bookPlace=" + bookPlace
+                + ", bookPublisher=" + bookPublisher + ", bookTitle="
+                + bookTitle + ", countOfAlleles=" + countOfAlleles
+                + ", countOfGXDAssays=" + countOfGXDAssays
+                + ", countOfGXDIndex=" + countOfGXDIndex
+                + ", countOfGXDResults=" + countOfGXDResults
+                + ", countOfGXDStructures=" + countOfGXDStructures
+                + ", countOfMappingResults=" + countOfMappingResults
+                + ", countOfMarkers=" + countOfMarkers + ", countOfOrthologs="
+                + countOfOrthologs + ", countOfProbes=" + countOfProbes
+                + ", countOfSequences=" + countOfSequences + ", ids=" + ids
+                + ", issue=" + issue + ", jnumID=" + jnumID + ", jnumNumeric="
+                + jnumNumeric + ", journal=" + journal + ", longCitation="
+                + longCitation + ", markers=" + markers + ", miniCitation="
+                + miniCitation + ", pages=" + pages + ", primaryAuthor="
+                + primaryAuthor + ", pubDate=" + pubDate + ", pubmedid="
+                + pubmedid + ", refAbstract=" + refAbstract + ", referenceKey="
+                + referenceKey + ", referenceType=" + referenceType
+                + ", shortCitation=" + shortCitation + ", title=" + title
+                + ", vol=" + vol + ", year=" + year + "]";
+    }
 }
