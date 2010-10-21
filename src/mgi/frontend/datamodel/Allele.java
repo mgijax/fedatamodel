@@ -5,10 +5,12 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
@@ -29,8 +31,10 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @SecondaryTables (
     { 
       @SecondaryTable (name="allele_counts", pkJoinColumns= {
-        @PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } ) 
-    } )
+        @PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } ),
+      @SecondaryTable (name="allele_imsr_counts", pkJoinColumns= {
+    	@PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } )
+    }  )
 @JsonIgnoreProperties({"references", "notes", "molecularDescription", "ids"})
 public class Allele {
     private int alleleKey;
@@ -52,6 +56,10 @@ public class Allele {
     private List<Reference> references;
     private String symbol;
     private Set<AlleleSynonym> synonyms;
+    private Integer imsrCellLineCount;
+    private Integer imsrStrainCount;
+    private Integer imsrCountForMarker;
+    private RecombinaseInfo recombinaseInfo;
     
     // ================= Getters and Setters ===================== //
     
@@ -264,7 +272,60 @@ public class Allele {
         this.synonyms = synonyms;
     }
     
-    @Override
+    /* The three IMSR counts exist in a separate table (allele_imsr_counts)
+     * which we join in to make the attributes appear as if they were
+     * sitting in the allele table itself.
+     */
+    
+    /** count of cell lines for this allele in IMSR
+     */
+    @Column(table="allele_imsr_counts", name="cell_line_count")
+    @JoinColumn(name="allele_key")
+    public Integer getImsrCellLineCount() {
+		return imsrCellLineCount;
+	}
+
+	public void setImsrCellLineCount(Integer imsrCellLineCount) {
+		this.imsrCellLineCount = imsrCellLineCount;
+	}
+
+    /** count of strains for this allele in IMSR
+     */
+    @Column(table="allele_imsr_counts", name="strain_count")
+    @JoinColumn(name="allele_key")
+	public Integer getImsrStrainCount() {
+		return imsrStrainCount;
+	}
+
+	public void setImsrStrainCount(Integer imsrStrainCount) {
+		this.imsrStrainCount = imsrStrainCount;
+	}
+
+    /** count of cell lines and strains for the marker of this allele in IMSR
+     */
+    @Column(table="allele_imsr_counts", name="count_for_marker")
+    @JoinColumn(name="allele_key")
+	public Integer getImsrCountForMarker() {
+		return imsrCountForMarker;
+	}
+
+	public void setImsrCountForMarker(Integer imsrCountForMarker) {
+		this.imsrCountForMarker = imsrCountForMarker;
+	}
+
+    /** Return the RecombinaseInfo object associated with this allele.
+     */
+	@OneToOne (targetEntity=RecombinaseInfo.class, fetch=FetchType.LAZY)
+	@JoinColumn (name="allele_key")
+    public RecombinaseInfo getRecombinaseInfo() {
+        return recombinaseInfo;
+    }
+	
+	public void setRecombinaseInfo(RecombinaseInfo recombinaseInfo) {
+		this.recombinaseInfo = recombinaseInfo;
+	}
+
+	@Override
     public String toString() {
         return "Allele [alleleKey=" + alleleKey + ", alleleSubType="
                 + alleleSubType + ", alleleType=" + alleleType
