@@ -26,6 +26,8 @@ public class AlleleSystem {
     private int alleleKey;
     private List<AlleleSystemAssayResult> alleleSystemAssayResults;
     private int alleleSystemKey;
+    private int systemKey;
+    private String alleleID;
     private List<Image> images;
     private List<AlleleSystemOtherAllele> otherAlleles;
     private List<AlleleSystemOtherSystem> otherSystems;
@@ -42,7 +44,16 @@ public class AlleleSystem {
         return alleleKey;
     }
     
-    @OneToMany (targetEntity=AlleleSystemAssayResult.class)
+    @Column(name="allele_id")
+    public String getAlleleID() {
+		return alleleID;
+	}
+
+	public void setAlleleID(String alleleID) {
+		this.alleleID = alleleID;
+	}
+
+	@OneToMany (targetEntity=AlleleSystemAssayResult.class)
     @JoinColumn(name="allele_system_key")
     public List<AlleleSystemAssayResult> getAlleleSystemAssayResults() {
         return alleleSystemAssayResults;
@@ -100,7 +111,20 @@ public class AlleleSystem {
         return system;
     }
     
-    public void setAlleleKey(int alleleKey) {
+    /**
+     * Return the system's term key from the allele system pairing
+     * @return int
+     */
+    @Column(name="system_key")
+    public int getSystemKey() {
+		return systemKey;
+	}
+
+	public void setSystemKey(int systemKey) {
+		this.systemKey = systemKey;
+	}
+
+	public void setAlleleKey(int alleleKey) {
         this.alleleKey = alleleKey;
     }    
     
