@@ -26,7 +26,7 @@ public class AlleleSystem {
     private int alleleKey;
     private List<AlleleSystemAssayResult> alleleSystemAssayResults;
     private int alleleSystemKey;
-    private int systemKey;
+    private Integer systemKey;
     private String alleleID;
     private List<Image> images;
     private List<AlleleSystemOtherAllele> otherAlleles;
@@ -116,11 +116,11 @@ public class AlleleSystem {
      * @return int
      */
     @Column(name="system_key")
-    public int getSystemKey() {
+    public Integer getSystemKey() {
 		return systemKey;
 	}
 
-	public void setSystemKey(int systemKey) {
+	public void setSystemKey(Integer systemKey) {
 		this.systemKey = systemKey;
 	}
 
