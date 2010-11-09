@@ -28,6 +28,7 @@ public class Image {
     private int referenceKey;
     private int thumbnailImageKey;
     private Integer width;
+    private String jnumID;
     
     // ================= Getters and Setters ===================== //
     
@@ -68,6 +69,11 @@ public class Image {
     public int getIsThumbnail() {
         return isThumbnail;
     }
+    
+    @Column(name="jnum_id")
+    public String getJnumID() {
+		return jnumID;
+	}
     
     @Column(name="pixeldb_numeric_id")
     public String getPixeldbNumericID() {
@@ -120,6 +126,10 @@ public class Image {
         this.isThumbnail = isThumbnail;
     }
     
+    public void setJnumID(String jnumID) {
+		this.jnumID = jnumID;
+	}
+    
     public void setPixeldbNumericID(String pixeldbNumericID) {
         this.pixeldbNumericID = pixeldbNumericID;
     }
@@ -131,12 +141,12 @@ public class Image {
     public void setThumbnailImageKey(int thumbnailImageKey) {
         this.thumbnailImageKey = thumbnailImageKey;
     }
-    
-    public void setWidth(Integer width) {
+
+	public void setWidth(Integer width) {
         this.width = width;
     }
-    
-    @Override
+
+	@Override
     public String toString() {
         return "Image [caption=" + caption + ", copyright=" + copyright
                 + ", figureLabel=" + figureLabel + ", fullsizeImageKey="
