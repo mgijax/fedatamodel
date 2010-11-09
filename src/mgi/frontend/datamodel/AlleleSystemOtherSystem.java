@@ -15,31 +15,68 @@ import javax.persistence.Table;
 @Table (name="recombinase_other_system")
 public class AlleleSystemOtherSystem {
 
-    private int alleleSystemKey;
-    private String system;
+    private int uniqueKey;
+	private int alleleSystemKey;
+	private String alleleID;
+    private String otherSystem;
+    private int otherSystemKey;
     
     // ================= Getters and Setters ===================== //
     
-    @Id
+    @Column(name="allele_id")
+    public String getAlleleID() {
+		return alleleID;
+	}
+    
     @Column(name="allele_system_key")
     public int getAlleleSystemKey() {
         return alleleSystemKey;
     }
-    public String getSystem() {
-        return system;
+
+	@Column(name="other_system")
+    public String getOtherSystem() {
+        return otherSystem;
     }
-        
-    public void setAlleleSystemKey(int alleleSystemKey) {
+
+	@Column(name="other_system_key")
+	public int getOtherSystemKey() {
+		return otherSystemKey;
+	}
+
+    @Id
+    @Column(name="unique_key")
+	public int getUniqueKey() {
+		return uniqueKey;
+	}
+
+	public void setAlleleID(String alleleID) {
+		this.alleleID = alleleID;
+	}
+
+	public void setAlleleSystemKey(int alleleSystemKey) {
         this.alleleSystemKey = alleleSystemKey;
     }
-    public void setSystem(String system) {
-        this.system = system;
-    }
-    @Override
-    public String toString() {
-        return "AlleleSystemOtherSystem [System=" + system
-                + ", alleleSystemKey=" + alleleSystemKey + "]";
-    }
 
+	public void setOtherSystem(String system) {
+        this.otherSystem = system;
+    }
+        
+    public void setOtherSystemKey(int otherSystemKey) {
+		this.otherSystemKey = otherSystemKey;
+	}
+    public void setUniqueKey(int uniqueKey) {
+		this.uniqueKey = uniqueKey;
+	}
 
+	@Override
+	public String toString() {
+		return "AlleleSystemOtherSystem ["
+				+ (alleleID != null ? "alleleID=" + alleleID + ", " : "")
+				+ "alleleSystemKey="
+				+ alleleSystemKey
+				+ ", "
+				+ (otherSystem != null ? "otherSystem=" + otherSystem + ", "
+						: "") + "otherSystemKey=" + otherSystemKey
+				+ ", uniqueKey=" + uniqueKey + "]";
+	}
 }

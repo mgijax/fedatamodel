@@ -1,19 +1,13 @@
 package mgi.frontend.datamodel;
 
-import java.util.List;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Id;
 
 /**
  * recombinase_other_allele
- * @author mhall
+ * @author mhall, jsb
  *
  * Other alleles for a given allele system.
  *
@@ -22,50 +16,81 @@ import javax.persistence.Table;
 @Table (name="recombinase_other_allele")
 public class AlleleSystemOtherAllele {
 
-    private String alleleID;
-    private int alleleKey;
-    private String alleleSymbol;
-    private int alleleSystemKey;
+	private int uniqueKey;
+	private int alleleSystemKey;
+	private int otherAlleleKey;
+	private String otherAlleleID;
+	private String otherAlleleSymbol;
+	private String systemKey;
+	
+	@Column(name="allele_system_key")
+	public int getAlleleSystemKey() {
+		return alleleSystemKey;
+	}
+	
+	@Column(name="other_allele_id")
+	public String getOtherAlleleID() {
+		return otherAlleleID;
+	}
+	
+	@Column(name="other_allele_key")
+	public int getOtherAlleleKey() {
+		return otherAlleleKey;
+	}
+	
+	@Column(name="other_allele_symbol")
+	public String getOtherAlleleSymbol() {
+		return otherAlleleSymbol;
+	}
+	
+	@Column(name="system_key")
+	public String getSystemKey() {
+		return systemKey;
+	}
+	
+	@Id
+	@Column(name="unique_key")
+	public int getUniqueKey() {
+		return uniqueKey;
+	}
+	
+	public void setAlleleSystemKey(int alleleSystemKey) {
+		this.alleleSystemKey = alleleSystemKey;
+	}
+	
+    public void setOtherAlleleID(String otherAlleleID) {
+		this.otherAlleleID = otherAlleleID;
+	}
     
-    // ================= Getters and Setters ===================== //
+    public void setOtherAlleleKey(int otherAlleleKey) {
+		this.otherAlleleKey = otherAlleleKey;
+	}
     
-    @Column(name="allele_id")
-    public String getAlleleID() {
-        return alleleID;
-    }
-    @Column(name="allele_key")
-    public int getAlleleKey() {
-        return alleleKey;
-    }
+    public void setOtherAlleleSymbol(String otherAlleleSymbol) {
+		this.otherAlleleSymbol = otherAlleleSymbol;
+	}
     
-    @Column(name="allele_symbol")
-    public String getAlleleSymbol() {
-        return alleleSymbol;
-    }
-    @Id
-    @Column(name="allele_system_key")
-    public int getAlleleSystemKey() {
-        return alleleSystemKey;
-    }
-        
-    public void setAlleleID(String alleleID) {
-        this.alleleID = alleleID;
-    }
-    public void setAlleleKey(int alleleKey) {
-        this.alleleKey = alleleKey;
-    }
-    public void setAlleleSymbol(String alleleSymbol) {
-        this.alleleSymbol = alleleSymbol;
-    }
-    public void setAlleleSystemKey(int alleleSystemKey) {
-        this.alleleSystemKey = alleleSystemKey;
-    }
-    @Override
-    public String toString() {
-        return "AlleleSystemOtherAllele [alleleID=" + alleleID + ", alleleKey="
-                + alleleKey + ", alleleSymbol=" + alleleSymbol
-                + ", alleleSystemKey=" + alleleSystemKey + "]";
-    }
+    public void setSystemKey(String systemKey) {
+		this.systemKey = systemKey;
+	}
+    
+    public void setUniqueKey(int uniqueKey) {
+		this.uniqueKey = uniqueKey;
+	}
 
-
+	@Override
+	public String toString() {
+		return "AlleleSystemOtherAllele [alleleSystemKey="
+				+ alleleSystemKey
+				+ ", "
+				+ (otherAlleleID != null ? "otherAlleleID=" + otherAlleleID
+						+ ", " : "")
+				+ "otherAlleleKey="
+				+ otherAlleleKey
+				+ ", "
+				+ (otherAlleleSymbol != null ? "otherAlleleSymbol="
+						+ otherAlleleSymbol + ", " : "")
+				+ (systemKey != null ? "systemKey=" + systemKey + ", " : "")
+				+ "uniqueKey=" + uniqueKey + "]";
+	}
 }
