@@ -4,8 +4,6 @@ import java.util.Set;
 import java.util.List;
 import javax.persistence.*;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
 @Entity
 @Table (name="reference")
 @SecondaryTables (
@@ -16,7 +14,6 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 	  @SecondaryTable (name="reference_book", pkJoinColumns= {
 		@PrimaryKeyJoinColumn(name="reference_key", referencedColumnName="reference_key") } ) 
 	} )
-@JsonIgnoreProperties({"markers"})
 public class Reference {
 
 	private String authors;
