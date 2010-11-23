@@ -24,4 +24,27 @@ public class SequenceSource extends Source {
 		this.sequenceKey = sequenceKey;
 	}
 
+	/** returns true if the source uses raw values.  (These values are 
+	 * marked by an asterisk and indicate those that could not be mapped 
+	 * to an MGI controlled vocabulary.)
+	 */
+	@Transient
+	public boolean hasRawValues() {
+		if ((this.age != null) && this.age.endsWith("*")) {
+			return true;
+		}
+		if ((this.cellline != null) && this.cellline.endsWith("*")) {
+			return true;
+		}
+		if ((this.sex != null) && this.sex.endsWith("*")) {
+			return true;
+		}
+		if ((this.strain != null) && this.strain.endsWith("*")) {
+			return true;
+		}
+		if ((this.tissue != null) && this.tissue.endsWith("*")) {
+			return true;
+		}
+		return false;
+	}
 }

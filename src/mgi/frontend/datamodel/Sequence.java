@@ -1,5 +1,6 @@
 package mgi.frontend.datamodel;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -278,6 +279,32 @@ public class Sequence {
 		return version;
 	}
 
+	/** returns true if the sequence or any of its sources uses raw
+	 * values.  (These values are marked by an asterisk and indicate
+	 * those that could not be mapped to an MGI controlled vocabulary.)
+	 */
+	@Transient
+	public boolean hasRawValues() {
+		if ((this.library != null) && this.library.endsWith("*")) {
+			return true;
+		}
+		if ((this.organism != null) && this.organism.endsWith("*")) {
+			return true;
+		}
+
+		List<SequenceSource> sources = this.getSources();
+		Iterator<SequenceSource> it = sources.iterator();
+		SequenceSource source = null;
+		
+		while (it.hasNext()) {
+			source = it.next();
+			if (source.hasRawValues()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void setBiotype(String biotype) {
 		this.biotype = biotype;
 	}
