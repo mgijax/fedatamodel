@@ -28,7 +28,7 @@ import javax.persistence.Transient;
 		  	@PrimaryKeyJoinColumn(name="sequence_key", referencedColumnName="sequence_key") } )
 		} )
 public class Sequence {
-    
+
 	private String biotype;
 	private Integer countOfMarkers;
 	private String description;
@@ -62,7 +62,7 @@ public class Sequence {
 	private String version;
 
     // ================= Getters and Setters ===================== //
-	
+
 	@Column(table="sequence_gene_model")
 	@JoinColumn(name="sequence_key")
 	public String getBiotype() {
@@ -98,7 +98,7 @@ public class Sequence {
 	/**
 	 * Return the a collection of all possible sequence IDs
 	 * for a sequence.
-	 * 
+	 *
 	 * @return
 	 */
 	@OneToMany (targetEntity=SequenceID.class)
@@ -135,7 +135,7 @@ public class Sequence {
 	 * The locations are placed into the database in a specific order
 	 * with the preferred location being first, second most second.. etc.
 	 */
-	
+
 	@OneToMany (targetEntity=SequenceLocation.class)
     @JoinColumn(name="sequence_key")
     @OrderBy("sequenceNum")
@@ -192,7 +192,7 @@ public class Sequence {
             joinColumns=@JoinColumn(name="sequence_key"),
             inverseJoinColumns=@JoinColumn(name="probe_key")
             )
-    @OrderBy("cloneid")            
+    @OrderBy("cloneid")
 	public Set<Probe> getProbes() {
         return probes;
     }
@@ -211,7 +211,7 @@ public class Sequence {
 	}
 
 	/**
-	 * Return a collection of references, ordered by 
+	 * Return a collection of references, ordered by
 	 * year and then jnum.
 	 * @return
 	 */
@@ -220,7 +220,7 @@ public class Sequence {
             joinColumns=@JoinColumn(name="sequence_key"),
             inverseJoinColumns=@JoinColumn(name="reference_key")
             )
-    @OrderBy("year, jnumNumeric")
+    @OrderBy("jnumNumeric")
     public List<Reference> getReferences() {
         return references;
     }
@@ -295,7 +295,7 @@ public class Sequence {
 		List<SequenceSource> sources = this.getSources();
 		Iterator<SequenceSource> it = sources.iterator();
 		SequenceSource source = null;
-		
+
 		while (it.hasNext()) {
 			source = it.next();
 			if (source.hasRawValues()) {
@@ -304,7 +304,7 @@ public class Sequence {
 		}
 		return false;
 	}
-	
+
 	public void setBiotype(String biotype) {
 		this.biotype = biotype;
 	}
