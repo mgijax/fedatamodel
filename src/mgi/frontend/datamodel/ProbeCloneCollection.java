@@ -16,6 +16,7 @@ public class ProbeCloneCollection {
 
     private String collection;
     private int probeKey;
+	private int uniqueKey;
     
     // ================= Getters and Setters ===================== //
     
@@ -23,11 +24,16 @@ public class ProbeCloneCollection {
         return collection;
     }
 
-    @Id
     @Column(name="probe_key")
     public int getProbeKey() {
         return probeKey;
     }
+
+	@Id
+	@Column(name="unique_key")
+	public int getUniqueKey() {
+		return uniqueKey;
+	}
 
     public void setCollection(String collection) {
         this.collection = collection;
@@ -37,4 +43,7 @@ public class ProbeCloneCollection {
         this.probeKey = probeKey;
     }
 
+    public void setUniqueKey(int uniqueKey) {
+		this.uniqueKey = uniqueKey;
+	}
 }
