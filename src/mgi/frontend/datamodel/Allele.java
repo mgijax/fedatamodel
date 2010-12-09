@@ -48,6 +48,7 @@ public class Allele {
     private Set<AlleleID> ids;
     private String inducibleNote;
     private int isRecombinase;
+    private int isWildType;
     private String molecularDescription;
     private String name;
     private List<AlleleNote> notes;
@@ -131,12 +132,36 @@ public class Allele {
         return ids;
     }
     
-    @Column(name="inducible_note")
+    /** count of cell lines for this allele in IMSR
+     */
+    @Column(table="allele_imsr_counts", name="cell_line_count")
+    @JoinColumn(name="allele_key")
+    public Integer getImsrCellLineCount() {
+		return imsrCellLineCount;
+	}
+    
+    /** count of cell lines and strains for the marker of this allele in IMSR
+     */
+    @Column(table="allele_imsr_counts", name="count_for_marker")
+    @JoinColumn(name="allele_key")
+	public Integer getImsrCountForMarker() {
+		return imsrCountForMarker;
+	}
+    
+    /** count of strains for this allele in IMSR
+     */
+    @Column(table="allele_imsr_counts", name="strain_count")
+    @JoinColumn(name="allele_key")
+	public Integer getImsrStrainCount() {
+		return imsrStrainCount;
+	}
+
+	@Column(name="inducible_note")
     public String getInducibleNote() {
         return inducibleNote;
     }
-    
-    /**
+
+	/**
      * Is this a cre allele?
      * @return
      */
@@ -144,6 +169,13 @@ public class Allele {
     public int getIsRecombinase() {
         return isRecombinase;
     }
+    
+    /** is this a wild-type allele?  (1 if yes, 0 if no)
+     */
+    @Column(name="is_wild_type")
+    public int getIsWildType() {
+		return isWildType;
+	}
     
     @Column(name="molecular_description")
     public String getMolecularDescription() {
@@ -153,7 +185,6 @@ public class Allele {
     public String getName() {
         return name;
     }
-    
     /**
      * return all of the allele notes.  This class is based off of the notes 
      * class.
@@ -180,6 +211,14 @@ public class Allele {
         return primaryID;
     }
     
+    
+    /** Return the RecombinaseInfo object associated with this allele.
+     */
+	@OneToOne (targetEntity=RecombinaseInfo.class, fetch=FetchType.LAZY)
+	@JoinColumn (name="allele_key")
+    public RecombinaseInfo getRecombinaseInfo() {
+        return recombinaseInfo;
+    }
     @OneToMany
     @JoinTable (name="allele_to_reference",
             joinColumns=@JoinColumn(name="allele_key"),
@@ -189,87 +228,76 @@ public class Allele {
     public List<Reference> getReferences() {
         return references;
     }
+    
     public String getSymbol() {
         return symbol;
     }
-    
-    
     @OneToMany (targetEntity=AlleleSynonym.class)
     @JoinColumn(name="allele_key")
     public Set<AlleleSynonym> getSynonyms() {
         return synonyms;
     }
+    
     public void setAlleleKey(int alleleKey) {
         this.alleleKey = alleleKey;
     }
-    
     public void setAlleleSubType(String alleleSubType) {
         this.alleleSubType = alleleSubType;
     }
+    
     public void setAlleleSystems(List<AlleleSystem> alleleSystems) {
         this.alleleSystems = alleleSystems;
     }
-    
     public void setAlleleType(String alleleType) {
         this.alleleType = alleleType;
     }
+    
     public void setCountOfMarkers(Integer countOfMarkers) {
         this.countOfMarkers = countOfMarkers;
     }
-    
+
     public void setCountOfReferences(Integer countOfReferences) {
         this.countOfReferences = countOfReferences;
     }
+    
     public void setDriver(String driver) {
         this.driver = driver;
     }
-    
+
     public void setGeneName(String geneName) {
         this.geneName = geneName;
     }
-
+    
     public void setIds(Set<AlleleID> ids) {
         this.ids = ids;
     }
+
+    public void setImsrCellLineCount(Integer imsrCellLineCount) {
+		this.imsrCellLineCount = imsrCellLineCount;
+	}
+    
+    public void setImsrCountForMarker(Integer imsrCountForMarker) {
+		this.imsrCountForMarker = imsrCountForMarker;
+	}
+
+    public void setImsrStrainCount(Integer imsrStrainCount) {
+		this.imsrStrainCount = imsrStrainCount;
+	}
     
     public void setInducibleNote(String inducibleNote) {
         this.inducibleNote = inducibleNote;
     }
-
+    
     public void setIsRecombinase(int isRecombinase) {
         this.isRecombinase = isRecombinase;
     }
     
+    public void setIsWildType(int isWildType) {
+		this.isWildType = isWildType;
+	}
+    
     public void setMolecularDescription(String molecularDescription) {
         this.molecularDescription = molecularDescription;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public void setNotes(List<AlleleNote> notes) {
-        this.notes = notes;
-    }
-
-    public void setOnlyAlleleSymbol(String onlyAlleleSymbol) {
-        this.onlyAlleleSymbol = onlyAlleleSymbol;
-    }
-    
-    public void setPrimaryID(String primaryID) {
-        this.primaryID = primaryID;
-    }
-    
-    public void setReferences(List<Reference> references) {
-        this.references = references;
-    }
-    
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-    
-    public void setSynonyms(Set<AlleleSynonym> synonyms) {
-        this.synonyms = synonyms;
     }
     
     /* The three IMSR counts exist in a separate table (allele_imsr_counts)
@@ -277,53 +305,37 @@ public class Allele {
      * sitting in the allele table itself.
      */
     
-    /** count of cell lines for this allele in IMSR
-     */
-    @Column(table="allele_imsr_counts", name="cell_line_count")
-    @JoinColumn(name="allele_key")
-    public Integer getImsrCellLineCount() {
-		return imsrCellLineCount;
-	}
-
-	public void setImsrCellLineCount(Integer imsrCellLineCount) {
-		this.imsrCellLineCount = imsrCellLineCount;
-	}
-
-    /** count of strains for this allele in IMSR
-     */
-    @Column(table="allele_imsr_counts", name="strain_count")
-    @JoinColumn(name="allele_key")
-	public Integer getImsrStrainCount() {
-		return imsrStrainCount;
-	}
-
-	public void setImsrStrainCount(Integer imsrStrainCount) {
-		this.imsrStrainCount = imsrStrainCount;
-	}
-
-    /** count of cell lines and strains for the marker of this allele in IMSR
-     */
-    @Column(table="allele_imsr_counts", name="count_for_marker")
-    @JoinColumn(name="allele_key")
-	public Integer getImsrCountForMarker() {
-		return imsrCountForMarker;
-	}
-
-	public void setImsrCountForMarker(Integer imsrCountForMarker) {
-		this.imsrCountForMarker = imsrCountForMarker;
-	}
-
-    /** Return the RecombinaseInfo object associated with this allele.
-     */
-	@OneToOne (targetEntity=RecombinaseInfo.class, fetch=FetchType.LAZY)
-	@JoinColumn (name="allele_key")
-    public RecombinaseInfo getRecombinaseInfo() {
-        return recombinaseInfo;
+    public void setName(String name) {
+        this.name = name;
     }
-	
-	public void setRecombinaseInfo(RecombinaseInfo recombinaseInfo) {
+
+	public void setNotes(List<AlleleNote> notes) {
+        this.notes = notes;
+    }
+
+    public void setOnlyAlleleSymbol(String onlyAlleleSymbol) {
+        this.onlyAlleleSymbol = onlyAlleleSymbol;
+    }
+
+	public void setPrimaryID(String primaryID) {
+        this.primaryID = primaryID;
+    }
+
+    public void setRecombinaseInfo(RecombinaseInfo recombinaseInfo) {
 		this.recombinaseInfo = recombinaseInfo;
 	}
+
+	public void setReferences(List<Reference> references) {
+        this.references = references;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+	
+	public void setSynonyms(Set<AlleleSynonym> synonyms) {
+        this.synonyms = synonyms;
+    }
 
 	@Override
     public String toString() {
