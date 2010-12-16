@@ -25,43 +25,53 @@ public class Annotation {
 	
     // ================= Getters and Setters ===================== //
 
+	@Column(name="annotation_key")
 	public Integer getAnnotationKey() {
 		return annotationKey;
 	}
 
+	@Column(name="annotation_type")
 	public String getAnnotationType() {
 		return annotationType;
 	}
 
+	@Column(name="evidence_term")
 	public String getEvidenceTerm() {
 		return evidenceTerm;
 	}
 
+	@Column(name="jnum_id")
 	public String getJnumID() {
 		return jnumID;
 	}
 
+	@Column(name="qualifier")
 	public String getQualifier() {
 		return qualifier;
 	}
 
+	@Column(name="reference_key")
 	public Integer getReferenceKey() {
 		return referenceKey;
 	}
 
+	@Column(name="term")
 	public String getTerm() {
 		return term;
 	}
 
+	@Column(name="term_id")
 	public String getTermID() {
 		return termID;
 	}
 
 	@Id
+	@Column(name="unique_key")
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
 
+	@Column(name="vocab_name")
 	public String getVocabName() {
 		return vocabName;
 	}
