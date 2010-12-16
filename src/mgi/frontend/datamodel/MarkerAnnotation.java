@@ -9,12 +9,13 @@ import javax.persistence.*;
  * inherited.
  */
 @Entity
-@Table (name="markerannotation")
+@Table (name="marker_annotation")
 public class MarkerAnnotation extends Annotation {
 	protected Integer markerKey;
 
     // ================= Getters and Setters ===================== //
 	
+	@Column(name="marker_key")
 	public Integer getMarkerKey() {
 		return markerKey;
 	}
