@@ -34,9 +34,6 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 		{ @SecondaryTable (name="marker_counts", pkJoinColumns= {
 			@PrimaryKeyJoinColumn(name="marker_key", referencedColumnName="marker_key") } ) 
 		} )
-@JsonIgnoreProperties({"ids", "synonyms", "references", "annotations", 
-		"orthologousMarkers", "referenceAssociations", "notes", "sortedReferenceAssociations", 
-		"comparableValue", "countOfReferences", "countOfSequences"})
 public class Marker {
 
 	private List<MarkerAnnotation> annotations;
@@ -71,10 +68,12 @@ public class Marker {
 	private String status;
 	private String symbol;
 	private Set<MarkerSynonym> synonyms;
+	private List<MarkerTissueCount> markerTissueCounts;
 	private Integer countOfPhenotypeImages;
 	private Integer countOfHumanDiseases;
 	private Integer countOfAllelesWithHumanDiseases;
 	private Integer countOfAntibodies;
+	private List<ExpressionAssay> expressionAssays;
 	
     // ================= Instance Methods ===================== //
 	
@@ -169,7 +168,7 @@ public class Marker {
     public Integer getCountOfAlleles() {
         return countOfAlleles;
     }
-
+	
 	@Column(table="marker_counts", name="alleles_with_human_disease_count")
     @JoinColumn(name="marker_key")
 	public Integer getCountOfAllelesWithHumanDiseases() {
@@ -187,43 +186,43 @@ public class Marker {
 	public Integer getCountOfCdnaSources() {
 		return countOfCdnaSources;
 	}
-	
+
 	@Column(table="marker_counts", name="go_term_count")
     @JoinColumn(name="marker_key")
     public Integer getCountOfGOTerms() {
         return countOfGOTerms;
     }
-	
+
 	@Column(table="marker_counts", name="gxd_assay_count")
     @JoinColumn(name="marker_key")
     public Integer getCountOfGXDAssays() {
         return countOfGXDAssays;
     }
-
+	
 	@Column(table="marker_counts", name="gxd_image_count")
     @JoinColumn(name="marker_key")
 	public Integer getCountOfGXDImages() {
 		return countOfGXDImages;
 	}
-
+	
 	@Column(table="marker_counts", name="gxd_literature_count")
     @JoinColumn(name="marker_key")
 	public Integer getCountOfGXDLiterature() {
 		return countOfGXDLiterature;
 	}
 
-    @Column(table="marker_counts", name="gxd_result_count")
+	@Column(table="marker_counts", name="gxd_result_count")
     @JoinColumn(name="marker_key")
 	public Integer getCountOfGXDResults() {
 		return countOfGXDResults;
 	}
 
-    @Column(table="marker_counts", name="gxd_tissue_count")
+	@Column(table="marker_counts", name="gxd_tissue_count")
     @JoinColumn(name="marker_key")
 	public Integer getCountOfGXDTissues() {
 		return countOfGXDTissues;
 	}
-	
+
     @Column(table="marker_counts", name="human_disease_count")
     @JoinColumn(name="marker_key")
 	public Integer getCountOfHumanDiseases() {
@@ -241,20 +240,20 @@ public class Marker {
 	public Integer getCountOfMicroarrayProbesets() {
 		return countOfMicroarrayProbesets;
 	}
-	
-	@Column(table="marker_counts", name="ortholog_count")
+
+    @Column(table="marker_counts", name="ortholog_count")
     @JoinColumn(name="marker_key")
     public Integer getCountOfOrthologs() {
         return countOfOrthologs;
     }
-
+	
     @Column(table="marker_counts", name="phenotype_image_count")
     @JoinColumn(name="marker_key")
 	public Integer getCountOfPhenotypeImages() {
 		return countOfPhenotypeImages;
 	}
-
-    @Column(table="marker_counts", name="reference_count")
+	
+	@Column(table="marker_counts", name="reference_count")
 	@JoinColumn(name="marker_key")
 	public Integer getCountOfReferences() {
 		return countOfReferences;
@@ -272,13 +271,13 @@ public class Marker {
 		return countOfSequences;
 	}
 
-	@Column(table="marker_counts", name="sequence_uniprot_count")
+    @Column(table="marker_counts", name="sequence_uniprot_count")
 	@JoinColumn(name="marker_key")
 	public Integer getCountOfUniProtSequences() {
 		return countOfUniProtSequences;
 	}
-	
-	/** returns a collection of marker count set items, which extend the
+
+    /** returns a collection of marker count set items, which extend the
 	 * base count set item class.
 	 */
 	@OneToMany (targetEntity=MarkerCountSetItem.class)
@@ -294,12 +293,18 @@ public class Marker {
 	public MarkerID getEnsemblGeneModelID() {
 		return this.getSingleID("Ensembl Gene Model");
 	}
-
+	
 	/** get the Entrez Gene ID for this marker, or null if none
 	 */
 	@Transient
 	public MarkerID getEntrezGeneID() {
 		return this.getSingleID("Entrez Gene");
+	}
+
+	@OneToMany (fetch=FetchType.LAZY)
+	@JoinColumn(name="marker_key")
+	public List<ExpressionAssay> getExpressionAssays() {
+		return expressionAssays;
 	}
 
 	/** get the Gene Ontology (GO) annotations for this marker
@@ -315,7 +320,7 @@ public class Marker {
 	public List<MarkerCountSetItem> getGXDAssayCountsByType() {
 		return this.filterCountSetItems("Expression Assays by Assay Type");
 	}
-	
+
 	/** return the list of counts of GXD results by Theiler Stage
 	 */
 	@Transient
@@ -357,7 +362,7 @@ public class Marker {
 	public List<MarkerLocation> getLocations() {
 		return locations;
 	}
-
+	
 	/** convenience method to pull the marker clip out of the list of notes
 	 */
 	@Transient
@@ -379,10 +384,20 @@ public class Marker {
 	public int getMarkerKey() {
 		return markerKey;
 	}
-	
+
 	@Column(name="marker_subtype")
 	public String getMarkerSubtype() {
 		return markerSubtype;
+	}
+	
+	/** returns a list of MarkerTissueCount objects, which give the counts
+	 * of expression results by tissue for the marker
+	 */
+	@OneToMany (targetEntity=MarkerTissueCount.class)
+	@JoinColumn(name="marker_key")
+	@OrderBy("sequenceNum")
+	public List<MarkerTissueCount> getMarkerTissueCounts() {
+		return markerTissueCounts;
 	}
 
 	@Column(name="marker_type")
@@ -477,8 +492,8 @@ public class Marker {
 	public List<MarkerReferenceAssociation> getReferenceAssociations() {
 		return referenceAssociations;
 	}
-    
-    /**
+	
+	/**
 	 * Return a collection of references
 	 * @return
 	 * This is order by year and then jnum
@@ -491,9 +506,9 @@ public class Marker {
 	@OrderBy("year, jnumNumeric")
 	public List<Reference> getReferences() {
 		return references;
-	}   
-    
-    /** get the RefSeq ID for this marker, or null if none
+	}
+
+	/** get the RefSeq ID for this marker, or null if none
 	 */
 	@Transient
 	public MarkerID getRefSeqID() {
@@ -516,9 +531,9 @@ public class Marker {
 		List<MarkerID> sublist = this.filterMarkerIDs("Sequence DB");
 		sublist.addAll(this.filterMarkerIDs("RefSeq"));
 		return sublist;
-	}  
-
-	/** get the a single ID for the given logical database, or null if none
+	}   
+    
+    /** get the a single ID for the given logical database, or null if none
 	 */
 	@Transient
 	private MarkerID getSingleID (String logicalDatabase) {
@@ -528,11 +543,11 @@ public class Marker {
 		}
 		return null;
 	}
-
-	public String getStatus() {
+    
+    public String getStatus() {
 		return status;
-	}
-	
+	}  
+
 	public String getSymbol() {
 		return symbol;
 	}
@@ -542,7 +557,7 @@ public class Marker {
 	public Set<MarkerSynonym> getSynonyms() {
 		return synonyms;
 	}
-
+	
 	/** get the VEGA Gene Model ID for this marker, or null if none
 	 */
 	@Transient
@@ -635,6 +650,10 @@ public class Marker {
 		this.countSetItems = countSetItems;
 	}
 
+	public void setExpressionAssays(List<ExpressionAssay> expressionAssays) {
+		this.expressionAssays = expressionAssays;
+	}
+
 	public void setIds(Set<MarkerID> ids) {
 		this.ids = ids;
 	}
@@ -649,6 +668,10 @@ public class Marker {
 
 	public void setMarkerSubtype(String markerSubtype) {
 		this.markerSubtype = markerSubtype;
+	}
+
+	public void setMarkerTissueCounts(List<MarkerTissueCount> markerTissueCounts) {
+		this.markerTissueCounts = markerTissueCounts;
 	}
 
 	public void setMarkerType(String markerType) {
