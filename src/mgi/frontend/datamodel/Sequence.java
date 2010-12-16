@@ -62,6 +62,7 @@ public class Sequence {
 	private Integer transcriptCount;
 	private String vectorEnd;
 	private String version;
+	private int hasCloneCollection;
 
     // ================= Getters and Setters ===================== //
 
@@ -69,6 +70,13 @@ public class Sequence {
 	@JoinColumn(name="sequence_key")
 	public String getBiotype() {
 		return biotype;
+	}
+
+	@OneToMany (targetEntity=SequenceCloneCollection.class)
+    @JoinColumn(name="sequence_key")
+    @OrderBy("collection")
+	public List<SequenceCloneCollection> getCloneCollections() {
+		return cloneCollections;
 	}
 
 	@Column(table="sequence_counts", name="marker_count")
@@ -101,6 +109,11 @@ public class Sequence {
 	@JoinColumn(name="sequence_key")
 	public Integer getGoodHitCount() {
 		return goodHitCount;
+	}
+
+	@Column(name="has_clone_collection")
+	public int getHasCloneCollection() {
+		return hasCloneCollection;
 	}
 
 	/**
@@ -261,17 +274,6 @@ public class Sequence {
         return sources;
     }
 
-	@OneToMany (targetEntity=SequenceCloneCollection.class)
-    @JoinColumn(name="sequence_key")
-    @OrderBy("collection")
-	public List<SequenceCloneCollection> getCloneCollections() {
-		return cloneCollections;
-	}
-
-	public void setCloneCollections(List<SequenceCloneCollection> cloneCollections) {
-		this.cloneCollections = cloneCollections;
-	}
-
 	public String getStatus() {
 		return status;
 	}
@@ -328,6 +330,10 @@ public class Sequence {
 		this.biotype = biotype;
 	}
 
+	public void setCloneCollections(List<SequenceCloneCollection> cloneCollections) {
+		this.cloneCollections = cloneCollections;
+	}
+
 	public void setCountOfMarkers(Integer countOfMarkers) {
 		this.countOfMarkers = countOfMarkers;
 	}
@@ -350,6 +356,10 @@ public class Sequence {
 
 	public void setGoodHitCount(Integer goodHitCount) {
 		this.goodHitCount = goodHitCount;
+	}
+
+	public void setHasCloneCollection(int hasCloneCollection) {
+		this.hasCloneCollection = hasCloneCollection;
 	}
 
 	public void setIds(Set<SequenceID> ids) {
