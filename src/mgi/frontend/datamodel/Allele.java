@@ -61,21 +61,23 @@ public class Allele {
     private Integer imsrStrainCount;
     private Integer imsrCountForMarker;
     private RecombinaseInfo recombinaseInfo;
+    private List<AlleleGenotypeAssociation> genotypeAssociations;
+    private List<AlleleAnnotation> annotations;
     
     // ================= Getters and Setters ===================== //
     
-    @Id
+	@Id
     @Column(name="allele_key")
     public int getAlleleKey() {
         return alleleKey;
     }
-    
-    @Column(name="allele_subtype")
+
+	@Column(name="allele_subtype")
     public String getAlleleSubType() {
         return alleleSubType;
     }
-    
-    /**
+
+	/**
      * Return the allesystem objects.  This is only really
      * relevant if its a cre allele.
      * @return
@@ -93,6 +95,12 @@ public class Allele {
     @Column(name="allele_type")
     public String getAlleleType() {
         return alleleType;
+    }
+    
+    @OneToMany (fetch=FetchType.LAZY)
+    @JoinColumn(name="allele_key")
+    public List<AlleleAnnotation> getAnnotations() {
+    	return annotations;
     }
     
     @Column(table="allele_counts", name="marker_count")
@@ -121,6 +129,12 @@ public class Allele {
         return geneName;
     }
     
+    @OneToMany (fetch=FetchType.LAZY)
+	@JoinColumn(name="allele_key")
+    public List<AlleleGenotypeAssociation> getGenotypeAssociations() {
+		return genotypeAssociations;
+	}
+    
     /**
      * Return all of the possible allele id's.  This class is based
      * off of the accession id class.
@@ -131,8 +145,8 @@ public class Allele {
     public Set<AlleleID> getIds() {
         return ids;
     }
-    
-    /** count of cell lines for this allele in IMSR
+
+	/** count of cell lines for this allele in IMSR
      */
     @Column(table="allele_imsr_counts", name="cell_line_count")
     @JoinColumn(name="allele_key")
@@ -155,13 +169,13 @@ public class Allele {
 	public Integer getImsrStrainCount() {
 		return imsrStrainCount;
 	}
-
-	@Column(name="inducible_note")
+    
+    @Column(name="inducible_note")
     public String getInducibleNote() {
         return inducibleNote;
     }
-
-	/**
+    
+    /**
      * Is this a cre allele?
      * @return
      */
@@ -169,15 +183,15 @@ public class Allele {
     public int getIsRecombinase() {
         return isRecombinase;
     }
-    
-    /** is this a wild-type allele?  (1 if yes, 0 if no)
+
+	/** is this a wild-type allele?  (1 if yes, 0 if no)
      */
     @Column(name="is_wild_type")
     public int getIsWildType() {
 		return isWildType;
 	}
-    
-    @Column(name="molecular_description")
+
+	@Column(name="molecular_description")
     public String getMolecularDescription() {
         return molecularDescription;
     }
@@ -185,6 +199,7 @@ public class Allele {
     public String getName() {
         return name;
     }
+    
     /**
      * return all of the allele notes.  This class is based off of the notes 
      * class.
@@ -211,7 +226,6 @@ public class Allele {
         return primaryID;
     }
     
-    
     /** Return the RecombinaseInfo object associated with this allele.
      */
 	@OneToOne (targetEntity=RecombinaseInfo.class, fetch=FetchType.LAZY)
@@ -228,6 +242,7 @@ public class Allele {
     public List<Reference> getReferences() {
         return references;
     }
+    
     
     public String getSymbol() {
         return symbol;
@@ -252,21 +267,29 @@ public class Allele {
         this.alleleType = alleleType;
     }
     
+    public void setAnnotations(List<AlleleAnnotation> annotations) {
+		this.annotations = annotations;
+	}
     public void setCountOfMarkers(Integer countOfMarkers) {
         this.countOfMarkers = countOfMarkers;
     }
-
+    
     public void setCountOfReferences(Integer countOfReferences) {
         this.countOfReferences = countOfReferences;
     }
-    
+
     public void setDriver(String driver) {
         this.driver = driver;
     }
-
+    
     public void setGeneName(String geneName) {
         this.geneName = geneName;
     }
+
+    public void setGenotypeAssociations(
+			List<AlleleGenotypeAssociation> genotypeAssociations) {
+		this.genotypeAssociations = genotypeAssociations;
+	}
     
     public void setIds(Set<AlleleID> ids) {
         this.ids = ids;
