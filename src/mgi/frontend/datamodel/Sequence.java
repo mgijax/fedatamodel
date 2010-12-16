@@ -31,6 +31,7 @@ public class Sequence {
 
 	private String biotype;
 	private Integer countOfMarkers;
+	private Integer countOfProbes;
 	private String description;
 	private String division;
 	private Integer exonCount;
@@ -55,6 +56,7 @@ public class Sequence {
 	private int sequenceKey;
 	private String sequenceType;
 	private List<SequenceSource> sources;
+	private List<SequenceCloneCollection> cloneCollections;
 	private String status;
 	private String tagMethod;
 	private Integer transcriptCount;
@@ -73,6 +75,12 @@ public class Sequence {
 	@JoinColumn(name="sequence_key")
 	public Integer getCountOfMarkers() {
 		return countOfMarkers;
+	}
+
+	@Column(table="sequence_counts", name="probe_count")
+	@JoinColumn(name="sequence_key")
+	public Integer getCountOfProbes() {
+		return countOfProbes;
 	}
 
 	public String getDescription() {
@@ -253,6 +261,17 @@ public class Sequence {
         return sources;
     }
 
+	@OneToMany (targetEntity=SequenceCloneCollection.class)
+    @JoinColumn(name="sequence_key")
+    @OrderBy("collection")
+	public List<SequenceCloneCollection> getCloneCollections() {
+		return cloneCollections;
+	}
+
+	public void setCloneCollections(List<SequenceCloneCollection> cloneCollections) {
+		this.cloneCollections = cloneCollections;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -311,6 +330,10 @@ public class Sequence {
 
 	public void setCountOfMarkers(Integer countOfMarkers) {
 		this.countOfMarkers = countOfMarkers;
+	}
+
+	public void setCountOfProbes(Integer countOfProbes) {
+		this.countOfProbes = countOfProbes;
 	}
 
 	public void setDescription(String description) {
