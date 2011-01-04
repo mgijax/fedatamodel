@@ -159,6 +159,7 @@ public class Marker {
 	 */
 	@OneToMany (targetEntity=MarkerAnnotation.class)
 	@JoinColumn(name="marker_key")
+	@OrderBy("sequenceNum")
 	public List<MarkerAnnotation> getAnnotations() {
 		return annotations;
 	}
