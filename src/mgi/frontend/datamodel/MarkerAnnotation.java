@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Table (name="marker_annotation")
 public class MarkerAnnotation extends Annotation {
 	protected Integer markerKey;
+	protected Integer sequenceNum;
 
     // ================= Getters and Setters ===================== //
 	
@@ -22,6 +23,15 @@ public class MarkerAnnotation extends Annotation {
 
 	public void setMarkerKey(Integer markerKey) {
 		this.markerKey = markerKey;
+	}
+
+	@Column(name="sequence_num")
+	public Integer getSequenceNum() {
+		return sequenceNum;
+	}
+
+	public void setSequenceNum(Integer sequenceNum) {
+		this.sequenceNum = sequenceNum;
 	}
 
 	@Override
