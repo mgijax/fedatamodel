@@ -23,6 +23,7 @@ public class Location {
 	protected Float startCoordinate;
 	protected int uniqueKey;
 	protected Float cmOffset;
+	protected String strand;
 	
     // ================= Getters and Setters ===================== //
 
@@ -48,6 +49,11 @@ public class Location {
 	@Column(name="map_units")
 	public String getMapUnits() {
 		return mapUnits;
+	}
+
+	@Column(name="strand")
+	public String getStrand() {
+		return strand;
 	}
 
 	public String getProvider() {
@@ -104,6 +110,10 @@ public class Location {
 
 	public void setProvider(String provider) {
 		this.provider = provider;
+	}
+
+	public void setStrand(String strand) {
+		this.strand = strand;
 	}
 
 	public void setSequenceNum(int sequenceNum) {
