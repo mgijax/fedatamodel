@@ -13,6 +13,7 @@ import javax.persistence.*;
 public class MarkerLocation extends Location {
 	
     protected Integer markerKey;
+    protected Float cmOffset;
 	private int uniqueKey;
 	
     // ================= Getters and Setters ===================== //
@@ -28,6 +29,11 @@ public class MarkerLocation extends Location {
         return uniqueKey;
     }
 	
+    @Column(name="cm_offset")
+    public Float getCmOffset() {
+        return cmOffset;
+    }    
+    
 	public void setMarkerKey(Integer markerKey) {
 		this.markerKey = markerKey;
 	}
@@ -36,6 +42,10 @@ public class MarkerLocation extends Location {
         this.uniqueKey = uniqueKey;
     }
 
+    public void setCmOffset(Float cmOffset) {
+        this.cmOffset = cmOffset;
+    }	
+	
 	@Override
 	public String toString() {
 		return "MarkerLocation ["
