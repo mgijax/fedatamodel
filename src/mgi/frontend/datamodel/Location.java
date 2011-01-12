@@ -22,7 +22,7 @@ public class Location {
 	protected int sequenceNum;
 	protected Float startCoordinate;
 	protected int uniqueKey;
-	protected Float cmOffset;
+
 	protected String strand;
 	
     // ================= Getters and Setters ===================== //
@@ -82,12 +82,7 @@ public class Location {
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
-
-	@Column(name="cm_offset")
-    public Float getCmOffset() {
-        return cmOffset;
-    }	
-	
+		
 	public void setBuildIdentifier(String buildIdentifier) {
 		this.buildIdentifier = buildIdentifier;
 	}
@@ -127,10 +122,6 @@ public class Location {
 	public void setUniqueKey(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
 	}
-
-    public void setCmOffset(Float cmOffset) {
-        this.cmOffset = cmOffset;
-    }
 
     @Override
 	public String toString() {
