@@ -436,6 +436,16 @@ public class Marker {
 		return notes;
 	}
 	
+	@Transient
+	public String getGOText() {
+	    for (MarkerNote mn: this.getNotes()) {
+	        if (mn.getNoteType().equals("GO Text")) {
+	            return mn.getNote();
+	        }
+	    }
+	    return "";
+	}
+	
     /** get the OMIM annotations for this marker's alleles
 	 */
 	@Transient
