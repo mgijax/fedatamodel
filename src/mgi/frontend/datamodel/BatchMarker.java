@@ -150,32 +150,32 @@ public class BatchMarker {
 	}
 
     //--- Getters and Setters ---//
-    
+    @Transient
     public List<BatchMarkerAllele> getAlleles() {
 		return alleles;
 	}
 	
-	@OneToMany (targetEntity=MarkerAnnotation.class, fetch=FetchType.EAGER)
+	@OneToMany (targetEntity=MarkerAnnotation.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
     public List<MarkerAnnotation> getAnnotations() {
 		return annotations;
 	}
 	
-	@OneToMany (targetEntity=MarkerTissueCount.class, fetch=FetchType.EAGER)
+	@OneToMany (targetEntity=MarkerTissueCount.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
     public List<MarkerTissueCount> getExpressionCountsByTissue() {
 		return expressionCountsByTissue;
 	}
 	
-	@OneToMany (targetEntity=MarkerID.class, fetch=FetchType.EAGER)
+	@OneToMany (targetEntity=MarkerID.class)
 	@JoinColumn(name="marker_key")
 	public List<MarkerID> getIds() {
 		return ids;
 	}
 	
-	@OneToMany (targetEntity=MarkerLocation.class, fetch=FetchType.EAGER)
+	@OneToMany (targetEntity=MarkerLocation.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
     public List<MarkerLocation> getLocations() {
