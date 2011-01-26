@@ -37,8 +37,8 @@ public class AlleleSystem {
     
     // ================= Getters and Setters ===================== //
     
-    @OneToOne (targetEntity=AlleleSystemAssayResult.class)
-    @JoinColumn(name="allele_key")
+    @OneToOne (targetEntity=Allele.class)
+    @JoinColumn(name="allele_key")  
     public Allele getAllele() {
         return allele;
     }
