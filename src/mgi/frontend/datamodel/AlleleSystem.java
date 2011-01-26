@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -32,9 +33,16 @@ public class AlleleSystem {
     private List<AlleleSystemOtherAllele> otherAlleles;
     private List<AlleleSystemOtherSystem> otherSystems;
     private String system;
+    private Allele allele;
     
     // ================= Getters and Setters ===================== //
     
+    @OneToOne (targetEntity=AlleleSystemAssayResult.class)
+    @JoinColumn(name="allele_key")
+    public Allele getAllele() {
+        return allele;
+    }
+
     /**
      * Return the allele key from the allele system pairing
      * @return int
@@ -109,6 +117,10 @@ public class AlleleSystem {
      */
     public String getSystem() {
         return system;
+    }
+
+    public void setAllele(Allele allele) {
+        this.allele = allele;
     }
     
     /**
