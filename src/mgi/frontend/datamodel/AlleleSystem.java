@@ -38,8 +38,8 @@ public class AlleleSystem {
     
     // ================= Getters and Setters ===================== //
     
-    @ManyToOne (targetEntity=Marker.class, fetch=FetchType.LAZY)
-    @JoinColumn (name="marker_key")
+    @ManyToOne (targetEntity=Allele.class, fetch=FetchType.LAZY)
+    @JoinColumn (name="allele_key")
     public Allele getAllele() {
         return allele;
     }
