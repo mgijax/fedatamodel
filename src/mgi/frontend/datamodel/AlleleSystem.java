@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -24,7 +26,6 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties({"images"})
 public class AlleleSystem {
 
-    private int alleleKey;
     private List<AlleleSystemAssayResult> alleleSystemAssayResults;
     private int alleleSystemKey;
     private Integer systemKey;
@@ -37,19 +38,10 @@ public class AlleleSystem {
     
     // ================= Getters and Setters ===================== //
     
-    @OneToOne (targetEntity=Allele.class)
-    @JoinColumn(name="allele_key")  
+    @ManyToOne (targetEntity=Marker.class, fetch=FetchType.LAZY)
+    @JoinColumn (name="marker_key")
     public Allele getAllele() {
         return allele;
-    }
-
-    /**
-     * Return the allele key from the allele system pairing
-     * @return int
-     */
-    @Column(name="allele_key")
-    public int getAlleleKey() {
-        return alleleKey;
     }
     
     @Column(name="allele_id")
@@ -135,10 +127,6 @@ public class AlleleSystem {
 	public void setSystemKey(Integer systemKey) {
 		this.systemKey = systemKey;
 	}
-
-	public void setAlleleKey(int alleleKey) {
-        this.alleleKey = alleleKey;
-    }    
     
     public void setAlleleSystemAssayResults(List<AlleleSystemAssayResult> a) {
         this.alleleSystemAssayResults = a;
@@ -163,12 +151,15 @@ public class AlleleSystem {
     public void setSystem(String system) {
         this.system = system;
     }
+
     @Override
     public String toString() {
-        return "AlleleSystem [alleleKey=" + alleleKey
-                + ", alleleSystemKey=" + alleleSystemKey + ", system=" + system
-                + "]";
+        return "AlleleSystem [allele=" + allele + ", alleleID=" + alleleID
+                + ", alleleSystemAssayResults=" + alleleSystemAssayResults
+                + ", alleleSystemKey=" + alleleSystemKey + ", images=" + images
+                + ", otherAlleles=" + otherAlleles + ", otherSystems="
+                + otherSystems + ", system=" + system + ", systemKey="
+                + systemKey + "]";
     }
-
 
 }
