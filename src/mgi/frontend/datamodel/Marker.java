@@ -316,7 +316,7 @@ public class Marker {
 	public List<Annotation> getGOAnnotations () {
 		return this.filterAnnotations("GO/Marker");
 	}
-
+	
 	/** return the list of counts of GXD assays by assay type
 	 */
 	@Transient
@@ -420,7 +420,7 @@ public class Marker {
 	 */
 	@Transient
 	public List<Annotation> getMPAnnotations () {
-		return this.filterAnnotations("Mammalian Phenotype/Genotype");
+		return this.filterAnnotations("Mammalian Phenotype/Marker");
 	}
 
 	public String getName() {
@@ -452,7 +452,7 @@ public class Marker {
 	 */
 	@Transient
 	public List<Annotation> getOMIMAnnotations () {
-		return this.filterAnnotations("OMIM/Genotype");
+		return this.filterAnnotations("OMIM/Marker");
 	} 	
 
 	public String getOrganism() {
