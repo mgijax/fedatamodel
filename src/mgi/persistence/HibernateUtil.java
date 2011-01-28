@@ -21,7 +21,7 @@ public class HibernateUtil {
 			.addAnnotatedClass(mgi.frontend.datamodel.Reference.class)
 			.addAnnotatedClass(mgi.frontend.datamodel.ReferenceID.class)
 			.addAnnotatedClass(mgi.frontend.datamodel.MarkerReferenceAssociation.class)
-			.addAnnotatedClass(mgi.frontend.datamodel.MarkerAnnotation.class)
+			.addAnnotatedClass(mgi.frontend.datamodel.Annotation.class)
 			.addAnnotatedClass(mgi.frontend.datamodel.MarkerNote.class)
 			.addAnnotatedClass(mgi.frontend.datamodel.MarkerLocation.class)
 			.addAnnotatedClass(mgi.frontend.datamodel.Sequence.class)
