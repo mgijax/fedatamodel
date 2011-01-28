@@ -62,7 +62,7 @@ public class Allele {
     private Integer imsrCountForMarker;
     private RecombinaseInfo recombinaseInfo;
     private List<AlleleGenotypeAssociation> genotypeAssociations;
-    private List<AlleleAnnotation> annotations;
+    private List<Annotation> annotations;
     
     // ================= Getters and Setters ===================== //
     
@@ -99,7 +99,7 @@ public class Allele {
     
     @OneToMany (fetch=FetchType.LAZY)
     @JoinColumn(name="allele_key")
-    public List<AlleleAnnotation> getAnnotations() {
+    public List<Annotation> getAnnotations() {
     	return annotations;
     }
     
@@ -267,7 +267,7 @@ public class Allele {
         this.alleleType = alleleType;
     }
     
-    public void setAnnotations(List<AlleleAnnotation> annotations) {
+    public void setAnnotations(List<Annotation> annotations) {
 		this.annotations = annotations;
 	}
     public void setCountOfMarkers(Integer countOfMarkers) {

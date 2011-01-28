@@ -22,13 +22,13 @@ public class Genotype {
 	private String note;
 	private String combination1;
 	private String combination2;
-	private List<GenotypeAnnotation> annotations;
+	private List<Annotation> annotations;
 	
 	// ================= Getters and Setters ===================== //
 
     @OneToMany (fetch=FetchType.LAZY)
     @JoinColumn(name="genotype_key")
-    public List<GenotypeAnnotation> getAnnotations() {
+    public List<Annotation> getAnnotations() {
     	return annotations;
     }
     
@@ -68,7 +68,7 @@ public class Genotype {
 		return primaryID;
 	}
 	
-	public void setAnnotations(List<GenotypeAnnotation> annotations) {
+	public void setAnnotations(List<Annotation> annotations) {
 		this.annotations = annotations;
 	}
 	

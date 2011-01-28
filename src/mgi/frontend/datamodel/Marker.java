@@ -36,7 +36,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 		} )
 public class Marker {
 
-	private List<MarkerAnnotation> annotations;
+	private List<Annotation> annotations;
 	private Integer countOfAlleles;
 	private Integer countOfGOTerms;
 	private Integer countOfGXDAssays;
@@ -81,10 +81,10 @@ public class Marker {
 	 * of annotations from the full List of annotations
 	 */
 	@Transient
-	private List<MarkerAnnotation> filterAnnotations (String annotationType) {
-		ArrayList<MarkerAnnotation> sublist = new ArrayList<MarkerAnnotation>();
-		Iterator<MarkerAnnotation> it = this.getAnnotations().iterator();
-		MarkerAnnotation annotation;
+	private List<Annotation> filterAnnotations (String annotationType) {
+		ArrayList<Annotation> sublist = new ArrayList<Annotation>();
+		Iterator<Annotation> it = this.getAnnotations().iterator();
+		Annotation annotation;
 		
 		while (it.hasNext()) {
 			annotation = it.next();
@@ -157,10 +157,12 @@ public class Marker {
 	 * Returns a collection of marker annotation objects, which 
 	 * extend the base annotation class.
 	 */
-	@OneToMany (targetEntity=MarkerAnnotation.class)
-	@JoinColumn(name="marker_key")
-	@OrderBy("sequenceNum")
-	public List<MarkerAnnotation> getAnnotations() {
+    @OneToMany
+    @JoinTable (name="marker_to_annotation",
+            joinColumns=@JoinColumn(name="marker_key"),
+            inverseJoinColumns=@JoinColumn(name="annotation_key")
+            )
+	public List<Annotation> getAnnotations() {
 		return annotations;
 	}
 
@@ -311,7 +313,7 @@ public class Marker {
 	/** get the Gene Ontology (GO) annotations for this marker
 	 */
 	@Transient
-	public List<MarkerAnnotation> getGOAnnotations () {
+	public List<Annotation> getGOAnnotations () {
 		return this.filterAnnotations("GO/Marker");
 	}
 
@@ -417,7 +419,7 @@ public class Marker {
 	 *  alleles
 	 */
 	@Transient
-	public List<MarkerAnnotation> getMPAnnotations () {
+	public List<Annotation> getMPAnnotations () {
 		return this.filterAnnotations("Mammalian Phenotype/Genotype");
 	}
 
@@ -449,7 +451,7 @@ public class Marker {
     /** get the OMIM annotations for this marker's alleles
 	 */
 	@Transient
-	public List<MarkerAnnotation> getOMIMAnnotations () {
+	public List<Annotation> getOMIMAnnotations () {
 		return this.filterAnnotations("OMIM/Genotype");
 	} 	
 
@@ -576,7 +578,7 @@ public class Marker {
 		return this.getSingleID("VEGA Gene Model");
 	}
 
-	public void setAnnotations(List<MarkerAnnotation> annotations) {
+	public void setAnnotations(List<Annotation> annotations) {
 		this.annotations = annotations;
 	}
 
