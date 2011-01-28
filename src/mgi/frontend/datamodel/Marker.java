@@ -316,7 +316,35 @@ public class Marker {
 	public List<Annotation> getGOAnnotations () {
 		return this.filterAnnotations("GO/Marker");
 	}
+
+    /** get the Interpro annotations for this marker
+     */
+    @Transient
+    public List<Annotation> getInterproAnnotations () {
+        return this.filterAnnotations("InterPro/Marker");
+    }	
 	
+    /** get the MCV annotations for this marker
+     */
+    @Transient
+    public List<Annotation> getMCVAnnotations () {
+        return this.filterAnnotations("MCV/Marker");
+    }
+    
+    /** get the PIRSF annotations for this marker
+     */
+    @Transient
+    public List<Annotation> getPIRSFAnnotations () {
+        return this.filterAnnotations("PIRSF/Marker");
+    }    
+    
+    /** get the Mouse Cyc annotations for this marker
+     */
+    @Transient
+    public List<Annotation> getMouseCycAnnotations () {
+        return this.filterAnnotations("MouseCyc/Marker");
+    }    
+    
 	/** return the list of counts of GXD assays by assay type
 	 */
 	@Transient
