@@ -15,12 +15,12 @@ public class Location {
 
 	protected String buildIdentifier;
 	protected String chromosome;
-	protected Float endCoordinate;
+	protected Double endCoordinate;
 	protected String locationType;
 	protected String mapUnits;
 	protected String provider;
 	protected int sequenceNum;
-	protected Float startCoordinate;
+	protected Double startCoordinate;
 	protected int uniqueKey;
 
 	protected String strand;
@@ -37,7 +37,7 @@ public class Location {
 	}
 
 	@Column(name="end_coordinate")
-	public Float getEndCoordinate() {
+	public Double getEndCoordinate() {
 		return endCoordinate;
 	}
 
@@ -73,7 +73,7 @@ public class Location {
 	}
 
 	@Column(name="start_coordinate")
-	public Float getStartCoordinate() {
+	public Double getStartCoordinate() {
 		return startCoordinate;
 	}
 
@@ -91,7 +91,7 @@ public class Location {
 		this.chromosome = chromosome;
 	}
 
-	public void setEndCoordinate(Float endCoordinate) {
+	public void setEndCoordinate(Double endCoordinate) {
 		this.endCoordinate = endCoordinate;
 	}
 
@@ -115,7 +115,7 @@ public class Location {
 		this.sequenceNum = sequenceNum;
 	}
 
-	public void setStartCoordinate(Float startCoordinate) {
+	public void setStartCoordinate(Double startCoordinate) {
 		this.startCoordinate = startCoordinate;
 	}
 
