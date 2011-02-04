@@ -735,6 +735,34 @@ public class Marker {
 		return synonyms;
 	}
 
+	/** get the Allen Brain Atlas ID for this marker, or null if none
+	 */
+	@Transient
+	public MarkerID getAllenBrainAtlasID() {
+		return this.getSingleID("ABA");
+	}
+    
+	/** get the GENSAT ID for this marker, or null if none
+	 */
+	@Transient
+	public MarkerID getGensatID() {
+		return this.getSingleID("GENSAT");
+	}
+    
+	/** get the GEO ID for this marker, or null if none
+	 */
+	@Transient
+	public MarkerID getGeoID() {
+		return this.getSingleID("GEO");
+	}
+    
+	/** get the ArrayExpress ID for this marker, or null if none
+	 */
+	@Transient
+	public MarkerID getArrayExpressID() {
+		return this.getSingleID("ArrayExpress");
+	}
+    
 	/** get the TreeFam ID to display for this marker, or null if none
 	 */
 	@Transient
