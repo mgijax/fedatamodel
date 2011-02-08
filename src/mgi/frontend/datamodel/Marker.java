@@ -98,6 +98,24 @@ public class Marker {
 		return sublist;
 	}
 
+	/** used to make other convenience methods to extract only annotations
+	 * made to terms from a certain DAG.  Assumes dagName is not null.
+	 */
+	@Transient
+	private List<Annotation> filterAnnotationsByDAG (String dagName) {
+		ArrayList<Annotation> sublist = new ArrayList<Annotation>();
+		Iterator<Annotation> it = this.getAnnotations().iterator();
+		Annotation annotation;
+		
+		while (it.hasNext()) {
+			annotation = it.next();
+			if (dagName.equals(annotation.getDagName())) {
+				sublist.add(annotation);
+			}
+		}
+		return sublist;
+	}
+	
 	/** used to make other convenience methods to pull out certain sets
 	 * of counts
 	 */
@@ -214,7 +232,8 @@ public class Marker {
             joinColumns=@JoinColumn(name="marker_key"),
             inverseJoinColumns=@JoinColumn(name="annotation_key")
             )
-	public List<Annotation> getAnnotations() {
+    @OrderBy("dagName, term")
+    public List<Annotation> getAnnotations() {
 		return annotations;
 	}
 	
@@ -410,8 +429,29 @@ public class Marker {
     /** returns an ordered list of GO annotations for the marker
 	 */
 	@Transient
-	public List<Annotation> getGOAnnotations () {
+	public List<Annotation> getGoAnnotations () {
 		return this.filterAnnotations("GO/Marker");
+	}
+	
+	/** returns an ordered list of GO annotations from the component ontology
+	 */
+	@Transient
+	public List<Annotation> getGoComponentAnnotations() {
+		return this.filterAnnotationsByDAG("Cellular Component");
+	}
+	
+	/** returns an ordered list of GO annotations from the function ontology
+	 */
+	@Transient
+	public List<Annotation> getGoFunctionAnnotations() {
+		return this.filterAnnotationsByDAG("Molecular Function");
+	}
+	
+	/** returns an ordered list of GO annotations from the process ontology
+	 */
+	@Transient
+	public List<Annotation> getGoProcessAnnotations() {
+		return this.filterAnnotationsByDAG("Biological Process");
 	}
 	
     @Transient
