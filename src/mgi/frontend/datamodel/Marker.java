@@ -500,8 +500,11 @@ public class Marker {
     /** get the Interpro annotations for this marker
      */
     @Transient
-    public List<Annotation> getInterproAnnotations () {
-        return this.filterAnnotations("InterPro/Marker");
+    public List<Annotation> getProteinAnnotations () {
+        List<Annotation> interpro = this.filterAnnotations("InterPro/Marker");
+        List<Annotation> proteinOntology = this.filterAnnotations("Protein Ontology/Marker");
+        interpro.addAll(proteinOntology);
+        return interpro;
     }	
 	
     /** get the latest reference for this marker
