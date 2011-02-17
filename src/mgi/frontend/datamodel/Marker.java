@@ -801,7 +801,7 @@ public class Marker {
 	/** get the a single ID for the given logical database, or null if none
 	 */
 	@Transient
-	private MarkerID getSingleID (String logicalDatabase) {
+	public MarkerID getSingleID (String logicalDatabase) {
 		List<MarkerID> ids = this.filterMarkerIDs(logicalDatabase);
 		if (ids.size() > 0) {
 			return ids.get(0);
