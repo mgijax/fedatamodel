@@ -13,39 +13,53 @@ import javax.persistence.Table;
 
 /**
  * recombinase_assay_result_imagepane
- * @author mhall
+ * @author mhall, jsb
  *
- * Returns the pane that will contain multiple images for a 
- * given assay result.
+ * An image pane represents the portion of a figure that is associated
+ * with a recombinase assay result.
  *
  */
 @Entity
 @Table (name="recombinase_assay_result_imagepane")
 public class AlleleSystemAssayResultImagePane {
 
-    private List<Image> images;
+	private int uniqueKey;
+    private Image image;
     private String paneLabel;
     private int resultKey;
+    private int sequenceNum;
     
     // ================= Getters and Setters ===================== //
     
-    @OneToMany (targetEntity=Image.class)
+    @ManyToOne (targetEntity=Image.class)
     @JoinColumn(name="image_key")
-    public List<Image> getImages() {
-        return images;
+    public Image getImage() {
+        return image;
     }
+ 
     @Column(name="pane_label")
     public String getPaneLabel() {
         return paneLabel;
     }
     
-    @Id
-    @Column(name="result_key")
+	@Column(name="result_key")
     public int getResultKey() {
         return resultKey;
     }
-    public void setImages(List<Image> images) {
-        this.images = images;
+	
+	@Column(name="sequence_num")
+	public int getSequenceNum() {
+		return sequenceNum;
+	}
+	
+	@Id
+    @Column(name="unique_key")
+    public int getUniqueKey() {
+		return uniqueKey;
+	}
+	
+	public void setImage(Image image) {
+        this.image = image;
     }
     
     public void setPaneLabel(String paneLabel) {
@@ -55,11 +69,18 @@ public class AlleleSystemAssayResultImagePane {
         this.resultKey = resultKey;
     }
     
-    @Override
-    public String toString() {
-        return "AlleleSystemAssayResultImagePane ["
-                + "paneLabel=" + paneLabel + ", resultKey=" + resultKey + "]";
-    }
-    
+    public void setSequenceNum(int sequenceNum) {
+		this.sequenceNum = sequenceNum;
+	}
+    public void setUniqueKey(int uniqueKey) {
+		this.uniqueKey = uniqueKey;
+	}
 
+	@Override
+	public String toString() {
+		return "AlleleSystemAssayResultImagePane [uniqueKey=" + uniqueKey
+				+ ", image=" + image + ", paneLabel=" + paneLabel
+				+ ", resultKey=" + resultKey + ", sequenceNum=" + sequenceNum
+				+ "]";
+	}
 }
