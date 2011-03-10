@@ -14,7 +14,7 @@ import javax.persistence.Table;
  */
         
 @Entity
-@Table(name="image_allele")
+@Table(name="image_alleles")
 public class ImageAllele {
     
     private int uniqueKey;
