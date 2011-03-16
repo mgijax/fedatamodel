@@ -28,41 +28,46 @@ public class GxdLitIndexRecord {
 	
 	String jnumId;
 	
+	Marker marker;
+	
 	String markerName;
 	
 	Reference reference;
 
-	Integer fullCodedCount;
+	Integer fullCodedAssayCount;
 	
-    @Column(table="expression_index_counts", name="fully_coded_assay_count")
-    @JoinColumn(name="index_key")
-	public Integer getFullCodedCount() {
-		return fullCodedCount;
-	}
+	Integer fullCodedResultCount;
+	
+    String markerSymbol;
 
-    @Transient
-    public Boolean isFullyCoded() {
-    	if (this.fullCodedCount > 0) {
-    		return true;
-    	}
-    	return false;
-    }
+    String comments;
     
-	public void setFullCodedCount(Integer fullCodedCount) {
-		this.fullCodedCount = fullCodedCount;
-	}
-	String markerSymbol;
-
-	int indexKey;
+    int indexKey;
 
 	List<GxdLitAssayTypeAgePair> pairs;
+	
+	@Column(name="comments")
+    public String getComments() {
+		return comments;
+	}
+    
+	@Column(table="expression_index_counts", name="fully_coded_assay_count")
+    @JoinColumn(name="index_key")
+	public Integer getFullCodedAssayCount() {
+		return fullCodedAssayCount;
+	}
+	@Column(table="expression_index_counts", name="fully_coded_result_count")
+    @JoinColumn(name="index_key")
+	public Integer getFullCodedResultCount() {
+		return fullCodedResultCount;
+	}
 
 	@Id
 	@Column(name="index_key")
 	public int getIndexKey() {
 		return indexKey;
 	}
-
+	
 	@Column(name="jnum_id")
 	public String getJnumId() {
 		return jnumId;
@@ -71,6 +76,12 @@ public class GxdLitIndexRecord {
 	@Transient
 	public String getLongCitation() {
 		return this.getReference().getLongCitation();
+	}
+
+	@ManyToOne(targetEntity=Marker.class, fetch=FetchType.LAZY)
+	@JoinColumn (name="marker_key")
+    public Marker getMarker() {
+		return marker;
 	}
 
 	@Column(name="marker_name")
@@ -98,6 +109,26 @@ public class GxdLitIndexRecord {
 		return reference;
 	}
 
+	@Transient
+    public Boolean isFullyCoded() {
+    	if (this.fullCodedAssayCount > 0) {
+    		return true;
+    	}
+    	return false;
+    }
+	
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public void setFullCodedAssayCount(Integer fullCodedAssayCount) {
+		this.fullCodedAssayCount = fullCodedAssayCount;
+	}
+	
+	public void setFullCodedResultCount(Integer fullCodedResultCount) {
+		this.fullCodedResultCount = fullCodedResultCount;
+	}
+
 	public void setIndexKey(int indexKey) {
 		this.indexKey = indexKey;
 	}
@@ -106,6 +137,10 @@ public class GxdLitIndexRecord {
 		this.jnumId = jnumId;
 	}
 
+	public void setMarker(Marker marker) {
+		this.marker = marker;
+	}
+	
 	public void setMarkerName(String markerName) {
 		this.markerName = markerName;
 	}
