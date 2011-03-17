@@ -686,7 +686,7 @@ public class Marker {
     @Transient
     public Annotation getPirsfAnnotation () {
         List<Annotation> pirsf = this.filterAnnotations("PIRSF/Marker");
-        if (pirsf == null) {
+        if ((pirsf == null) || (pirsf.size() ==0)) {
         	return null;
         }
         return pirsf.get(0);
