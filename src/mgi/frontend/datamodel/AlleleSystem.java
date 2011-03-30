@@ -74,6 +74,7 @@ public class AlleleSystem {
             joinColumns=@JoinColumn(name="allele_system_key"),
             inverseJoinColumns=@JoinColumn(name="image_key")
             )
+    @OrderBy ("byJnumID")
     public List<Image> getImages() {
         return images;
     }
@@ -87,6 +88,7 @@ public class AlleleSystem {
     
     @OneToMany (targetEntity=AlleleSystemOtherAllele.class)
     @JoinColumn(name="allele_system_key")
+    @OrderBy ("otherAlleleSymbol")
     public List<AlleleSystemOtherAllele> getOtherAlleles() {
         return otherAlleles;
     }
