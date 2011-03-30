@@ -1,6 +1,7 @@
 package mgi.frontend.datamodel;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * MarkerID
@@ -14,6 +15,7 @@ public class MarkerID extends AccessionID {
 	private int markerKey;
 	private int sequenceNum;
 	private int isForOtherDbSection;
+	private List<MarkerIDOtherMarker> otherMarkers;
 
     // ================= Getters and Setters ===================== //
 	
@@ -25,6 +27,13 @@ public class MarkerID extends AccessionID {
 	@Column(name="marker_key")
 	public int getMarkerKey() {
 		return markerKey;
+	}
+
+	@OneToMany(targetEntity=MarkerIDOtherMarker.class)
+	@JoinColumn(name="marker_id_key")
+	@OrderBy("symbol")
+	public List<MarkerIDOtherMarker> getOtherMarkers() {
+		return otherMarkers;
 	}
 	
 	@Column(name="sequence_num")
@@ -38,6 +47,10 @@ public class MarkerID extends AccessionID {
 
 	public void setMarkerKey(int markerKey) {
 		this.markerKey = markerKey;
+	}
+
+	public void setOtherMarkers(List<MarkerIDOtherMarker> otherMarkers) {
+		this.otherMarkers = otherMarkers;
 	}
 
 	public void setSequenceNum(int sequenceNum) {
