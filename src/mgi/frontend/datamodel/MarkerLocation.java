@@ -15,35 +15,45 @@ public class MarkerLocation extends Location {
     protected Integer markerKey;
     protected Float cmOffset;
 	private int uniqueKey;
+	protected String cytogeneticOffset;
 	
     // ================= Getters and Setters ===================== //
 	
+	@Column(name="cm_offset")
+    public Float getCmOffset() {
+        return cmOffset;
+    }
+
+	@Column(name = "cytogenetic_offset")
+    public String getCytogeneticOffset() {
+		return cytogeneticOffset;
+	}
+
 	@Column(name = "marker_key")
 	public Integer getMarkerKey() {
 		return markerKey;
 	}
 
-    @Id
+	@Id
     @Column(name="unique_key")
     public int getUniqueKey() {
         return uniqueKey;
     }
 	
-    @Column(name="cm_offset")
-    public Float getCmOffset() {
-        return cmOffset;
+    public void setCmOffset(Float cmOffset) {
+        this.cmOffset = cmOffset;
     }    
     
+	public void setCytogeneticOffset(String cytogeneticOffset) {
+		this.cytogeneticOffset = cytogeneticOffset;
+	}
+
 	public void setMarkerKey(Integer markerKey) {
 		this.markerKey = markerKey;
 	}
 
-	public void setUniqueKey(int uniqueKey) {
+    public void setUniqueKey(int uniqueKey) {
         this.uniqueKey = uniqueKey;
-    }
-
-    public void setCmOffset(Float cmOffset) {
-        this.cmOffset = cmOffset;
     }	
 	
 	@Override
