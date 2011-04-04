@@ -35,15 +35,15 @@ public class AlleleSystem {
     private List<AlleleSystemOtherSystem> otherSystems;
     private String system;
     private Allele allele;
-    
+
     // ================= Getters and Setters ===================== //
-    
+
     @ManyToOne (targetEntity=Allele.class, fetch=FetchType.LAZY)
     @JoinColumn (name="allele_key")
     public Allele getAllele() {
         return allele;
     }
-    
+
     @Column(name="allele_id")
     public String getAlleleID() {
 		return alleleID;
@@ -58,7 +58,7 @@ public class AlleleSystem {
     public List<AlleleSystemAssayResult> getAlleleSystemAssayResults() {
         return alleleSystemAssayResults;
     }
-    
+
     /**
      * Returns the compound allele system key
      * @return int
@@ -68,31 +68,31 @@ public class AlleleSystem {
     public int getAlleleSystemKey() {
         return alleleSystemKey;
     }
-    
+
     @OneToMany
     @JoinTable (name="recombinase_allele_system_to_image",
             joinColumns=@JoinColumn(name="allele_system_key"),
             inverseJoinColumns=@JoinColumn(name="image_key")
             )
-    @OrderBy ("byJnumID")
+    @OrderBy ("jnumID,figureLabel")
     public List<Image> getImages() {
         return images;
     }
-    
+
     /**
-     * Returns a list of the other alleles that are associated with this 
-     * allele system.  So these alleles would have the system itself in 
+     * Returns a list of the other alleles that are associated with this
+     * allele system.  So these alleles would have the system itself in
      * common.
      * @return
      */
-    
+
     @OneToMany (targetEntity=AlleleSystemOtherAllele.class)
     @JoinColumn(name="allele_system_key")
     @OrderBy ("otherAlleleSymbol")
     public List<AlleleSystemOtherAllele> getOtherAlleles() {
         return otherAlleles;
     }
-    
+
     /**
      * Returns a list of the other systems that are associated to
      * this allele system.  So these systems would have the allele
@@ -104,7 +104,7 @@ public class AlleleSystem {
     public List<AlleleSystemOtherSystem> getOtherSystems() {
         return otherSystems;
     }
-    
+
     /**
      * Return just the system
      * @return
@@ -116,7 +116,7 @@ public class AlleleSystem {
     public void setAllele(Allele allele) {
         this.allele = allele;
     }
-    
+
     /**
      * Return the system's term key from the allele system pairing
      * @return int
@@ -129,7 +129,7 @@ public class AlleleSystem {
 	public void setSystemKey(Integer systemKey) {
 		this.systemKey = systemKey;
 	}
-    
+
     public void setAlleleSystemAssayResults(List<AlleleSystemAssayResult> a) {
         this.alleleSystemAssayResults = a;
     }
@@ -137,16 +137,16 @@ public class AlleleSystem {
     public void setAlleleSystemKey(int alleleSystemKey) {
         this.alleleSystemKey = alleleSystemKey;
     }
-    
+
     // This stuff currently brings back duplicate entries.. for whatever reason.
-    
+
     public void setImages(List<Image> images) {
         this.images = images;
     }
     public void setOtherAlleles(List<AlleleSystemOtherAllele> alleles) {
         this.otherAlleles = alleles;
     }
-    
+
     public void setOtherSystems(List<AlleleSystemOtherSystem> systems) {
         this.otherSystems = systems;
     }
