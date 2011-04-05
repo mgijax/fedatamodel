@@ -18,6 +18,8 @@ import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.SortType;
+
 /**
  * Base object for images. 
  * @author mhall, jsb
@@ -102,7 +104,7 @@ public class Image {
 			joinColumns=@JoinColumn(name="image_key"),
 			inverseJoinColumns=@JoinColumn(name="genotype_key")
 			)
-	@OrderBy("byAlleles")
+	@org.hibernate.annotations.Sort (type=SortType.COMPARATOR, comparator=GenotypeComparator.class)
 	public List<Genotype> getGenotypes() {
 		return genotypes;
 	}
