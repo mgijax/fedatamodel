@@ -19,7 +19,7 @@ import java.util.List;
         @PrimaryKeyJoinColumn(name="genotype_key", referencedColumnName="genotype_key") } )
     }  
 )
-public class Genotype {
+public class Genotype implements Comparable {
     
 	private int byAlleles;				// for sorting genotypes
 	private int genotypeKey;
@@ -145,5 +145,16 @@ public class Genotype {
 				+ ", isConditional=" + isConditional + ", "
 				+ (note != null ? "note=" + note + ", " : "")
 				+ (primaryID != null ? "primaryID=" + primaryID : "") + "]";
+	}
+
+	/** standard comparison method for Comparable interface
+	 */
+	@Override
+	public int compareTo(Object arg0) {
+		Genotype b = (Genotype) arg0;
+		
+		if (this.byAlleles < b.byAlleles) { return -1; }
+		else if (this.byAlleles > b.byAlleles) { return 1; }
+		return 0;
 	}
 }
