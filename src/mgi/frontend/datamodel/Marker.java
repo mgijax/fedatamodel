@@ -551,14 +551,14 @@ public class Marker {
 	@Column(name="marker_key")
 	public int getMarkerKey() {
 		return markerKey;
-	}    
+	}
     
     @Column(name="marker_subtype")
 	public String getMarkerSubtype() {
 		return markerSubtype;
 	}    
     
-	/** returns a list of MarkerTissueCount objects, which give the counts
+    /** returns a list of MarkerTissueCount objects, which give the counts
 	 * of expression results by tissue for the marker
 	 */
 	@OneToMany (targetEntity=MarkerTissueCount.class)
@@ -566,20 +566,20 @@ public class Marker {
 	@OrderBy("sequenceNum")
 	public List<MarkerTissueCount> getMarkerTissueCounts() {
 		return markerTissueCounts;
-	}
-
+	}    
+    
 	@Column(name="marker_type")
 	public String getMarkerType() {
 		return markerType;
 	}
-	
+
 	/** get the MCV annotations for this marker
      */
     @Transient
     public List<Annotation> getMCVAnnotations () {
         return this.filterAnnotations("MCV/Marker");
     }
-
+	
 	/** return the list of counts of molecular reagents by type
 	 */
 	@Transient
@@ -605,7 +605,7 @@ public class Marker {
 	public String getName() {
 		return name;
 	}
-	
+
 	/** get the NCBI Gene Model ID for this marker, or null if none
 	 */
 	@Transient
@@ -634,7 +634,7 @@ public class Marker {
 	public String getOrganism() {
 		return organism;
 	}
-
+	
 	/**
 	 * Return a collection of marker orthologs.
 	 * @return
@@ -663,7 +663,7 @@ public class Marker {
 		}
 		return sublist;
 	}
-	
+
 	/** get a list of non-preferred (old) MGI IDs for the marker
 	 */
 	@Transient
@@ -692,19 +692,19 @@ public class Marker {
         return pirsf.get(0);
     }
 	
-    /** return the list of counts of polymorphisms by type
+	/** return the list of counts of polymorphisms by type
 	 */
 	@Transient
 	public List<MarkerCountSetItem> getPolymorphismCountsByType() {
 		return this.filterCountSetItems("Polymorphisms");
-	} 	
-
-	/** get the preferred centimorgan location for the marker, or null if none
+	}
+	
+    /** get the preferred centimorgan location for the marker, or null if none
 	 */
 	@Transient
 	public MarkerLocation getPreferredCentimorgans() {
 		return this.filterLocations("centimorgans");
-	}
+	} 	
 
 	/** get the preferred genome coordinates for the marker, or null if none
 	 */
@@ -724,7 +724,7 @@ public class Marker {
 	public String getPrimaryID() {
 		return primaryID;
 	}
-	
+
 	/** get the Interpro annotations for this marker
      */
     @Transient
@@ -734,6 +734,23 @@ public class Marker {
         interpro.addAll(proteinOntology);
         return interpro;
     }
+	
+	/** convenience method to pull the QTL coordinate note out of the list
+     *  of notes
+	 */
+	@Transient
+	public String getQtlNote() {
+		Iterator<MarkerNote> it = this.getNotes().iterator();
+		MarkerNote note;
+
+		while (it.hasNext()) {
+			note = it.next();
+			if (note.getNoteType().equals("QTL Coordinate")) {
+				return note.getNote();
+			}
+		}
+		return null;
+	}
 	
     /**
 	 * Returns reference associations.
