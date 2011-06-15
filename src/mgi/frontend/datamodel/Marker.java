@@ -39,7 +39,9 @@ public class Marker {
 	private List<MarkerAlias> aliases;
 	private List<MarkerAlleleAssociation> alleleAssociations;
 	private List<BatchMarkerAllele> batchMarkerAlleles;
+	private List<BatchMarkerSnp> batchMarkerSnps;
 	private List<Annotation> annotations;
+	private List<MarkerBiotypeConflict> biotypeConflicts;
 	private Integer countOfAlleles;
 	private Integer countOfGOTerms;
 	private Integer countOfGxdAssays;
@@ -264,36 +266,57 @@ public class Marker {
 		return batchMarkerAlleles;
 	}
 	
+	/** Returns a list of the simple SNP representations for a marker in
+	 * the batch query interface.  (a very lightweight SNP representation)
+	 */
+	@OneToMany (targetEntity=BatchMarkerSnp.class)
+	@JoinColumn(name="marker_key")
+	@OrderBy("sequenceNum")
+	public List<BatchMarkerSnp> getBatchMarkerSnps() {
+		return batchMarkerSnps;
+	}
+
+	/** Returns a list of the biotype conflicts for this marker
+	 * (for cases where different data sources disagree about what type of
+	 * marker this is)
+	 */
+	@OneToMany (targetEntity=MarkerBiotypeConflict.class)
+	@JoinColumn(name="marker_key")
+	@OrderBy("sequenceNum")
+	public List<MarkerBiotypeConflict> getBiotypeConflicts() {
+		return biotypeConflicts;
+	}
+
 	@Column(table="marker_counts", name="allele_count")
     @JoinColumn(name="marker_key")
     public Integer getCountOfAlleles() {
         return countOfAlleles;
     }
-	
+
 	@Column(table="marker_counts", name="alleles_with_human_disease_count")
     @JoinColumn(name="marker_key")
 	public Integer getCountOfAllelesWithHumanDiseases() {
 		return countOfAllelesWithHumanDiseases;
 	}
-	
+
 	@Column(table="marker_counts", name="antibody_count")
     @JoinColumn(name="marker_key")
 	public Integer getCountOfAntibodies() {
 		return countOfAntibodies;
 	}
-
+	
 	@Column(table="marker_counts", name="cdna_source_count")
     @JoinColumn(name="marker_key")
 	public Integer getCountOfCdnaSources() {
 		return countOfCdnaSources;
 	}
-
+	
 	@Column(table="marker_counts", name="go_term_count")
     @JoinColumn(name="marker_key")
     public Integer getCountOfGOTerms() {
         return countOfGOTerms;
     }
-	
+
 	@Column(table="marker_counts", name="gxd_assay_count")
     @JoinColumn(name="marker_key")
     public Integer getCountOfGxdAssays() {
@@ -305,7 +328,7 @@ public class Marker {
 	public Integer getCountOfGxdImages() {
 		return countOfGxdImages;
 	}
-
+	
 	@Column(table="marker_counts", name="gxd_literature_count")
     @JoinColumn(name="marker_key")
 	public Integer getCountOfGxdLiterature() {
@@ -359,7 +382,7 @@ public class Marker {
 	public Integer getCountOfReferences() {
 		return countOfReferences;
 	}
-	
+
 	@Column(table="marker_counts", name="sequence_refseq_count")
 	@JoinColumn(name="marker_key")
 	public Integer getCountOfRefSeqSequences() {
@@ -371,7 +394,7 @@ public class Marker {
 	public Integer getCountOfSequences() {
 		return countOfSequences;
 	}
-
+	
 	@Column(table="marker_counts", name="sequence_uniprot_count")
 	@JoinColumn(name="marker_key")
 	public Integer getCountOfUniProtSequences() {
@@ -394,27 +417,27 @@ public class Marker {
 	public Reference getEarliestReference () {
 		return this.filterReferences("earliest");
 	}
-	
+
 	/** get the Ensembl Gene Model ID for this marker, or null if none
 	 */
 	@Transient
 	public MarkerID getEnsemblGeneModelID() {
 		return this.getSingleID("Ensembl Gene Model");
 	}
-	
+
 	/** get the Entrez Gene ID for this marker, or null if none
 	 */
 	@Transient
 	public MarkerID getEntrezGeneID() {
 		return this.getSingleID("Entrez Gene");
 	}
-
+	
 	@OneToMany (fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")
 	public List<ExpressionAssay> getExpressionAssays() {
 		return expressionAssays;
 	}
-
+	
 	/** get the FuncBase ID for this marker, or null if none
 	 */
 	@Transient
@@ -436,28 +459,28 @@ public class Marker {
 		return this.getSingleID("GEO");
 	}
 
-    /** returns an ordered list of GO annotations for the marker
+	/** returns an ordered list of GO annotations for the marker
 	 */
 	@Transient
 	public List<Annotation> getGoAnnotations () {
 		return this.filterAnnotations("GO/Marker");
 	}
 
-    /** returns an ordered list of GO annotations from the component ontology
+	/** returns an ordered list of GO annotations from the component ontology
 	 */
 	@Transient
 	public List<Annotation> getGoComponentAnnotations() {
 		return this.filterAnnotationsByDAG("Cellular Component");
 	}
-	
-	/** returns an ordered list of GO annotations from the function ontology
+
+    /** returns an ordered list of GO annotations from the function ontology
 	 */
 	@Transient
 	public List<Annotation> getGoFunctionAnnotations() {
 		return this.filterAnnotationsByDAG("Molecular Function");
 	}
-	
-	/** returns an ordered list of GO annotations from the process ontology
+
+    /** returns an ordered list of GO annotations from the process ontology
 	 */
 	@Transient
 	public List<Annotation> getGoProcessAnnotations() {
@@ -474,14 +497,14 @@ public class Marker {
 	    return "";
 	}
 	
-    /** return the list of counts of Gxd assays by assay type
+	/** return the list of counts of Gxd assays by assay type
 	 */
 	@Transient
 	public List<MarkerCountSetItem> getGxdAssayCountsByType() {
 		return this.filterCountSetItems("Expression Assays by Assay Type");
 	}
-
-    /** return the list of counts of Gxd results by Theiler Stage
+	
+	/** return the list of counts of Gxd results by Theiler Stage
 	 */
 	@Transient
 	public List<MarkerCountSetItem> getGxdResultCountsByStage() {
@@ -494,7 +517,7 @@ public class Marker {
 	public List<MarkerCountSetItem> getGxdResultCountsByType() {
 		return this.filterCountSetItems("Expression Results by Assay Type");
 	}
-	
+
     /**
 	 * Returns a collection representing all possible ID's for 
 	 * this marker.
@@ -506,14 +529,14 @@ public class Marker {
 	public List<MarkerID> getIds() {
 		return ids;
 	}
-
+	
     /** get the latest reference for this marker
 	*/
 	@Transient
 	public Reference getLatestReference () {
 		return this.filterReferences("latest");
 	}
-
+	
     /**
 	 * Returns a collection representing all possible locations for 
 	 * a given marker.
@@ -529,8 +552,8 @@ public class Marker {
 	@OrderBy("sequenceNum")
 	public List<MarkerLocation> getLocations() {
 		return locations;
-	}	
-	
+	}
+
     /** convenience method to pull the marker clip out of the list of notes
 	 */
 	@Transient
@@ -546,17 +569,17 @@ public class Marker {
 		}
 		return null;
 	}
-    
+
     @Id
 	@Column(name="marker_key")
 	public int getMarkerKey() {
 		return markerKey;
-	}
-    
+	}	
+	
     @Column(name="marker_subtype")
 	public String getMarkerSubtype() {
 		return markerSubtype;
-	}    
+	}
     
     /** returns a list of MarkerTissueCount objects, which give the counts
 	 * of expression results by tissue for the marker
@@ -566,20 +589,20 @@ public class Marker {
 	@OrderBy("sequenceNum")
 	public List<MarkerTissueCount> getMarkerTissueCounts() {
 		return markerTissueCounts;
-	}    
+	}
     
-	@Column(name="marker_type")
+    @Column(name="marker_type")
 	public String getMarkerType() {
 		return markerType;
-	}
-
-	/** get the MCV annotations for this marker
+	}    
+    
+    /** get the MCV annotations for this marker
      */
     @Transient
     public List<Annotation> getMCVAnnotations () {
         return this.filterAnnotations("MCV/Marker");
-    }
-	
+    }    
+    
 	/** return the list of counts of molecular reagents by type
 	 */
 	@Transient
@@ -593,7 +616,7 @@ public class Marker {
     public List<Annotation> getMouseCycAnnotations () {
         return this.filterAnnotations("MouseCyc/Marker");
     }
-
+	
 	/** get the Mammalian Phenotype (MP) annotations for this marker's
 	 *  alleles
 	 */
@@ -612,7 +635,7 @@ public class Marker {
 	public MarkerID getNcbiGeneModelID() {
 		return this.getSingleID("NCBI Gene Model");
 	}
-	
+
 	/**
 	 * A collection of possible marker notes for a marker.
 	 * @return
@@ -623,7 +646,7 @@ public class Marker {
 	public List<MarkerNote> getNotes() {
 		return notes;
 	}
-	
+
 	/** get the OMIM annotations for this marker's alleles
 	 */
 	@Transient
@@ -645,7 +668,7 @@ public class Marker {
 	public List<MarkerOrthology> getOrthologousMarkers() {
 		return orthologousMarkers;
 	}
-
+	
 	/** retrieve the IDs from which are flagged for being part of
 	 * the "other database links" section
 	 */
@@ -663,7 +686,7 @@ public class Marker {
 		}
 		return sublist;
 	}
-
+	
 	/** get a list of non-preferred (old) MGI IDs for the marker
 	 */
 	@Transient
@@ -680,7 +703,7 @@ public class Marker {
 		}
 		return ids;
 	}
-	
+
 	/** get the PIRSF annotations for this marker
      */
     @Transient
@@ -691,7 +714,7 @@ public class Marker {
         }
         return pirsf.get(0);
     }
-	
+
 	/** return the list of counts of polymorphisms by type
 	 */
 	@Transient
@@ -699,26 +722,26 @@ public class Marker {
 		return this.filterCountSetItems("Polymorphisms");
 	}
 	
-    /** get the preferred centimorgan location for the marker, or null if none
+	/** get the preferred centimorgan location for the marker, or null if none
 	 */
 	@Transient
 	public MarkerLocation getPreferredCentimorgans() {
 		return this.filterLocations("centimorgans");
-	} 	
-
+	}
+	
 	/** get the preferred genome coordinates for the marker, or null if none
 	 */
 	@Transient
 	public MarkerLocation getPreferredCoordinates() {
 		return this.filterLocations("coordinates");
 	}
-
-	/** get the preferred cytogenetic band for the marker, or null if none
+	
+    /** get the preferred cytogenetic band for the marker, or null if none
 	 */
 	@Transient
 	public MarkerLocation getPreferredCytoband() {
 		return this.filterLocations("cytogenetic");
-	}
+	} 	
 
 	@Column(name="primary_id")
 	public String getPrimaryID() {
@@ -734,7 +757,7 @@ public class Marker {
         interpro.addAll(proteinOntology);
         return interpro;
     }
-	
+
 	/** convenience method to pull the QTL coordinate note out of the list
      *  of notes
 	 */
@@ -751,8 +774,8 @@ public class Marker {
 		}
 		return null;
 	}
-	
-    /**
+
+	/**
 	 * Returns reference associations.
 	 * @return
 	 * This might be no longer needed.
@@ -761,8 +784,8 @@ public class Marker {
 	@JoinColumn(name="marker_key")
 	public List<MarkerReferenceAssociation> getReferenceAssociations() {
 		return referenceAssociations;
-	} 	
-
+	}
+	
 	/**
 	 * Return a collection of references
 	 * @return
@@ -792,7 +815,7 @@ public class Marker {
 			}
 		}
 		return null;
-	}
+	} 	
 
 	/** get the representative genomic sequence for this marker
 	 */
@@ -807,14 +830,14 @@ public class Marker {
 	public Sequence getRepresentativePolypeptideSequence () {
 		return this.filterSequences("polypeptide");
 	}
-    
-    /** get the representative transcript sequence for this marker
+
+	/** get the representative transcript sequence for this marker
 	 */
 	@Transient
 	public Sequence getRepresentativeTranscriptSequence () {
 		return this.filterSequences("transcript");
-	}   
-    
+	}
+	
     /** returns a List of Marker/Sequence association objects
 	 */
 	@OneToMany (targetEntity=MarkerSequenceAssociation.class)
@@ -822,17 +845,17 @@ public class Marker {
 	public List<MarkerSequenceAssociation> getSequenceAssociations() {
 		return sequenceAssociations;
 	}
-	
-	/** get the Genbank/RefSeq IDs for this marker
+    
+    /** get the Genbank/RefSeq IDs for this marker
 	 */
 	@Transient
 	public List<MarkerID> getSequenceIDs() {
 		List<MarkerID> sublist = this.filterMarkerIDs("Sequence DB");
 		sublist.addAll(this.filterMarkerIDs("RefSeq"));
 		return sublist;
-	}
-	
-	/** get the a single ID for the given logical database, or null if none
+	}   
+    
+    /** get the a single ID for the given logical database, or null if none
 	 */
 	@Transient
 	public MarkerID getSingleID (String logicalDatabase) {
@@ -842,15 +865,15 @@ public class Marker {
 		}
 		return null;
 	}
-
+	
 	public String getStatus() {
 		return status;
 	}
-    
+	
 	public String getSymbol() {
 		return symbol;
 	}
-    
+
 	@OneToMany (targetEntity=MarkerSynonym.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("synonym")
@@ -881,28 +904,36 @@ public class Marker {
 		return ids;
 	}
     
-    /** get the VEGA Gene Model ID for this marker, or null if none
+	/** get the VEGA Gene Model ID for this marker, or null if none
 	 */
 	@Transient
 	public MarkerID getVegaGeneModelID() {
 		return this.getSingleID("VEGA Gene Model");
-	}   
+	}
     
 	public void setAliases(List<MarkerAlias> aliases) {
 		this.aliases = aliases;
-	}   
+	}
     
     public void setAlleleAssociations(
 			List<MarkerAlleleAssociation> alleleAssociations) {
 		this.alleleAssociations = alleleAssociations;
+	}   
+    
+	public void setAnnotations(List<Annotation> annotations) {
+		this.annotations = annotations;
+	}   
+    
+    public void setBatchMarkerAlleles(List<BatchMarkerAllele> batchMarkerAlleles) {
+		this.batchMarkerAlleles = batchMarkerAlleles;
 	}
     
-    public void setAnnotations(List<Annotation> annotations) {
-		this.annotations = annotations;
+    public void setBatchMarkerSnps(List<BatchMarkerSnp> batchMarkerSnps) {
+		this.batchMarkerSnps = batchMarkerSnps;
 	}  
 
-	public void setBatchMarkerAlleles(List<BatchMarkerAllele> batchMarkerAlleles) {
-		this.batchMarkerAlleles = batchMarkerAlleles;
+	public void setBiotypeConflicts(List<MarkerBiotypeConflict> biotypeConflicts) {
+		this.biotypeConflicts = biotypeConflicts;
 	}
 
 	public void setCountOfAlleles(Integer countOfAlleles) {
