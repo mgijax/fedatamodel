@@ -29,7 +29,6 @@ public class BatchMarkerId {
 	private String term;
 	private String termType;
 	private Marker marker;
-	private List<BatchMarkerGoAnnotation> goAnnotations;
 	
 	@Id
 	@Column(name="unique_key")
@@ -69,15 +68,4 @@ public class BatchMarkerId {
 		this.marker = marker;
 	}
 	
-	@OneToMany (targetEntity=BatchMarkerGoAnnotation.class)
-    @JoinColumn(name="marker_key")
-	@OrderBy("sequenceNum")
-	public List<BatchMarkerGoAnnotation> getGoAnnotations() {
-		return goAnnotations;
-	}
-	
-	public void setGoAnnotations(List<BatchMarkerGoAnnotation> goAnnotations) {
-		this.goAnnotations = goAnnotations;
-	}
-
 }

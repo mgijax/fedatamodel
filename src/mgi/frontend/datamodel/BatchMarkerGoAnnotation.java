@@ -21,6 +21,7 @@ public class BatchMarkerGoAnnotation {
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
+	
 	public void setUniqueKey(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
 	}

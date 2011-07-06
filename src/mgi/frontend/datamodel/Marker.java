@@ -40,6 +40,8 @@ public class Marker {
 	private List<MarkerAlleleAssociation> alleleAssociations;
 	private List<BatchMarkerAllele> batchMarkerAlleles;
 	private List<BatchMarkerSnp> batchMarkerSnps;
+	private List<BatchMarkerGoAnnotation> batchMarkerGoAnnotations;
+	private List<BatchMarkerMpAnnotation> batchMarkerMpAnnotations;
 	private List<Annotation> annotations;
 	private List<MarkerBiotypeConflict> biotypeConflicts;
 	private Integer countOfAlleles;
@@ -1111,5 +1113,29 @@ public class Marker {
 				+ (status != null ? "status=" + status + ", " : "")
 				+ (symbol != null ? "symbol=" + symbol + ", " : "")
 				+ (synonyms != null ? "synonyms=" + synonyms : "") + "]";
+	}
+
+	@OneToMany (targetEntity=BatchMarkerGoAnnotation.class)
+	@JoinColumn(name="marker_key")
+	@OrderBy("sequenceNum")
+	public List<BatchMarkerGoAnnotation> getBatchMarkerGoAnnotations() {
+		return batchMarkerGoAnnotations;
+	}
+
+	public void setBatchMarkerGoAnnotations(
+			List<BatchMarkerGoAnnotation> batchMarkerGoAnnotations) {
+		this.batchMarkerGoAnnotations = batchMarkerGoAnnotations;
+	}
+
+	@OneToMany (targetEntity=BatchMarkerMpAnnotation.class)
+	@JoinColumn(name="marker_key")
+	@OrderBy("sequenceNum")
+	public List<BatchMarkerMpAnnotation> getBatchMarkerMpAnnotations() {
+		return batchMarkerMpAnnotations;
+	}
+
+	public void setBatchMarkerMpAnnotations(
+			List<BatchMarkerMpAnnotation> batchMarkerMpAnnotations) {
+		this.batchMarkerMpAnnotations = batchMarkerMpAnnotations;
 	}
 }
