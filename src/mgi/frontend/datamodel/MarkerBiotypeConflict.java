@@ -40,6 +40,7 @@ public class MarkerBiotypeConflict {
 		return markerKey;
 	}
 
+	@Column(name="sequence_num")
 	public int getSequenceNum() {
 		return sequenceNum;
 	}

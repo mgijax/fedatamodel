@@ -18,6 +18,7 @@ import javax.persistence.*;
 public class MarkerReferenceAssociation extends Association {
 	
     protected Marker marker;
+    protected boolean isStrainSpecific;
     
     // ================= Getters and Setters ===================== //
 	
@@ -31,15 +32,24 @@ public class MarkerReferenceAssociation extends Association {
 		return marker;
 	}
 
+	@Column(name="is_strain_specific")
+	public boolean isStrainSpecific () {
+		return isStrainSpecific;
+	}
+
 	public void setMarker(Marker marker) {
 		this.marker = marker;
 	}
 
+	public void setStrainSpecific (boolean isStrainSpecific) {
+		this.isStrainSpecific = isStrainSpecific;
+	}
+
 	@Override
 	public String toString() {
-		return "MarkerReferenceAssociation ["
-				+ (qualifier != null ? "qualifier=" + qualifier + ", " : "")
-				+ "sequenceNumFwd="
-				+ ", uniqueKey=" + uniqueKey + "]";
+		return "MarkerReferenceAssociation [marker=" + marker
+				+ ", isStrainSpecific=" + isStrainSpecific + ", qualifier="
+				+ qualifier + ", reference=" + reference + ", uniqueKey="
+				+ uniqueKey + "]";
 	}
 }
