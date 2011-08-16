@@ -2,6 +2,7 @@ package mgi.frontend.datamodel;
 
 import java.util.Set;
 import java.util.List;
+import java.util.Iterator;
 import javax.persistence.*;
 
 @Entity
@@ -46,11 +47,30 @@ public class Reference {
 	private String pubmedid;
 	private String refAbstract;
 	private int referenceKey;
+	private List<ReferenceNote> notes;
 	private String referenceType;
 	private String shortCitation;
 	private String title;
 	private String vol;
 	private String year;
+	
+	/** retrieve the text of the note for the given note type, or null
+	 * if there is no note of the given type
+	 */
+	@Transient
+	public String filterNotes(String noteType) {
+		Iterator<ReferenceNote> it = this.getNotes().iterator();
+		ReferenceNote note;
+
+		while (it.hasNext()) {
+			note = it.next();
+			if (note.getNoteType().equals(noteType)) {
+				return note.getNote();
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * Return the abstract, via the reference_key
 	 */
@@ -62,6 +82,7 @@ public class Reference {
 	public String getAuthors() {
 		return authors;
 	}
+	
 	/**
 	 * Returns the edition, joined via the reference_key
 	 * @return
@@ -71,16 +92,17 @@ public class Reference {
 	public String getBookEdition() {
 		return bookEdition;
 	}
+	
 	/**
 	 * Returns the editor, joined via the reference_key
 	 * @return
 	 */
-	
 	@Column(table="reference_book", name="editor")
 	@JoinColumn(name="reference_key")
 	public String getBookEditor() {
 		return bookEditor;
 	}
+	
 	/**
 	 * Returns the place the book was published, joined by 
 	 * reference key
@@ -91,6 +113,7 @@ public class Reference {
 	public String getBookPlace() {
 		return bookPlace;
 	}
+	
 	/**
 	 * Returns the publisher, joined by the reference_key
 	 * @return
@@ -100,8 +123,6 @@ public class Reference {
 	public String getBookPublisher() {
 		return bookPublisher;
 	}
-	
-    // ================= Getters and Setters ===================== //
 	
 	/**
 	 * Returns the book title, joined by the reference_key
@@ -144,7 +165,9 @@ public class Reference {
     public Integer getCountOfGXDIndex() {
         return countOfGXDIndex;
     }
-
+	
+    // ================= Getters and Setters ===================== //
+	
 	/**
      * Return the count of associated gxd assay results, 
      * joined by reference_key
@@ -188,7 +211,7 @@ public class Reference {
 	public Integer getCountOfMarkers() {
 		return countOfMarkers;
 	}
-	
+
 	/**
 	 * Return the count of Orthologs, this currently isn't 
 	 * in the database, so will have to be overriden when it is. 
@@ -198,7 +221,7 @@ public class Reference {
     public Integer getCountOfOrthologs() {
         return 0;
     }
-
+	
 	/**
      * Return the count of associated probes, 
      * joined by reference_key
@@ -209,8 +232,8 @@ public class Reference {
     public Integer getCountOfProbes() {
         return countOfProbes;
     }
-
-	 /**
+	
+	/**
      * Return the count of associated sequences, 
      * joined by reference_key
      * @return
@@ -220,7 +243,12 @@ public class Reference {
     public Integer getCountOfSequenceResults() {
         return countOfSequences;
     }
-
+	
+	@Transient
+	public String getFullTextLink() {
+		return this.filterNotes("Full Text");
+	}
+	
 	/**
 	 * Return a collection of all possible reference IDs.
 	 * @return
@@ -230,17 +258,17 @@ public class Reference {
 	public Set<ReferenceID> getIds() {
 		return ids;
 	}
-	
-    public String getIssue() {
+
+	public String getIssue() {
 		return issue;
 	}
-	
-    @Column(name="jnum_id")
+
+	 @Column(name="jnum_id")
 	public String getJnumID() {
 		return jnumID;
 	}
-	
-    @Column(name="jnum_numeric")
+
+	@Column(name="jnum_numeric")
 	public int getJnumNumeric() {
 		return jnumNumeric;
 	}
@@ -249,12 +277,12 @@ public class Reference {
 		return journal;
 	}
 	
-	@Column(name="long_citation")
+    @Column(name="long_citation")
 	public String getLongCitation() {
         return longCitation;
     }
 	
-	/**
+    /**
 	 * Returns a collection of markers
 	 * @return
 	 */
@@ -267,9 +295,17 @@ public class Reference {
 		return markers;
 	}
 	
-	@Column(name="mini_citation")
+    @Column(name="mini_citation")
 	public String getMiniCitation() {
 		return miniCitation;
+	}
+	
+	/** return a collection of notes for this reference
+	 */
+	@OneToMany (targetEntity=ReferenceNote.class)
+	@JoinColumn(name="reference_key")
+	public List<ReferenceNote> getNotes() {
+		return notes;
 	}
 	
 	public String getPages() {
@@ -291,6 +327,11 @@ public class Reference {
         return pubmedid;
     }
 	
+	@Transient
+	public String getReferenceDetailNote() {
+		return this.filterNotes("Reference Detail");
+	}
+	
 	@Id 
 	@Column(name = "reference_key")
 	public int getReferenceKey() {
@@ -307,18 +348,18 @@ public class Reference {
 		return shortCitation;
 	}
 	
-    public String getTitle() {
+	public String getTitle() {
 		return title;
 	}
-    
+	
     public String getVol() {
 		return vol;
 	}
     
-	public String getYear() {
+    public String getYear() {
 		return year;
 	}
-	
+    
 	@Transient
 	public Boolean isBook() {
 	    return this.referenceType.equals("BOOK");
@@ -335,7 +376,7 @@ public class Reference {
 	public void setBookEdition(String bookEdition) {
 		this.bookEdition = bookEdition;
 	}
-
+	
 	public void setBookEditor(String bookEditor) {
 		this.bookEditor = bookEditor;
 	}
@@ -408,20 +449,24 @@ public class Reference {
 		this.jnumNumeric = jnumNumeric;
 	}
 
-    public void setJournal(String journal) {
+	public void setJournal(String journal) {
 		this.journal = journal;
 	}
 
     public void setLongCitation(String longCitation) {
         this.longCitation = longCitation;
     }
-    
+
     public void setMarkers(Set<Marker> markers) {
 		this.markers = markers;
 	}
-
+    
     public void setMiniCitation(String citation) {
 		this.miniCitation = citation;
+	}
+
+    public void setNotes(List<ReferenceNote> notes) {
+		this.notes = notes;
 	}
     
     public void setPages(String pages) {
