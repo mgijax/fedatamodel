@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * MarkerOrthology
  * @author mhall
@@ -9,6 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="marker_orthology")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerOrthology {
     
 	private int mouseMarkerKey;

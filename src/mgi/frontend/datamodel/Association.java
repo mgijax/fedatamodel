@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * Base class for an association.  
  * @author mhall
@@ -13,6 +16,7 @@ import javax.persistence.*;
 
 
 @MappedSuperclass
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Association  {
 	
 	protected String qualifier;

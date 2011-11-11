@@ -17,6 +17,9 @@ import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table (name="sequence")
 @SecondaryTables (
@@ -27,6 +30,7 @@ import javax.persistence.Transient;
 		  @SecondaryTable (name="sequence_gene_trap", pkJoinColumns= {
 		  	@PrimaryKeyJoinColumn(name="sequence_key", referencedColumnName="sequence_key") } )
 		} )
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Sequence {
 
 	private String biotype;
@@ -75,6 +79,7 @@ public class Sequence {
 	@OneToMany (targetEntity=SequenceCloneCollection.class)
     @JoinColumn(name="sequence_key")
     @OrderBy("collection")
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<SequenceCloneCollection> getCloneCollections() {
 		return cloneCollections;
 	}
@@ -124,6 +129,7 @@ public class Sequence {
 	 */
 	@OneToMany (targetEntity=SequenceID.class)
 	@JoinColumn(name="sequence_key")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public Set<SequenceID> getIds() {
 		return ids;
 	}
@@ -160,6 +166,7 @@ public class Sequence {
 	@OneToMany (targetEntity=SequenceLocation.class)
     @JoinColumn(name="sequence_key")
     @OrderBy("sequenceNum")
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<SequenceLocation> getLocations() {
 		return locations;
 	}
@@ -179,6 +186,7 @@ public class Sequence {
             inverseJoinColumns=@JoinColumn(name="marker_key")
             )
     @OrderBy("symbol")
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public Set<Marker> getMarkers() {
         return markers;
     }
@@ -214,6 +222,7 @@ public class Sequence {
             inverseJoinColumns=@JoinColumn(name="probe_key")
             )
     @OrderBy("cloneid")
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public Set<Probe> getProbes() {
         return probes;
     }
@@ -242,6 +251,7 @@ public class Sequence {
             inverseJoinColumns=@JoinColumn(name="reference_key")
             )
     @OrderBy("jnumNumeric")
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<Reference> getReferences() {
         return references;
     }
@@ -270,6 +280,7 @@ public class Sequence {
 
 	@OneToMany (targetEntity=SequenceSource.class)
     @JoinColumn(name="sequence_key")
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<SequenceSource> getSources() {
         return sources;
     }

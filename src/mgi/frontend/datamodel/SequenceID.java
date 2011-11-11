@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * SequenceID
  * @author mhall
@@ -11,6 +14,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table (name="sequence_id")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class SequenceID extends AccessionID {
 	private int sequenceKey;
 	

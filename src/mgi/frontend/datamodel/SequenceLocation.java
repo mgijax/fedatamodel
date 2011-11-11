@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * SequenceLocation
  * @author mhall
@@ -10,6 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table (name="sequence_location")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class SequenceLocation extends Location {
 	protected Integer sequenceKey;
 	

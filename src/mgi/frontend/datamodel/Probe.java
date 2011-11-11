@@ -10,6 +10,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * Probe
  * @author mhall, jsb
@@ -17,6 +20,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table (name="Probe")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Probe {
 
     private String cloneid;
@@ -50,6 +54,7 @@ public class Probe {
 
     @OneToMany (targetEntity=ProbeCloneCollection.class)
     @JoinColumn(name="probe_key")
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public Set<ProbeCloneCollection> getProbeCloneCollection() {
         return probeCloneCollection;
     }

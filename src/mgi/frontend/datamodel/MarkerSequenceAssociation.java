@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * MarkerSequenceAssociation
  * @author mhall
@@ -14,6 +17,7 @@ import javax.persistence.*;
 
 @Entity
 @Table (name="marker_to_sequence")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerSequenceAssociation extends Association {
 	
     protected Marker marker;

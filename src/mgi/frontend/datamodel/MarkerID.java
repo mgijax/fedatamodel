@@ -1,6 +1,10 @@
 package mgi.frontend.datamodel;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import java.util.List;
 
 /**
@@ -11,6 +15,7 @@ import java.util.List;
  */
 @Entity
 @Table (name="marker_id")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerID extends AccessionID {
 	private int markerKey;
 	private int sequenceNum;
@@ -32,6 +37,7 @@ public class MarkerID extends AccessionID {
 	@OneToMany(targetEntity=MarkerIDOtherMarker.class)
 	@JoinColumn(name="marker_id_key")
 	@OrderBy("symbol")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerIDOtherMarker> getOtherMarkers() {
 		return otherMarkers;
 	}

@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * MarkerIDOtherMarker
  * @author jsb
@@ -11,6 +14,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="marker_id_other_marker")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerIDOtherMarker {
     
 	private int uniqueKey;

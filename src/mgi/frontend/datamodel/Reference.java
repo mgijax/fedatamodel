@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Iterator;
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table (name="reference")
 @SecondaryTables (
@@ -15,6 +18,7 @@ import javax.persistence.*;
 	  @SecondaryTable (name="reference_book", pkJoinColumns= {
 		@PrimaryKeyJoinColumn(name="reference_key", referencedColumnName="reference_key") } ) 
 	} )
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Reference {
 
 	private String authors;
@@ -255,6 +259,7 @@ public class Reference {
 	 */
 	@OneToMany (targetEntity=ReferenceID.class)
 	@JoinColumn (name="reference_key")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public Set<ReferenceID> getIds() {
 		return ids;
 	}
@@ -291,6 +296,7 @@ public class Reference {
 			joinColumns=@JoinColumn(name="reference_key"),
 			inverseJoinColumns=@JoinColumn(name="marker_key")
 			)
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public Set<Marker> getMarkers() {
 		return markers;
 	}
@@ -304,6 +310,7 @@ public class Reference {
 	 */
 	@OneToMany (targetEntity=ReferenceNote.class)
 	@JoinColumn(name="reference_key")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<ReferenceNote> getNotes() {
 		return notes;
 	}

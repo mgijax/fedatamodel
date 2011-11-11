@@ -20,6 +20,8 @@ import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
@@ -34,6 +36,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 		{ @SecondaryTable (name="marker_counts", pkJoinColumns= {
 			@PrimaryKeyJoinColumn(name="marker_key", referencedColumnName="marker_key") } ) 
 		} )
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Marker {
 
 	private List<MarkerAlias> aliases;
@@ -209,6 +212,7 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerAlias.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("aliasSymbol")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerAlias> getAliases() {
 		return aliases;
 	}
@@ -219,6 +223,7 @@ public class Marker {
 	 */
 	@OneToMany (targetEntity=MarkerAlleleAssociation.class)
 	@JoinColumn(name="marker_key")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerAlleleAssociation> getAlleleAssociations() {
 		return alleleAssociations;
 	}
@@ -247,6 +252,7 @@ public class Marker {
             inverseJoinColumns=@JoinColumn(name="annotation_key")
             )
     @OrderBy("dagName, term")
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<Annotation> getAnnotations() {
 		return annotations;
 	}
@@ -264,6 +270,7 @@ public class Marker {
 	@OneToMany (targetEntity=BatchMarkerAllele.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<BatchMarkerAllele> getBatchMarkerAlleles() {
 		return batchMarkerAlleles;
 	}
@@ -271,6 +278,7 @@ public class Marker {
 	@OneToMany (targetEntity=BatchMarkerGoAnnotation.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<BatchMarkerGoAnnotation> getBatchMarkerGoAnnotations() {
 	        return batchMarkerGoAnnotations;
 	}
@@ -278,6 +286,7 @@ public class Marker {
 	@OneToMany (targetEntity=BatchMarkerMpAnnotation.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<BatchMarkerMpAnnotation> getBatchMarkerMpAnnotations() {
         return batchMarkerMpAnnotations;
 	}
@@ -288,6 +297,7 @@ public class Marker {
 	@OneToMany (targetEntity=BatchMarkerSnp.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<BatchMarkerSnp> getBatchMarkerSnps() {
 		return batchMarkerSnps;
 	}
@@ -299,6 +309,7 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerBiotypeConflict.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerBiotypeConflict> getBiotypeConflicts() {
 		return biotypeConflicts;
 	}
@@ -423,6 +434,7 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerCountSetItem.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerCountSetItem> getCountSetItems() {
 		return countSetItems;
 	}
@@ -450,6 +462,7 @@ public class Marker {
 	
 	@OneToMany (fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<ExpressionAssay> getExpressionAssays() {
 		return expressionAssays;
 	}
@@ -542,6 +555,7 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerID.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerID> getIds() {
 		return ids;
 	}
@@ -566,6 +580,7 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerLocation.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerLocation> getLocations() {
 		return locations;
 	}
@@ -603,6 +618,7 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerTissueCount.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerTissueCount> getMarkerTissueCounts() {
 		return markerTissueCounts;
 	}
@@ -659,6 +675,7 @@ public class Marker {
 	 */
 	@OneToMany (targetEntity=MarkerNote.class)
 	@JoinColumn(name="marker_key")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerNote> getNotes() {
 		return notes;
 	}
@@ -668,6 +685,13 @@ public class Marker {
 	@Transient
 	public List<Annotation> getOMIMAnnotations () {
 		return this.filterAnnotations("OMIM/Marker");
+	}
+	
+	/** get the OMIM annotations for this marker's alleles
+	 */
+	@Transient
+	public List<Annotation> getOMIMHumanAnnotations () {
+		return this.filterAnnotations("OMIM/Human Marker");
 	}
 	
 	public String getOrganism() {
@@ -681,6 +705,7 @@ public class Marker {
 	@OneToMany
 	@JoinColumn(name="mouse_marker_key")
 	@OrderBy("otherOrganism")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerOrthology> getOrthologousMarkers() {
 		return orthologousMarkers;
 	}
@@ -798,6 +823,7 @@ public class Marker {
 	 */
 	@OneToMany (fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerReferenceAssociation> getReferenceAssociations() {
 		return referenceAssociations;
 	}
@@ -813,6 +839,7 @@ public class Marker {
 			inverseJoinColumns=@JoinColumn(name="reference_key")
 			)
 	@OrderBy("year, jnumNumeric")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<Reference> getReferences() {
 		return references;
 	}
@@ -858,6 +885,7 @@ public class Marker {
 	 */
 	@OneToMany (targetEntity=MarkerSequenceAssociation.class)
 	@JoinColumn(name="marker_key")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerSequenceAssociation> getSequenceAssociations() {
 		return sequenceAssociations;
 	}
@@ -927,6 +955,7 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerSynonym.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("synonym")
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerSynonym> getSynonyms() {
 		return synonyms;
 	}

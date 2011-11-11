@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * Note
  * @author mhall
@@ -9,6 +12,7 @@ import javax.persistence.*;
  * these fields.
  */
 @MappedSuperclass
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Note {
 	
 	protected String note;

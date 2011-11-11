@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * Base object for location. 
  * @author mhall
@@ -9,6 +12,7 @@ import javax.persistence.*;
  */
 
 @MappedSuperclass
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Location {
 	
 	// subclasses will need to add their particular objects and getter/setter methods

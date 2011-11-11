@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * Note
  * @author jsb
@@ -10,6 +13,7 @@ import javax.persistence.*;
  * iterate over those counts rather than accessing each one directly.)
  */
 @MappedSuperclass
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class CountSetItem {
 	
 	protected String setType;

@@ -15,6 +15,9 @@ import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * Annotation
  * @author mhall, jsb
@@ -28,7 +31,7 @@ import javax.persistence.Table;
         @PrimaryKeyJoinColumn(name="annotation_key", referencedColumnName="annotation_key") } )
     }  
     )
-    
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)    
 public class Annotation {
 	
 	private int annotationKey;
@@ -92,6 +95,7 @@ public class Annotation {
     
     @OneToMany (fetch=FetchType.LAZY)
     @JoinColumn(name="annotation_key")
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<AnnotationInferredFromID> getInferredFromList() {
         return inferredFromList;
     }
@@ -120,6 +124,7 @@ public class Annotation {
             joinColumns=@JoinColumn(name="annotation_key"),
             inverseJoinColumns=@JoinColumn(name="reference_key")
             )
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<Reference> getReferences() {
         return references;
     }

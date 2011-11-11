@@ -15,6 +15,9 @@ import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -23,6 +26,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="batch_marker_terms")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class BatchMarkerId {
 	
 	private Integer batchId;

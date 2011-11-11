@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * MarkerSynonym
  * @author mhall
@@ -9,6 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="marker_synonym")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerSynonym {
     
 	private String jnumID;

@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * MarkerNote
  * @author mhall
@@ -10,6 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table (name="marker_note")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerNote extends Note {
 	
     protected Integer markerKey;

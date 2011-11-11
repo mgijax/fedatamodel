@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * The base class for all accession id's
  * @author mhall, jsb
@@ -9,6 +12,7 @@ import javax.persistence.*;
  */
 
 @MappedSuperclass
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class AccessionID {
 	protected String accID;
 	protected boolean isPreferred;

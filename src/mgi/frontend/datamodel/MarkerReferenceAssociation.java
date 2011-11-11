@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * Implements the MarkerReferenecAssociation object.
  * @author mhall
@@ -15,6 +18,7 @@ import javax.persistence.*;
 
 @Entity
 @Table (name="marker_to_reference")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerReferenceAssociation extends Association {
 	
     protected Marker marker;

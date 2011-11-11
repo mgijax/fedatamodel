@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * Source
  * @author mhall
@@ -9,6 +12,7 @@ import javax.persistence.*;
  * only being used by sequences.
  */
 @MappedSuperclass
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Source {
 	
 	protected String age;

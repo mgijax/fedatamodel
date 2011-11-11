@@ -2,6 +2,9 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * MarkerCountSetItem
  * @author jsb
@@ -10,6 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table (name="marker_count_sets")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerCountSetItem extends CountSetItem {
 	
     protected Integer markerKey;

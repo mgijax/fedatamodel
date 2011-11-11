@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * A very simple representation of an allele for associating with the batch
  * query's markers.  It only captures the symbol and ID of the allele, and
@@ -14,6 +17,7 @@ import javax.persistence.Table;
         
 @Entity
 @Table(name="batch_marker_alleles")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class BatchMarkerAllele {
     
     private int uniqueKey;
