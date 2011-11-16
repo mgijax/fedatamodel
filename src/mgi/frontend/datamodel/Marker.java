@@ -960,20 +960,6 @@ public class Marker {
 		return synonyms;
 	}
     
-	/** get the TreeFam ID to display for this marker, or null if none
-	 */
-	@Transient
-	public MarkerID getTreeFamDisplayID() {
-		return this.getSingleID("TreeFam-Tree");
-	}
-    
-	/** get the TreeFam ID to use in making a link for this marker, or null if none
-	 */
-	@Transient
-	public MarkerID getTreeFamLinkID() {
-		return this.getSingleID("TreeFam-Gene");
-	}
-    
 	/** retrieve the UniProt IDs for the marker
 	 */
 	@Transient
