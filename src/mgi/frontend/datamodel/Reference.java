@@ -249,6 +249,16 @@ public class Reference {
     }
 	
 	@Transient
+	public String getDoiId() {
+		for(ReferenceID id: this.ids){
+			if (id.getLogicalDB().equals("Journal Link")) {
+				return id.getAccID();
+			}			
+		}
+		return "";
+	}
+	
+	@Transient
 	public String getFullTextLink() {
 		return this.filterNotes("Full Text");
 	}
