@@ -31,7 +31,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name="Allele")
 @SecondaryTables (
-    { 
+    {
       @SecondaryTable (name="allele_counts", pkJoinColumns= {
         @PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } ),
       @SecondaryTable (name="allele_imsr_counts", pkJoinColumns= {
@@ -66,9 +66,9 @@ public class Allele {
     private RecombinaseInfo recombinaseInfo;
     private List<AlleleGenotypeAssociation> genotypeAssociations;
     private List<Annotation> annotations;
-    
+
     // ================= Getters and Setters ===================== //
-    
+
 	@Id
     @Column(name="allele_key")
     public int getAlleleKey() {
@@ -85,7 +85,7 @@ public class Allele {
      * relevant if its a cre allele.
      * @return
      */
-    
+
     @OneToMany
     @JoinTable (name="recombinase_allele_system",
             joinColumns=@JoinColumn(name="allele_key"),
@@ -95,52 +95,51 @@ public class Allele {
     public List<AlleleSystem> getAlleleSystems() {
         return alleleSystems;
     }
-    
+
     @Column(name="allele_type")
     public String getAlleleType() {
         return alleleType;
     }
-    
+
     @OneToMany (fetch=FetchType.LAZY)
     @JoinColumn(name="allele_key")
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<Annotation> getAnnotations() {
     	return annotations;
     }
-    
+
     @Column(table="allele_counts", name="marker_count")
     @JoinColumn(name="allele_key")
     public Integer getCountOfMarkers() {
         return countOfMarkers;
     }
-    
+
     @Column(table="allele_counts", name="reference_count")
     @JoinColumn(name="allele_key")
     public Integer getCountOfReferences() {
         return countOfReferences;
     }
-    
+
     public String getDriver() {
         return driver;
     }
-    
+
     /**
      * Return the gene name for the gene this allele is part of.
      * @return
      */
-    
+
     @Column(name="gene_name")
     public String getGeneName() {
         return geneName;
     }
-    
+
     @OneToMany (fetch=FetchType.LAZY)
 	@JoinColumn(name="allele_key")
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<AlleleGenotypeAssociation> getGenotypeAssociations() {
 		return genotypeAssociations;
 	}
-    
+
     /**
      * Return all of the possible allele id's.  This class is based
      * off of the accession id class.
@@ -160,7 +159,7 @@ public class Allele {
     public Integer getImsrCellLineCount() {
 		return imsrCellLineCount;
 	}
-    
+
     /** count of cell lines and strains for the marker of this allele in IMSR
      */
     @Column(table="allele_imsr_counts", name="count_for_marker")
@@ -168,7 +167,7 @@ public class Allele {
 	public Integer getImsrCountForMarker() {
 		return imsrCountForMarker;
 	}
-    
+
     /** count of strains for this allele in IMSR
      */
     @Column(table="allele_imsr_counts", name="strain_count")
@@ -176,12 +175,12 @@ public class Allele {
 	public Integer getImsrStrainCount() {
 		return imsrStrainCount;
 	}
-    
+
     @Column(name="inducible_note")
     public String getInducibleNote() {
         return inducibleNote;
     }
-    
+
     /**
      * Is this a cre allele?
      * @return
@@ -202,29 +201,29 @@ public class Allele {
     public String getMolecularDescription() {
         return molecularDescription;
     }
-    
+
     public String getName() {
         return name;
     }
-    
+
     /**
-     * return all of the allele notes.  This class is based off of the notes 
+     * return all of the allele notes.  This class is based off of the notes
      * class.
      * @return
      */
-    
+
     @OneToMany (targetEntity=AlleleNote.class)
     @JoinColumn(name="allele_key")
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<AlleleNote> getNotes() {
         return notes;
     }
-    
+
     /**
      * String representation of the allele only part of the allele symbol
      * @return
      */
-    
+
     @Column(name="only_allele_symbol")
     public String getOnlyAlleleSymbol() {
         return onlyAlleleSymbol;
@@ -233,7 +232,7 @@ public class Allele {
     public String getPrimaryID() {
         return primaryID;
     }
-    
+
     /** Return the RecombinaseInfo object associated with this allele.
      */
 	@OneToOne (targetEntity=RecombinaseInfo.class, fetch=FetchType.LAZY)
@@ -251,8 +250,8 @@ public class Allele {
     public List<Reference> getReferences() {
         return references;
     }
-    
-    
+
+
     public String getSymbol() {
         return symbol;
     }
@@ -262,28 +261,28 @@ public class Allele {
     public Set<AlleleSynonym> getSynonyms() {
         return synonyms;
     }
-    
+
     public void setAlleleKey(int alleleKey) {
         this.alleleKey = alleleKey;
     }
     public void setAlleleSubType(String alleleSubType) {
         this.alleleSubType = alleleSubType;
     }
-    
+
     public void setAlleleSystems(List<AlleleSystem> alleleSystems) {
         this.alleleSystems = alleleSystems;
     }
     public void setAlleleType(String alleleType) {
         this.alleleType = alleleType;
     }
-    
+
     public void setAnnotations(List<Annotation> annotations) {
 		this.annotations = annotations;
 	}
     public void setCountOfMarkers(Integer countOfMarkers) {
         this.countOfMarkers = countOfMarkers;
     }
-    
+
     public void setCountOfReferences(Integer countOfReferences) {
         this.countOfReferences = countOfReferences;
     }
@@ -291,7 +290,7 @@ public class Allele {
     public void setDriver(String driver) {
         this.driver = driver;
     }
-    
+
     public void setGeneName(String geneName) {
         this.geneName = geneName;
     }
@@ -300,7 +299,7 @@ public class Allele {
 			List<AlleleGenotypeAssociation> genotypeAssociations) {
 		this.genotypeAssociations = genotypeAssociations;
 	}
-    
+
     public void setIds(Set<AlleleID> ids) {
         this.ids = ids;
     }
@@ -308,7 +307,7 @@ public class Allele {
     public void setImsrCellLineCount(Integer imsrCellLineCount) {
 		this.imsrCellLineCount = imsrCellLineCount;
 	}
-    
+
     public void setImsrCountForMarker(Integer imsrCountForMarker) {
 		this.imsrCountForMarker = imsrCountForMarker;
 	}
@@ -316,28 +315,28 @@ public class Allele {
     public void setImsrStrainCount(Integer imsrStrainCount) {
 		this.imsrStrainCount = imsrStrainCount;
 	}
-    
+
     public void setInducibleNote(String inducibleNote) {
         this.inducibleNote = inducibleNote;
     }
-    
+
     public void setIsRecombinase(int isRecombinase) {
         this.isRecombinase = isRecombinase;
     }
-    
+
     public void setIsWildType(int isWildType) {
 		this.isWildType = isWildType;
 	}
-    
+
     public void setMolecularDescription(String molecularDescription) {
         this.molecularDescription = molecularDescription;
     }
-    
+
     /* The three IMSR counts exist in a separate table (allele_imsr_counts)
      * which we join in to make the attributes appear as if they were
      * sitting in the allele table itself.
      */
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -365,7 +364,7 @@ public class Allele {
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
-	
+
 	public void setSynonyms(Set<AlleleSynonym> synonyms) {
         this.synonyms = synonyms;
     }
