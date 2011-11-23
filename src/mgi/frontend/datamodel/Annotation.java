@@ -26,14 +26,14 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name="annotation")
 @SecondaryTables (
-    { 
+    {
       @SecondaryTable (name="annotation_sequence_num", pkJoinColumns= {
         @PrimaryKeyJoinColumn(name="annotation_key", referencedColumnName="annotation_key") } )
-    }  
+    }
     )
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)    
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Annotation {
-	
+
 	private int annotationKey;
 	private String annotationType;
 	private String byAnnotationType;
@@ -51,88 +51,88 @@ public class Annotation {
 	private String term;
 	private String termID;
 	private String vocabName;
-	
+
 	@Id
 	@Column(name="annotation_key")
     public int getAnnotationKey() {
         return annotationKey;
     }
-	
+
 	@Column(name="annotation_type")
     public String getAnnotationType() {
         return annotationType;
     }
-	
+
     @Column(table="annotation_sequence_num", name="by_annotation_type")
     public String getByAnnotationType() {
         return byAnnotationType;
     }
-    
+
     @Column(table="annotation_sequence_num", name="by_dag_structure")
     public String getByDagStructure() {
         return byDagStructure;
     }
-    
+
     @Column(table="annotation_sequence_num", name="by_term_alpha")
     public String getByTermAlpha() {
         return byTermAlpha;
     }
-    
+
     @Column(table="annotation_sequence_num", name="by_vocab")
     public String getByVocab() {
         return byVocab;
     }
-    
+
     @Column(name="dag_name")
     public String getDagName() {
         return dagName;
     }
-    
+
     @Column(name="evidence_code")
     public String getEvidenceCode() {
         return evidenceCode;
     }
-    
+
     @OneToMany (fetch=FetchType.LAZY)
     @JoinColumn(name="annotation_key")
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<AnnotationInferredFromID> getInferredFromList() {
         return inferredFromList;
     }
-    
+
     @Column(name="inferred_id_count")
     public String getInferredIDCount() {
         return inferredIDCount;
     }
-    
+
     @Column(name="object_type")
     public String getObjectType() {
         return objectType;
     }
-    
+
     public String getQualifier() {
         return qualifier;
     }
-    
+
     @Column(name="reference_count")
     public String getReferenceCount() {
         return referenceCount;
     }
-    
+
     @OneToMany
     @JoinTable (name="annotation_reference",
             joinColumns=@JoinColumn(name="annotation_key"),
             inverseJoinColumns=@JoinColumn(name="reference_key")
             )
+
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<Reference> getReferences() {
         return references;
     }
-    
+
     public String getTerm() {
         return term;
     }
-        
+
     @Column(name="term_id")
     public String getTermID() {
         return termID;
@@ -192,9 +192,9 @@ public class Annotation {
     public void setTermID(String termID) {
         this.termID = termID;
     }
-	
+
     public void setVocabName(String vocabName) {
         this.vocabName = vocabName;
     }
-    
+
 }
