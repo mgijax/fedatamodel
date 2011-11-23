@@ -6,29 +6,28 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * Base class for an association.  
+ * Base class for an association.
  * @author mhall
  * We have updated this class so it reflects the more current database schema.
- * 
+ *
  * This class however isn't currently in use, so there could still be bugs in it.
- * 
+ *
  */
 
 
 @MappedSuperclass
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Association  {
-	
+
 	protected String qualifier;
 	protected Reference reference;
 	// subclasses will need to add their particular objects and getter/setter methods
 	protected int uniqueKey;
-	
+
 	public String getQualifier() {
 		return qualifier;
 	}
 
-	
+
 	/**
 	 * Return the reference for this association.  All objects with this type
 	 * will have at least 1 reference associated with them.

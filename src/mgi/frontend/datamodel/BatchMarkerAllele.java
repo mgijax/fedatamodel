@@ -14,18 +14,17 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * a sequence number for ordering a marker's alleles.
  * @author jsb
  */
-        
+
 @Entity
 @Table(name="batch_marker_alleles")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class BatchMarkerAllele {
-    
+
     private int uniqueKey;
     private int markerKey;
     private int sequenceNum;
     private String alleleSymbol;
     private String alleleID;
-    
+
     // ================= Getters and Setters ===================== //
 
     @Column(name="allele_id")

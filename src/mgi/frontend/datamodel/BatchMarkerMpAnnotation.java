@@ -10,21 +10,20 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name="batch_marker_mp_annotations")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class BatchMarkerMpAnnotation {
-	
+
     private int uniqueKey;
     private int markerKey;
     private String mpId;
     private String mpTerm;
     private int sequenceNum;
-    
+
 	@Id
 	@Column(name="unique_key")
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
-	
+
 	public void setUniqueKey(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
 	}

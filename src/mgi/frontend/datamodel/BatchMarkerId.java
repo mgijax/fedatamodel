@@ -26,50 +26,49 @@ import java.util.Set;
 
 @Entity
 @Table(name="batch_marker_terms")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class BatchMarkerId {
-	
+
 	private Integer batchId;
 	private String term;
 	private String termType;
 	private Marker marker;
-	
+
 	@Id
 	@Column(name="unique_key")
 	public Integer getBatchId() {
 		return batchId;
 	}
-	
+
 	public void setBatchId(Integer batchId) {
 		this.batchId = batchId;
 	}
-	
+
 	@Column(name="term")
 	public String getTerm() {
 		return term;
 	}
-	
+
 	public void setTerm(String term) {
 		this.term = term;
 	}
-	
+
 	@Column(name="term_type")
 	public String getTermType() {
 		return termType;
 	}
-	
+
 	public void setTermType(String termType) {
 		this.termType = termType;
 	}
-	
+
 	@OneToOne (targetEntity=Marker.class)
 	@JoinColumn(name="marker_key")
 	public Marker getMarker() {
 		return marker;
 	}
-	
+
 	public void setMarker(Marker marker) {
 		this.marker = marker;
 	}
-	
+
 }
