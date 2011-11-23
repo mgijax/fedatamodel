@@ -14,14 +14,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table (name="marker_to_allele")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerAlleleAssociation extends Association {
-    
+
     protected Marker marker;
     protected Allele allele;
-    
+
     // ================= Getters and Setters ===================== //
-    
+
     /** Return the actual marker for this relationship.
      */
     @ManyToOne (targetEntity=Marker.class, fetch=FetchType.LAZY)

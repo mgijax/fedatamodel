@@ -9,23 +9,22 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * Implements the MarkerReferenecAssociation object.
  * @author mhall
  * This object mapped an early idea of a marker->Reference association.
- * 
+ *
  * This object extends the association base object, so most of its methods
  * are inherited from this.
- * 
+ *
  * This may be depreciated now.
  */
 
 @Entity
 @Table (name="marker_to_reference")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerReferenceAssociation extends Association {
-	
+
     protected Marker marker;
     protected boolean isStrainSpecific;
-    
+
     // ================= Getters and Setters ===================== //
-	
+
 	/**
 	 * Return the marker for this association.
 	 * @return
