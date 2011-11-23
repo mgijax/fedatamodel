@@ -304,7 +304,6 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerBiotypeConflict.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerBiotypeConflict> getBiotypeConflicts() {
 		return biotypeConflicts;
 	}
@@ -429,7 +428,6 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerCountSetItem.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerCountSetItem> getCountSetItems() {
 		return countSetItems;
 	}
@@ -612,7 +610,6 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerTissueCount.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerTissueCount> getMarkerTissueCounts() {
 		return markerTissueCounts;
 	}
@@ -699,7 +696,6 @@ public class Marker {
 	@OneToMany
 	@JoinColumn(name="mouse_marker_key")
 	@OrderBy("otherOrganism")
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerOrthology> getOrthologousMarkers() {
 		return orthologousMarkers;
 	}

@@ -13,13 +13,12 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table (name="marker_count_sets")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerCountSetItem extends CountSetItem {
-	
+
     protected Integer markerKey;
 
     // ================= Getters and Setters ===================== //
-    
+
 	@Column(name="marker_key")
 	public Integer getMarkerKey() {
 		return markerKey;

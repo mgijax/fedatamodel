@@ -10,13 +10,12 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @author jsb
  * This object represents the counts of expression results for one
  * marker/tissue pair.  There are three counts:  detected, not detected,
- * and all. 
+ * and all.
  */
 @Entity
 @Table(name="marker_tissue_expression_counts")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerTissueCount {
-    
+
 	private int uniqueKey;
 	private int markerKey;
 	private int structureKey;
@@ -25,7 +24,7 @@ public class MarkerTissueCount {
 	private int detectedResultCount;
 	private int notDetectedResultCount;
 	private int sequenceNum;			// for ordering
-	
+
 	// ================= Getters and Setters ===================== //
 
 	@Column(name="all_result_count")

@@ -8,19 +8,18 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 /**
  * MarkerOrthology
  * @author mhall
- * This object encapsulates mouse marker orthologs. 
+ * This object encapsulates mouse marker orthologs.
  */
 @Entity
 @Table(name="marker_orthology")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerOrthology {
-    
+
 	private int mouseMarkerKey;
 	private int otherMarkerKey;
 	private String otherOrganism;
 	private String otherSymbol;
 	private int uniqueKey;
-	
+
     // ================= Getters and Setters ===================== //
 
 	@Column(name="mouse_marker_key")
