@@ -16,11 +16,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 /**
  * Probe
  * @author mhall, jsb
- * Core Probe object.  
+ * Core Probe object.
  */
 @Entity
 @Table (name="Probe")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Probe {
 
     private String cloneid;
@@ -30,14 +29,14 @@ public class Probe {
     private Set<ProbeCloneCollection> probeCloneCollection;
     private int probeKey;
     private String segmenttype;
-    
+
     // ================= Getters and Setters ===================== //
-    
+
     @Column(name="clone_id")
     public String getCloneid() {
         return cloneid;
     }
-    
+
     @Column(name="logical_db")
     public String getLogicaldb() {
         return logicaldb;
@@ -54,7 +53,6 @@ public class Probe {
 
     @OneToMany (targetEntity=ProbeCloneCollection.class)
     @JoinColumn(name="probe_key")
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public Set<ProbeCloneCollection> getProbeCloneCollection() {
         return probeCloneCollection;
     }
@@ -92,8 +90,8 @@ public class Probe {
 
     public void setProbeKey(int probeKey) {
         this.probeKey = probeKey;
-    }    
-    
+    }
+
     public void setSegmenttype(String segmenttype) {
         this.segmenttype = segmenttype;
     }

@@ -15,15 +15,14 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table (name="probe_clone_collection")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class ProbeCloneCollection {
 
     private String collection;
     private int probeKey;
 	private int uniqueKey;
-    
+
     // ================= Getters and Setters ===================== //
-    
+
     public String getCollection() {
         return collection;
     }

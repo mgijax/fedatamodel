@@ -13,9 +13,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * iterate over those counts rather than accessing each one directly.)
  */
 @MappedSuperclass
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class CountSetItem {
-	
+
 	protected String setType;
 	protected String countType;
 	protected int uniqueKey;
@@ -23,7 +22,7 @@ public class CountSetItem {
 	protected int sequenceNum;
 
     // ================= Getters and Setters ===================== //
-	
+
 	@Column(name="count")
 	public int getCount() {
 		return count;

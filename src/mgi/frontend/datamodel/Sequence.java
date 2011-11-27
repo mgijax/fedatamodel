@@ -79,7 +79,6 @@ public class Sequence {
 	@OneToMany (targetEntity=SequenceCloneCollection.class)
     @JoinColumn(name="sequence_key")
     @OrderBy("collection")
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<SequenceCloneCollection> getCloneCollections() {
 		return cloneCollections;
 	}
@@ -222,7 +221,6 @@ public class Sequence {
             inverseJoinColumns=@JoinColumn(name="probe_key")
             )
     @OrderBy("cloneid")
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public Set<Probe> getProbes() {
         return probes;
     }

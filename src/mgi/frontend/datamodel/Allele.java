@@ -38,7 +38,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
     	@PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } )
     }  )
 @JsonIgnoreProperties({"references", "notes", "molecularDescription", "ids"})
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Allele {
     private int alleleKey;
     private String alleleSubType;
@@ -91,7 +90,6 @@ public class Allele {
             joinColumns=@JoinColumn(name="allele_key"),
             inverseJoinColumns=@JoinColumn(name="allele_system_key")
             )
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<AlleleSystem> getAlleleSystems() {
         return alleleSystems;
     }
@@ -103,7 +101,6 @@ public class Allele {
 
     @OneToMany (fetch=FetchType.LAZY)
     @JoinColumn(name="allele_key")
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<Annotation> getAnnotations() {
     	return annotations;
     }
@@ -147,7 +144,6 @@ public class Allele {
      */
     @OneToMany (targetEntity=AlleleID.class)
     @JoinColumn (name="allele_key")
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public Set<AlleleID> getIds() {
         return ids;
     }
@@ -214,7 +210,6 @@ public class Allele {
 
     @OneToMany (targetEntity=AlleleNote.class)
     @JoinColumn(name="allele_key")
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<AlleleNote> getNotes() {
         return notes;
     }
@@ -246,7 +241,6 @@ public class Allele {
             inverseJoinColumns=@JoinColumn(name="reference_key")
             )
     @OrderBy("year, jnumNumeric")
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<Reference> getReferences() {
         return references;
     }
@@ -257,7 +251,6 @@ public class Allele {
     }
     @OneToMany (targetEntity=AlleleSynonym.class)
     @JoinColumn(name="allele_key")
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public Set<AlleleSynonym> getSynonyms() {
         return synonyms;
     }
