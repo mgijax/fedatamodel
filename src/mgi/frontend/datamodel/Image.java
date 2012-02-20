@@ -55,6 +55,7 @@ public class Image {
     private Integer height;
     private List<ImageAllele> imageAlleles;
     private List<ImagePane> imagePanes;
+    private List<ImagePaneSet> imagePaneSets;
     private int imageKey;
     private String imageType;
     private int isThumbnail;
@@ -164,6 +165,15 @@ public class Image {
 		return imagePanes;
 	}
 
+	/** get a list of ImageAllele objects ordered by allele symbol
+	 */
+	@OneToMany (targetEntity=ImagePaneSet.class)
+	@JoinColumn(name="image_key")
+	@OrderBy("sequenceNum")
+	public List<ImagePaneSet> getImagePaneSets() {
+		return imagePaneSets;
+	}
+
 	@Column(name="image_type")
     public String getImageType() {
         return imageType;
@@ -254,6 +264,10 @@ public class Image {
 
     public void setImagePanes(List<ImagePane> imagePanes) {
 		this.imagePanes = imagePanes;
+	}
+
+    public void setImagePaneSets(List<ImagePaneSet> imagePaneSets) {
+		this.imagePaneSets = imagePaneSets;
 	}
 
     public void setImageType(String imageType) {

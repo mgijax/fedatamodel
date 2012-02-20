@@ -1,39 +1,43 @@
 package mgi.frontend.datamodel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import java.util.List;
+import java.util.*;
+
+import javax.persistence.*;
 
 /**
  * One pane of an expression image, allowing multiple assays and markers via
  * ImagePaneDetails objects.
  * @author jsb
  */
-        
+
 @Entity
 @Table(name="expression_imagepane")
 public class ImagePane {
-    
+
     private int imagePaneKey;
     private int imageKey;
     private String paneLabel;
     private int sequenceNum;
     private List<ImagePaneDetails> details;
-    
+    private List<ImagePaneID> imagePaneIds;
+
     // ================= Getters and Setters ===================== //
 
-	/** get a list of ImagePaneDetails objects ordered by marker symbol
+	/** get a list of ImagePaneDetails objects
 	 */
 	@OneToMany (targetEntity=ImagePaneDetails.class)
 	@JoinColumn(name="imagepane_key")
 	@OrderBy("sequenceNum")
 	public List<ImagePaneDetails> getDetails() {
 		return details;
+	}
+
+	/** get a list of ImagePaneID objects
+	 */
+	@OneToMany (targetEntity=ImagePaneID.class)
+	@JoinColumn(name="imagepane_key")
+	public List<ImagePaneID> getImagePaneIds() {
+		return imagePaneIds;
 	}
 
 	@Column(name="image_key")
@@ -59,6 +63,10 @@ public class ImagePane {
 
 	public void setDetails(List<ImagePaneDetails> details) {
 		this.details = details;
+	}
+
+	public void setImagePaneIds(List<ImagePaneID> imagePaneIds) {
+		this.imagePaneIds = imagePaneIds;
 	}
 
 	public void setImageKey(int imageKey) {
