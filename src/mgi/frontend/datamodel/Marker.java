@@ -62,6 +62,7 @@ public class Marker {
 	private Integer countOfUniProtSequences;
 	private Integer countOfCdnaSources;
 	private Integer countOfMicroarrayProbesets;
+	private int isInReferenceGenome;
 	private int hasGOGraph;
 	private int hasGOOrthologyGraph;
 	private List<MarkerID> ids;
@@ -441,6 +442,17 @@ public class Marker {
 		return this.filterReferences("earliest");
 	}
 
+	/** determine if the marker has exactly one Ensembl Gene Model ID
+	 */
+	@Transient
+	public boolean getHasOneEnsemblGeneModelID() {
+		List<MarkerID> ids = this.filterMarkerIDs("Ensembl Gene Model");
+		if (ids.size() != 1) {
+			return false;
+		}
+		return true;
+	}
+
 	/** get the Ensembl Gene Model ID for this marker, or null if none
 	 */
 	@Transient
@@ -539,6 +551,14 @@ public class Marker {
 	@Transient
 	public List<MarkerCountSetItem> getGxdResultCountsByType() {
 		return this.filterCountSetItems("Expression Results by Assay Type");
+	}
+
+	/** returns 1 if this marker is in the GO Consortium reference genome
+	 * project, 0 otherwise
+	 */
+	@Column(name="is_in_reference_genome")
+	public int getIsInReferenceGenome() {
+		return isInReferenceGenome;
 	}
 
 	/** returns 1 if this marker has a GO graph, or 0 if not
@@ -1098,6 +1118,10 @@ public class Marker {
 
 	public void setExpressionAssays(List<ExpressionAssay> expressionAssays) {
 		this.expressionAssays = expressionAssays;
+	}
+
+	public void setIsInReferenceGenome(int isInReferenceGenome) {
+		this.isInReferenceGenome = isInReferenceGenome;
 	}
 
 	public void setHasGOGraph(int hasGOGraph) {
