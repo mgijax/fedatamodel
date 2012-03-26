@@ -731,7 +731,7 @@ public class Marker {
 	 */
 	@OneToMany
 	@JoinColumn(name="mouse_marker_key")
-	@OrderBy("otherOrganism")
+	@OrderBy("sequenceNum")
 	public List<MarkerOrthology> getOrthologousMarkers() {
 		return orthologousMarkers;
 	}

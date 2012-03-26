@@ -19,6 +19,7 @@ public class MarkerOrthology {
 	private String otherOrganism;
 	private String otherSymbol;
 	private int uniqueKey;
+	private int sequenceNum;
 
     // ================= Getters and Setters ===================== //
 
@@ -42,6 +43,11 @@ public class MarkerOrthology {
 		return otherSymbol;
 	}
 
+	@Column(name="sequence_num")
+	public int getSequenceNum() {
+		return sequenceNum;
+	}
+
 	@Id
 	@Column(name="unique_key")
 	public int getUniqueKey() {
@@ -62,6 +68,10 @@ public class MarkerOrthology {
 
 	public void setOtherSymbol(String otherSymbol) {
 		this.otherSymbol = otherSymbol;
+	}
+
+	public void setSequenceNum(int sequenceNum) {
+		this.sequenceNum = sequenceNum;
 	}
 
 	public void setUniqueKey(int uniqueKey) {
