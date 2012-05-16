@@ -16,7 +16,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 	  @SecondaryTable (name="reference_counts", pkJoinColumns= {
 		@PrimaryKeyJoinColumn(name="reference_key", referencedColumnName="reference_key") } ),
 	  @SecondaryTable (name="reference_book", pkJoinColumns= {
-		@PrimaryKeyJoinColumn(name="reference_key", referencedColumnName="reference_key") } ) 
+		@PrimaryKeyJoinColumn(name="reference_key", referencedColumnName="reference_key") } )
 	} )
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Reference {
@@ -57,7 +57,7 @@ public class Reference {
 	private String title;
 	private String vol;
 	private String year;
-	
+
 	/** retrieve the text of the note for the given note type, or null
 	 * if there is no note of the given type
 	 */
@@ -74,7 +74,7 @@ public class Reference {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Return the abstract, via the reference_key
 	 */
@@ -86,7 +86,7 @@ public class Reference {
 	public String getAuthors() {
 		return authors;
 	}
-	
+
 	/**
 	 * Returns the edition, joined via the reference_key
 	 * @return
@@ -96,7 +96,7 @@ public class Reference {
 	public String getBookEdition() {
 		return bookEdition;
 	}
-	
+
 	/**
 	 * Returns the editor, joined via the reference_key
 	 * @return
@@ -106,9 +106,9 @@ public class Reference {
 	public String getBookEditor() {
 		return bookEditor;
 	}
-	
+
 	/**
-	 * Returns the place the book was published, joined by 
+	 * Returns the place the book was published, joined by
 	 * reference key
 	 * @return
 	 */
@@ -117,7 +117,7 @@ public class Reference {
 	public String getBookPlace() {
 		return bookPlace;
 	}
-	
+
 	/**
 	 * Returns the publisher, joined by the reference_key
 	 * @return
@@ -127,7 +127,7 @@ public class Reference {
 	public String getBookPublisher() {
 		return bookPublisher;
 	}
-	
+
 	/**
 	 * Returns the book title, joined by the reference_key
 	 * @return
@@ -137,7 +137,7 @@ public class Reference {
 	public String getBookTitle() {
 		return bookTitle;
 	}
-	
+
 	/**
 	 * Return the count of associated alleles, joined by reference_key
 	 * @return
@@ -147,9 +147,9 @@ public class Reference {
     public Integer getCountOfAlleles() {
         return countOfAlleles;
     }
-	
+
 	/**
-     * Return the count of associated gxd assays, 
+     * Return the count of associated gxd assays,
      * joined by reference_key
      * @return
      */
@@ -158,58 +158,58 @@ public class Reference {
     public Integer getCountOfGXDAssays() {
         return countOfGXDAssays;
     }
-	
+
 	/**
-     * Return the count of associated gxd index items, 
+     * Return the count of associated gxd index items,
      * joined by reference_key
      * @return
-     */	
+     */
 	@Column(table="reference_counts", name="gxd_index_count")
     @JoinColumn(name="reference_key")
     public Integer getCountOfGXDIndex() {
         return countOfGXDIndex;
     }
-	
+
     // ================= Getters and Setters ===================== //
-	
+
 	/**
-     * Return the count of associated gxd assay results, 
+     * Return the count of associated gxd assay results,
      * joined by reference_key
      * @return
-     */	
+     */
 	@Column(table="reference_counts", name="gxd_result_count")
     @JoinColumn(name="reference_key")
     public Integer getCountOfGXDResults() {
         return countOfGXDResults;
     }
-	
+
 	/**
-     * Return the count of associated gxd structures(tissues?), 
+     * Return the count of associated gxd structures(tissues?),
      * joined by reference_key
      * @return
-     */ 
+     */
 	@Column(table="reference_counts", name="gxd_structure_count")
 	@JoinColumn(name="reference_key")
     public Integer getCountOfGXDStructures() {
         return countOfGXDStructures;
     }
-	
+
 	/**
-     * Return the count of associated mapping experiments, 
+     * Return the count of associated mapping experiments,
      * joined by reference_key
      * @return
-     */	
+     */
 	@Column(table="reference_counts", name="mapping_expt_count")
     @JoinColumn(name="reference_key")
     public Integer getCountOfMappingResults() {
         return countOfMappingResults;
     }
-	
+
 	/**
-     * Return the count of associated markers, 
+     * Return the count of associated markers,
      * joined by reference_key
      * @return
-     */	
+     */
 	@Column(table="reference_counts", name="marker_count")
 	@JoinColumn(name="reference_key")
 	public Integer getCountOfMarkers() {
@@ -217,59 +217,58 @@ public class Reference {
 	}
 
 	/**
-	 * Return the count of Orthologs, this currently isn't 
-	 * in the database, so will have to be overriden when it is. 
+	 * Return the count of Orthologs, this currently isn't
+	 * in the database, so will have to be overriden when it is.
 	 * @return
 	 */
 	@Transient
     public Integer getCountOfOrthologs() {
         return 0;
     }
-	
+
 	/**
-     * Return the count of associated probes, 
+     * Return the count of associated probes,
      * joined by reference_key
      * @return
-     */	
+     */
 	@Column(table="reference_counts", name="probe_count")
     @JoinColumn(name="reference_key")
     public Integer getCountOfProbes() {
         return countOfProbes;
     }
-	
+
 	/**
-     * Return the count of associated sequences, 
+     * Return the count of associated sequences,
      * joined by reference_key
      * @return
-     */	
+     */
 	@Column(table="reference_counts", name="sequence_count")
     @JoinColumn(name="reference_key")
     public Integer getCountOfSequenceResults() {
         return countOfSequences;
     }
-	
+
 	@Transient
 	public String getDoiId() {
 		for(ReferenceID id: this.ids){
 			if (id.getLogicalDB().equals("Journal Link")) {
 				return id.getAccID();
-			}			
+			}
 		}
 		return "";
 	}
-	
+
 	@Transient
 	public String getFullTextLink() {
 		return this.filterNotes("Full Text");
 	}
-	
+
 	/**
 	 * Return a collection of all possible reference IDs.
 	 * @return
 	 */
 	@OneToMany (targetEntity=ReferenceID.class)
 	@JoinColumn (name="reference_key")
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public Set<ReferenceID> getIds() {
 		return ids;
 	}
@@ -287,16 +286,16 @@ public class Reference {
 	public int getJnumNumeric() {
 		return jnumNumeric;
 	}
-	
+
     public String getJournal() {
 		return journal;
 	}
-	
+
     @Column(name="long_citation")
 	public String getLongCitation() {
         return longCitation;
     }
-	
+
     /**
 	 * Returns a collection of markers
 	 * @return
@@ -306,94 +305,92 @@ public class Reference {
 			joinColumns=@JoinColumn(name="reference_key"),
 			inverseJoinColumns=@JoinColumn(name="marker_key")
 			)
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public Set<Marker> getMarkers() {
 		return markers;
 	}
-	
+
     @Column(name="mini_citation")
 	public String getMiniCitation() {
 		return miniCitation;
 	}
-	
+
 	/** return a collection of notes for this reference
 	 */
 	@OneToMany (targetEntity=ReferenceNote.class)
 	@JoinColumn(name="reference_key")
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<ReferenceNote> getNotes() {
 		return notes;
 	}
-	
+
 	public String getPages() {
 		return pages;
 	}
-	
+
 	@Column(name="primary_author")
 	public String getPrimaryAuthor() {
 		return primaryAuthor;
 	}
-	
+
 	@Column(name="pub_date")
 	public String getPubDate() {
 		return pubDate;
 	}
-	
+
 	@Column(name="pubmed_id")
     public String getPubMedID() {
         return pubmedid;
     }
-	
+
 	@Transient
 	public String getReferenceDetailNote() {
 		return this.filterNotes("Reference Detail");
 	}
-	
-	@Id 
+
+	@Id
 	@Column(name = "reference_key")
 	public int getReferenceKey() {
 		return referenceKey;
 	}
-	
+
 	@Column(name="reference_type")
 	public String getReferenceType() {
 		return referenceType;
 	}
-	
+
 	@Column(name="short_citation")
 	public String getShortCitation() {
 		return shortCitation;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
-	
+
     public String getVol() {
 		return vol;
 	}
-    
+
     public String getYear() {
 		return year;
 	}
-    
+
 	@Transient
 	public Boolean isBook() {
 	    return this.referenceType.equals("BOOK");
 	}
-	
+
 	public void setAbstract(String refAbstract) {
 		this.refAbstract = refAbstract;
 	}
-	
+
 	public void setAuthors(String authors) {
 		this.authors = authors;
 	}
-	
+
 	public void setBookEdition(String bookEdition) {
 		this.bookEdition = bookEdition;
 	}
-	
+
 	public void setBookEditor(String bookEditor) {
 		this.bookEditor = bookEditor;
 	}
@@ -477,7 +474,7 @@ public class Reference {
     public void setMarkers(Set<Marker> markers) {
 		this.markers = markers;
 	}
-    
+
     public void setMiniCitation(String citation) {
 		this.miniCitation = citation;
 	}
@@ -485,47 +482,47 @@ public class Reference {
     public void setNotes(List<ReferenceNote> notes) {
 		this.notes = notes;
 	}
-    
+
     public void setPages(String pages) {
 		this.pages = pages;
 	}
 
     public void setPrimaryAuthor(String primaryAuthor) {
 		this.primaryAuthor = primaryAuthor;
-	}    
-    
+	}
+
     public void setPubDate(String pubDate) {
 		this.pubDate = pubDate;
 	}
 
     public void setPubMedID(String pubmedid) {
         this.pubmedid = pubmedid;
-    }      
-    
+    }
+
     public void setReferenceKey(int referenceKey) {
 		this.referenceKey = referenceKey;
 	}
 
     public void setReferenceType(String referenceType) {
 		this.referenceType = referenceType;
-	}     
-    
+	}
+
     public void setShortCitation(String shortCitation) {
 		this.shortCitation = shortCitation;
 	}
 
     public void setTitle(String title) {
 		this.title = title;
-	}   
-    
+	}
+
     public void setVol(String vol) {
 		this.vol = vol;
 	}
 
     public void setYear(String year) {
 		this.year = year;
-	} 
-    
+	}
+
 	@Override
     public String toString() {
         return "Reference [authors=" + authors + ", bookEdition=" + bookEdition

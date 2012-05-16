@@ -215,7 +215,6 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerAlias.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("aliasSymbol")
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerAlias> getAliases() {
 		return aliases;
 	}
@@ -254,7 +253,6 @@ public class Marker {
             inverseJoinColumns=@JoinColumn(name="annotation_key")
             )
     @OrderBy("dagName, term")
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<Annotation> getAnnotations() {
 		return annotations;
 	}
@@ -583,7 +581,6 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerID.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerID> getIds() {
 		return ids;
 	}
@@ -608,7 +605,6 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerLocation.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerLocation> getLocations() {
 		return locations;
 	}
@@ -702,7 +698,6 @@ public class Marker {
 	 */
 	@OneToMany (targetEntity=MarkerNote.class)
 	@JoinColumn(name="marker_key")
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerNote> getNotes() {
 		return notes;
 	}
@@ -864,7 +859,6 @@ public class Marker {
 			inverseJoinColumns=@JoinColumn(name="reference_key")
 			)
 	@OrderBy("year, jnumNumeric")
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<Reference> getReferences() {
 		return references;
 	}
@@ -979,7 +973,6 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerSynonym.class)
 	@JoinColumn(name="marker_key")
 	@OrderBy("synonym")
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	public List<MarkerSynonym> getSynonyms() {
 		return synonyms;
 	}
