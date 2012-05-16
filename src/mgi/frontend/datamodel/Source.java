@@ -12,7 +12,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * only being used by sequences.
  */
 @MappedSuperclass
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Source {
 	
 	protected String age;

@@ -12,7 +12,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name="marker_synonym")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerSynonym {
     
 	private String jnumID;

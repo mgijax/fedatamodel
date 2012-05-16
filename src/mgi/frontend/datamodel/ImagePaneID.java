@@ -12,7 +12,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table (name="expression_imagepane_id")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class ImagePaneID extends AccessionID {
 
 	private int imagepane_key;

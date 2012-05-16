@@ -31,7 +31,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
         @PrimaryKeyJoinColumn(name="annotation_key", referencedColumnName="annotation_key") } )
     }
     )
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Annotation {
 
 	private int annotationKey;
@@ -124,7 +123,6 @@ public class Annotation {
             inverseJoinColumns=@JoinColumn(name="reference_key")
             )
 
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<Reference> getReferences() {
         return references;
     }

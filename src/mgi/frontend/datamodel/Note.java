@@ -12,7 +12,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * these fields.
  */
 @MappedSuperclass
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Note {
 	
 	protected String note;

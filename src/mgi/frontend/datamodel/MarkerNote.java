@@ -13,7 +13,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table (name="marker_note")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerNote extends Note {
 	
     protected Integer markerKey;

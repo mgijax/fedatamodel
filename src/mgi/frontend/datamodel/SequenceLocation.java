@@ -13,7 +13,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table (name="sequence_location")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class SequenceLocation extends Location {
 	protected Integer sequenceKey;
 	

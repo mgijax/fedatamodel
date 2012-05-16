@@ -14,7 +14,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name="marker_alias")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerAlias {
     
 	private int uniqueKey;

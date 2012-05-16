@@ -13,7 +13,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table (name="marker_location")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class MarkerLocation extends Location {
 	
     protected Integer markerKey;

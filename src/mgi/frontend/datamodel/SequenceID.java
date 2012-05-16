@@ -14,7 +14,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table (name="sequence_id")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class SequenceID extends AccessionID {
 	private int sequenceKey;
 	

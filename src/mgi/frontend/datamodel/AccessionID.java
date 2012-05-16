@@ -12,7 +12,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 
 @MappedSuperclass
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class AccessionID {
 	protected String accID;
 	protected boolean isPreferred;
