@@ -16,6 +16,11 @@ import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+/** represents one (marker, reference) pair, noting that a given reference
+ * includes expression data for a given marker.  Exactly how (by what assay
+ * type) and when (age of specimen) expression was studied are included in
+ * related GxdLitAssayTypeAgePair objects.
+ */
 @Entity
 @Table(name="expression_index")
 @SecondaryTables (
@@ -26,37 +31,40 @@ import javax.persistence.Transient;
     )
 public class GxdLitIndexRecord {
 	
-	String jnumId;
-	
-	Marker marker;
-	
-	String markerName;
-	
-	Reference reference;
+    String jnumId;		// J: number ID for the reference
+    Marker marker;		// the Marker in which expression was studied
+    String markerName;		// name of the marker, cached here
+    Reference reference;	// reference containing expression data
+    String markerSymbol;	// symbol of the marker, cached here
+    String comments;		// note for this (marker, reference) pair
+    int indexKey;		// unique key for this (marker, ref) pair
 
-	Integer fullCodedAssayCount;
+    // number of assays for this marker/reference pair which have been
+    // fully-coded (with detailed expression results)
+    Integer fullCodedAssayCount;
 	
-	Integer fullCodedResultCount;
+    // number of assay results for this marker/reference pair which have been
+    // fully-coded (with detailed expression results)
+    Integer fullCodedResultCount;
 	
-    String markerSymbol;
+    // list of (age, assay type) pairs showing when and how expression was
+    // studied for this marker in this reference
+    List<GxdLitAssayTypeAgePair> pairs;
+	
+    // getters
 
-    String comments;
-    
-    int indexKey;
-
-	List<GxdLitAssayTypeAgePair> pairs;
-	
-	@Column(name="comments")
+    @Column(name="comments")
     public String getComments() {
 		return comments;
 	}
     
-	@Column(table="expression_index_counts", name="fully_coded_assay_count")
+    @Column(table="expression_index_counts", name="fully_coded_assay_count")
     @JoinColumn(name="index_key")
 	public Integer getFullCodedAssayCount() {
 		return fullCodedAssayCount;
 	}
-	@Column(table="expression_index_counts", name="fully_coded_result_count")
+
+    @Column(table="expression_index_counts", name="fully_coded_result_count")
     @JoinColumn(name="index_key")
 	public Integer getFullCodedResultCount() {
 		return fullCodedResultCount;
@@ -73,11 +81,15 @@ public class GxdLitIndexRecord {
 		return jnumId;
 	}
 
+	/** convenience method to return the reference's long citation
+	 */
 	@Transient
 	public String getLongCitation() {
 		return this.getReference().getLongCitation();
 	}
 
+	/** only retrieves the full Marker object when it is requested
+	 */
 	@ManyToOne(targetEntity=Marker.class, fetch=FetchType.LAZY)
 	@JoinColumn (name="marker_key")
     public Marker getMarker() {
@@ -103,12 +115,17 @@ public class GxdLitIndexRecord {
 		return pairs;
 	}
 
+	/** only retrieves the full Reference object when it is requested
+	 */
 	@ManyToOne(targetEntity=Reference.class, fetch=FetchType.LAZY)
 	@JoinColumn (name="reference_key")
     public Reference getReference() {
 		return reference;
 	}
 
+	/** convenience method - has this reference's data been fully coded
+	 * for this marker (1) or not (0)?
+	 */
 	@Transient
     public Boolean isFullyCoded() {
     	if (this.fullCodedAssayCount > 0) {
@@ -117,6 +134,8 @@ public class GxdLitIndexRecord {
     	return false;
     }
 	
+    // setters
+
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
@@ -153,5 +172,4 @@ public class GxdLitIndexRecord {
 	public void setReference(Reference reference) {
 		this.reference = reference;
 	}
-	
 }
