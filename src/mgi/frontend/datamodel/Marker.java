@@ -784,6 +784,21 @@ public class Marker {
 		return this.filterCountSetItems("Polymorphisms");
 	}
 
+	@Transient
+	public MarkerLocation getPreferredLocation()
+    {
+        MarkerLocation bestLoc = this.getPreferredCoordinates();
+        if(bestLoc == null)
+        {
+        	bestLoc = this.getPreferredCytoband();
+        	if(bestLoc == null)
+        	{
+        		bestLoc = this.getPreferredCentimorgans();
+        	}
+        }
+        return bestLoc;
+    }
+	
 	/** get the preferred centimorgan location for the marker, or null if none
 	 */
 	@Transient

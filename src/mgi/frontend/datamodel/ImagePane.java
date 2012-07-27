@@ -16,6 +16,7 @@ public class ImagePane {
 
     private int imagePaneKey;
     private int imageKey;
+    private Image image;
     private String paneLabel;
     private int sequenceNum;
     private List<ImagePaneDetails> details;
@@ -30,6 +31,20 @@ public class ImagePane {
 	@OrderBy("sequenceNum")
 	public List<ImagePaneDetails> getDetails() {
 		return details;
+	}
+	
+	@OneToOne(targetEntity=Image.class, fetch=FetchType.LAZY)
+	@JoinColumn (name="image_key", insertable=false, updatable=false)
+    public Image getImage() {
+		return image;
+	}
+
+	/** get a list of ImagePaneID objects
+	 */
+	@OneToMany (targetEntity=ImagePaneID.class)
+	@JoinColumn(name="imagepane_key")
+	public List<ImagePaneID> getImagePaneIds() {
+		return imagePaneIds;
 	}
 
 	/** get a list of ImagePaneID objects
@@ -83,6 +98,11 @@ public class ImagePane {
 
 	public void setSequenceNum(int sequenceNum) {
 		this.sequenceNum = sequenceNum;
+	}
+	
+	public void setImage(Image image)
+	{
+		this.image = image;
 	}
 
 	@Override

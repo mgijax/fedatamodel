@@ -21,7 +21,7 @@ import java.util.List;
 )
 public class Genotype implements Comparable {
     
-	private int byAlleles;				// for sorting genotypes
+	private Integer byAlleles;				// for sorting genotypes
 	private int genotypeKey;
 	private String backgroundStrain;
 	private String primaryID;
