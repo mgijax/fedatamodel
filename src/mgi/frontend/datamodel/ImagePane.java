@@ -47,14 +47,6 @@ public class ImagePane {
 		return imagePaneIds;
 	}
 
-	/** get a list of ImagePaneID objects
-	 */
-	@OneToMany (targetEntity=ImagePaneID.class)
-	@JoinColumn(name="imagepane_key")
-	public List<ImagePaneID> getImagePaneIds() {
-		return imagePaneIds;
-	}
-
 	@Column(name="image_key")
 	public int getImageKey() {
 		return imageKey;
