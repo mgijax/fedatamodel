@@ -17,13 +17,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class MarkerTissueCount {
 
 	private int uniqueKey;
-	private int markerKey;
 	private int structureKey;
 	private String structure;			// Theiler stage plus printname
 	private int allResultCount;			// detected + not detected counts
 	private int detectedResultCount;
 	private int notDetectedResultCount;
 	private int sequenceNum;			// for ordering
+	private Marker marker;
 
 	// ================= Getters and Setters ===================== //
 
@@ -37,9 +37,9 @@ public class MarkerTissueCount {
 		return detectedResultCount;
 	}
 
-	@Column(name="marker_key")
+	@Transient
 	public int getMarkerKey() {
-		return markerKey;
+		return marker.getMarkerKey();
 	}
 
 	@Column(name="not_detected_count")
@@ -61,7 +61,20 @@ public class MarkerTissueCount {
 	public int getStructureKey() {
 		return structureKey;
 	}
+	
+	// look up the primary mgi id for building links
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="marker_key")
+	public Marker getMarker()
+	{
+		return marker;
+	}
 
+	@Transient
+	public String getMarkerId()
+	{
+		return marker.getPrimaryID();
+	}
 	@Id
 	@Column(name="unique_key")
 	public int getUniqueKey() {
@@ -74,10 +87,6 @@ public class MarkerTissueCount {
 
 	public void setDetectedResultCount(int detectedResultCount) {
 		this.detectedResultCount = detectedResultCount;
-	}
-
-	public void setMarkerKey(int markerKey) {
-		this.markerKey = markerKey;
 	}
 
 	public void setNotDetectedResultCount(int notDetectedResultCount) {
@@ -95,6 +104,11 @@ public class MarkerTissueCount {
 	public void setStructureKey(int structureKey) {
 		this.structureKey = structureKey;
 	}
+	
+	public void setMarker(Marker marker)
+	{
+		this.marker = marker;
+	}
 
 	public void setUniqueKey(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
@@ -104,7 +118,7 @@ public class MarkerTissueCount {
 	public String toString() {
 		return "MarkerTissueCount [allResultCount=" + allResultCount
 				+ ", detectedResultCount=" + detectedResultCount
-				+ ", markerKey=" + markerKey + ", notDetectedResultCount="
+				+ ",  notDetectedResultCount="
 				+ notDetectedResultCount + ", sequenceNum=" + sequenceNum
 				+ ", "
 				+ (structure != null ? "structure=" + structure + ", " : "")
