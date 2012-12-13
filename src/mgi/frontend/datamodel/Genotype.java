@@ -2,7 +2,12 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import mgi.frontend.datamodel.phenotype.MPSystem;
+
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Genotype
@@ -26,11 +31,20 @@ public class Genotype implements Comparable {
 	private String backgroundStrain;
 	private String primaryID;
 	private List<Image> images;
+	private List<GenotypeImageAssociation> imageAssociations;
 	private int isConditional;
 	private String note;
 	private String combination1;
 	private String combination2;
+	private String genotypeType;
 	private List<Annotation> annotations;
+	private List<MPSystem> systems;
+	private List<AlleleGenotypeAssociation> alleleAssociations;
+	private List<GenotypeDisease> diseases;
+	private Image primaryImage=null;
+	private Image primaryImageThumbnail=null;
+	private String cellLines;
+	
 	
 	// ================= Getters and Setters ===================== //
 
@@ -88,11 +102,22 @@ public class Genotype implements Comparable {
 		return note;
 	}
 	
+	@Column(name="genotype_type")
+	public String getGenotypeType()
+	{
+		return genotypeType;
+	}
+	
 	@Column(name="primary_id")
 	public String getPrimaryID() {
 		return primaryID;
 	}
-	
+
+	@Column(name="cell_lines")
+	public String getCellLines() {
+		return cellLines;
+	}
+
 	public void setAnnotations(List<Annotation> annotations) {
 		this.annotations = annotations;
 	}
@@ -129,9 +154,144 @@ public class Genotype implements Comparable {
 		this.note = note;
 	}
 	
+	public void setGenotypeType(String genotypeType)
+	{
+		this.genotypeType=genotypeType;
+	}
+	
 	public void setPrimaryID(String primaryID) {
 		this.primaryID = primaryID;
 	}
+	
+	public void setCellLines(String cellLines) {
+		this.cellLines = cellLines;
+	}
+	
+	@OneToMany (targetEntity=MPSystem.class)
+	@JoinColumn(name="genotype_key")
+	@OrderBy("systemSeq")
+	public List<MPSystem> getMPSystems() {
+		return systems;
+	}
+	
+	public void setMPSystems(List<MPSystem> systems)
+	{
+		this.systems=systems;
+	}
+	
+	
+	@OneToMany (targetEntity=AlleleGenotypeAssociation.class)
+	@JoinColumn(name="genotype_key")
+	public List<AlleleGenotypeAssociation> getAlleleAssociations() {
+		return alleleAssociations;
+	}
+
+	public void setImageAssociations(
+			List<GenotypeImageAssociation> imageAssociations) {
+		this.imageAssociations = imageAssociations;
+	}
+	
+	@OneToMany (targetEntity=GenotypeImageAssociation.class)
+	@JoinColumn(name="genotype_key")
+	public List<GenotypeImageAssociation> getImageAssociations() {
+		return imageAssociations;
+	}
+
+	public void setAlleleAssociations(
+			List<AlleleGenotypeAssociation> alleleAssociations) {
+		this.alleleAssociations = alleleAssociations;
+	}
+	
+	@OneToMany (targetEntity=GenotypeDisease.class)
+	@JoinColumn(name="genotype_key")
+	public List<GenotypeDisease> getDiseases()
+	{
+//		List<GenotypeDisease> diseases = new ArrayList<GenotypeDisease>();
+//		for(AlleleGenotypeAssociation aa : this.getAlleleAssociations())
+//		{
+//			diseases.addAll(aa.getDiseases());
+//		}
+		return diseases;
+	}
+	
+	public void setDiseases(List<GenotypeDisease> diseases)
+	{
+		this.diseases = diseases;
+	}
+	
+	@Transient 
+	public boolean hasPrimaryImage()
+	{
+		this.getImageAssociations().size();
+		for(GenotypeImageAssociation ia : this.getImageAssociations())
+		{
+			if(ia!=null && ia.getQualifier()!=null && ia.getImage()!=null
+					&& ia.getQualifier().equalsIgnoreCase("primary")
+					&& ia.getImage().getIsThumbnail()==0)
+			{
+				primaryImage=ia.getImage();
+				return true;
+			}
+		}
+		return false;
+	}
+	@Transient
+	public boolean getHasPrimaryImage()
+	{ return hasPrimaryImage(); }
+	
+	@Transient
+	public Image getPrimaryImage()
+	{
+		// return cached object if we have it
+		if(primaryImage!=null) return primaryImage;
+		
+		// find the primary image thumbnail for this genotype.
+		for(GenotypeImageAssociation ia : this.getImageAssociations())
+		{
+			if(ia!=null && ia.getQualifier()!=null && ia.getImage()!=null
+					&& ia.getQualifier().equalsIgnoreCase("primary") 
+					&& ia.getImage().getIsThumbnail()==0)
+			{
+				primaryImage=ia.getImage();
+				return ia.getImage();
+			}
+		}
+		return null;
+	}
+	
+	@Transient
+	public Image getThumbnail()
+	{
+		// return cached object if we have it
+		if(this.primaryImageThumbnail!=null) return primaryImageThumbnail;
+		
+		// find the primary image thumbnail for this genotype.
+		for(GenotypeImageAssociation ia : this.getImageAssociations())
+		{
+			if(ia!=null && ia.getQualifier()!=null && ia.getImage()!=null
+					&& ia.getQualifier().equalsIgnoreCase("primary") 
+					&& ia.getImage().getIsThumbnail()==1)
+			{
+				primaryImageThumbnail=ia.getImage();
+				return ia.getImage();
+			}
+		}
+		return null;
+	}
+	
+//	/*
+//	 * Aggregates all the disease footnotes for this genotype
+//	 */
+//	@Transient
+//	public Set<GenotypeDiseaseFootnote> getFootnotes()
+//	{
+//		Set<GenotypeDiseaseFootnote> footnotes = new LinkedHashSet<GenotypeDiseaseFootnote>();
+//		for(GenotypeDisease gd : this.getDiseases())
+//		{
+//			footnotes.addAll(gd.getFootnotes());
+//		}
+//		return footnotes;
+//	}
 
 	@Override
 	public String toString() {

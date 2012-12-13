@@ -1,7 +1,6 @@
 package mgi.frontend.datamodel;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,27 +15,36 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import mgi.frontend.datamodel.phenotype.DiseaseTableDisease;
+import mgi.frontend.datamodel.phenotype.DiseaseTableGenotype;
+import mgi.frontend.datamodel.phenotype.PhenoTableGenotype;
+import mgi.frontend.datamodel.phenotype.PhenoTableDisease;
+import mgi.frontend.datamodel.phenotype.PhenoTableSystem;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
 
 /**
  * Base object alleles.  This is represented by a core in our flower schema.
- * @author mhall, jsb
+ *
  * Base Allele object.  Tricky parts are commented inline.
  */
-
-
 @Entity
 @Table(name="Allele")
 @SecondaryTables (
-    {
-      @SecondaryTable (name="allele_counts", pkJoinColumns= {
-        @PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } ),
-      @SecondaryTable (name="allele_imsr_counts", pkJoinColumns= {
-    	@PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } )
-    }  )
+  {
+    @SecondaryTable (name="allele_counts", pkJoinColumns= {
+    @PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } ),
+    @SecondaryTable (name="allele_imsr_counts", pkJoinColumns= {
+    @PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } )
+  }
+)
+@FilterDef(name="noDiseaseHeaders")
 @JsonIgnoreProperties({"references", "notes", "molecularDescription", "ids"})
 public class Allele {
     private int alleleKey;
@@ -65,6 +73,13 @@ public class Allele {
     private RecombinaseInfo recombinaseInfo;
     private List<AlleleGenotypeAssociation> genotypeAssociations;
     private List<Annotation> annotations;
+	private List<PhenoTableSystem> phenoTableSystems;
+	private List<PhenoTableGenotype> phenotableGenotypes;
+	private boolean hasDiseaseModel;
+	private List<DiseaseTableDisease> diseaseTableDiseases;
+	private List<DiseaseTableGenotype> diseaseTableGenotypes;
+	
+
 
     // ================= Getters and Setters ===================== //
 
@@ -78,6 +93,13 @@ public class Allele {
     public String getAlleleSubType() {
         return alleleSubType;
     }
+
+	@OneToMany (targetEntity=PhenoTableSystem.class)
+	@JoinColumn(name="allele_key")
+	@OrderBy("systemSeq")
+	public List<PhenoTableSystem> getPhenoTableSystems() {
+		return phenoTableSystems;
+	}
 
 	/**
      * Return the allesystem objects.  This is only really
@@ -244,7 +266,54 @@ public class Allele {
     public List<Reference> getReferences() {
         return references;
     }
+    
+    /*
+     * Diseases to be displayed on the allele phenotable summary (the grid)
+     */
+	@OneToMany (targetEntity=DiseaseTableDisease.class)
+	@JoinColumn(name="allele_key")
+	@OrderBy("diseaseSeq")
+    @Filter(
+    		// This filter can be turned on to only select disease terms (no headers)
+    		name = "noDiseaseHeaders",
+    		condition="is_heading=0"
+    	)
+	public List<DiseaseTableDisease> getDiseaseTableDiseases()
+	{
+		return diseaseTableDiseases;
+	}
 
+	@Column(name="has_disease_model")
+	public boolean getHasDiseaseModel() {
+		return hasDiseaseModel;
+	}
+	
+	@OneToMany(targetEntity=PhenoTableGenotype.class)
+	@JoinColumn(name="allele_key")
+    @OrderBy("genotypeSeq")
+    public List<PhenoTableGenotype> getPhenoTableGenotypeAssociations() {
+        return this.phenotableGenotypes;
+    }
+	
+	@OneToMany(targetEntity=DiseaseTableGenotype.class)
+	@JoinColumn(name="allele_key")
+    @OrderBy("genotypeSeq")
+    public List<DiseaseTableGenotype> getDiseaseTableGenotypeAssociations() {
+        return this.diseaseTableGenotypes;
+    }
+	
+	
+//	@Transient 
+//	public List<Genotype> getPhenoTableGenotypes()
+//	{
+//		this.getPhenoTableGenotypeAssociations().size(); // Trick to have hibernate fetch entire list at once
+//		List<Genotype> genotypes = new ArrayList<Genotype>();
+//		for(PhenoTableGenotype ptg : this.getPhenoTableGenotypeAssociations())
+//		{
+//			genotypes.add(ptg.getGenotype());
+//		}
+//		return genotypes;
+//	}
 
     public String getSymbol() {
         return symbol;
@@ -362,6 +431,27 @@ public class Allele {
         this.synonyms = synonyms;
     }
 
+	public void setPhenoTableSystems(List<PhenoTableSystem> phenoTableSystems) {
+		this.phenoTableSystems = phenoTableSystems;
+	}
+
+	public void setDiseaseTableDiseases(List<DiseaseTableDisease> diseaseTableDiseases)
+	{
+		this.diseaseTableDiseases=diseaseTableDiseases;
+	}
+	
+	public void setHasDiseaseModel(boolean hasDiseaseModel) {
+		this.hasDiseaseModel = hasDiseaseModel;
+	}
+	
+	public void setDiseaseTableGenotypeAssociations(List<DiseaseTableGenotype> diseaseTableGenotypes) {
+        this.diseaseTableGenotypes=diseaseTableGenotypes;
+	}
+	
+	public void setPhenoTableGenotypeAssociations(List<PhenoTableGenotype> phenotableGenotypes) {
+        this.phenotableGenotypes=phenotableGenotypes;
+	}
+	
 	@Override
     public String toString() {
         return "Allele [alleleKey=" + alleleKey + ", alleleSubType="
