@@ -51,7 +51,7 @@ public class PhenoTableProvider {
 	{
 		if(provider.equalsIgnoreCase("MGI")) return "mgi_col.png";
 		if(provider.equalsIgnoreCase("WTSI")) return "wtsi_col.png";
-		if(provider.equalsIgnoreCase("EuPh")) return "euro_col.png";
+		if(provider.equalsIgnoreCase("EuPh")) return "euph_col.png";
 		return "";
 	}
 
