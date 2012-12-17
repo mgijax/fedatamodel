@@ -16,6 +16,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -45,7 +46,7 @@ public class MPSystem {
 	}
 	
 	@OneToMany (targetEntity=MPTerm.class,fetch=FetchType.EAGER)
-	@Fetch(FetchMode.JOIN)
+	@BatchSize(size=250)
 	@JoinColumn(name="mp_system_key")
 	@OrderBy("termSeq")
 	public List<MPTerm> getTerms() {

@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
@@ -61,7 +62,7 @@ public class PhenoTableTerm {
     }
     
     @OneToMany (targetEntity=PhenoTableTermCell.class,fetch=FetchType.EAGER)
-    @Fetch(FetchMode.JOIN)
+    @BatchSize(size=250)
 	@JoinColumn(name="phenotable_term_key")
 	@OrderBy("cellSeq")
 	public List<PhenoTableTermCell> getCells() {

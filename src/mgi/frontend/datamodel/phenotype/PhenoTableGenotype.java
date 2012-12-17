@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 import mgi.frontend.datamodel.Genotype;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
@@ -48,6 +49,7 @@ public class PhenoTableGenotype {
 	}
 
 	@OneToMany(targetEntity=PhenoTableProvider.class, fetch=FetchType.EAGER)
+	@BatchSize(size=250)
 	@JoinColumn(name="phenotable_genotype_key")
     @OrderBy("providerSeq")
 	public List<PhenoTableProvider> getPhenoTableProviders() {

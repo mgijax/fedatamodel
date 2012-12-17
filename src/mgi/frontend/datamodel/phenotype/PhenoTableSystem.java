@@ -3,6 +3,7 @@ package mgi.frontend.datamodel.phenotype;
 import java.util.*;
 import javax.persistence.*;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
@@ -49,6 +50,7 @@ public class PhenoTableSystem {
 	}
 
 	@OneToMany (targetEntity=PhenoTableTerm.class)
+	@BatchSize(size=100)
 	@JoinColumn(name="phenotable_system_key")
 	@OrderBy("termSeq")
 	public List<PhenoTableTerm> getPhenoTableTerms() {
@@ -56,7 +58,7 @@ public class PhenoTableSystem {
 		return phenoTableTerms;
 	}
 	@OneToMany (targetEntity=PhenoTableSystemCell.class,fetch=FetchType.EAGER)
-	@Fetch(FetchMode.JOIN)
+	@BatchSize(size=250)
 	@JoinColumn(name="phenotable_system_key")
 	@OrderBy("cellSeq")
 	public List<PhenoTableSystemCell> getCells() {
