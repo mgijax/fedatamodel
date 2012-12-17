@@ -116,6 +116,15 @@ public class MPAnnot {
 	{
 		return getHtmlSex()+this.getHtmlCall();
 	}
+	
+	/* returns true if there is an 'N' call or an 'M' or 'F' glyph */
+	@Transient
+	public boolean getNonEmptyGlyph()
+	{
+		if(getCombinedSymbol().trim() == "") return false;
+		return true;
+	}
+	
 	/* Setters */
 	public void setSex(String sex) {
 		this.sex=sex;
