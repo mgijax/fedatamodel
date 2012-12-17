@@ -16,6 +16,9 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 @Entity
 @Table(name="mp_system")
 public class MPSystem {
@@ -42,6 +45,7 @@ public class MPSystem {
 	}
 	
 	@OneToMany (targetEntity=MPTerm.class,fetch=FetchType.EAGER)
+	@Fetch(FetchMode.JOIN)
 	@JoinColumn(name="mp_system_key")
 	@OrderBy("termSeq")
 	public List<MPTerm> getTerms() {

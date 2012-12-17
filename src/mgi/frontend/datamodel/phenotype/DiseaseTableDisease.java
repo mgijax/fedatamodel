@@ -60,6 +60,7 @@ public class DiseaseTableDisease {
 	}
 
 	@OneToMany (targetEntity=DiseaseTableDiseaseCell.class,fetch=FetchType.EAGER)
+	@Fetch(FetchMode.JOIN)
 	@JoinColumn(name="diseasetable_disease_key")
 	@OrderBy("cellSeq")
 	public List<DiseaseTableDiseaseCell> getCells() {

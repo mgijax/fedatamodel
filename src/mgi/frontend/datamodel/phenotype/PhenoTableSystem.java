@@ -56,6 +56,7 @@ public class PhenoTableSystem {
 		return phenoTableTerms;
 	}
 	@OneToMany (targetEntity=PhenoTableSystemCell.class,fetch=FetchType.EAGER)
+	@Fetch(FetchMode.JOIN)
 	@JoinColumn(name="phenotable_system_key")
 	@OrderBy("cellSeq")
 	public List<PhenoTableSystemCell> getCells() {
