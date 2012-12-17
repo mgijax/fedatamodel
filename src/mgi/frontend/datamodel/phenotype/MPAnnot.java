@@ -119,9 +119,9 @@ public class MPAnnot {
 	
 	/* returns true if there is an 'N' call or an 'M' or 'F' glyph */
 	@Transient
-	public boolean getNonEmptyGlyph()
+	public boolean getHasNonEmptyGlyph()
 	{
-		if(getCombinedSymbol().trim() == "") return false;
+		if(getCombinedSymbol().trim().equals("")) return false;
 		return true;
 	}
 	
