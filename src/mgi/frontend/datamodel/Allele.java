@@ -24,6 +24,7 @@ import mgi.frontend.datamodel.phenotype.PhenoTableDisease;
 import mgi.frontend.datamodel.phenotype.PhenoTableSystem;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Filter;
@@ -95,6 +96,7 @@ public class Allele {
     }
 
 	@OneToMany (targetEntity=PhenoTableSystem.class)
+	@BatchSize(size=100)
 	@JoinColumn(name="allele_key")
 	@OrderBy("systemSeq")
 	public List<PhenoTableSystem> getPhenoTableSystems() {
@@ -154,6 +156,7 @@ public class Allele {
     }
 
     @OneToMany (fetch=FetchType.LAZY)
+    @BatchSize(size=100)
 	@JoinColumn(name="allele_key")
     public List<AlleleGenotypeAssociation> getGenotypeAssociations() {
 		return genotypeAssociations;
@@ -271,6 +274,7 @@ public class Allele {
      * Diseases to be displayed on the allele phenotable summary (the grid)
      */
 	@OneToMany (targetEntity=DiseaseTableDisease.class)
+	@BatchSize(size=100)
 	@JoinColumn(name="allele_key")
 	@OrderBy("diseaseSeq")
     @Filter(
@@ -289,6 +293,7 @@ public class Allele {
 	}
 	
 	@OneToMany(targetEntity=PhenoTableGenotype.class)
+	@BatchSize(size=250)
 	@JoinColumn(name="allele_key")
     @OrderBy("genotypeSeq")
     public List<PhenoTableGenotype> getPhenoTableGenotypeAssociations() {
@@ -296,6 +301,7 @@ public class Allele {
     }
 	
 	@OneToMany(targetEntity=DiseaseTableGenotype.class)
+	@BatchSize(size=100)
 	@JoinColumn(name="allele_key")
     @OrderBy("genotypeSeq")
     public List<DiseaseTableGenotype> getDiseaseTableGenotypeAssociations() {
