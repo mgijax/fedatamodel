@@ -19,13 +19,13 @@ import java.util.Set;
 @Entity
 @Table(name="genotype")
 @SecondaryTables (
-    { 
+    {
       @SecondaryTable (name="genotype_sequence_num", pkJoinColumns= {
         @PrimaryKeyJoinColumn(name="genotype_key", referencedColumnName="genotype_key") } )
-    }  
+    }
 )
 public class Genotype implements Comparable {
-    
+
 	private Integer byAlleles;				// for sorting genotypes
 	private int genotypeKey;
 	private String backgroundStrain;
@@ -44,8 +44,8 @@ public class Genotype implements Comparable {
 	private Image primaryImage=null;
 	private Image primaryImageThumbnail=null;
 	private String cellLines;
-	
-	
+
+
 	// ================= Getters and Setters ===================== //
 
     @OneToMany (fetch=FetchType.LAZY)
@@ -79,7 +79,7 @@ public class Genotype implements Comparable {
 	public int getGenotypeKey() {
 		return genotypeKey;
 	}
-	
+
     /** get an ordered list of images featuring this genotype
      */
 	@OneToMany (fetch=FetchType.LAZY)
@@ -90,24 +90,24 @@ public class Genotype implements Comparable {
 	@OrderBy("byDefault")
 	public List<Image> getImages() {
 		return images;
-	} 
-    
+	}
+
 	@Column(name="is_conditional")
 	public int getIsConditional() {
 		return isConditional;
 	}
-	
+
 	@Column(name="note")
 	public String getNote() {
 		return note;
 	}
-	
+
 	@Column(name="genotype_type")
 	public String getGenotypeType()
 	{
 		return genotypeType;
 	}
-	
+
 	@Column(name="primary_id")
 	public String getPrimaryID() {
 		return primaryID;
@@ -121,65 +121,65 @@ public class Genotype implements Comparable {
 	public void setAnnotations(List<Annotation> annotations) {
 		this.annotations = annotations;
 	}
-	
+
 	public void setBackgroundStrain(String backgroundStrain) {
 		this.backgroundStrain = backgroundStrain;
 	}
-	
+
 	public void setByAlleles(int byAlleles) {
 		this.byAlleles = byAlleles;
 	}
-	
+
 	public void setCombination1(String combination1) {
 		this.combination1 = combination1;
 	}
-	
+
 	public void setCombination2(String combination2) {
 		this.combination2 = combination2;
 	}
-	
+
 	public void setGenotypeKey(int genotypeKey) {
 		this.genotypeKey = genotypeKey;
 	}
-	
+
 	public void setImages(List<Image> images) {
 		this.images = images;
 	}
-	
+
 	public void setIsConditional(int isConditional) {
 		this.isConditional = isConditional;
 	}
-	
+
 	public void setNote(String note) {
 		this.note = note;
 	}
-	
+
 	public void setGenotypeType(String genotypeType)
 	{
 		this.genotypeType=genotypeType;
 	}
-	
+
 	public void setPrimaryID(String primaryID) {
 		this.primaryID = primaryID;
 	}
-	
+
 	public void setCellLines(String cellLines) {
 		this.cellLines = cellLines;
 	}
-	
+
 	@OneToMany (targetEntity=MPSystem.class)
 	@JoinColumn(name="genotype_key")
 	@OrderBy("systemSeq")
 	public List<MPSystem> getMPSystems() {
 		return systems;
 	}
-	
+
 	public void setMPSystems(List<MPSystem> systems)
 	{
 		this.systems=systems;
 	}
-	
-	
+
+
 	@OneToMany (targetEntity=AlleleGenotypeAssociation.class)
 	@JoinColumn(name="genotype_key")
 	public List<AlleleGenotypeAssociation> getAlleleAssociations() {
@@ -190,7 +190,7 @@ public class Genotype implements Comparable {
 			List<GenotypeImageAssociation> imageAssociations) {
 		this.imageAssociations = imageAssociations;
 	}
-	
+
 	@OneToMany (targetEntity=GenotypeImageAssociation.class)
 	@JoinColumn(name="genotype_key")
 	public List<GenotypeImageAssociation> getImageAssociations() {
@@ -201,7 +201,7 @@ public class Genotype implements Comparable {
 			List<AlleleGenotypeAssociation> alleleAssociations) {
 		this.alleleAssociations = alleleAssociations;
 	}
-	
+
 	@OneToMany (targetEntity=GenotypeDisease.class)
 	@JoinColumn(name="genotype_key")
 	public List<GenotypeDisease> getDiseases()
@@ -213,13 +213,22 @@ public class Genotype implements Comparable {
 //		}
 		return diseases;
 	}
-	
+
 	public void setDiseases(List<GenotypeDisease> diseases)
 	{
 		this.diseases = diseases;
 	}
-	
-	@Transient 
+
+	@Transient
+	public boolean hasDiseases() {
+		List<GenotypeDisease> diseases = this.getDiseases();
+		if ( (diseases != null) && (diseases.size() > 0) ) {
+			return true;
+		}
+		return false;
+	}
+
+	@Transient
 	public boolean hasPrimaryImage()
 	{
 		this.getImageAssociations().size();
@@ -238,18 +247,18 @@ public class Genotype implements Comparable {
 	@Transient
 	public boolean getHasPrimaryImage()
 	{ return hasPrimaryImage(); }
-	
+
 	@Transient
 	public Image getPrimaryImage()
 	{
 		// return cached object if we have it
 		if(primaryImage!=null) return primaryImage;
-		
+
 		// find the primary image thumbnail for this genotype.
 		for(GenotypeImageAssociation ia : this.getImageAssociations())
 		{
 			if(ia!=null && ia.getQualifier()!=null && ia.getImage()!=null
-					&& ia.getQualifier().equalsIgnoreCase("primary") 
+					&& ia.getQualifier().equalsIgnoreCase("primary")
 					&& ia.getImage().getIsThumbnail()==0)
 			{
 				primaryImage=ia.getImage();
@@ -258,18 +267,18 @@ public class Genotype implements Comparable {
 		}
 		return null;
 	}
-	
+
 	@Transient
 	public Image getThumbnail()
 	{
 		// return cached object if we have it
 		if(this.primaryImageThumbnail!=null) return primaryImageThumbnail;
-		
+
 		// find the primary image thumbnail for this genotype.
 		for(GenotypeImageAssociation ia : this.getImageAssociations())
 		{
 			if(ia!=null && ia.getQualifier()!=null && ia.getImage()!=null
-					&& ia.getQualifier().equalsIgnoreCase("primary") 
+					&& ia.getQualifier().equalsIgnoreCase("primary")
 					&& ia.getImage().getIsThumbnail()==1)
 			{
 				primaryImageThumbnail=ia.getImage();
@@ -278,7 +287,7 @@ public class Genotype implements Comparable {
 		}
 		return null;
 	}
-	
+
 //	/*
 //	 * Aggregates all the disease footnotes for this genotype
 //	 */
@@ -312,7 +321,7 @@ public class Genotype implements Comparable {
 	@Override
 	public int compareTo(Object arg0) {
 		Genotype b = (Genotype) arg0;
-		
+
 		if (this.byAlleles < b.byAlleles) { return -1; }
 		else if (this.byAlleles > b.byAlleles) { return 1; }
 		return 0;
