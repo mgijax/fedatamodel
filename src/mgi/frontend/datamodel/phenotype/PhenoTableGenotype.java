@@ -67,6 +67,9 @@ public class PhenoTableGenotype {
 		return sexDisplay;
 	}
 	
+	/*
+	 * Has only OMIM annotations, no MP
+	 */
 	@Column(name="disease_only")
 	public boolean getDiseaseOnly()
 	{
