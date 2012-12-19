@@ -25,6 +25,7 @@ public class PhenoTableGenotype {
 	private int genotypeSeq;
 	private int splitSex;
 	private String sexDisplay;
+	private boolean diseaseOnly;
 
     // ================= Getters ======================================== //
 
@@ -64,6 +65,12 @@ public class PhenoTableGenotype {
 	@Column(name="sex_display")
 	public String getSexDisplay() {
 		return sexDisplay;
+	}
+	
+	@Column(name="disease_only")
+	public boolean getDiseaseOnly()
+	{
+		return diseaseOnly;
 	}
 
 	@Transient
@@ -116,6 +123,10 @@ public class PhenoTableGenotype {
 	}
 	public void setSexDisplay(String sexDisplay) {
 		this.sexDisplay = sexDisplay;
+	}
+	public void setDiseaseOnly(boolean diseaseOnly)
+	{
+		this.diseaseOnly=diseaseOnly;
 	}
 	public void setPhenoTableProviders(List<PhenoTableProvider> phenoTableProviders) {
         this.phenoTableProviders = phenoTableProviders;
