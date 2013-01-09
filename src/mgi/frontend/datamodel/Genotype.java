@@ -221,9 +221,10 @@ public class Genotype implements Comparable {
 
 	@Transient
 	public boolean hasDiseases() {
-		List<GenotypeDisease> diseases = this.getDiseases();
-		if ( (diseases != null) && (diseases.size() > 0) ) {
-			return true;
+		for(GenotypeDisease disease : this.getDiseases())
+		{
+			// return true once we find a single diseae model that is NOT a "not". (whatever that means)
+			if(!disease.getIsNot()) return true;
 		}
 		return false;
 	}
