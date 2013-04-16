@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
@@ -75,6 +77,7 @@ public class Marker {
 	private List<MarkerNote> notes;
 	private String organism;
 	private List<MarkerOrthology> orthologousMarkers;
+	private List<MarkerLink> links;
     private String primaryID;
     private List<MarkerReferenceAssociation> referenceAssociations;
     private List<MarkerSequenceAssociation> sequenceAssociations;
@@ -88,8 +91,17 @@ public class Marker {
 	private Integer countOfAllelesWithHumanDiseases;
 	private Integer countOfAntibodies;
 	private List<ExpressionAssay> expressionAssays;
+	private OrganismOrtholog organismOrtholog;
+       private List<MarkerDisease> markerDiseases;
 
     // ================= Instance Methods ===================== //
+
+       @OneToMany (targetEntity=MarkerDisease.class)
+       @JoinColumn(name="marker_key")
+       @OrderBy("sequenceNum")
+       public List<MarkerDisease> getMarkerDiseases() {
+               return markerDiseases;
+       }
 
 	/** used to make other convenience methods to extract only a certain types
 	 * of annotations from the full List of annotations
@@ -173,6 +185,23 @@ public class Marker {
 			item = it.next();
 			if (item.getLogicalDB().equals(logicalDatabase)) {
 				sublist.add(item);
+			}
+		}
+		return sublist;
+	}
+
+	/** retrieve the marker links for the given link group
+	 */
+	@Transient
+	private List<MarkerLink> filterLinks (String linkGroup) {
+		MarkerLink link;
+		ArrayList<MarkerLink> sublist = new ArrayList<MarkerLink>();
+		Iterator<MarkerLink> it = this.getLinks().iterator();
+
+		while (it.hasNext()) {
+			link = it.next();
+			if (linkGroup.equals(link.getLinkGroup())) {
+				sublist.add(link);
 			}
 		}
 		return sublist;
@@ -720,6 +749,19 @@ public class Marker {
 		return organism;
 	}
 
+	/** returns the organism/ortholog object for this marker.  From there,
+	 * you can trace back to the HomologyClass object and get all of the
+	 * organisms (and their markers) which are part of the homology class.
+	 */
+	@ManyToOne (targetEntity=OrganismOrtholog.class)
+	@JoinTable (name="homology_cluster_organism_to_marker",
+			joinColumns=@JoinColumn(name="marker_key"),
+			inverseJoinColumns=@JoinColumn(name="cluster_organism_key")
+			)
+	public OrganismOrtholog getOrganismOrtholog() {
+		return organismOrtholog;
+	}
+
 	/**
 	 * Return a collection of marker orthologs.
 	 * @return
@@ -729,6 +771,25 @@ public class Marker {
 	@OrderBy("sequenceNum")
 	public List<MarkerOrthology> getOrthologousMarkers() {
 		return orthologousMarkers;
+	}
+
+	/**
+	 * Return a collection of marker links.
+	 * @return
+	 */
+	@OneToMany
+	@JoinColumn(name="marker_key")
+	@OrderBy("sequenceNum")
+	public List<MarkerLink> getLinks() {
+		return links;
+	}
+
+	/**
+	 * Return a collection of marker links for the homologene class page.
+	 */
+	@Transient
+	public List<MarkerLink> getHomologyLinks() {
+		return this.filterLinks("homology gene links");
 	}
 
 	/** retrieve the IDs from which are flagged for being part of
@@ -923,6 +984,14 @@ public class Marker {
 		return sequenceAssociations;
 	}
 
+    /** get the neXtProt IDs for this (human) marker; mouse markers don't have
+     * these IDs
+     */
+	@Transient
+	public List<MarkerID> getNeXtProtIDs() {
+		return this.filterMarkerIDs("neXtProt");
+	}
+
     /** get the Genbank/RefSeq IDs for this marker
 	 */
 	@Transient
@@ -937,6 +1006,17 @@ public class Marker {
 	@Transient
 	public MarkerID getSingleID (String logicalDatabase) {
 		List<MarkerID> ids = this.filterMarkerIDs(logicalDatabase);
+		if (ids.size() > 0) {
+			return ids.get(0);
+		}
+		return null;
+	}
+	
+    /** get the HomoloGene id for this marker
+	 */
+	@Transient
+	public MarkerID getHomoloGeneID() {
+		List<MarkerID> ids = this.filterMarkerIDs("HomoloGene");
 		if (ids.size() > 0) {
 			return ids.get(0);
 		}
@@ -1176,6 +1256,14 @@ public class Marker {
 		this.organism = organism;
 	}
 
+	public void setOrganismOrtholog(OrganismOrtholog organismOrtholog) {
+		this.organismOrtholog = organismOrtholog;
+	}
+
+	public void setLinks(List<MarkerLink> links) {
+		this.links = links;
+	}
+
 	public void setOrthologousMarkers(List<MarkerOrthology> orthologousMarkers) {
 		this.orthologousMarkers = orthologousMarkers;
 	}
@@ -1209,6 +1297,10 @@ public class Marker {
 	public void setSynonyms(List<MarkerSynonym> synonyms) {
 		this.synonyms = synonyms;
 	}
+
+       public void setMarkerDiseases(List<MarkerDisease> markerDiseases) {
+               this.markerDiseases = markerDiseases;
+       }
 
 	@Override
 	public String toString() {

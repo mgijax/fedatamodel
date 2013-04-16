@@ -28,6 +28,7 @@ public class Reference {
 	private String bookPublisher;
 	private String bookTitle;
 	private Integer countOfAlleles;
+	private Integer countOfGOAnnotations;
 	private Integer countOfGXDAssays;
 	private Integer countOfGXDIndex;
     private Integer countOfGXDResults;
@@ -146,6 +147,17 @@ public class Reference {
     @JoinColumn(name="reference_key")
     public Integer getCountOfAlleles() {
         return countOfAlleles;
+    }
+
+    /**
+     * Return the count of GO annotations for this reference.
+     * joined by reference_key
+     * @return
+     */
+	@Column(table="reference_counts", name="go_annotation_count")
+    @JoinColumn(name="reference_key")
+    public Integer getCountOfGOAnnotations() {
+        return countOfGOAnnotations;
     }
 
 	/**
@@ -409,6 +421,10 @@ public class Reference {
 
 	public void setCountOfAlleles(Integer countOfAlleles) {
         this.countOfAlleles = countOfAlleles;
+    }
+
+	public void setCountOfGOAnnotations (Integer countOfGOAnnotations) {
+        this.countOfGOAnnotations = countOfGOAnnotations;
     }
 
 	public void setCountOfGXDAssays(Integer countOfGXDAssays) {

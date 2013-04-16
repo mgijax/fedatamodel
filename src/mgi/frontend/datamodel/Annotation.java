@@ -50,6 +50,7 @@ public class Annotation {
 	private String term;
 	private String termID;
 	private String vocabName;
+	private List<Marker> markers;
 
 	@Id
 	@Column(name="annotation_key")
@@ -101,6 +102,17 @@ public class Annotation {
     @Column(name="inferred_id_count")
     public String getInferredIDCount() {
         return inferredIDCount;
+    }
+
+    /** returns a collection of markers for this annotation
+     */
+    @OneToMany (targetEntity=Marker.class)
+    @JoinTable (name="marker_to_annotation",
+	joinColumns=@JoinColumn(name="annotation_key"),
+	inverseJoinColumns=@JoinColumn(name="marker_key")
+	)
+    public List<Marker> getMarkers() {
+        return markers;
     }
 
     @Column(name="object_type")
@@ -171,6 +183,9 @@ public class Annotation {
     }
     public void setInferredIDCount(String inferredIDCount) {
         this.inferredIDCount = inferredIDCount;
+    }
+    public void setMarkers(List<Marker> markers) {
+	this.markers = markers;
     }
     public void setObjectType(String objectType) {
         this.objectType = objectType;
