@@ -66,7 +66,6 @@ public class Marker {
 	private Integer countOfMicroarrayProbesets;
 	private int isInReferenceGenome;
 	private int hasGOGraph;
-	private int hasGOOrthologyGraph;
 	private List<MarkerID> ids;
 	private List<MarkerLocation> locations;
 	private List<MarkerCountSetItem> countSetItems;
@@ -593,13 +592,6 @@ public class Marker {
 	@Column(name="has_go_graph")
 	public int getHasGOGraph() {
 		return hasGOGraph;
-	}
-
-	/** returns 1 if this marker has a GO orthology graph, or 0 if not
-	 */
-	@Column(name="has_go_orthology_graph")
-	public int getHasGOOrthologyGraph() {
-		return hasGOOrthologyGraph;
 	}
 
     /**
@@ -1214,10 +1206,6 @@ public class Marker {
 
 	public void setHasGOGraph(int hasGOGraph) {
 		this.hasGOGraph = hasGOGraph;
-	}
-
-	public void setHasGOOrthologyGraph(int hasGOOrthologyGraph) {
-		this.hasGOOrthologyGraph = hasGOOrthologyGraph;
 	}
 
 	public void setIds(List<MarkerID> ids) {

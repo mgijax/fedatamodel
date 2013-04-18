@@ -25,6 +25,10 @@ public class HomologyCluster {
 	private Integer cattleMarkerCount;
 	private Integer chimpMarkerCount;
 	private Integer dogMarkerCount;
+	private Integer monkeyMarkerCount;
+	private Integer chickenMarkerCount;
+	private Integer zebrafishMarkerCount;
+	private int hasComparativeGOGraph;
 	
 	@Id
 	@Column(name="cluster_key")
@@ -33,6 +37,13 @@ public class HomologyCluster {
 	}
 	public void setClusterKey(int clusterKey) {
 		this.clusterKey = clusterKey;
+	}
+	@Column(name="has_comparative_go_graph")
+	public int getHasComparativeGOGraph() {
+		return hasComparativeGOGraph;
+	}
+	public void setHasComparativeGOGraph(int hasComparativeGOGraph) {
+		this.hasComparativeGOGraph = hasComparativeGOGraph;
 	}
 	@Column(table="homology_cluster_counts", name="mouse_marker_count")
 	@JoinColumn(name="cluster_key")
@@ -81,6 +92,30 @@ public class HomologyCluster {
 	}
 	public void setDogMarkerCount(Integer dogMarkerCount) {
 		this.dogMarkerCount = dogMarkerCount;
+	}
+	@Column(table="homology_cluster_counts", name="monkey_marker_count")
+	@JoinColumn(name="cluster_key")
+	public Integer getMonkeyMarkerCount() {
+		return monkeyMarkerCount;
+	}
+	public void setMonkeyMarkerCount(Integer monkeyMarkerCount) {
+		this.monkeyMarkerCount = monkeyMarkerCount;
+	}
+	@Column(table="homology_cluster_counts", name="chicken_marker_count")
+	@JoinColumn(name="cluster_key")
+	public Integer getChickenMarkerCount() {
+		return chickenMarkerCount;
+	}
+	public void setChickenMarkerCount(Integer chickenMarkerCount) {
+		this.chickenMarkerCount = chickenMarkerCount;
+	}
+	@Column(table="homology_cluster_counts", name="zebrafish_marker_count")
+	@JoinColumn(name="cluster_key")
+	public Integer getZebrafishMarkerCount() {
+		return zebrafishMarkerCount;
+	}
+	public void setZebrafishMarkerCount(Integer zebrafishMarkerCount) {
+		this.zebrafishMarkerCount = zebrafishMarkerCount;
 	}
 	@Column(name="primary_id")
 	public String getPrimaryID() {
