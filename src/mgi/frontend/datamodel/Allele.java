@@ -114,6 +114,7 @@ public class Allele {
             joinColumns=@JoinColumn(name="allele_key"),
             inverseJoinColumns=@JoinColumn(name="allele_system_key")
             )
+    @BatchSize(size=50)
     public List<AlleleSystem> getAlleleSystems() {
         return alleleSystems;
     }

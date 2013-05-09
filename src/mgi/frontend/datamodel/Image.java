@@ -50,6 +50,7 @@ public class Image {
     private String caption;
     private String copyright;
     private String figureLabel;
+    private String externalLink;
     private Integer fullsizeImageKey;
     private List<Genotype> genotypes;
     private Integer height;
@@ -86,6 +87,11 @@ public class Image {
 
 	public String getCopyright() {
         return copyright;
+    }
+
+	@Column(name="external_link")
+    public String getExternalLink() {
+        return externalLink;
     }
 
 	@Column(name="figure_label")
@@ -228,6 +234,10 @@ public class Image {
 
     public void setCopyright(String copyright) {
         this.copyright = copyright;
+    }
+
+    public void setExternalLink(String externalLink) {
+        this.externalLink = externalLink;
     }
 
     public void setFigureLabel(String figureLabel) {

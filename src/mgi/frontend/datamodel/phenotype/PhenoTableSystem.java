@@ -3,6 +3,8 @@ package mgi.frontend.datamodel.phenotype;
 import java.util.*;
 import javax.persistence.*;
 
+import mgi.frontend.datamodel.util.DatamodelUtils;
+
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -69,20 +71,12 @@ public class PhenoTableSystem {
 	
     @Transient
     public String getCssClass() {
-        String cssClass = new String(this.system);
-        cssClass = cssClass.replace("/", "_");
-        cssClass = cssClass.replace("-", "_");
-        cssClass = cssClass.replace(" ", "_");
-        return cssClass + "_class";
+        return DatamodelUtils.makeCssSafe(this.system) + "_class";
     }
 
     @Transient
     public String getCssId() {
-        String cssId = new String(this.system);
-        cssId = cssId.replace("/", "_");
-        cssId = cssId.replace("-", "_");
-        cssId = cssId.replace(" ", "_");
-        return cssId+ "_id";
+        return DatamodelUtils.makeCssSafe(this.system) + "_id";
     }
 
     // ================= Setters ======================================== //

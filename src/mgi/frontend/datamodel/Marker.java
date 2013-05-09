@@ -22,6 +22,7 @@ import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -242,6 +243,7 @@ public class Marker {
 	 */
 	@OneToMany (targetEntity=MarkerAlias.class)
 	@JoinColumn(name="marker_key")
+	@BatchSize(size=50)
 	@OrderBy("aliasSymbol")
 	public List<MarkerAlias> getAliases() {
 		return aliases;
@@ -252,6 +254,7 @@ public class Marker {
 	 * extend the base association class.
 	 */
 	@OneToMany (targetEntity=MarkerAlleleAssociation.class)
+	@BatchSize(size=200)
 	@JoinColumn(name="marker_key")
 	public List<MarkerAlleleAssociation> getAlleleAssociations() {
 		return alleleAssociations;
@@ -280,6 +283,7 @@ public class Marker {
             joinColumns=@JoinColumn(name="marker_key"),
             inverseJoinColumns=@JoinColumn(name="annotation_key")
             )
+    @BatchSize(size=200)
     @OrderBy("dagName, term")
     public List<Annotation> getAnnotations() {
 		return annotations;
@@ -332,6 +336,7 @@ public class Marker {
 	 */
 	@OneToMany (targetEntity=MarkerBiotypeConflict.class)
 	@JoinColumn(name="marker_key")
+	@BatchSize(size=20)
 	@OrderBy("sequenceNum")
 	public List<MarkerBiotypeConflict> getBiotypeConflicts() {
 		return biotypeConflicts;
@@ -455,6 +460,7 @@ public class Marker {
 	 * base count set item class.
 	 */
 	@OneToMany (targetEntity=MarkerCountSetItem.class)
+	@BatchSize(size=100)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
 	public List<MarkerCountSetItem> getCountSetItems() {
@@ -495,6 +501,7 @@ public class Marker {
 
 	@OneToMany (fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")
+	@BatchSize(size=300)
 	public List<ExpressionAssay> getExpressionAssays() {
 		return expressionAssays;
 	}
@@ -601,6 +608,7 @@ public class Marker {
 	 */
 	@OneToMany (targetEntity=MarkerID.class)
 	@JoinColumn(name="marker_key")
+	@BatchSize(size=100)
 	@OrderBy("sequenceNum")
 	public List<MarkerID> getIds() {
 		return ids;
@@ -662,6 +670,7 @@ public class Marker {
 	 */
 	@OneToMany (targetEntity=MarkerTissueCount.class)
 	@JoinColumn(name="marker_key")
+	@BatchSize(size=200)
 	@OrderBy("sequenceNum")
 	public List<MarkerTissueCount> getMarkerTissueCounts() {
 		return markerTissueCounts;
@@ -718,6 +727,7 @@ public class Marker {
 	 * This object extends the note class.
 	 */
 	@OneToMany (targetEntity=MarkerNote.class)
+	@BatchSize(size=50)
 	@JoinColumn(name="marker_key")
 	public List<MarkerNote> getNotes() {
 		return notes;
@@ -760,6 +770,7 @@ public class Marker {
 	 */
 	@OneToMany
 	@JoinColumn(name="mouse_marker_key")
+	@BatchSize(size=50)
 	@OrderBy("sequenceNum")
 	public List<MarkerOrthology> getOrthologousMarkers() {
 		return orthologousMarkers;
@@ -912,6 +923,7 @@ public class Marker {
 	 */
 	@OneToMany (fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")
+	@BatchSize(size=300)
 	public List<MarkerReferenceAssociation> getReferenceAssociations() {
 		return referenceAssociations;
 	}
@@ -926,6 +938,7 @@ public class Marker {
 			joinColumns=@JoinColumn(name="marker_key"),
 			inverseJoinColumns=@JoinColumn(name="reference_key")
 			)
+	@BatchSize(size=300)
 	@OrderBy("year, jnumNumeric")
 	public List<Reference> getReferences() {
 		return references;
@@ -972,6 +985,7 @@ public class Marker {
 	 */
 	@OneToMany (targetEntity=MarkerSequenceAssociation.class)
 	@JoinColumn(name="marker_key")
+	@BatchSize(size=200)
 	public List<MarkerSequenceAssociation> getSequenceAssociations() {
 		return sequenceAssociations;
 	}
@@ -1059,6 +1073,7 @@ public class Marker {
 
 	@OneToMany (targetEntity=MarkerSynonym.class)
 	@JoinColumn(name="marker_key")
+	@BatchSize(size=50)
 	@OrderBy("synonym")
 	public List<MarkerSynonym> getSynonyms() {
 		return synonyms;
