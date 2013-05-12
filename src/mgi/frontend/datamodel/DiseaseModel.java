@@ -3,6 +3,7 @@ package mgi.frontend.datamodel;
 import javax.persistence.*;
 import java.util.List;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -81,6 +82,7 @@ public class DiseaseModel {
 		joinColumns=@JoinColumn(name="disease_model_key"),
 		inverseJoinColumns=@JoinColumn(name="reference_key")
 		)
+	@BatchSize(size=100)
 	@OrderBy("year, jnumNumeric")
 	public List<Reference> getReferences() {
 		return references;

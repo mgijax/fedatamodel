@@ -3,6 +3,8 @@ package mgi.frontend.datamodel;
 import javax.persistence.*;
 
 import java.util.List;
+
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -36,6 +38,7 @@ public class DiseaseGroup {
 
 	@OneToMany (targetEntity=DiseaseRow.class)
 	@JoinColumn (name="disease_group_key")
+	@BatchSize(size=100)
 	@OrderBy ("sequenceNum")
 	public List<DiseaseRow> getDiseaseRows() {
 		return diseaseRows;

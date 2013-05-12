@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.BatchSize;
+
 @Entity
 @Table(name="homology_cluster")
 @SecondaryTables (
@@ -147,6 +149,7 @@ public class HomologyCluster {
 	}
 	@OneToMany (targetEntity=OrganismOrtholog.class)
 	@JoinColumn(name="cluster_key")
+	@BatchSize(size=100)
 	@OrderBy("sequenceNum")
 	public List<OrganismOrtholog> getOrthologs() {
 		return orthologs;

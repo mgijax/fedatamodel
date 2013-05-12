@@ -13,6 +13,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.BatchSize;
+
 @Entity
 @Table(name="homology_cluster_organism")
 public class OrganismOrtholog {
@@ -44,6 +46,7 @@ public class OrganismOrtholog {
 			joinColumns=@JoinColumn(name="cluster_organism_key"),
 			inverseJoinColumns=@JoinColumn(name="marker_key")
 			)
+	@BatchSize(size=100)
 	public List<Marker> getMarkers() {
 		return markers;
 	}

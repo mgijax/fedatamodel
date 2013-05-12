@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -136,6 +137,7 @@ public class DiseaseRow {
     // ================= Getters and Setters ===================== //
 
 	@ManyToOne (targetEntity=HomologyCluster.class, fetch=FetchType.LAZY)
+	@BatchSize(size=100)
 	@JoinColumn (name="cluster_key")
 	public HomologyCluster getHomologyCluster() {
 		return homologyCluster;
@@ -154,6 +156,7 @@ public class DiseaseRow {
 
 	@OneToMany (targetEntity=DiseaseRowToMarker.class)
 	@JoinColumn (name="disease_row_key")
+	@BatchSize(size=100)
 	@OrderBy ("sequenceNum")
 	public List<DiseaseRowToMarker> getDiseaseRowToMarkers() {
 		return diseaseRowToMarkers;
@@ -161,6 +164,7 @@ public class DiseaseRow {
 
 	@OneToMany (targetEntity=DiseaseRowToModel.class)
 	@JoinColumn (name="disease_row_key")
+	@BatchSize(size=100)
 	@OrderBy ("sequenceNum")
 	public List<DiseaseRowToModel> getDiseaseRowToModels() {
 		return diseaseRowToModels;
