@@ -20,6 +20,7 @@ import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.SortType;
 
 /**
@@ -298,6 +299,7 @@ public class Disease {
      */
     @OneToMany (targetEntity=DiseaseGroup.class)
     @JoinColumn(name="disease_key")
+    @BatchSize(size=50)
     @OrderBy("sequenceNum")
     public List<DiseaseGroup> getDiseaseGroups() {
 	return diseaseGroups;
@@ -307,6 +309,7 @@ public class Disease {
      */
     @OneToMany (targetEntity=DiseaseSynonym.class)
     @JoinColumn(name="disease_key")
+    @BatchSize(size=50)
     @OrderBy("sequenceNum")
     public List<DiseaseSynonym> getDiseaseSynonyms() {
 	return diseaseSynonyms;
