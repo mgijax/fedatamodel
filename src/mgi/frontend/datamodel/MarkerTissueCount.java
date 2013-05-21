@@ -17,6 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class MarkerTissueCount {
 
 	private int uniqueKey;
+	private int markerKey;
 	private int structureKey;
 	private String structure;			// Theiler stage plus printname
 	private int allResultCount;			// detected + not detected counts
@@ -27,6 +28,12 @@ public class MarkerTissueCount {
 
 	// ================= Getters and Setters ===================== //
 
+	@Column(name="marker_key",insertable=false,updatable=false)
+	public int getMarkerKey()
+	{
+		return markerKey;
+	}
+	
 	@Column(name="all_result_count")
 	public int getAllResultCount() {
 		return allResultCount;
@@ -37,10 +44,10 @@ public class MarkerTissueCount {
 		return detectedResultCount;
 	}
 
-	@Transient
-	public int getMarkerKey() {
-		return marker.getMarkerKey();
-	}
+//	@Transient
+//	public int getMarkerKey() {
+//		return marker.getMarkerKey();
+//	}
 
 	@Column(name="not_detected_count")
 	public int getNotDetectedResultCount() {
@@ -81,6 +88,11 @@ public class MarkerTissueCount {
 		return uniqueKey;
 	}
 
+	public void setMarkerKey(int markerKey)
+	{
+		this.markerKey=markerKey;
+	}
+	
 	public void setAllResultCount(int allResultCount) {
 		this.allResultCount = allResultCount;
 	}
