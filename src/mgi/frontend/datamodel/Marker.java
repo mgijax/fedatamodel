@@ -670,8 +670,8 @@ public class Marker {
 	 */
 	@OneToMany (targetEntity=MarkerTissueCount.class)
 	@JoinColumn(name="marker_key")
-	@BatchSize(size=200)
 	@OrderBy("sequenceNum")
+	@BatchSize(size=200)
 	public List<MarkerTissueCount> getMarkerTissueCounts() {
 		return markerTissueCounts;
 	}
