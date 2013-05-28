@@ -278,7 +278,7 @@ public class Marker {
 	 * Returns a collection of marker annotation objects, which
 	 * extend the base annotation class.
 	 */
-    @OneToMany
+    @OneToMany(fetch=FetchType.LAZY)
     @JoinTable (name="marker_to_annotation",
             joinColumns=@JoinColumn(name="marker_key"),
             inverseJoinColumns=@JoinColumn(name="annotation_key")
@@ -631,7 +631,7 @@ public class Marker {
 	 *
 	 */
 
-	@OneToMany (targetEntity=MarkerLocation.class)
+	@OneToMany (targetEntity=MarkerLocation.class,fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
 	public List<MarkerLocation> getLocations() {
@@ -755,7 +755,7 @@ public class Marker {
 	 * you can trace back to the HomologyClass object and get all of the
 	 * organisms (and their markers) which are part of the homology class.
 	 */
-	@ManyToOne (targetEntity=OrganismOrtholog.class)
+	@ManyToOne (targetEntity=OrganismOrtholog.class,fetch=FetchType.LAZY)
 	@JoinTable (name="homology_cluster_organism_to_marker",
 			joinColumns=@JoinColumn(name="marker_key"),
 			inverseJoinColumns=@JoinColumn(name="cluster_organism_key")

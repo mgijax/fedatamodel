@@ -61,7 +61,7 @@ public class BatchMarkerId {
 		this.termType = termType;
 	}
 
-	@OneToOne (targetEntity=Marker.class)
+	@OneToOne (targetEntity=Marker.class,fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")
 	public Marker getMarker() {
 		return marker;
