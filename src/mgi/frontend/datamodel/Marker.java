@@ -1097,8 +1097,7 @@ public class Marker {
 
 	@Transient
 	public boolean getIsSTS(){
-		return this.getAliases()!=null && this.getAliases().size()>0 
-				&& !this.getMarkerType().equals("Gene");
+		return this.getMarkerType().equals("DNA segment");
 	}
 	
 	public void setAliases(List<MarkerAlias> aliases) {
