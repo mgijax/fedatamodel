@@ -1095,6 +1095,12 @@ public class Marker {
 		return this.getSingleID("VEGA Gene Model");
 	}
 
+	@Transient
+	public boolean getIsSTS(){
+		return this.getAliases()!=null && this.getAliases().size()>0 
+				&& !this.getMarkerType().equals("Gene");
+	}
+	
 	public void setAliases(List<MarkerAlias> aliases) {
 		this.aliases = aliases;
 	}
