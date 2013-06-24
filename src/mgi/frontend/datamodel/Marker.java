@@ -25,6 +25,9 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterJoinTable;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
@@ -34,6 +37,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  */
 
 @Entity
+@FilterDef(name="markerDetailRefs")
 @Table(name="marker")
 @SecondaryTables (
 		{ @SecondaryTable (name="marker_counts", pkJoinColumns= {
@@ -940,6 +944,10 @@ public class Marker {
 			)
 	@BatchSize(size=300)
 	@OrderBy("year, jnumNumeric")
+	@FilterJoinTable(
+			name = "markerDetailRefs",
+			condition = "qualifier in ('earliest','latest')"
+	)
 	public List<Reference> getReferences() {
 		return references;
 	}

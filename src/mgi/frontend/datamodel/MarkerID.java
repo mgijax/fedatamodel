@@ -2,6 +2,7 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -35,6 +36,7 @@ public class MarkerID extends AccessionID {
 
 	@OneToMany(targetEntity=MarkerIDOtherMarker.class)
 	@JoinColumn(name="marker_id_key")
+	@BatchSize(size=250)
 	@OrderBy("symbol")
 	public List<MarkerIDOtherMarker> getOtherMarkers() {
 		return otherMarkers;

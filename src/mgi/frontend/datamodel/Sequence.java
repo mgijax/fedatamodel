@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -17,6 +18,7 @@ import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -162,6 +164,7 @@ public class Sequence {
 
 	@OneToMany (targetEntity=SequenceLocation.class)
     @JoinColumn(name="sequence_key")
+	@BatchSize(size=250)
     @OrderBy("sequenceNum")
 	public List<SequenceLocation> getLocations() {
 		return locations;
@@ -271,7 +274,7 @@ public class Sequence {
 		return sequenceType;
 	}
 
-	@OneToMany (targetEntity=SequenceSource.class)
+	@OneToMany (targetEntity=SequenceSource.class,fetch=FetchType.EAGER)
     @JoinColumn(name="sequence_key")
     public List<SequenceSource> getSources() {
         return sources;
