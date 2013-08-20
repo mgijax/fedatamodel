@@ -38,7 +38,7 @@ public class AlleleTest {
 			System.out.println(all);
 
 			System.out.println("THE IDS FOR THAT ALLELE");
-			Set<AlleleID> allID = all.getIds();
+			List<AlleleID> allID = all.getIds();
 			for (AlleleID inId: allID) {
 			    System.out.println(inId);
 			}
@@ -50,7 +50,7 @@ public class AlleleTest {
 	        }
 	        
 	        System.out.println("THE ALLELE SYNONYMS");
-            Set<AlleleSynonym> allSyn = all.getSynonyms();
+            List<AlleleSynonym> allSyn = all.getSynonyms();
             for (AlleleSynonym syn: allSyn) {
                 System.out.println(syn);
             }

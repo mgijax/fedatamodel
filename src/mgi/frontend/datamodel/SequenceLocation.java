@@ -15,12 +15,22 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table (name="sequence_location")
 public class SequenceLocation extends Location {
 	protected Integer sequenceKey;
+	protected String version;
 	
     // ================= Getters and Setters ===================== //
 	
+	@Column(name="version")
+	public String getVersion() {
+		return version;
+	}
+
 	@Column(name="sequence_key")
 	public Integer getSequenceKey() {
 		return sequenceKey;
+	}
+
+	public void setVersion (String version) {
+		this.version = version;
 	}
 
 	public void setSequenceKey(Integer sequenceKey) {

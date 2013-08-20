@@ -2,12 +2,14 @@ package mgi.frontend.datamodel;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Collections;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -34,6 +36,7 @@ public class VocabTerm implements Serializable{
 	private String vocabName;
 	private String primaryId;
 	private int isObsolete;
+	private List<Marker> associatedMarkers;
 	
 	/* Vocab specific optional associations */
 	// For vocabName=OMIM
@@ -77,7 +80,26 @@ public class VocabTerm implements Serializable{
 	return diseaseModels;
     }
 	
+	@OneToMany
+	@JoinTable (name="marker_to_term",
+		joinColumns=@JoinColumn(name="term_key"),
+		inverseJoinColumns=@JoinColumn(name="marker_key")
+		)
+	@BatchSize(size=300)
+	public List<Marker> getAssociatedMarkers() {
+		if (associatedMarkers.size() > 0) {
+		    Collections.sort(associatedMarkers,
+			associatedMarkers.get(0).getComparator());
+		}
+		return associatedMarkers;
+	}
+
 	/* Setters */
+
+	public void setAssociatedMarkers(List<Marker> associatedMarkers) {
+		this.associatedMarkers = associatedMarkers;
+	}
+
 	public void setTermKey(int termKey) {
 		this.termKey = termKey;
 	}

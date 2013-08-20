@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Comparator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +31,8 @@ import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterJoinTable;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import mgi.frontend.datamodel.sort.SmartAlphaComparator;
+
 /**
  * Marker
  * @author mhall, jsb
@@ -39,14 +42,17 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @Entity
 @FilterDef(name="markerDetailRefs")
 @Table(name="marker")
-@SecondaryTables (
-		{ @SecondaryTable (name="marker_counts", pkJoinColumns= {
-			@PrimaryKeyJoinColumn(name="marker_key", referencedColumnName="marker_key") } )
-		} )
+@SecondaryTables ( {
+  @SecondaryTable (name="marker_counts", pkJoinColumns= {
+    @PrimaryKeyJoinColumn(name="marker_key", referencedColumnName="marker_key") } )
+} )
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@FilterDef(name="onlyProteinSequences")
 public class Marker {
 
 	private List<MarkerAlias> aliases;
+	private List<MarkerQtlExperiment> qtlExperiments;
+	private List<MarkerProbeset> probesets;
 	private List<MarkerAlleleAssociation> alleleAssociations;
 	private List<BatchMarkerAllele> batchMarkerAlleles;
 	private List<BatchMarkerSnp> batchMarkerSnps;
@@ -94,6 +100,7 @@ public class Marker {
 	private Integer countOfHumanDiseases;
 	private Integer countOfAllelesWithHumanDiseases;
 	private Integer countOfAntibodies;
+	private Integer countOfGeneTraps;
 	private List<ExpressionAssay> expressionAssays;
 	private OrganismOrtholog organismOrtholog;
        private List<MarkerDisease> markerDiseases;
@@ -253,6 +260,26 @@ public class Marker {
 		return aliases;
 	}
 
+	/** returns a collection of QTL mapping experiment notes for the mkr
+	 */
+	@OneToMany (targetEntity=MarkerQtlExperiment.class)
+	@JoinColumn(name="marker_key")
+	@BatchSize(size=70)
+	@OrderBy("sequenceNum")
+	public List<MarkerQtlExperiment> getQtlExperiments() {
+		return qtlExperiments;
+	}
+
+	/** returns a collection of microarray probesets for the marker
+	 */
+	@OneToMany (targetEntity=MarkerProbeset.class)
+	@JoinColumn(name="marker_key")
+	@BatchSize(size=50)
+	@OrderBy("probesetID")
+	public List<MarkerProbeset> getProbesets() {
+		return probesets;
+	}
+
 	/**
 	 * Returns a collection of marker/allele association objects, which
 	 * extend the base association class.
@@ -357,6 +384,12 @@ public class Marker {
 	public Integer getCountOfAllelesWithHumanDiseases() {
 		return countOfAllelesWithHumanDiseases;
 	}
+
+    @Column(table="marker_counts", name="gene_trap_count")
+    @JoinColumn(name="marker_key")
+    public Integer getCountOfGeneTraps() {
+	return countOfGeneTraps;
+    }
 
 	@Column(table="marker_counts", name="antibody_count")
     @JoinColumn(name="marker_key")
@@ -867,6 +900,29 @@ public class Marker {
         return bestLoc;
     }
 	
+    /* get the chromosome for this marker, preferring to take it from the
+     * coordinates first, cM second, and cytoband third.
+     */
+    @Transient
+    public String getChromosome() {
+	MarkerLocation loc = this.getPreferredCoordinates();
+
+	if (loc != null) {
+	    return loc.getChromosome();
+	}
+	
+	loc = this.getPreferredCentimorgans();
+	if (loc != null) {
+	    return loc.getChromosome();
+	}
+
+	loc = this.getPreferredCytoband();
+	if (loc != null) {
+	    return loc.getChromosome();
+	}
+	return "UN";		// default to Unknown chromosome
+    }
+
 	/** get the preferred centimorgan location for the marker, or null if none
 	 */
 	@Transient
@@ -994,6 +1050,11 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerSequenceAssociation.class)
 	@JoinColumn(name="marker_key")
 	@BatchSize(size=200)
+	@Filter(
+	  // enable this filter to only bring back protein sequences
+	  name = "onlyProteinSequences",
+	  condition = "qualifier='polypeptide'"
+	)
 	public List<MarkerSequenceAssociation> getSequenceAssociations() {
 		return sequenceAssociations;
 	}
@@ -1108,8 +1169,21 @@ public class Marker {
 		return this.getMarkerType().equals("DNA Segment");
 	}
 	
+	@Transient
+	public Comparator getComparator() {
+		return new MarkerComparator();
+	}
+
 	public void setAliases(List<MarkerAlias> aliases) {
 		this.aliases = aliases;
+	}
+
+	public void setQtlExperiments(List<MarkerQtlExperiment> qtlExperiments) {
+		this.qtlExperiments = qtlExperiments;
+	}
+
+	public void setProbesets(List<MarkerProbeset> probesets) {
+		this.probesets = probesets;
 	}
 
     public void setAlleleAssociations(
@@ -1150,6 +1224,10 @@ public class Marker {
 	public void setCountOfAllelesWithHumanDiseases(
 			Integer countOfAllelesWithHumanDiseases) {
 		this.countOfAllelesWithHumanDiseases = countOfAllelesWithHumanDiseases;
+	}
+
+	public void setCountOfGeneTraps(Integer countOfGeneTraps) {
+		this.countOfGeneTraps = countOfGeneTraps;
 	}
 
 	public void setCountOfAntibodies(Integer countOfAntibodies) {
@@ -1339,4 +1417,12 @@ public class Marker {
 				+ (symbol != null ? "symbol=" + symbol + ", " : "")
 				+ (synonyms != null ? "synonyms=" + synonyms : "") + "]";
 	}
+
+    private class MarkerComparator extends SmartAlphaComparator {
+	public int compare(Object o1, Object o2) {
+	    Marker m1 = (Marker) o1;
+	    Marker m2 = (Marker) o2;
+	    return super.compare(m1.getSymbol(), m2.getSymbol());
+	}
+    }
 }

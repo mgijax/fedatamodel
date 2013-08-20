@@ -121,6 +121,24 @@ public class Sequence {
 		return hasCloneCollection;
 	}
 
+	// return preferred GenBank ID if there is one
+	@Transient
+	public SequenceID getPreferredGenBankID() {
+	    Set<SequenceID> ids = this.getIds();
+	    SequenceID id;
+	    Iterator<SequenceID> it = ids.iterator();
+
+	    while (it.hasNext()) {
+		id = it.next();
+		if ("Sequence DB".equals(id.getLogicalDB())) {
+		    if (id.isPreferred()) {
+			return id;
+		    }
+		}
+	    }
+	    return null;
+	}
+
 	/**
 	 * Return the a collection of all possible sequence IDs
 	 * for a sequence.
@@ -302,6 +320,17 @@ public class Sequence {
 		return vectorEnd;
 	}
 
+	@Transient
+	public String getAssemblyVersion() {
+	    List<SequenceLocation> locations = this.getLocations();
+	    if ((locations == null) || (locations.size() == 0)) {
+		return null;
+	    }
+
+	    SequenceLocation loc = locations.get(0);
+	    return loc.getVersion();
+	}
+
 	public String getVersion() {
 		return version;
 	}
@@ -330,6 +359,52 @@ public class Sequence {
 			}
 		}
 		return false;
+	}
+
+	// get the location string for use on the allele detail page, giving
+	// the location for a sequence tag
+	@Transient
+	public String getSequenceTagLocation() {
+
+	    // if multiple good hits to the genome, report 'multiple'
+
+	    Integer goodHitCount = this.getGoodHitCount();
+	    if (goodHitCount != null) {
+		if (goodHitCount.intValue() > 1) {
+		    return "multiple";
+
+		} else if (goodHitCount.intValue() == 0) {
+		    // if no good hits, then report 'unknown'
+		    return "unknown";
+		}
+	    }
+
+	    // if no locations, then report also 'unknown'
+
+	    List<SequenceLocation> locations = this.getLocations();
+	    if ((locations == null) || (locations.size() == 0)) {
+		return "unknown";
+	    }
+
+	    SequenceLocation loc = locations.get(0);
+
+	    StringBuffer sb = new StringBuffer();
+	    sb.append("Chr");
+	    sb.append(loc.getChromosome());
+	    sb.append(":");
+	    sb.append(loc.getStartCoordinate().intValue());
+	    sb.append("-");
+	    sb.append(loc.getEndCoordinate().intValue());
+	    sb.append(" bp");
+
+	    String strand = loc.getStrand();
+
+	    if ((strand != null) && (!strand.equals(""))) {
+		sb.append(" (");
+		sb.append(strand);
+		sb.append(")");
+	    }
+	    return sb.toString();
 	}
 
 	public void setBiotype(String biotype) {

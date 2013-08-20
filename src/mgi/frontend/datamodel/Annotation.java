@@ -51,6 +51,7 @@ public class Annotation {
 	private String termID;
 	private String vocabName;
 	private List<Marker> markers;
+	private List<Genotype> genotypes;
 
 	@Id
 	@Column(name="annotation_key")
@@ -102,6 +103,17 @@ public class Annotation {
     @Column(name="inferred_id_count")
     public String getInferredIDCount() {
         return inferredIDCount;
+    }
+
+    /** returns a collection of genotypes for this annotation
+     */
+    @OneToMany (targetEntity=Genotype.class)
+    @JoinTable (name="genotype_to_annotation",
+	joinColumns=@JoinColumn(name="annotation_key"),
+	inverseJoinColumns=@JoinColumn(name="genotype_key")
+	)
+    public List<Genotype> getGenotypes() {
+        return genotypes;
     }
 
     /** returns a collection of markers for this annotation
@@ -183,6 +195,9 @@ public class Annotation {
     }
     public void setInferredIDCount(String inferredIDCount) {
         this.inferredIDCount = inferredIDCount;
+    }
+    public void setGenotypes(List<Genotype> genotypes) {
+	this.genotypes = genotypes;
     }
     public void setMarkers(List<Marker> markers) {
 	this.markers = markers;

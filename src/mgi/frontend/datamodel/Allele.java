@@ -52,22 +52,31 @@ public class Allele {
     private String alleleSubType;
     private List<AlleleSystem> alleleSystems;
     private String alleleType;
+    private Integer countOfExpressionAssayResults;
     private Integer countOfMarkers;
     private Integer countOfReferences;
     private String driver;
+    private String holder;
+    private String companyID;
     private String geneName;
-    private Set<AlleleID> ids;
+    private List<AlleleID> ids;
     private String inducibleNote;
     private int isRecombinase;
     private int isWildType;
+    private int isMixed;
+    private String strain;
+    private String strainLabel;
     private String molecularDescription;
     private String name;
     private List<AlleleNote> notes;
     private String onlyAlleleSymbol;
     private String primaryID;
-    private List<Reference> references;
+    private String inheritanceMode;
+    private List<AlleleReferenceAssociation> referenceAssociations;
     private String symbol;
-    private Set<AlleleSynonym> synonyms;
+    private String transmissionType;
+    private String transmissionPhrase;
+    private List<AlleleSynonym> synonyms;
     private Integer imsrCellLineCount;
     private Integer imsrStrainCount;
     private Integer imsrCountForMarker;
@@ -79,6 +88,11 @@ public class Allele {
 	private boolean hasDiseaseModel;
 	private List<DiseaseTableDisease> diseaseTableDiseases;
 	private List<DiseaseTableGenotype> diseaseTableGenotypes;
+	private List<AlleleImageAssociation> imageAssociations;
+	private List<Marker> markers;
+	private List<AlleleMutation> mutations;
+	private List<AlleleCellLine> cellLines;
+	private List<AlleleSequenceAssociation> sequenceAssociations;
 	
 
 
@@ -124,10 +138,41 @@ public class Allele {
         return alleleType;
     }
 
+    @Column(name="holder")
+    public String getHolder() {
+        return holder;
+    }
+
+    @Column(name="company_id")
+    public String getCompanyID() {
+        return companyID;
+    }
+
+    @Column(name="transmission_type")
+    public String getTransmissionType() {
+        return transmissionType;
+    }
+
+    @Column(name="transmission_phrase")
+    public String getTransmissionPhrase() {
+        return transmissionPhrase;
+    }
+
+    @Column(name="inheritance_mode")
+    public String getInheritanceMode() {
+        return inheritanceMode;
+    }
+
     @OneToMany (fetch=FetchType.LAZY)
     @JoinColumn(name="allele_key")
     public List<Annotation> getAnnotations() {
     	return annotations;
+    }
+
+    @Column(table="allele_counts", name="expression_assay_result_count")
+    @JoinColumn(name="allele_key")
+    public Integer getCountOfExpressionAssayResults() {
+        return countOfExpressionAssayResults;
     }
 
     @Column(table="allele_counts", name="marker_count")
@@ -170,7 +215,8 @@ public class Allele {
      */
     @OneToMany (targetEntity=AlleleID.class)
     @JoinColumn (name="allele_key")
-    public Set<AlleleID> getIds() {
+    @OrderBy("accID")
+    public List<AlleleID> getIds() {
         return ids;
     }
 
@@ -212,20 +258,107 @@ public class Allele {
         return isRecombinase;
     }
 
-	/** is this a wild-type allele?  (1 if yes, 0 if no)
+    /** is this a wild-type allele?  (1 if yes, 0 if no)
      */
     @Column(name="is_wild_type")
     public int getIsWildType() {
-		return isWildType;
-	}
+	return isWildType;
+    }
 
-	@Column(name="molecular_description")
+    /** is this a mixed allele?  (1 if yes, 0 if no)
+     */
+    @Column(name="is_mixed")
+    public int getIsMixed() {
+	return isMixed;
+    }
+
+    @Column(name="strain")
+    public String getStrain() {
+        return strain;
+    }
+
+    @Column(name="strain_type")
+    public String getStrainLabel() {
+        return strainLabel;
+    }
+
+    @Column(name="molecular_description")
     public String getMolecularDescription() {
         return molecularDescription;
     }
 
     public String getName() {
         return name;
+    }
+
+    // pull out the ID with the given logical db from the list of all IDs
+    @Transient
+    private AlleleID filterIDs (String logicalDB) {
+	Iterator<AlleleID> it = this.getIds().iterator();
+	AlleleID id;
+
+	while (it.hasNext()) {
+	    id = it.next();
+	    if (logicalDB.equals(id.getLogicalDB())) {
+		return id;
+	    }
+	}
+	return null;
+    }
+
+    // return the KOMP ID associated with the allele, if there is one
+    @Transient
+    public AlleleID getKompID () {
+	AlleleID id = null;
+
+	id = this.filterIDs("KOMP-CSD-Project");
+	if (id != null) { return id; }
+
+	id = this.filterIDs("EUCOMM-projects");
+	if (id != null) { return id; }
+
+	id = this.filterIDs("NorCOMM-projects");
+	return id;
+    }
+
+    // pull out the note with the given type from the set of all notes
+    @Transient
+    private String filterNotes(String noteType) {
+	Iterator<AlleleNote> it = this.getNotes().iterator();
+	AlleleNote note;
+
+	while (it.hasNext()) {
+	    note = it.next();
+	    if (noteType.equals(note.getNoteType())) {
+		return note.getNote();
+	    }
+	}
+	return null;
+    }
+
+    @Transient
+    public String getGeneralNote() {
+	return this.filterNotes("General");
+    }
+
+    @Transient
+    public String getMolecularNote() {
+	return this.filterNotes("Molecular");
+    }
+
+    @Transient
+    public String getRecombinaseUserNote() {
+	return this.filterNotes("User (Cre)");
+    }
+
+    @Transient
+    public String getDriverNote() {
+	return this.filterNotes("Driver");
+    }
+
+    @Transient
+    public String getDerivationNote() {
+	return this.filterNotes("Derivation");
     }
 
     /**
@@ -261,14 +394,119 @@ public class Allele {
     public RecombinaseInfo getRecombinaseInfo() {
         return recombinaseInfo;
     }
-    @OneToMany
-    @JoinTable (name="allele_to_reference",
-            joinColumns=@JoinColumn(name="allele_key"),
-            inverseJoinColumns=@JoinColumn(name="reference_key")
-            )
-    @OrderBy("year, jnumNumeric")
+
+    @Transient
+    public Image getPrimaryImage() {
+	Iterator<AlleleImageAssociation> it =
+	    this.getImageAssociations().iterator();
+	AlleleImageAssociation assoc;
+	Image image;
+
+	while (it.hasNext()) {
+	    assoc = it.next();
+	    if ("primary".equals(assoc.getQualifier())) {
+	        image = assoc.getImage();
+	        if ("Phenotypes".equals(image.getImageClass())) {
+		    return image;
+		}
+	    }
+	}
+	return null;
+    }
+
+    @Transient
+    public List<Image> getPhenotypeImages() {
+	Iterator<AlleleImageAssociation> it =
+	    this.getImageAssociations().iterator();
+	AlleleImageAssociation assoc;
+
+	List<Image> phenoImages = new ArrayList<Image>();
+	Image image;
+
+	while (it.hasNext()) {
+	    assoc = it.next();
+	    image = assoc.getImage();
+	    if ("Phenotypes".equals(image.getImageClass())) {
+		phenoImages.add(image);
+	    }
+	}
+	return phenoImages;
+    }
+
+    /** return all the image associations for this allele.  No ordering has
+     * yet been defined.
+     */
+    @OneToMany (targetEntity=AlleleImageAssociation.class)
+    @JoinColumn (name="allele_key")
+    public List<AlleleImageAssociation> getImageAssociations() {
+	return imageAssociations;
+    }
+
+    @Transient
+    public List<Reference> filterReferences (String qualifier) {
+	Iterator<AlleleReferenceAssociation> associations =
+	    this.getReferenceAssociations().iterator();
+	AlleleReferenceAssociation assoc;
+	Reference ref;
+	List<Reference> refs = new ArrayList<Reference>();
+
+	while (associations.hasNext()) {
+	    assoc = associations.next();
+	    ref = assoc.getReference();
+
+	    // special case for all references
+	    if (qualifier.equals("ALL")) {
+		refs.add(ref);
+
+	    } else if (qualifier == null) {
+		// desired qualifier is null, matches association qualifier
+		if (assoc.getQualifier() == null) {
+		    refs.add(ref);
+		}
+
+	    } else if (qualifier.equals(assoc.getQualifier())) {
+		// non-null desired qualifier, matches association qualifier
+		refs.add(ref);
+	    }
+	}
+	return refs;
+    }
+
+    @Transient
+    public Reference getTransmissionReference() {
+	List<Reference> refs = this.filterReferences("Transmission");
+	if (refs.size() > 0) {
+	    return refs.get(0);
+	}
+	return null;
+    }
+
+    @Transient
+    public Reference getOriginalReference() {
+	List<Reference> refs = this.filterReferences("Original");
+	if (refs.size() > 0) {
+	    return refs.get(0);
+	}
+	return null;
+    }
+
+    @Transient
     public List<Reference> getReferences() {
-        return references;
+	List<Reference> refs = this.filterReferences("ALL");
+	return refs;
+    }
+
+    @Transient
+    public List<Reference> getMolecularReferences() {
+	List<Reference> refs = this.filterReferences("Molecular");
+	return refs;
+    }
+
+    @OneToMany (fetch=FetchType.LAZY)
+    @JoinColumn(name="allele_key")
+    @BatchSize(size=300)
+    public List<AlleleReferenceAssociation> getReferenceAssociations() {
+        return referenceAssociations;
     }
     
     /*
@@ -293,6 +531,55 @@ public class Allele {
 		return hasDiseaseModel;
 	}
 	
+	@Transient
+	public AlleleCellLine getParentCellLine() {
+	    for (AlleleCellLine c : this.getAlleleCellLines()) {
+		if (c.isParent()) {
+		    return c;
+		}
+	    }
+	    return null;
+	}
+
+	@Transient
+	public List<AlleleCellLine> getMutantCellLines() {
+	    ArrayList<AlleleCellLine> lines = new ArrayList<AlleleCellLine>();
+
+	    if (this.getAlleleCellLines() != null) {
+	        for (AlleleCellLine c : this.getAlleleCellLines()) {
+	            if (c.isMutant()) {
+	                lines.add(c);
+	            }
+	        }
+	    }
+	    return lines;
+	}
+
+	@OneToMany(targetEntity=AlleleCellLine.class)
+	@BatchSize(size=250)
+	@JoinColumn(name="allele_key")
+	@OrderBy("sequenceNum")
+	public List<AlleleCellLine> getAlleleCellLines() {
+	    return this.cellLines;
+	}
+	
+	@Transient
+	public List<String> getMutations() {
+	    ArrayList<String> m = new ArrayList<String>();
+	    for (AlleleMutation am : this.getAlleleMutations()) {
+		m.add(am.getMutation());
+	    }
+	    return m;
+	}
+
+	@OneToMany(targetEntity=AlleleMutation.class)
+	@BatchSize(size=250)
+	@JoinColumn(name="allele_key")
+	@OrderBy("mutation")
+	public List<AlleleMutation> getAlleleMutations() {
+	    return this.mutations;
+	}
+	
 	@OneToMany(targetEntity=PhenoTableGenotype.class)
 	@BatchSize(size=250)
 	@JoinColumn(name="allele_key")
@@ -308,8 +595,86 @@ public class Allele {
     public List<DiseaseTableGenotype> getDiseaseTableGenotypeAssociations() {
         return this.diseaseTableGenotypes;
     }
+
+    @Transient
+    public Marker getMarker() {
+	List<Marker> markers = this.getMarkers();
+	if ((markers != null) && (markers.size() > 0)) {
+	    return markers.get(0);
+	}
+	return null;
+    }
+
+    @OneToMany(fetch=FetchType.LAZY)
+    @JoinTable (name="marker_to_allele",
+	joinColumns=@JoinColumn(name="allele_key"),
+        inverseJoinColumns=@JoinColumn(name="marker_key")
+	)
+    @BatchSize(size=200)
+    @OrderBy("symbol")
+    public List<Marker> getMarkers() {
+	return markers;
+    }
 	
+    @OneToMany (fetch=FetchType.LAZY)
+    @BatchSize(size=100)
+    @JoinColumn(name="allele_key")
+    public List<AlleleSequenceAssociation> getSequenceAssociations() {
+	return sequenceAssociations;
+    }
+
+    // assumes 'qualifier' is not null
+    @Transient
+    public List<Sequence> filterSequences(String qualifier, boolean isNot) {
+	List<AlleleSequenceAssociation> associations =
+	    this.getSequenceAssociations();
+
+	if (associations == null) { return null; }
+	if (associations.size() == 0) { return null; }
+
+	ArrayList<Sequence> seqs = new ArrayList<Sequence>();
+	AlleleSequenceAssociation assoc;
+	String assocQualifier;
+	Iterator<AlleleSequenceAssociation> it = associations.iterator();
+
+	while (it.hasNext()) {
+	    assoc = it.next();
+	    assocQualifier = assoc.getQualifier();
+
+	    if (isNot) {
+		if (!qualifier.equals(assocQualifier)) {
+		    seqs.add(assoc.getSequence());
+		}
+	    } else {
+		if (qualifier.equals(assocQualifier)) {
+		    seqs.add(assoc.getSequence());
+		}
+	    }
+	}
+	return seqs;
+    }
+
+    @Transient
+    public List<Sequence> getNonRepresentativeSequences() {
+	return this.filterSequences("Representative", true);
+    }
 	
+    @Transient
+    public Sequence getRepresentativeSequence() {
+	List<Sequence> repSeq = this.filterSequences("Representative", false);
+	if (repSeq == null) { return null; }
+
+	return repSeq.get(0);
+    }
+	
+    public void setMarkers(List<Marker> markers) {
+	this.markers = markers;
+    }
+
+    public void setSequenceAssociations(List<AlleleSequenceAssociation> sequenceAssociations) {
+	this.sequenceAssociations = sequenceAssociations;
+    }
+
 //	@Transient 
 //	public List<Genotype> getPhenoTableGenotypes()
 //	{
@@ -327,7 +692,8 @@ public class Allele {
     }
     @OneToMany (targetEntity=AlleleSynonym.class)
     @JoinColumn(name="allele_key")
-    public Set<AlleleSynonym> getSynonyms() {
+    @OrderBy("synonym")
+    public List<AlleleSynonym> getSynonyms() {
         return synonyms;
     }
 
@@ -341,13 +707,39 @@ public class Allele {
     public void setAlleleSystems(List<AlleleSystem> alleleSystems) {
         this.alleleSystems = alleleSystems;
     }
+
     public void setAlleleType(String alleleType) {
         this.alleleType = alleleType;
+    }
+
+    public void setHolder(String holder) {
+        this.holder = holder;
+    }
+
+    public void setCompanyID(String companyID) {
+        this.companyID = companyID;
+    }
+
+    public void setTransmissionType(String transmissionType) {
+        this.transmissionType = transmissionType;
+    }
+
+    public void setTransmissionPhrase(String transmissionPhrase) {
+        this.transmissionPhrase = transmissionPhrase;
+    }
+
+    public void setInheritanceMode(String inheritanceMode) {
+        this.inheritanceMode = inheritanceMode;
     }
 
     public void setAnnotations(List<Annotation> annotations) {
 		this.annotations = annotations;
 	}
+
+    public void setCountOfExpressionAssayResults(Integer countOfExpressionAssayResults) {
+        this.countOfExpressionAssayResults = countOfExpressionAssayResults;
+    }
+
     public void setCountOfMarkers(Integer countOfMarkers) {
         this.countOfMarkers = countOfMarkers;
     }
@@ -369,7 +761,7 @@ public class Allele {
 		this.genotypeAssociations = genotypeAssociations;
 	}
 
-    public void setIds(Set<AlleleID> ids) {
+    public void setIds(List<AlleleID> ids) {
         this.ids = ids;
     }
 
@@ -394,8 +786,20 @@ public class Allele {
     }
 
     public void setIsWildType(int isWildType) {
-		this.isWildType = isWildType;
-	}
+	this.isWildType = isWildType;
+    }
+
+    public void setIsMixed(int isMixed) {
+	this.isMixed = isMixed;
+    }
+
+    public void setStrain(String strain) {
+	this.strain = strain;
+    }
+
+    public void setStrainLabel(String strainLabel) {
+	this.strainLabel = strainLabel;
+    }
 
     public void setMolecularDescription(String molecularDescription) {
         this.molecularDescription = molecularDescription;
@@ -426,17 +830,30 @@ public class Allele {
 		this.recombinaseInfo = recombinaseInfo;
 	}
 
-	public void setReferences(List<Reference> references) {
-        this.references = references;
+    public void setImageAssociations(List<AlleleImageAssociation> imageAssociations) {
+        this.imageAssociations = imageAssociations;
+    }
+
+    public void setReferenceAssociations(
+	    List<AlleleReferenceAssociation> referenceAssociations) {
+        this.referenceAssociations = referenceAssociations;
     }
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 
-	public void setSynonyms(Set<AlleleSynonym> synonyms) {
+	public void setSynonyms(List<AlleleSynonym> synonyms) {
         this.synonyms = synonyms;
     }
+
+	public void setAlleleCellLines(List<AlleleCellLine> cellLines) {
+		this.cellLines = cellLines;
+	}
+
+	public void setAlleleMutations(List<AlleleMutation> mutations) {
+		this.mutations = mutations;
+	}
 
 	public void setPhenoTableSystems(List<PhenoTableSystem> phenoTableSystems) {
 		this.phenoTableSystems = phenoTableSystems;

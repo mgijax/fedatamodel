@@ -2,6 +2,8 @@ package mgi.frontend.datamodel;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 import javax.persistence.*;
 
@@ -171,5 +173,44 @@ public class HomologyCluster {
 			}
 		}
 		return null;
+	}
+
+	/* retrieves the representative protein sequence for each mouse,
+	 * human, and rat marker in this HomologyCluster.
+	 */
+	@Transient
+	public List<Sequence> getRepresentativeProteinSequences() {
+	    ArrayList<Sequence> seqs = new ArrayList<Sequence>();
+	    OrganismOrtholog oo;
+
+	    ArrayList<String> organisms = new ArrayList<String>();
+	    organisms.add("mouse");
+	    organisms.add("human");
+	    organisms.add("rat");
+
+	    Iterator<String> orgIt = organisms.iterator();
+	    String organism;
+
+	    Iterator<Marker> mrkIt;
+	    Marker mrk;
+	    Sequence seq;
+
+	    while (orgIt.hasNext()) { 
+		organism = orgIt.next();
+	    	oo = this.getOrganismOrtholog(organism);
+
+		if (oo != null) {
+		    mrkIt = oo.getMarkers().iterator();
+		    while (mrkIt.hasNext()) {
+			mrk = mrkIt.next();
+			seq = mrk.getRepresentativePolypeptideSequence();
+			if (seq != null) {
+			    seqs.add(seq);
+			}
+		    }
+		}
+	    }
+
+	    return seqs;
 	}
 }
