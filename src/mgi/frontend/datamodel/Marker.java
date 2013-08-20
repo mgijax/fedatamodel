@@ -28,6 +28,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.FilterJoinTable;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
@@ -40,14 +41,16 @@ import mgi.frontend.datamodel.sort.SmartAlphaComparator;
  */
 
 @Entity
-@FilterDef(name="markerDetailRefs")
+@FilterDefs({
+  @FilterDef(name="markerDetailRefs"),
+  @FilterDef(name="onlyProteinSequences")
+})
 @Table(name="marker")
 @SecondaryTables ( {
   @SecondaryTable (name="marker_counts", pkJoinColumns= {
     @PrimaryKeyJoinColumn(name="marker_key", referencedColumnName="marker_key") } )
 } )
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-@FilterDef(name="onlyProteinSequences")
 public class Marker {
 
 	private List<MarkerAlias> aliases;
