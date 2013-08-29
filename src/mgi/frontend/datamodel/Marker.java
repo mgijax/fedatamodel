@@ -263,6 +263,44 @@ public class Marker {
 		return aliases;
 	}
 
+	/** need to be able to filter the list of QTL experiments to be only
+	 * those of a particular type
+	 */
+	@Transient
+	private List<MarkerQtlExperiment> filterQtlExperiments (
+		String noteType) {
+
+	    List<MarkerQtlExperiment> sublist =
+		new ArrayList<MarkerQtlExperiment>();
+
+	    MarkerQtlExperiment qtlExp;
+	    Iterator<MarkerQtlExperiment> it =
+		this.getQtlExperiments().iterator();
+
+	    while (it.hasNext()) {
+		qtlExp = it.next();
+
+		if (noteType.equals(qtlExp.getNoteType())) {
+		    sublist.add(qtlExp);
+		}
+	    }
+	    return sublist;
+	}
+
+	/** get the list of QTL mapping notes
+	 */
+	@Transient
+	public List<MarkerQtlExperiment> getQtlMappingNotes() {
+	    return this.filterQtlExperiments("TEXT-QTL");
+	}
+
+	/** get the list of QTL candidate gene notes
+	 */
+	@Transient
+	public List<MarkerQtlExperiment> getQtlCandidateGeneNotes() {
+	    return this.filterQtlExperiments("TEXT-QTL-Candidate Genes");
+	}
+
 	/** returns a collection of QTL mapping experiment notes for the mkr
 	 */
 	@OneToMany (targetEntity=MarkerQtlExperiment.class)

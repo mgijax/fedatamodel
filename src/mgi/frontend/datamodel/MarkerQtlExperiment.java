@@ -20,6 +20,7 @@ public class MarkerQtlExperiment {
 	private int mgdExptKey;
 	private String jnumID;
 	private String note;
+	private String noteType;
 	private int sequenceNum;
 	
     // ================= Getters and Setters ===================== //
@@ -46,6 +47,11 @@ public class MarkerQtlExperiment {
 	@Column(name="note")
 	public String getNote() {
 		return note;
+	}
+	
+	@Column(name="note_type")
+	public String getNoteType() {
+		return noteType;
 	}
 	
 	@Column(name="marker_key")
@@ -77,6 +83,10 @@ public class MarkerQtlExperiment {
 	
 	public void setNote(String note) {
 		this.note = note;
+	}
+	
+	public void setNoteType(String noteType) {
+		this.noteType = noteType;
 	}
 	
 	public void setMarkerKey(int markerKey) {
