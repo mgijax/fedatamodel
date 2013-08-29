@@ -38,6 +38,8 @@ public class QueryFormOption {
     private Integer indentLevel;
     private Integer objectCount;
     private String objectType;
+    private String helpText;
+    private int showExpanded;
 
     // ================= Getters and Setters ===================== //
 
@@ -60,6 +62,15 @@ public class QueryFormOption {
 	this.sequenceNum = sequenceNum;
     }
 
+    @Column(name="show_expanded")
+    public int getShowExpanded() {
+	return showExpanded;
+    }
+
+    public void setShowExpanded(int showExpanded) {
+	this.showExpanded = showExpanded;
+    }
+
     @Column(name="indent_level")
     public Integer getIndentLevel() {
 	return indentLevel;
@@ -76,6 +87,15 @@ public class QueryFormOption {
 
     public void setObjectCount(Integer objectCount) {
 	this.objectCount = objectCount;
+    }
+
+    @Column(name="help_text")
+    public String getHelpText() {
+	return helpText;
+    }
+
+    public void setHelpText(String helpText) {
+	this.helpText = helpText;
     }
 
     @Column(name="form_name")
