@@ -15,16 +15,16 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table (name="sequence_id")
 public class SequenceID extends AccessionID {
-	private int sequenceKey;
+	private Integer sequenceKey;
 	
     // ================= Getters and Setters ===================== //
 
 	@Column(name="sequence_key")
-	public int getSequenceKey() {
+	public Integer getSequenceKey() {
 		return sequenceKey;
 	}
 
-	public void setSequenceKey(int sequenceKey) {
+	public void setSequenceKey(Integer sequenceKey) {
 		this.sequenceKey = sequenceKey;
 	}
 

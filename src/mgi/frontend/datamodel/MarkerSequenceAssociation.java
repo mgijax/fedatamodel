@@ -19,11 +19,22 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table (name="marker_to_sequence")
 public class MarkerSequenceAssociation extends Association {
 
+	protected int markerKey;
     protected Marker marker;
 	protected Sequence sequence;
 
     // ================= Getters and Setters ===================== //
 
+	@Column(name="marker_key",insertable=false,updatable=false)
+	public int getMarkerKey()
+	{
+		return markerKey;
+	}
+	public void setMarkerKey(int markerKey)
+	{
+		this.markerKey=markerKey;
+	}
+	
 	/**
 	 * Return the actual marker for this relationship.
 	 * @return

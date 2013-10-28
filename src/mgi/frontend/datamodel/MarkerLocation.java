@@ -1,5 +1,7 @@
 package mgi.frontend.datamodel;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 import org.hibernate.annotations.Cache;
@@ -13,7 +15,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table (name="marker_location")
-public class MarkerLocation extends Location {
+public class MarkerLocation extends Location implements Serializable
+{
 	
     protected Integer markerKey;
     protected Float cmOffset;

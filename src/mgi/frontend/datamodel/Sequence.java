@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.OneToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -21,6 +22,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Filter;
 
 @Entity
 @Table (name="sequence")
@@ -67,7 +69,12 @@ public class Sequence {
 	private Integer transcriptCount;
 	private String vectorEnd;
 	private String version;
-	private int hasCloneCollection;
+	private Integer hasCloneCollection;
+	private SequenceSequenceNum sequenceNum;
+	
+	// these associations are mainly for querying by association keys
+	private List<MarkerSequenceAssociation> markerAssociations;
+	private List<ReferenceSequenceAssociation> referenceAssociations;
 
     // ================= Getters and Setters ===================== //
 
@@ -75,6 +82,46 @@ public class Sequence {
 	@JoinColumn(name="sequence_key")
 	public String getBiotype() {
 		return biotype;
+	}
+	
+	/** returns a List of Marker/Sequence association objects
+	 */
+	@OneToMany (fetch=FetchType.LAZY)
+	@JoinColumn(name="sequence_key")
+	public List<MarkerSequenceAssociation> getMarkerAssociations() {
+		return markerAssociations;
+	}
+	
+	public void setMarkerAssociations(List<MarkerSequenceAssociation> markerAssociations)
+	{
+		this.markerAssociations = markerAssociations;
+	}
+	
+	/** returns a List of Reference/Sequence association objects
+	 */
+	@OneToMany (fetch=FetchType.LAZY)
+	@JoinColumn(name="sequence_key")
+	public List<ReferenceSequenceAssociation> getReferenceAssociations() {
+		return referenceAssociations;
+	}
+	
+	public void setReferenceAssociations(List<ReferenceSequenceAssociation> referenceAssociations)
+	{
+		this.referenceAssociations = referenceAssociations;
+	}
+		
+	
+	/** returns SequenceNum object
+	 */
+	@OneToOne (fetch=FetchType.LAZY)
+	@JoinColumn(name="sequence_key")
+	public SequenceSequenceNum getSequenceNum() {
+		return sequenceNum;
+	}
+	
+	public void setSequenceNum(SequenceSequenceNum sequenceNum)
+	{
+		this.sequenceNum = sequenceNum;
 	}
 
 	@OneToMany (targetEntity=SequenceCloneCollection.class)
@@ -117,7 +164,7 @@ public class Sequence {
 	}
 
 	@Column(name="has_clone_collection")
-	public int getHasCloneCollection() {
+	public Integer getHasCloneCollection() {
 		return hasCloneCollection;
 	}
 
@@ -439,7 +486,7 @@ public class Sequence {
 		this.goodHitCount = goodHitCount;
 	}
 
-	public void setHasCloneCollection(int hasCloneCollection) {
+	public void setHasCloneCollection(Integer hasCloneCollection) {
 		this.hasCloneCollection = hasCloneCollection;
 	}
 

@@ -14,8 +14,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @MappedSuperclass
 public class AccessionID {
 	protected String accID;
-	protected boolean isPreferred;
-	protected boolean isPrivate;
+	protected Integer isPreferred;
+	protected Integer isPrivate;
 	protected String logicalDB;
 	protected int uniqueKey;
 	
@@ -41,12 +41,24 @@ public class AccessionID {
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
-
+	@Transient
 	public boolean isPreferred() {
+		return ((Integer) 1).equals(isPreferred);
+	}
+	
+	@Transient
+	public boolean isPrivate() {
+		return ((Integer) 1).equals(isPrivate);
+	}
+	
+	@Column(name="preferred")
+	public Integer getPreferredId()
+	{
 		return isPreferred;
 	}
-
-	public boolean isPrivate() {
+	@Column(name="private")
+	public Integer getPrivateId()
+	{
 		return isPrivate;
 	}
 
@@ -59,11 +71,11 @@ public class AccessionID {
 		this.logicalDB = logicalDB;
 	}
 
-	public void setPreferred(boolean isPreferred) {
+	public void setPreferredId(Integer isPreferred) {
 		this.isPreferred = isPreferred;
 	}
 
-	public void setPrivate(boolean isPrivate) {
+	public void setPrivateId(Integer isPrivate) {
 		this.isPrivate = isPrivate;
 	}
 
