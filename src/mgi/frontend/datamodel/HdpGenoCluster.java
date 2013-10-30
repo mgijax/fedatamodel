@@ -77,7 +77,13 @@ public class HdpGenoCluster {
 	 */
 	@OneToMany (targetEntity=HdpGenoClusterAnnotation.class)
 	@JoinColumn(name="hdp_genocluster_key")
-    @Where(clause = "annotation_type IN (1005,1006,1012,1013) AND term_type='term'" )
+	/*
+	 * annot key 1005 is genotype -> disease
+	 * annot key 1006 is allele -> disease
+	 * annot key 1012 is human marker to disease
+	 *  annot key 1013 is phenotypic human marker to disease
+	 */
+    @Where(clause = "annotation_type IN (1005) AND term_type='term'" )
 	@BatchSize (size=200)
 	public List<HdpGenoClusterAnnotation> getDiseases() {
 		return diseases;
@@ -90,6 +96,7 @@ public class HdpGenoCluster {
 	 */
 	@OneToMany (targetEntity=HdpGenoClusterAnnotation.class)
 	@JoinColumn(name="hdp_genocluster_key")
+	// annot key 1002 is MP -> genotype
     @Where(clause = "annotation_type = 1002 AND term_type='term'" )
 	@BatchSize (size=200)
 	public List<HdpGenoClusterAnnotation> getMpTerms() {
