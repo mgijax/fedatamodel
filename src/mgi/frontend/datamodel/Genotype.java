@@ -44,6 +44,7 @@ public class Genotype implements Comparable {
 	private Image primaryImage=null;
 	private Image primaryImageThumbnail=null;
 	private String cellLines;
+	private String existsAs;
 
 
 	// ================= Getters and Setters ===================== //
@@ -118,6 +119,11 @@ public class Genotype implements Comparable {
 		return cellLines;
 	}
 
+	@Column(name="exists_as")
+	public String getExistsAs() {
+		return existsAs;
+	}
+
 	public void setAnnotations(List<Annotation> annotations) {
 		this.annotations = annotations;
 	}
@@ -165,6 +171,10 @@ public class Genotype implements Comparable {
 
 	public void setCellLines(String cellLines) {
 		this.cellLines = cellLines;
+	}
+
+	public void setExistsAs(String existsAs) {
+		this.existsAs = existsAs;
 	}
 
 	@OneToMany (targetEntity=MPSystem.class)
