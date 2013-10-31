@@ -19,4 +19,7 @@ public interface HdpGridAnnotation
 	public void setQualifier(String qualifier);
 	
 	public String getTermIdentifier(); // always returns a value, whereas termId is null for some termTypes
+	
+	public void setAnnotCount(Integer annotCount);
+	public Integer getAnnotCount();
 }

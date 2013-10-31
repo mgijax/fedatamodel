@@ -100,7 +100,15 @@ public class HdpGenoClusterAnnotation implements HdpGridAnnotation{
 		return this.termId;
 	}
 
-
+	@Transient
+	public void setAnnotCount(Integer annotCount) {
+		// NOT APPLICABLE FOR THIS OBJECT TYPE
+	}
+	@Transient
+	public Integer getAnnotCount() {
+		// NOT APPLICABLE FOR THIS OBJECT TYPE
+		return 0;
+	}
 
     // ================= Convenience ================= //
 	@Override
