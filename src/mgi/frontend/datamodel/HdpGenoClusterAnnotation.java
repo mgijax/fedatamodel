@@ -109,6 +109,15 @@ public class HdpGenoClusterAnnotation implements HdpGridAnnotation{
 		// NOT APPLICABLE FOR THIS OBJECT TYPE
 		return 0;
 	}
+	@Transient
+	public void setHumanAnnotCount(Integer annotCount) {
+		// NOT APPLICABLE FOR THIS OBJECT TYPE
+	}
+	@Transient
+	public Integer getHumanAnnotCount() {
+		// NOT APPLICABLE FOR THIS OBJECT TYPE
+		return 0;
+	}
 
     // ================= Convenience ================= //
 	@Override

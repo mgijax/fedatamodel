@@ -22,4 +22,7 @@ public interface HdpGridAnnotation
 	
 	public void setAnnotCount(Integer annotCount);
 	public Integer getAnnotCount();
+	
+	public void setHumanAnnotCount(Integer annotCount);
+	public Integer getHumanAnnotCount();
 }
