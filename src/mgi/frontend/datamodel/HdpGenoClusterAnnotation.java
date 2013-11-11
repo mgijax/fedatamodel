@@ -21,6 +21,7 @@ public class HdpGenoClusterAnnotation implements HdpGridAnnotation{
     private Integer annotationType;
     private String qualifier;
     private boolean hasBackgroundNote;
+    private int annotCount;
 
 
     // ================= Getters and Setters ===================== //
@@ -90,6 +91,15 @@ public class HdpGenoClusterAnnotation implements HdpGridAnnotation{
 		this.hasBackgroundNote = hasBackgroundNote;
 	}
 	
+	@Column(name="genotermref_count")
+	public Integer getAnnotCount() {
+		return annotCount;
+	}
+	public void setAnnotCount(Integer annotCount) {
+		this.annotCount = annotCount;
+	}
+	
+	
 	@Transient
 	public String getTermIdentifier()
 	{
@@ -100,15 +110,6 @@ public class HdpGenoClusterAnnotation implements HdpGridAnnotation{
 		return this.termId;
 	}
 
-	@Transient
-	public void setAnnotCount(Integer annotCount) {
-		// NOT APPLICABLE FOR THIS OBJECT TYPE
-	}
-	@Transient
-	public Integer getAnnotCount() {
-		// NOT APPLICABLE FOR THIS OBJECT TYPE
-		return 0;
-	}
 	@Transient
 	public void setHumanAnnotCount(Integer annotCount) {
 		// NOT APPLICABLE FOR THIS OBJECT TYPE
