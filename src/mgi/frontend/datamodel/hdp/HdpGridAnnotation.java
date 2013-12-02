@@ -1,4 +1,4 @@
-package mgi.frontend.datamodel;
+package mgi.frontend.datamodel.hdp;
 
 
 /*

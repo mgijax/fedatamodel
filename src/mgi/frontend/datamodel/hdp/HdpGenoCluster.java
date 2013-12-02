@@ -1,7 +1,10 @@
-package mgi.frontend.datamodel;
+package mgi.frontend.datamodel.hdp;
 
 import java.util.*;
 import javax.persistence.*;
+
+import mgi.frontend.datamodel.Genotype;
+import mgi.frontend.datamodel.Marker;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Where;
