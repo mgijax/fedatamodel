@@ -113,7 +113,7 @@ public class Sequence {
 	
 	/** returns SequenceNum object
 	 */
-	@OneToOne (fetch=FetchType.LAZY)
+	@OneToOne (fetch=FetchType.LAZY, optional=false)
 	@JoinColumn(name="sequence_key")
 	public SequenceSequenceNum getSequenceNum() {
 		return sequenceNum;
