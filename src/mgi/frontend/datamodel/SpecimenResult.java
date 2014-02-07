@@ -18,7 +18,7 @@ public class SpecimenResult {
 	private Integer specimenResultKey;
 	private Integer specimenKey;
 	private Integer specimenResultSeq;
-	private Integer structureMgdKey;
+	private VocabTerm structureTerm;
     private String  structure;
 	private String  level;
 	private String  pattern;
@@ -41,9 +41,10 @@ public class SpecimenResult {
 		return specimenResultSeq;
 	}
 
-	@Column(name="structure_mgd_key")
-	public Integer getStructureMgdKey() {
-		return structureMgdKey;
+	@ManyToOne (targetEntity=VocabTerm.class, fetch=FetchType.LAZY)
+	@JoinColumn(name="structure_mgd_key")
+	public VocabTerm getStructureTerm() {
+		return structureTerm;
 	}
 
 	@Column(name="structure")
@@ -89,8 +90,8 @@ public class SpecimenResult {
 		this.specimenResultSeq = specimenResultSeq;
 	}
 
-	public void setStructureMgdKey(int structureMgdKey) {
-		this.structureMgdKey = structureMgdKey;
+	public void setStructureTerm(VocabTerm structureTerm) {
+		this.structureTerm = structureTerm;
 	}
 
 	public void setStructure(String structure) {

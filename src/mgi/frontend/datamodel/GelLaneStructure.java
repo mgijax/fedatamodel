@@ -16,9 +16,9 @@ public class GelLaneStructure {
 	// attributes in core table
 	private Integer uniqueKey;
 	private Integer gelLaneKey;
-	private Integer mgdStructureKey;
 	private Integer structureSeq;
 	private String printname;
+	private VocabTerm structure;
 
     // ===================== Getters ===================== //
 
@@ -33,9 +33,10 @@ public class GelLaneStructure {
 		return gelLaneKey;
 	}
 
-	@Column(name="mgd_structure_key")
-	public Integer getMgdStructureKey() {
-		return mgdStructureKey;
+	@ManyToOne (targetEntity=VocabTerm.class, fetch=FetchType.LAZY)
+	@JoinColumn(name="mgd_structure_key")
+	public VocabTerm getStructure() {
+		return structure;
 	}
 
 	@Column(name="printname")
@@ -48,6 +49,10 @@ public class GelLaneStructure {
 		return structureSeq;
 	}
 
+	@Transient
+	public String getPrimaryId() {
+		return structure.getPrimaryId();
+	}
 
     // ===================== Setters ===================== //
 	
@@ -59,8 +64,8 @@ public class GelLaneStructure {
 		this.gelLaneKey = gelLaneKey;
 	}
 
-	public void setMgdStructureKey(Integer mgdStructureKey) {
-		this.mgdStructureKey = mgdStructureKey;
+	public void setStructure(VocabTerm structure) {
+		this.structure = structure;
 	}
 
 	public void setStructureSeq(Integer structureSeq) {

@@ -25,6 +25,7 @@ public class MarkerTissueCount {
 	private int notDetectedResultCount;
 	private int sequenceNum;			// for ordering
 	private Marker marker;
+	private VocabTerm structureTerm;
 
 	// ================= Getters and Setters ===================== //
 
@@ -64,7 +65,7 @@ public class MarkerTissueCount {
 		return structure;
 	}
 
-	@Column(name="structure_key")
+	@Column(name="structure_key", insertable=false, updatable=false)
 	public int getStructureKey() {
 		return structureKey;
 	}
@@ -75,6 +76,13 @@ public class MarkerTissueCount {
 	public Marker getMarker()
 	{
 		return marker;
+	}
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="structure_key")
+	public VocabTerm getStructureTerm()
+	{
+		return structureTerm;
 	}
 
 	@Transient
@@ -120,6 +128,10 @@ public class MarkerTissueCount {
 	public void setMarker(Marker marker)
 	{
 		this.marker = marker;
+	}
+
+	public void setStructureTerm(VocabTerm structureTerm) {
+		this.structureTerm = structureTerm;
 	}
 
 	public void setUniqueKey(int uniqueKey) {
