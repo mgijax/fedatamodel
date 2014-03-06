@@ -1,11 +1,9 @@
 package mgi.frontend.datamodel;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.Comparator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,15 +11,16 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import mgi.frontend.datamodel.sort.SmartAlphaComparator;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
@@ -30,9 +29,6 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.FilterJoinTable;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-import mgi.frontend.datamodel.sort.SmartAlphaComparator;
 
 /**
  * Marker
@@ -50,6 +46,10 @@ import mgi.frontend.datamodel.sort.SmartAlphaComparator;
   @SecondaryTable (name="marker_counts", pkJoinColumns= {
     @PrimaryKeyJoinColumn(name="marker_key", referencedColumnName="marker_key") } )
 } )
+//IMPORTANT this annotation forces inner join on the secondary table and ASSUMES there is an entry for every marker
+@org.hibernate.annotations.Tables({
+	@org.hibernate.annotations.Table(appliesTo="marker_counts",optional=false)
+})
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Marker {
 
@@ -57,6 +57,7 @@ public class Marker {
 	private List<MarkerQtlExperiment> qtlExperiments;
 	private List<MarkerProbeset> probesets;
 	private List<MarkerAlleleAssociation> alleleAssociations;
+	List<MarkerIncidentalMutation> incidentalMutations;
 	private List<BatchMarkerAllele> batchMarkerAlleles;
 	private List<BatchMarkerSnp> batchMarkerSnps;
 	private List<Annotation> annotations;
@@ -332,6 +333,16 @@ public class Marker {
 		return alleleAssociations;
 	}
 
+	@OneToMany (targetEntity=MarkerIncidentalMutation.class)
+	@BatchSize(size=250)
+	@JoinColumn(name="marker_key")
+	public List<MarkerIncidentalMutation> getIncidentalMutations() {
+		return incidentalMutations;
+	}
+	public void setIncidentalMutations(List<MarkerIncidentalMutation> incidentalMutations) {
+		this.incidentalMutations = incidentalMutations;
+	}
+	
 	/** return the list of counts of alleles by type
 	 */
 	@Transient
@@ -397,7 +408,7 @@ public class Marker {
 	 */
 	@OneToMany (targetEntity=BatchMarkerSnp.class)
 	@JoinColumn(name="marker_key")
-	@OrderBy("sequenceNum")
+	@OrderBy("snpID")
 	public List<BatchMarkerSnp> getBatchMarkerSnps() {
 		return batchMarkerSnps;
 	}
@@ -712,6 +723,7 @@ public class Marker {
 	@OneToMany (targetEntity=MarkerLocation.class,fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
+	@BatchSize(size=100)
 	public List<MarkerLocation> getLocations() {
 		return locations;
 	}

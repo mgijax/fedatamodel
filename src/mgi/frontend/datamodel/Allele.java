@@ -1,6 +1,8 @@
 package mgi.frontend.datamodel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,18 +19,19 @@ import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import mgi.frontend.datamodel.phenotype.AlleleSummaryDisease;
+import mgi.frontend.datamodel.phenotype.AlleleSummarySystem;
 import mgi.frontend.datamodel.phenotype.DiseaseTableDisease;
 import mgi.frontend.datamodel.phenotype.DiseaseTableGenotype;
 import mgi.frontend.datamodel.phenotype.PhenoTableGenotype;
-import mgi.frontend.datamodel.phenotype.PhenoTableDisease;
 import mgi.frontend.datamodel.phenotype.PhenoTableSystem;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 /**
  * Base object alleles.  This is represented by a core in our flower schema.
@@ -40,18 +43,40 @@ import org.hibernate.annotations.FilterDef;
 @SecondaryTables (
   {
     @SecondaryTable (name="allele_counts", pkJoinColumns= {
-    @PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } ),
+    		@PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } ),
     @SecondaryTable (name="allele_imsr_counts", pkJoinColumns= {
-    @PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } )
+    		@PrimaryKeyJoinColumn(name="allele_key", referencedColumnName="allele_key") } )
   }
 )
+//IMPORTANT this annotation forces inner join on the secondary table and ASSUMES there is an entry for every allele
+@org.hibernate.annotations.Tables({
+	@org.hibernate.annotations.Table(appliesTo="allele_counts",optional=false),
+	@org.hibernate.annotations.Table(appliesTo="allele_imsr_counts",optional=false)
+})
+
+/*
+@SecondaryTables({
+    @SecondaryTable(name = "`Cat nbr1`"),
+    @SecondaryTable(name = "Cat2"})
+@org.hibernate.annotations.Tables( {
+    @Table(appliesTo = "Cat", comment = "My cat table" ),
+    @Table(appliesTo = "Cat2", foreignKey = @ForeignKey(name="FK_CAT2_CAT"), fetch = FetchMode.SELECT,
+        sqlInsert=@SQLInsert(sql="insert into Cat2(storyPart2, id) values(upper(?), ?)") )
+} )
+*/
+
 @FilterDef(name="noDiseaseHeaders")
 @JsonIgnoreProperties({"references", "notes", "molecularDescription", "ids"})
 public class Allele {
     private int alleleKey;
     private String alleleSubType;
+    private List<AlleleIncidentalMutation> incidentalMutations;
+    private List<AlleleSummarySystem> summarySystems;
+    private List<AlleleSummaryDisease> summaryDiseases;
     private List<AlleleSystem> alleleSystems;
     private String alleleType;
+    private String chromosome;
+    private String collection;
     private Integer countOfExpressionAssayResults;
     private Integer countOfMarkers;
     private Integer countOfReferences;
@@ -64,6 +89,7 @@ public class Allele {
     private int isRecombinase;
     private int isWildType;
     private int isMixed;
+    private Integer primaryImageKey;
     private String strain;
     private String strainLabel;
     private String molecularDescription;
@@ -116,6 +142,29 @@ public class Allele {
 	public List<PhenoTableSystem> getPhenoTableSystems() {
 		return phenoTableSystems;
 	}
+	
+	@OneToMany (targetEntity=AlleleIncidentalMutation.class)
+	@BatchSize(size=250)
+	@JoinColumn(name="allele_key")
+	public List<AlleleIncidentalMutation> getIncidentalMutations() {
+		return incidentalMutations;
+	}
+	
+	@OneToMany (targetEntity=AlleleSummarySystem.class)
+	@BatchSize(size=250)
+	@JoinColumn(name="allele_key")
+	@OrderBy("system")
+	public List<AlleleSummarySystem> getSummarySystems() {
+		return summarySystems;
+	}
+	
+	@OneToMany (targetEntity=AlleleSummaryDisease.class)
+	@BatchSize(size=200)
+	@JoinColumn(name="allele_key")
+	@OrderBy("disease")
+	public List<AlleleSummaryDisease> getSummaryDiseases() {
+		return summaryDiseases;
+	}
 
 	/**
      * Return the allesystem objects.  This is only really
@@ -123,11 +172,8 @@ public class Allele {
      * @return
      */
 
-    @OneToMany
-    @JoinTable (name="recombinase_allele_system",
-            joinColumns=@JoinColumn(name="allele_key"),
-            inverseJoinColumns=@JoinColumn(name="allele_system_key")
-            )
+    @OneToMany(fetch=FetchType.LAZY)
+    @JoinColumn(name="allele_key")
     @BatchSize(size=50)
     public List<AlleleSystem> getAlleleSystems() {
         return alleleSystems;
@@ -137,7 +183,16 @@ public class Allele {
     public String getAlleleType() {
         return alleleType;
     }
-
+    
+    @Column(name="chromosome")
+    public String getChromosome() {
+        return chromosome;
+    }
+    @Column(name="collection")
+    public String getCollection() {
+        return collection;
+    }
+    
     @Column(name="holder")
     public String getHolder() {
         return holder;
@@ -264,6 +319,14 @@ public class Allele {
     public int getIsWildType() {
 	return isWildType;
     }
+    
+    /*
+     * primary image key
+     */
+    @Column(name="primary_image_key")
+    public Integer getPrimaryImageKey(){
+    	return primaryImageKey;
+    }
 
     /** is this a mixed allele?  (1 if yes, 0 if no)
      */
@@ -389,7 +452,10 @@ public class Allele {
 
     /** Return the RecombinaseInfo object associated with this allele.
      */
-	@OneToOne (targetEntity=RecombinaseInfo.class, fetch=FetchType.LAZY)
+	@OneToOne (targetEntity=RecombinaseInfo.class, 
+			fetch=FetchType.LAZY,
+			optional=false)
+	@LazyToOne(value = LazyToOneOption.NO_PROXY)
 	@JoinColumn (name="allele_key")
     public RecombinaseInfo getRecombinaseInfo() {
         return recombinaseInfo;
@@ -415,22 +481,31 @@ public class Allele {
     }
 
     @Transient
-    public List<Image> getPhenotypeImages() {
-	Iterator<AlleleImageAssociation> it =
-	    this.getImageAssociations().iterator();
-	AlleleImageAssociation assoc;
-
-	List<Image> phenoImages = new ArrayList<Image>();
-	Image image;
-
-	while (it.hasNext()) {
-	    assoc = it.next();
-	    image = assoc.getImage();
-	    if ("Phenotypes".equals(image.getImageClass())) {
-		phenoImages.add(image);
-	    }
-	}
-	return phenoImages;
+    public List<Image> getPhenotypeImages() 
+    {
+		List<Image> phenoImages = new ArrayList<Image>();
+    	for(AlleleImageAssociation assoc : getImageAssociations())
+    	{
+    		if ("Phenotypes".equals(assoc.getImage().getImageClass())) 
+    		{
+    			phenoImages.add(assoc.getImage());
+    		}
+    	}
+		return phenoImages;
+    }
+    
+    @Transient
+    public List<Image> getMolecularImages() 
+    {
+		List<Image> molImages = new ArrayList<Image>();
+    	for(AlleleImageAssociation assoc : getImageAssociations())
+    	{
+    		if ("Molecular".equals(assoc.getImage().getImageClass())) 
+    		{
+    			molImages.add(assoc.getImage());
+    		}
+    	}
+		return molImages;
     }
 
     /** return all the image associations for this allele.  No ordering has
@@ -693,6 +768,7 @@ public class Allele {
     @OneToMany (targetEntity=AlleleSynonym.class)
     @JoinColumn(name="allele_key")
     @OrderBy("synonym")
+    @BatchSize(size=300)
     public List<AlleleSynonym> getSynonyms() {
         return synonyms;
     }
@@ -710,6 +786,13 @@ public class Allele {
 
     public void setAlleleType(String alleleType) {
         this.alleleType = alleleType;
+    }
+    
+    public void setChromosome(String chromosome) {
+        this.chromosome = chromosome;
+    }
+    public void setCollection(String collection) {
+        this.collection = collection;
     }
 
     public void setHolder(String holder) {
@@ -788,6 +871,11 @@ public class Allele {
     public void setIsWildType(int isWildType) {
 	this.isWildType = isWildType;
     }
+    
+    public void setPrimaryImageKey(Integer primaryImageKey)
+    {
+    	this.primaryImageKey=primaryImageKey;
+    }
 
     public void setIsMixed(int isMixed) {
 	this.isMixed = isMixed;
@@ -854,7 +942,17 @@ public class Allele {
 	public void setAlleleMutations(List<AlleleMutation> mutations) {
 		this.mutations = mutations;
 	}
-
+	
+	public void setIncidentalMutations(List<AlleleIncidentalMutation> incidentalMutations) {
+		this.incidentalMutations = incidentalMutations;
+	}
+	public void setSummarySystems(List<AlleleSummarySystem> summarySystems) {
+		this.summarySystems = summarySystems;
+	}
+	public void setSummaryDiseases(List<AlleleSummaryDisease> summaryDiseases) {
+		this.summaryDiseases = summaryDiseases;
+	}
+	
 	public void setPhenoTableSystems(List<PhenoTableSystem> phenoTableSystems) {
 		this.phenoTableSystems = phenoTableSystems;
 	}
@@ -874,6 +972,15 @@ public class Allele {
 	
 	public void setPhenoTableGenotypeAssociations(List<PhenoTableGenotype> phenotableGenotypes) {
         this.phenotableGenotypes=phenotableGenotypes;
+	}
+	
+	/*
+	 * Transient Methods
+	 */
+	@Transient
+	public boolean hasPrimaryImage()
+	{
+		return this.getPrimaryImageKey() != null;
 	}
 	
 	@Override

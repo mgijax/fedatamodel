@@ -18,7 +18,6 @@ public class BatchMarkerSnp {
     
     private int uniqueKey;
     private int markerKey;
-    private int sequenceNum;
     private String snpID;
     
     // ================= Getters and Setters ===================== //
@@ -31,11 +30,6 @@ public class BatchMarkerSnp {
     @Column(name="marker_key")
 	public int getMarkerKey() {
 		return markerKey;
-	}
-
-    @Column(name="sequence_num")
-	public int getSequenceNum() {
-		return sequenceNum;
 	}
 
 	@Id
@@ -52,10 +46,6 @@ public class BatchMarkerSnp {
 		this.markerKey = markerKey;
 	}
 
-	public void setSequenceNum(int sequenceNum) {
-		this.sequenceNum = sequenceNum;
-	}
-
 	public void setUniqueKey(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
 	}
@@ -63,7 +53,7 @@ public class BatchMarkerSnp {
 	@Override
 	public String toString() {
 		return "BatchMarkerSnp [uniqueKey=" + uniqueKey + ", markerKey="
-				+ markerKey + ", sequenceNum=" + sequenceNum + ", snpID="
+				+ markerKey + ", snpID="
 				+ snpID + "]";
 	}
 }
