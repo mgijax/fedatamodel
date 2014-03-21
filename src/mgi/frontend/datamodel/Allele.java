@@ -119,7 +119,7 @@ public class Allele {
 	private List<AlleleMutation> mutations;
 	private List<AlleleCellLine> cellLines;
 	private List<AlleleSequenceAssociation> sequenceAssociations;
-	
+
 
 
     // ================= Getters and Setters ===================== //
@@ -142,14 +142,20 @@ public class Allele {
 	public List<PhenoTableSystem> getPhenoTableSystems() {
 		return phenoTableSystems;
 	}
-	
+
 	@OneToMany (targetEntity=AlleleIncidentalMutation.class)
 	@BatchSize(size=250)
 	@JoinColumn(name="allele_key")
 	public List<AlleleIncidentalMutation> getIncidentalMutations() {
 		return incidentalMutations;
 	}
-	
+
+	@Transient
+	public AlleleIncidentalMutation getIncidentalMutation() {
+		return getIncidentalMutations().get(0);
+	}
+
+
 	@OneToMany (targetEntity=AlleleSummarySystem.class)
 	@BatchSize(size=250)
 	@JoinColumn(name="allele_key")
@@ -157,7 +163,7 @@ public class Allele {
 	public List<AlleleSummarySystem> getSummarySystems() {
 		return summarySystems;
 	}
-	
+
 	@OneToMany (targetEntity=AlleleSummaryDisease.class)
 	@BatchSize(size=200)
 	@JoinColumn(name="allele_key")
@@ -183,7 +189,7 @@ public class Allele {
     public String getAlleleType() {
         return alleleType;
     }
-    
+
     @Column(name="chromosome")
     public String getChromosome() {
         return chromosome;
@@ -192,7 +198,7 @@ public class Allele {
     public String getCollection() {
         return collection;
     }
-    
+
     @Column(name="holder")
     public String getHolder() {
         return holder;
@@ -319,7 +325,7 @@ public class Allele {
     public int getIsWildType() {
 	return isWildType;
     }
-    
+
     /*
      * primary image key
      */
@@ -452,7 +458,7 @@ public class Allele {
 
     /** Return the RecombinaseInfo object associated with this allele.
      */
-	@OneToOne (targetEntity=RecombinaseInfo.class, 
+	@OneToOne (targetEntity=RecombinaseInfo.class,
 			fetch=FetchType.LAZY,
 			optional=false)
 	@LazyToOne(value = LazyToOneOption.NO_PROXY)
@@ -481,26 +487,26 @@ public class Allele {
     }
 
     @Transient
-    public List<Image> getPhenotypeImages() 
+    public List<Image> getPhenotypeImages()
     {
 		List<Image> phenoImages = new ArrayList<Image>();
     	for(AlleleImageAssociation assoc : getImageAssociations())
     	{
-    		if ("Phenotypes".equals(assoc.getImage().getImageClass())) 
+    		if ("Phenotypes".equals(assoc.getImage().getImageClass()))
     		{
     			phenoImages.add(assoc.getImage());
     		}
     	}
 		return phenoImages;
     }
-    
+
     @Transient
-    public List<Image> getMolecularImages() 
+    public List<Image> getMolecularImages()
     {
 		List<Image> molImages = new ArrayList<Image>();
     	for(AlleleImageAssociation assoc : getImageAssociations())
     	{
-    		if ("Molecular".equals(assoc.getImage().getImageClass())) 
+    		if ("Molecular".equals(assoc.getImage().getImageClass()))
     		{
     			molImages.add(assoc.getImage());
     		}
@@ -583,7 +589,7 @@ public class Allele {
     public List<AlleleReferenceAssociation> getReferenceAssociations() {
         return referenceAssociations;
     }
-    
+
     /*
      * Diseases to be displayed on the allele phenotable summary (the grid)
      */
@@ -605,7 +611,7 @@ public class Allele {
 	public boolean getHasDiseaseModel() {
 		return hasDiseaseModel;
 	}
-	
+
 	@Transient
 	public AlleleCellLine getParentCellLine() {
 	    for (AlleleCellLine c : this.getAlleleCellLines()) {
@@ -637,7 +643,7 @@ public class Allele {
 	public List<AlleleCellLine> getAlleleCellLines() {
 	    return this.cellLines;
 	}
-	
+
 	@Transient
 	public List<String> getMutations() {
 	    ArrayList<String> m = new ArrayList<String>();
@@ -654,7 +660,7 @@ public class Allele {
 	public List<AlleleMutation> getAlleleMutations() {
 	    return this.mutations;
 	}
-	
+
 	@OneToMany(targetEntity=PhenoTableGenotype.class)
 	@BatchSize(size=250)
 	@JoinColumn(name="allele_key")
@@ -662,7 +668,7 @@ public class Allele {
     public List<PhenoTableGenotype> getPhenoTableGenotypeAssociations() {
         return this.phenotableGenotypes;
     }
-	
+
 	@OneToMany(targetEntity=DiseaseTableGenotype.class)
 	@BatchSize(size=100)
 	@JoinColumn(name="allele_key")
@@ -690,7 +696,7 @@ public class Allele {
     public List<Marker> getMarkers() {
 	return markers;
     }
-	
+
     @OneToMany (fetch=FetchType.LAZY)
     @BatchSize(size=100)
     @JoinColumn(name="allele_key")
@@ -733,7 +739,7 @@ public class Allele {
     public List<Sequence> getNonRepresentativeSequences() {
 	return this.filterSequences("Representative", true);
     }
-	
+
     @Transient
     public Sequence getRepresentativeSequence() {
 	List<Sequence> repSeq = this.filterSequences("Representative", false);
@@ -741,7 +747,7 @@ public class Allele {
 
 	return repSeq.get(0);
     }
-	
+
     public void setMarkers(List<Marker> markers) {
 	this.markers = markers;
     }
@@ -750,7 +756,7 @@ public class Allele {
 	this.sequenceAssociations = sequenceAssociations;
     }
 
-//	@Transient 
+//	@Transient
 //	public List<Genotype> getPhenoTableGenotypes()
 //	{
 //		this.getPhenoTableGenotypeAssociations().size(); // Trick to have hibernate fetch entire list at once
@@ -787,7 +793,7 @@ public class Allele {
     public void setAlleleType(String alleleType) {
         this.alleleType = alleleType;
     }
-    
+
     public void setChromosome(String chromosome) {
         this.chromosome = chromosome;
     }
@@ -871,7 +877,7 @@ public class Allele {
     public void setIsWildType(int isWildType) {
 	this.isWildType = isWildType;
     }
-    
+
     public void setPrimaryImageKey(Integer primaryImageKey)
     {
     	this.primaryImageKey=primaryImageKey;
@@ -942,7 +948,7 @@ public class Allele {
 	public void setAlleleMutations(List<AlleleMutation> mutations) {
 		this.mutations = mutations;
 	}
-	
+
 	public void setIncidentalMutations(List<AlleleIncidentalMutation> incidentalMutations) {
 		this.incidentalMutations = incidentalMutations;
 	}
@@ -952,7 +958,7 @@ public class Allele {
 	public void setSummaryDiseases(List<AlleleSummaryDisease> summaryDiseases) {
 		this.summaryDiseases = summaryDiseases;
 	}
-	
+
 	public void setPhenoTableSystems(List<PhenoTableSystem> phenoTableSystems) {
 		this.phenoTableSystems = phenoTableSystems;
 	}
@@ -961,19 +967,19 @@ public class Allele {
 	{
 		this.diseaseTableDiseases=diseaseTableDiseases;
 	}
-	
+
 	public void setHasDiseaseModel(boolean hasDiseaseModel) {
 		this.hasDiseaseModel = hasDiseaseModel;
 	}
-	
+
 	public void setDiseaseTableGenotypeAssociations(List<DiseaseTableGenotype> diseaseTableGenotypes) {
         this.diseaseTableGenotypes=diseaseTableGenotypes;
 	}
-	
+
 	public void setPhenoTableGenotypeAssociations(List<PhenoTableGenotype> phenotableGenotypes) {
         this.phenotableGenotypes=phenotableGenotypes;
 	}
-	
+
 	/*
 	 * Transient Methods
 	 */
@@ -982,7 +988,7 @@ public class Allele {
 	{
 		return this.getPrimaryImageKey() != null;
 	}
-	
+
 	@Override
     public String toString() {
         return "Allele [alleleKey=" + alleleKey + ", alleleSubType="
