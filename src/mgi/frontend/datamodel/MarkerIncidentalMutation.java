@@ -18,7 +18,7 @@ import org.hibernate.annotations.FetchMode;
  */
 @Entity
 @Table(name="marker_incidental_mut")
-public class MarkerIncidentalMutation 
+public class MarkerIncidentalMutation
 {
 	private int uniqueKey;
 	private int markerKey;
@@ -41,7 +41,20 @@ public class MarkerIncidentalMutation
 	public String getFilename() {
 		return filename;
 	}
-	
+
+	@Transient
+	public String getFilenameNoExtension() {
+		String fileNameNoExt = new String();
+		if(filename.contains(".")) {
+			fileNameNoExt = filename.substring(0, filename.lastIndexOf('.'));
+		} else {
+			fileNameNoExt = filename;
+		}
+		return fileNameNoExt;
+	}
+
+
+
     // ================= Setters ======================================== //
 	public void setUniqueKey(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
