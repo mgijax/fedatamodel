@@ -743,7 +743,7 @@ public class Allele {
     @Transient
     public Sequence getRepresentativeSequence() {
 	List<Sequence> repSeq = this.filterSequences("Representative", false);
-	if (repSeq == null) { return null; }
+	if (repSeq == null || repSeq.size()<1) { return null; }
 
 	return repSeq.get(0);
     }
