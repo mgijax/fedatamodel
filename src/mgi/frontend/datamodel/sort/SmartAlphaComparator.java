@@ -1,10 +1,10 @@
 package mgi.frontend.datamodel.sort;
 
 	import java.util.ArrayList;
-	import java.util.Arrays;
-	import java.util.Comparator;
-	import java.util.HashSet;
-	import java.util.Set;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 	/*
 	 * "smart alpha" means Zfp10 comes after zfp9, instead of zfp1.
@@ -19,7 +19,7 @@ package mgi.frontend.datamodel.sort;
 	 * author kstone
 	 * 
 	 */
-public class SmartAlphaComparator implements Comparator
+public class SmartAlphaComparator<T> implements Comparator<T>
 {
 	/* The following algorithm was taken from the symbolsort module in lib python */
 	

@@ -386,7 +386,7 @@ public class VocabTerm implements Serializable{
 	}
 	
 	@Transient
-	public Comparator getEmapsComparator() {
+	public Comparator<VocabTerm> getEmapsComparator() {
 		return new EmapsComparator();
 	}
 

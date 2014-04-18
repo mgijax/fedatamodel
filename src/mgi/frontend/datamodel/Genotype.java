@@ -24,8 +24,8 @@ import java.util.Set;
         @PrimaryKeyJoinColumn(name="genotype_key", referencedColumnName="genotype_key") } )
     }
 )
-public class Genotype implements Comparable {
-
+public class Genotype implements Comparable<Genotype>
+{
 	private Integer byAlleles;				// for sorting genotypes
 	private int genotypeKey;
 	private String backgroundStrain;
@@ -330,9 +330,8 @@ public class Genotype implements Comparable {
 	/** standard comparison method for Comparable interface
 	 */
 	@Override
-	public int compareTo(Object arg0) {
-		Genotype b = (Genotype) arg0;
-
+	public int compareTo(Genotype b) 
+	{
 		if (this.byAlleles < b.byAlleles) { return -1; }
 		else if (this.byAlleles > b.byAlleles) { return 1; }
 		return 0;

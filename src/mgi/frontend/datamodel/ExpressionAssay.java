@@ -59,7 +59,7 @@ public class ExpressionAssay {
 	// the note information for blot assays
 	private List<BlotFootnote> blotNotesCache=null;
 	// this is not visible, but just used to keep track of adding footnote letters to the various blot assay notes
-	private List<String> uniqueBlotNotes=new ArrayList();
+	private List<String> uniqueBlotNotes=new ArrayList<String>();
 	private Boolean hasLaneNotes=null;
 
     // ================= Getters ===================== //

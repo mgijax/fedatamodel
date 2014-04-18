@@ -1223,7 +1223,7 @@ public class Marker {
 	}
 	
 	@Transient
-	public Comparator getComparator() {
+	public Comparator<Marker> getComparator() {
 		return new MarkerComparator();
 	}
 
@@ -1471,11 +1471,10 @@ public class Marker {
 				+ (synonyms != null ? "synonyms=" + synonyms : "") + "]";
 	}
 
-    private class MarkerComparator extends SmartAlphaComparator {
-	public int compare(Object o1, Object o2) {
-	    Marker m1 = (Marker) o1;
-	    Marker m2 = (Marker) o2;
-	    return super.compare(m1.getSymbol(), m2.getSymbol());
-	}
+    private class MarkerComparator extends SmartAlphaComparator<Marker>
+    {
+		public int compare(Marker m1, Marker m2) {
+		    return super.compare(m1.getSymbol(), m2.getSymbol());
+		}
     }
 }

@@ -101,7 +101,7 @@ public class ImagePane {
 	}
 
 	@Transient
-	public Comparator getComparator()
+	public Comparator<ImagePane> getComparator()
 	{
 		return new ImagePaneComparator();
 	}
@@ -157,10 +157,9 @@ public class ImagePane {
 				+ sequenceNum + "]";
 	}
 	
-	private class ImagePaneComparator extends SmartAlphaComparator
+	private class ImagePaneComparator extends SmartAlphaComparator<ImagePane>
 	{
-		
-		public int compare(Object o1, Object o2)
+		public int compare(ImagePane o1, ImagePane o2)
 		{
 			ImagePane i1 = (ImagePane) o1;
 			ImagePane i2 = (ImagePane) o2;

@@ -11,7 +11,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="actual_database")
-public class ActualDatabase implements Comparable {
+public class ActualDatabase implements Comparable<ActualDatabase> {
     
 	private int actualDbKey;
 	private String logicalDb;
@@ -84,9 +84,8 @@ public class ActualDatabase implements Comparable {
 	/** standard comparison method for Comparable interface
 	 */
 	@Override
-	public int compareTo(Object arg0) {
-		ActualDatabase b = (ActualDatabase) arg0;
-		
+	public int compareTo(ActualDatabase b) 
+	{	
 		if (this.sequenceNum < b.sequenceNum) { return -1; }
 		else if (this.sequenceNum > b.sequenceNum) { return 1; }
 		return 0;

@@ -536,15 +536,14 @@ public class Allele {
 	    ref = assoc.getReference();
 
 	    // special case for all references
-	    if (qualifier.equals("ALL")) {
-		refs.add(ref);
-
-	    } else if (qualifier == null) {
-		// desired qualifier is null, matches association qualifier
-		if (assoc.getQualifier() == null) {
-		    refs.add(ref);
-		}
-
+	    if (qualifier == null) {
+			// desired qualifier is null, matches association qualifier
+			if (assoc.getQualifier() == null) {
+			    refs.add(ref);
+			}
+	    } 
+	    else if (qualifier.equals("ALL")) {
+	    	refs.add(ref);
 	    } else if (qualifier.equals(assoc.getQualifier())) {
 		// non-null desired qualifier, matches association qualifier
 		refs.add(ref);
