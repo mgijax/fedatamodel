@@ -1,6 +1,9 @@
 package mgi.frontend.datamodel;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Is a synonym for a vocabulary term.

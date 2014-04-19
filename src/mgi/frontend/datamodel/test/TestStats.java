@@ -5,7 +5,10 @@ package mgi.frontend.datamodel.test;
  * Used to store dynamicly generated test data.
  * Can be reference in concordion by using cc:dynamicData="testId"
  */
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name="test_stats")

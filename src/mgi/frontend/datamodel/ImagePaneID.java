@@ -1,11 +1,7 @@
 package mgi.frontend.datamodel;
 
-import java.util.*;
-
-import javax.persistence.*;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * ImagePaneID

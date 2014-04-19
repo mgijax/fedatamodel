@@ -1,24 +1,9 @@
 package mgi.frontend.datamodel;
 
-import java.util.List;
-import java.util.ArrayList;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SecondaryTable;
-import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.SortType;
 
 /**
  * Base object for a vocabulary term.

@@ -1,8 +1,6 @@
 package mgi.frontend.test;
 
-import static org.junit.Assert.*;
-import junit.framework.Assert;
-
+import static org.junit.Assert.assertEquals;
 import mgi.frontend.datamodel.util.DatamodelUtils;
 
 import org.junit.Test;

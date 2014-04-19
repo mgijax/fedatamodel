@@ -1,15 +1,10 @@
 package mgi.frontend.datamodel;
 
-import java.util.*;
-import javax.persistence.*;
-
-import mgi.frontend.datamodel.util.DatamodelUtils;
-
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * MarkerIncidentalMutation

@@ -1,14 +1,23 @@
 package mgi.frontend.datamodel.hdp;
 
-import java.util.*;
-import javax.persistence.*;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import mgi.frontend.datamodel.Genotype;
 import mgi.frontend.datamodel.Marker;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Where;
-import org.hibernate.annotations.SortType;
 
 /**
  * Base object for geno clusters in the HDP grid drill down.

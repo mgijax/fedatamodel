@@ -1,9 +1,10 @@
 package mgi.frontend.datamodel.hdp;
 
-import java.util.*;
-import javax.persistence.*;
-
-import org.hibernate.annotations.SortType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * annotation object for gneo clusters in the HDP grid drill down.
