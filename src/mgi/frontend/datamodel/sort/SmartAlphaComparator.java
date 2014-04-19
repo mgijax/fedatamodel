@@ -64,10 +64,19 @@ public class SmartAlphaComparator<T> implements Comparator<T>
 		//return items;
 		return splits;
 	}
+	
+	/*
+	 * This method should be overriden to be useful
+	 */
+	public int compare(T o1, T o2)
+	{
+		return compare(o1.toString(),o2.toString());
+	}
+	
 	/* these values must really be Strings, but we want to keep the 
 	 * class level type as Object to allow for flexible subclassing
 	 */
-	public int compare(Object o1, Object  o2) 
+	public int compare(String o1, String o2) 
 	{
 		String string1 = (String) o1;
 		String string2 = (String) o2;

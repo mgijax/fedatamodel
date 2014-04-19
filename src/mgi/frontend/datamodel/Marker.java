@@ -1473,7 +1473,6 @@ public class Marker {
 
     private class MarkerComparator extends SmartAlphaComparator<Marker>
     {
-    	@Override
 		public int compare(Marker m1, Marker m2) {
 		    return super.compare(m1.getSymbol(), m2.getSymbol());
 		}
