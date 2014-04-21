@@ -11,7 +11,6 @@ import javax.persistence.Table;
 public class ImagePaneID extends AccessionID {
 
 	private int imagepane_key;
-	private int sequenceNum;
 
     // ================= Getters and Setters ===================== //
 

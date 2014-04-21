@@ -13,6 +13,7 @@ import javax.persistence.Table;
  * This class extends the Location class, so almost all of the location
  * methods come from it.
  */
+@SuppressWarnings("serial")
 @Entity
 @Table (name="marker_location")
 public class MarkerLocation extends Location implements Serializable

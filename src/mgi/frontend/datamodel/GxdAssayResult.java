@@ -20,7 +20,6 @@ public class GxdAssayResult
 	private Integer assayKey;
 	private String assayType;
 	private String assayId;
-	private Integer markerKey;
 	private String markerSymbol;
 	private String anatomicalSystem;
 	private String theilerStage;
@@ -186,9 +185,9 @@ public class GxdAssayResult
 		this.assayId = assayId;
 	}
 
-	public void setMarkerKey(Integer markerKey) {
-		this.markerKey = markerKey;
-	}
+//	public void setMarkerKey(Integer markerKey) {
+//		this.markerKey = markerKey;
+//	}
 
 	public void setMarkerSymbol(String markerSymbol) {
 		this.markerSymbol = markerSymbol;

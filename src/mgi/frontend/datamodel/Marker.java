@@ -79,6 +79,7 @@ public class Marker {
 	private Integer countOfUniProtSequences;
 	private Integer countOfCdnaSources;
 	private Integer countOfMicroarrayProbesets;
+	private Integer countForImsr;
 	private int isInReferenceGenome;
 	private int hasGOGraph;
 	private List<MarkerID> ids;
@@ -543,6 +544,12 @@ public class Marker {
 	@JoinColumn(name="marker_key")
 	public Integer getCountOfUniProtSequences() {
 		return countOfUniProtSequences;
+	}
+	
+	@Column(table="marker_counts", name="imsr_count")
+	@JoinColumn(name="marker_key")
+	public Integer getCountForImsr() {
+		return countForImsr;
 	}
 
 	/** returns a collection of marker count set items, which extend the
@@ -1349,6 +1356,10 @@ public class Marker {
 
 	public void setCountOfUniProtSequences(Integer countOfUniProtSequences) {
 		this.countOfUniProtSequences = countOfUniProtSequences;
+	}
+	
+	public void setCountForImsr(Integer countForImsr) {
+		this.countForImsr = countForImsr;
 	}
 
 	public void setCountSetItems(List<MarkerCountSetItem> countSetItems) {

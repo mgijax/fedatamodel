@@ -188,7 +188,6 @@ public class AssaySpecimen {
 
     // ===================== Transient ===================== //
 
-	@SuppressWarnings("unchecked")
 	@Transient
 	public List<ImagePane> getImagePanes()
 	{
