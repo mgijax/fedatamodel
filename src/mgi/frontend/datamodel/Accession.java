@@ -2,7 +2,10 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -36,41 +39,41 @@ public class Accession {
 	public String getDescription() {
 		return description;
 	}
-//	@OneToOne (targetEntity=AccessionDisplayType.class, fetch=FetchType.LAZY)
-//	@JoinColumn (name="display_type_key")
-//	private AccessionDisplayType getDisplayTypeObject() {
-//		return displayTypeObject;
-//	}
+	@OneToOne (targetEntity=AccessionDisplayType.class, fetch=FetchType.LAZY)
+	@JoinColumn (name="display_type_key")
+	private AccessionDisplayType getDisplayTypeObject() {
+		return displayTypeObject;
+	}
 
 	@Transient
 	public String getDisplayType() {
-		return displayTypeObject.getDisplayType();
+		return getDisplayTypeObject().getDisplayType();
 	}
 	
-//	@OneToOne (targetEntity=AccessionLogicalDB.class, fetch=FetchType.LAZY)
-//	@JoinColumn (name="logical_db_key")
-//	private AccessionLogicalDB getLogicalDBObject() {
-//		return logicalDBObject;
-//	}
+	@OneToOne (targetEntity=AccessionLogicalDB.class, fetch=FetchType.LAZY)
+	@JoinColumn (name="logical_db_key")
+	private AccessionLogicalDB getLogicalDBObject() {
+		return logicalDBObject;
+	}
 	
 	@Transient
 	public String getLogicalDB() {
-		return logicalDBObject.getLogicalDB();
+		return getLogicalDBObject().getLogicalDB();
 	}
 	
 	@Column(name="object_key")
 	public int getObjectKey() {
 		return objectKey;
 	}
-//	@OneToOne (targetEntity=AccessionObjectType.class, fetch=FetchType.LAZY)
-//	@JoinColumn (name="object_type_key")
-//	private AccessionObjectType getObjectTypeObject() {
-//		return objectTypeObject;
-//	}
+	@OneToOne (targetEntity=AccessionObjectType.class, fetch=FetchType.LAZY)
+	@JoinColumn (name="object_type_key")
+	private AccessionObjectType getObjectTypeObject() {
+		return objectTypeObject;
+	}
 
 	@Transient
 	public String getObjectType () {
-		return objectTypeObject.getObjectType();
+		return getObjectTypeObject().getObjectType();
 	}
 	
     @Column(name="sequence_num")
