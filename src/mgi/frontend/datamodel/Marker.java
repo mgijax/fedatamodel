@@ -5,7 +5,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -23,8 +25,6 @@ import javax.persistence.Transient;
 import mgi.frontend.datamodel.sort.SmartAlphaComparator;
 
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
@@ -50,7 +50,7 @@ import org.hibernate.annotations.FilterJoinTable;
 @org.hibernate.annotations.Tables({
 	@org.hibernate.annotations.Table(appliesTo="marker_counts",optional=false)
 })
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Marker {
 
 	private List<MarkerAlias> aliases;
@@ -59,11 +59,11 @@ public class Marker {
 	private List<MarkerAlleleAssociation> alleleAssociations;
 	List<MarkerIncidentalMutation> incidentalMutations;
 	private List<BatchMarkerAllele> batchMarkerAlleles;
-	private List<BatchMarkerSnp> batchMarkerSnps;
 	private List<Annotation> annotations;
 	private List<BatchMarkerGoAnnotation> batchMarkerGoAnnotations;
 	private List<BatchMarkerMpAnnotation> batchMarkerMpAnnotations;
 	private List<MarkerBiotypeConflict> biotypeConflicts;
+	private List<String> batchMarkerSnps;
 	private Integer countOfAlleles;
 	private Integer countOfGOTerms;
 	private Integer countOfGxdAssays;
@@ -407,10 +407,11 @@ public class Marker {
 	/** Returns a list of the simple SNP representations for a marker in
 	 * the batch query interface.  (a very lightweight SNP representation)
 	 */
-	@OneToMany (targetEntity=BatchMarkerSnp.class)
-	@JoinColumn(name="marker_key")
-	@OrderBy("snpID")
-	public List<BatchMarkerSnp> getBatchMarkerSnps() {
+	@ElementCollection
+	@CollectionTable(name="batch_marker_snps", joinColumns=@JoinColumn(name="marker_key"))
+	@Column(name="snp_id")
+	@OrderBy("snp_id")
+	public List<String> getBatchMarkerSnps() {
 		return batchMarkerSnps;
 	}
 
@@ -1269,8 +1270,8 @@ public class Marker {
         this.batchMarkerMpAnnotations = batchMarkerMpAnnotations;
 	}
 
-	public void setBatchMarkerSnps(List<BatchMarkerSnp> batchMarkerSnps) {
-		this.batchMarkerSnps = batchMarkerSnps;
+	public void setBatchMarkerSnps(List<String> batchMarkerSnps) {
+		this.batchMarkerSnps=batchMarkerSnps;
 	}
 
 	public void setBiotypeConflicts(List<MarkerBiotypeConflict> biotypeConflicts) {
