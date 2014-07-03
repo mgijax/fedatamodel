@@ -30,6 +30,8 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterDefs;
+import org.hibernate.annotations.FilterJoinTable;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
@@ -54,18 +56,10 @@ import org.hibernate.annotations.LazyToOneOption;
 	@org.hibernate.annotations.Table(appliesTo="allele_imsr_counts",optional=false)
 })
 
-/*
-@SecondaryTables({
-    @SecondaryTable(name = "`Cat nbr1`"),
-    @SecondaryTable(name = "Cat2"})
-@org.hibernate.annotations.Tables( {
-    @Table(appliesTo = "Cat", comment = "My cat table" ),
-    @Table(appliesTo = "Cat2", foreignKey = @ForeignKey(name="FK_CAT2_CAT"), fetch = FetchMode.SELECT,
-        sqlInsert=@SQLInsert(sql="insert into Cat2(storyPart2, id) values(upper(?), ?)") )
-} )
-*/
-
-@FilterDef(name="noDiseaseHeaders")
+@FilterDefs({
+@FilterDef(name="noDiseaseHeaders"),
+@FilterDef(name="teaserMarkers")
+})
 @JsonIgnoreProperties({"references", "notes", "molecularDescription", "ids"})
 public class Allele {
     private int alleleKey;
@@ -79,6 +73,7 @@ public class Allele {
     private String collection;
     private Integer countOfExpressionAssayResults;
     private Integer countOfMarkers;
+    private Integer countOfMutationInvolvesMarkers;
     private Integer countOfReferences;
     private String driver;
     private String holder;
@@ -109,6 +104,7 @@ public class Allele {
     private RecombinaseInfo recombinaseInfo;
     private List<AlleleGenotypeAssociation> genotypeAssociations;
     private List<Annotation> annotations;
+    private List<AlleleRelatedMarker> relatedMarkers;
 	private List<PhenoTableSystem> phenoTableSystems;
 	private List<PhenoTableGenotype> phenotableGenotypes;
 	private boolean hasDiseaseModel;
@@ -240,6 +236,12 @@ public class Allele {
     @JoinColumn(name="allele_key")
     public Integer getCountOfMarkers() {
         return countOfMarkers;
+    }
+
+    @Column(table="allele_counts", name="mutation_involves_marker_count")
+    @JoinColumn(name="allele_key")
+    public Integer getCountOfMutationInvolvesMarkers() {
+        return countOfMutationInvolvesMarkers;
     }
 
     @Column(table="allele_counts", name="reference_count")
@@ -454,6 +456,53 @@ public class Allele {
     @Column(name="primary_id")
     public String getPrimaryID() {
         return primaryID;
+    }
+
+    /* go through list of AlleleRelatedMarker objects and return
+     * only those with the specified relationship category.
+     */
+    @Transient
+    private List<AlleleRelatedMarker> filterRelatedMarkers (String category) {
+
+	ArrayList<AlleleRelatedMarker> sublist =
+	    new ArrayList<AlleleRelatedMarker>();
+	Iterator<AlleleRelatedMarker> it = this.getRelatedMarkers().iterator();
+	AlleleRelatedMarker m;
+
+	if (category == null) {		// nothing will match a null category
+	    return sublist;
+	}
+
+	while (it.hasNext()) {
+	    m = it.next();
+	    if (category.equals(m.getRelationshipCategory())) {
+		sublist.add(m);
+	    }
+	}
+	return sublist;
+    }
+
+    /* get the set of 'mutation involves' related markers
+     */
+    @Transient
+    public List<AlleleRelatedMarker> getMutationInvolvesMarkers() {
+	return this.filterRelatedMarkers("mutation_involves");
+    }
+
+    /** return set of related markers, currently used for 'mutation involves'
+     * relationships but can be expanded in the future.
+     */
+    @OneToMany (targetEntity=AlleleRelatedMarker.class, fetch=FetchType.LAZY)
+    @JoinColumn(name="allele_key")
+    @OrderBy("sequenceNum")
+    @Filter(
+	// enable this filter to only retrive markers flagged for usage in a
+	// teaser on the allele detail page (big performance gain)
+	name = "teaserMarkers",
+	condition = "in_teaser = 1"
+    )
+    public List<AlleleRelatedMarker> getRelatedMarkers() {
+	return relatedMarkers;
     }
 
     /** Return the RecombinaseInfo object associated with this allele.
@@ -832,6 +881,11 @@ public class Allele {
         this.countOfMarkers = countOfMarkers;
     }
 
+    public void setCountOfMutationInvolvesMarkers(
+	    Integer countOfMutationInvolvesMarkers) {
+        this.countOfMutationInvolvesMarkers = countOfMutationInvolvesMarkers;
+    }
+
     public void setCountOfReferences(Integer countOfReferences) {
         this.countOfReferences = countOfReferences;
     }
@@ -973,6 +1027,11 @@ public class Allele {
 
 	public void setDiseaseTableGenotypeAssociations(List<DiseaseTableGenotype> diseaseTableGenotypes) {
         this.diseaseTableGenotypes=diseaseTableGenotypes;
+	}
+
+	public void setRelatedMarkers (
+	    List<AlleleRelatedMarker> relatedMarkers) {
+		this.relatedMarkers = relatedMarkers;
 	}
 
 	public void setPhenoTableGenotypeAssociations(List<PhenoTableGenotype> phenotableGenotypes) {

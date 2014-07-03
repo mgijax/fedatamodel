@@ -1,6 +1,9 @@
 package mgi.frontend.datamodel;
 
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -39,6 +42,7 @@ import org.hibernate.annotations.FilterJoinTable;
 @Entity
 @FilterDefs({
   @FilterDef(name="markerDetailRefs"),
+  @FilterDef(name="markerDetailMarkerInteractions"),
   @FilterDef(name="onlyProteinSequences")
 })
 @Table(name="marker")
@@ -109,6 +113,136 @@ public class Marker {
 	private List<ExpressionAssay> expressionAssays;
 	private OrganismOrtholog organismOrtholog;
        private List<MarkerDisease> markerDiseases;
+       private List<RelatedMarker> relatedMarkers;
+       private List<MarkerInteraction> markerInteractions;
+
+    //=== methods for related markers ===//
+
+       /* retrieve related markers for the specified category and relationship
+	* term
+	*/
+       @Transient
+       private List<RelatedMarker> filterRelatedMarkers (String category,
+	       String relationshipTerm) {
+
+	   ArrayList<RelatedMarker> sublist = new ArrayList<RelatedMarker>();
+	   Iterator<RelatedMarker> it = this.getRelatedMarkers().iterator();
+	   RelatedMarker m;
+
+	   while (it.hasNext()) {
+	       m = it.next();
+	       if (m.getRelationshipCategory().equals(category)) {
+		   if (m.getRelationshipTerm().equals(relationshipTerm)) {
+		       sublist.add(m);
+		   }
+	       }
+	   }
+	   return sublist;
+       }
+
+       /* retrieve related markers, where this marker is a cluster and the
+	* related markers are members of this cluster
+	*/
+       @Transient
+       public List<RelatedMarker> getClusterMembers() {
+	   return this.filterRelatedMarkers("cluster_has_member", "contains");
+       }
+
+       /* retrieve related markers, where this marker is a member of one or
+	* more clusters and the related markers are those cluster markers
+	*/
+       @Transient
+       public List<RelatedMarker> getClusters() {
+	   return this.filterRelatedMarkers("cluster_has_member", "is member of");
+       }
+
+       @OneToMany (targetEntity=RelatedMarker.class, fetch=FetchType.LAZY)
+       @JoinColumn(name="marker_key")
+       @OrderBy("sequenceNum")
+       public List<RelatedMarker> getRelatedMarkers() {
+	       return relatedMarkers;
+       }
+
+       public void setRelatedMarkers(List<RelatedMarker> relatedMarkers) {
+               this.relatedMarkers = relatedMarkers;
+       }
+
+    //=== methods for marker interactions ===//
+
+       /** getter
+	*/
+       @OneToMany (targetEntity=MarkerInteraction.class, fetch=FetchType.LAZY)
+       @JoinColumn(name="marker_key")
+       @OrderBy("sequenceNum")
+       @Filter(
+		// enable this filter to only retrieve markers for use as
+		// teasers on the marker detail page (big performance gain)
+		name = "markerDetailMarkerInteractions",
+		condition = "in_teaser = 1"
+       )
+       public List<MarkerInteraction> getMarkerInteractions() {
+	       return markerInteractions;
+       }
+
+       /** setter
+	*/
+       public void setMarkerInteractions(List<MarkerInteraction> markerInteractions) {
+               this.markerInteractions = markerInteractions;
+       }
+
+       /** sort the given list of MarkerInteraction objects by symbol, using a
+	* smart-alpha sort mechanism
+	*/
+       @Transient
+       private void sortMarkerInteractionsBySymbol (List<MarkerInteraction> rmList) {
+	   if (rmList.size() > 1) {
+	       Collections.sort(rmList,
+		   ((MarkerInteraction) rmList.get(0)).getComparator());
+	   }
+       }
+
+       /** get the up to three unique markers which interact with this one,
+	* not including this one (if it interacts with itself).
+	*/
+       @Transient
+       public List<Marker> getInteractionTeaserMarkers() {
+	   List<MarkerInteraction> mi = this.getMarkerInteractions();
+	   this.sortMarkerInteractionsBySymbol(mi);
+
+	   ArrayList<Marker> markers = new ArrayList<Marker>();
+
+	   for (MarkerInteraction i : mi) {
+	       if (markers.size() < 3) {
+		   Marker m = i.getInteractingMarker();
+		   int markerKey = m.getMarkerKey();
+
+		   boolean foundIt = false;
+
+		   if (markerKey == this.getMarkerKey()) {
+			foundIt = true;
+		   } else {
+			for (Marker n : markers) {
+			    if (markerKey == n.getMarkerKey()) {
+				foundIt = true;
+			    }
+			}
+		   }
+
+		   if (!foundIt) {
+		       markers.add(m);
+		   }
+	       }
+	   }
+	   return markers;
+       } 
+       
+       /** return the list of counts of marker interactions by type of
+	* interaction
+	*/
+       @Transient
+       public List<MarkerCountSetItem> getInteractionCountsByType() {
+	   return this.filterCountSetItems("Interaction");
+       }
 
     // ================= Instance Methods ===================== //
 
@@ -1004,6 +1138,51 @@ public class Marker {
 	public MarkerLocation getPreferredCytoband() {
 		return this.filterLocations("cytogenetic");
 	}
+
+    /** get a nicely formatted string with the marker's location, preferring:
+     * coordinates over centimorgans over cytogenetic band
+     */
+    @Transient
+    public String getLocation() {
+	StringBuffer sb = new StringBuffer();
+	sb.append("Chr");
+	sb.append(this.getChromosome());
+
+	MarkerLocation loc = this.getPreferredCoordinates();
+	if (loc == null) {
+	    loc = this.getPreferredCentimorgans();
+	    if (loc == null) {
+		loc = this.getPreferredCytoband();
+		if (loc != null) {
+		    // format using cytoband location
+		    sb.append (" ");
+		    sb.append (loc.getCytogeneticOffset());
+		}
+	    } else {
+		// format using cM location
+	        NumberFormat nf = new DecimalFormat("#0.00");
+
+		sb.append (" ");
+		sb.append (nf.format(loc.getCmOffset()));
+		sb.append (" cM");
+	    }
+	} else {
+	    // format using coordinates
+	    NumberFormat nf = new DecimalFormat("#0");
+
+	    sb.append (":");
+	    sb.append (nf.format(loc.getStartCoordinate()));
+	    sb.append ("-");
+	    sb.append (nf.format(loc.getEndCoordinate()));
+
+	    if (loc.getStrand() != null) {
+		sb.append (" (");
+		sb.append (loc.getStrand());
+		sb.append (")");
+	    }
+	}
+	return sb.toString();
+    }
 
 	@Column(name="primary_id")
 	public String getPrimaryID() {

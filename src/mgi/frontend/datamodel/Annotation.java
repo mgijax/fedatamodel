@@ -13,6 +13,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Annotation
@@ -88,6 +89,18 @@ public class Annotation {
     @Column(name="evidence_code")
     public String getEvidenceCode() {
         return evidenceCode;
+    }
+
+    @Transient
+    public String getInferredFrom() {
+	StringBuffer sb = new StringBuffer();
+	for (AnnotationInferredFromID id : this.getInferredFromList()) {
+	    if (sb.length() > 0) {
+		sb.append (", ");
+	    }
+	    sb.append (id.getAccID());
+	}
+	return sb.toString();
     }
 
     @OneToMany (fetch=FetchType.LAZY)
