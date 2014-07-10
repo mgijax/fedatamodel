@@ -84,6 +84,7 @@ public class Marker {
 	private Integer countOfCdnaSources;
 	private Integer countOfMicroarrayProbesets;
 	private Integer countForImsr;
+	private Integer countOfMutationInvolves;
 	private int isInReferenceGenome;
 	private int hasGOGraph;
 	private List<MarkerID> ids;
@@ -559,6 +560,12 @@ public class Marker {
 	@OrderBy("sequenceNum")
 	public List<MarkerBiotypeConflict> getBiotypeConflicts() {
 		return biotypeConflicts;
+	}
+
+	@Column(table="marker_counts", name="mutation_involves_count")
+	@JoinColumn(name="marker_key")
+	public Integer getCountOfMutationInvolves() {
+		return countOfMutationInvolves;
 	}
 
 	@Column(table="marker_counts", name="allele_count")
@@ -1455,6 +1462,10 @@ public class Marker {
 
 	public void setBiotypeConflicts(List<MarkerBiotypeConflict> biotypeConflicts) {
 		this.biotypeConflicts = biotypeConflicts;
+	}
+
+	public void setCountOfMutationInvolves (Integer countOfMutationInvolves) {
+		this.countOfMutationInvolves = countOfMutationInvolves;
 	}
 
 	public void setCountOfAlleles(Integer countOfAlleles) {
