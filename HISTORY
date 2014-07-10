@@ -1,3 +1,8 @@
+TAG: fedatamodel-5-1-9-2
+DATE: 07/10/2014
+STAFF: jsb
+CHANGES: added getter/setter for new mutation_involves_count to Marker
+
 TAG: fedatamodel-5-1-9-1
 DATE: 07/03/2014
 STAFF: jsb
