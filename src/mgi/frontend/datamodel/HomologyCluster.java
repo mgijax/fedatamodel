@@ -41,6 +41,7 @@ public class HomologyCluster {
 	private Integer dogMarkerCount;
 	private Integer monkeyMarkerCount;
 	private Integer chickenMarkerCount;
+	private Integer xenopusMarkerCount;
 	private Integer zebrafishMarkerCount;
 	private int hasComparativeGOGraph;
 	
@@ -122,6 +123,14 @@ public class HomologyCluster {
 	}
 	public void setChickenMarkerCount(Integer chickenMarkerCount) {
 		this.chickenMarkerCount = chickenMarkerCount;
+	}
+	@Column(table="homology_cluster_counts", name="xenopus_marker_count")
+	@JoinColumn(name="cluster_key")
+	public Integer getXenopusMarkerCount() {
+		return xenopusMarkerCount;
+	}
+	public void setXenopusMarkerCount(Integer xenopusMarkerCount) {
+		this.xenopusMarkerCount = xenopusMarkerCount;
 	}
 	@Column(table="homology_cluster_counts", name="zebrafish_marker_count")
 	@JoinColumn(name="cluster_key")
