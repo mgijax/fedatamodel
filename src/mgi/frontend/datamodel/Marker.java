@@ -113,7 +113,6 @@ public class Marker {
 	private Integer countOfGeneTraps;
 	private List<ExpressionAssay> expressionAssays;
 	private OrganismOrtholog organismOrtholog;
-       private List<MarkerDisease> markerDiseases;
        private List<RelatedMarker> relatedMarkers;
        private List<MarkerInteraction> markerInteractions;
 
@@ -246,13 +245,6 @@ public class Marker {
        }
 
     // ================= Instance Methods ===================== //
-
-       @OneToMany (targetEntity=MarkerDisease.class)
-       @JoinColumn(name="marker_key")
-       @OrderBy("sequenceNum")
-       public List<MarkerDisease> getMarkerDiseases() {
-               return markerDiseases;
-       }
 
 	/** used to make other convenience methods to extract only a certain types
 	 * of annotations from the full List of annotations
@@ -1646,10 +1638,6 @@ public class Marker {
 	public void setSynonyms(List<MarkerSynonym> synonyms) {
 		this.synonyms = synonyms;
 	}
-
-       public void setMarkerDiseases(List<MarkerDisease> markerDiseases) {
-               this.markerDiseases = markerDiseases;
-       }
 
 	@Override
 	public String toString() {
