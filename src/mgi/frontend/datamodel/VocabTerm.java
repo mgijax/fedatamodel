@@ -395,7 +395,7 @@ public class VocabTerm implements Serializable{
 	        ArrayList<VocabTerm> sortedChildren =
 		    new ArrayList<VocabTerm>(this.emapsChildren);
 	        Collections.sort(sortedChildren,
-		    ((VocabTerm) sortedChildren.get(0)).getEmapsComparator());
+		    sortedChildren.get(0).getEmapsComparator());
 		return sortedChildren;
 	    }
 	    return this.emapsChildren;

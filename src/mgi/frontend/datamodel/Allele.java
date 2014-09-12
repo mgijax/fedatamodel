@@ -590,7 +590,7 @@ public class Allele {
 			if (assoc.getQualifier() == null) {
 			    refs.add(ref);
 			}
-	    } 
+	    }
 	    else if (qualifier.equals("ALL")) {
 	    	refs.add(ref);
 	    } else if (qualifier.equals(assoc.getQualifier())) {
