@@ -235,8 +235,8 @@ public class Marker {
 	       }
 	   }
 	   return markers;
-       } 
-       
+       }
+
        /** return the list of counts of marker interactions by type of
 	* interaction
 	*/
@@ -478,7 +478,7 @@ public class Marker {
 	public void setIncidentalMutations(List<MarkerIncidentalMutation> incidentalMutations) {
 		this.incidentalMutations = incidentalMutations;
 	}
-	
+
 	/** return the list of counts of alleles by type
 	 */
 	@Transient
@@ -687,7 +687,7 @@ public class Marker {
 	public Integer getCountOfUniProtSequences() {
 		return countOfUniProtSequences;
 	}
-	
+
 	@Column(table="marker_counts", name="imsr_count")
 	@JoinColumn(name="marker_key")
 	public Integer getCountForImsr() {
@@ -1027,6 +1027,22 @@ public class Marker {
 	}
 
 	/**
+	 * Return a collection of chicken expression links
+	 */
+	@Transient
+	public List<MarkerLink> getExpressedInChickenLinks() {
+		return this.filterLinks("gxd chicken expression links");
+	}
+
+	/**
+	 * Return a collection of zfin expression links
+	 */
+	@Transient
+	public List<MarkerLink> getExpressedInZfinLinks() {
+		return this.filterLinks("gxd zfin expression links");
+	}
+
+	/**
 	 * Return a collection of marker links for the homologene class page.
 	 */
 	@Transient
@@ -1101,7 +1117,7 @@ public class Marker {
         }
         return bestLoc;
     }
-	
+
     /* get the chromosome for this marker, preferring to take it from the
      * coordinates first, cM second, and cytoband third.
      */
@@ -1112,7 +1128,7 @@ public class Marker {
 	if (loc != null) {
 	    return loc.getChromosome();
 	}
-	
+
 	loc = this.getPreferredCentimorgans();
 	if (loc != null) {
 	    return loc.getChromosome();
@@ -1333,7 +1349,7 @@ public class Marker {
 		}
 		return null;
 	}
-	
+
     /** get the HomoloGene id for this marker
 	 */
 	@Transient
@@ -1415,7 +1431,7 @@ public class Marker {
 	public boolean getIsSTS(){
 		return this.getMarkerType().equals("DNA Segment");
 	}
-	
+
 	@Transient
 	public Comparator<Marker> getComparator() {
 		return new MarkerComparator();
@@ -1548,7 +1564,7 @@ public class Marker {
 	public void setCountOfUniProtSequences(Integer countOfUniProtSequences) {
 		this.countOfUniProtSequences = countOfUniProtSequences;
 	}
-	
+
 	public void setCountForImsr(Integer countForImsr) {
 		this.countForImsr = countForImsr;
 	}
