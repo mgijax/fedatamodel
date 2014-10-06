@@ -3,8 +3,16 @@ package mgi.frontend.datamodel.phenotype;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
+import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -14,56 +22,160 @@ import javax.persistence.Transient;
 @Table(name="phenotable_provider")
 public class PhenoTableProvider {
 
-	private int phenoTableProviderKey;
-	private String provider;
-	private int providerSeq;
+	private int uniqueKey;
+	private int phenotableGenotypeKey;
+	private PhenoTableCenter phenotypingCenter;
+	private PhenoTableCenter interpretationCenter;
 
-    // ================= Getters ======================================== //
+	/*--- fields from the phenotable_provider table ---*/
 
 	@Id
-	@Column(name="phenotable_provider_key")
-	public int getPhenoTableProviderKey() {
-		return phenoTableProviderKey;
+	@Column(name="unique_key")
+	public int getUniqueKey() {
+		return uniqueKey;
 	}
 
-	/*
-	 * This is the predefined order for display in the phenotype summary table
-	 */
-	@Column(name="provider_seq")
-	public int getProviderSeq() {
-		return providerSeq;
+	public void setUniqueKey(int uniqueKey) {
+		this.uniqueKey = uniqueKey;
 	}
 
-	@Column(name="provider")
-	public String getProvider() {
-		return provider;
+	@Column(name="phenotable_genotype_key")
+	public int getPhenotableGenotypeKey() {
+		return phenotableGenotypeKey;
 	}
-	
-	/*
-	 * Return the image file name for this provider's icon in the phenotable grid
+
+	public void setPhenotableGenotypeKey (int phenotableGenotypeKey) {
+		this.phenotableGenotypeKey = phenotableGenotypeKey;
+	}
+
+	@OneToOne (targetEntity=PhenoTableCenter.class)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinColumn(name="phenotyping_center_key")
+	public PhenoTableCenter getPhenotypingCenter() {
+		return phenotypingCenter;
+	}
+
+	public void setPhenotypingCenter(PhenoTableCenter phenotypingCenter) {
+		this.phenotypingCenter = phenotypingCenter;
+	}
+
+	@OneToOne (targetEntity=PhenoTableCenter.class)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinColumn(name="interpretation_center_key")
+	public PhenoTableCenter getInterpretationCenter() {
+		return interpretationCenter;
+	}
+
+	public void setInterpretationCenter(PhenoTableCenter interpretationCenter) {
+		this.interpretationCenter = interpretationCenter;
+	}
+
+	/*--- convenience methods related to phenotyping centers ---*/
+
+	@Transient
+	public int getPhenotypingCenterKey() {
+		if (this.phenotypingCenter == null) { return -1; }
+		return this.phenotypingCenter.getCenterKey();
+	}
+
+	@Transient
+	public String getPhenotypingCenterName() {
+		if (this.phenotypingCenter == null) { return null; }
+		return this.phenotypingCenter.getName();
+	}
+
+	@Transient
+	public String getPhenotypingCenterAbbreviation() {
+		if (this.phenotypingCenter == null) { return null; }
+		return this.phenotypingCenter.getAbbreviation();
+	}
+
+	@Transient
+	public int getPhenotypingCenterSequenceNum() {
+		if (this.phenotypingCenter == null) { return -1; }
+		return this.phenotypingCenter.getSequenceNum();
+	}
+
+	/*--- convenience methods related to interpretation centers ---*/
+
+	@Transient
+	public int getInterpretationCenterKey() {
+		if (this.interpretationCenter == null) { return -1; }
+		return this.interpretationCenter.getCenterKey();
+	}
+
+	@Transient
+	public String getInterpretationCenterName() {
+		if (this.interpretationCenter == null) { return null; }
+		return this.interpretationCenter.getName();
+	}
+
+	@Transient
+	public String getInterpretationCenterAbbreviation() {
+		if (this.interpretationCenter == null) { return null; }
+		return this.interpretationCenter.getAbbreviation();
+	}
+
+	@Transient
+	public int getInterpretationCenterSequenceNum() {
+		if (this.interpretationCenter == null) { return -1; }
+		return this.interpretationCenter.getSequenceNum();
+	}
+
+	/*--- transient methods for convenience ---*/
+
+	/* get the provider string, considering both phenotyping and
+	 * interpretation centers
 	 */
 	@Transient
-	public String getProviderIcon()
-	{
-		if(provider.equalsIgnoreCase("MGI")) return "mgi_col.png";
-		if(provider.equalsIgnoreCase("WTSI")) return "wtsi_col.png";
-		if(provider.equalsIgnoreCase("EuPh")) return "euph_col.png";
-		return "";
+	public String getProviderString() {
+		StringBuffer sb = new StringBuffer();
+		String pc = this.getPhenotypingCenterAbbreviation();
+		String ic = this.getInterpretationCenterAbbreviation();
+
+		if (ic != null) {
+			sb.append(ic);
+		}
+
+		if (pc != null) {
+		    if (!pc.equals(ic)) {
+			if (sb.length() > 0) {
+				sb.append(" - ");
+			}
+			sb.append(pc);
+		    }
+		}
+		return sb.toString();
 	}
 
-	// ================= Setters ======================================== //
+	/* get the provider description, considering both phenotyping and
+	 * interpretation centers
+	 */
+	@Transient
+	public String getProviderDescription() {
+		StringBuffer sb = new StringBuffer();
+		String pc = this.getPhenotypingCenterName();
+		String ic = this.getInterpretationCenterName();
 
-	public void setPhenoTableProviderKey(int phenoTableProviderKey) {
-		this.phenoTableProviderKey = phenoTableProviderKey;
+		if (ic != null) {
+			if (ic.equals("MGI")) {
+				return "MGI Curated Data";
+			} else if (ic.equals("EuPh")) {
+				return "Phenotype annotations from <B>EuroPhenome</B>";
+			}
+			sb.append("Data Interpretation Center: <B>");
+			sb.append(ic);
+			sb.append("</B>");
+		}
+
+		if (pc != null) {
+		    if (sb.length() > 0) {
+			sb.append("<BR>");
+		    }
+		    sb.append("Phenotyping Center: <B>");
+		    sb.append(pc);
+		    sb.append("</B>");
+		}
+		return sb.toString();
 	}
-
-
-	public void setProviderSeq(int providerSeq) {
-		this.providerSeq = providerSeq;
-	}
-
-	public void setProvider(String provider) {
-		this.provider = provider;
-	}
-
 }
