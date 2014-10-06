@@ -933,14 +933,6 @@ public class Marker {
         return this.filterAnnotations("MouseCyc/Marker");
     }
 
-	/** get the Mammalian Phenotype (MP) annotations for this marker's
-	 *  alleles
-	 */
-	@Transient
-	public List<Annotation> getMPAnnotations () {
-		return this.filterAnnotations("Mammalian Phenotype/Marker");
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -962,6 +954,13 @@ public class Marker {
 	@JoinColumn(name="marker_key")
 	public List<MarkerNote> getNotes() {
 		return notes;
+	}
+
+	/** get the MP annotations for this marker's alleles
+	 */
+	@Transient
+	public List<Annotation> getMPAnnotations () {
+		return this.filterAnnotations("Mammalian Phenotype/Marker");
 	}
 
 	/** get the OMIM annotations for this marker's alleles
