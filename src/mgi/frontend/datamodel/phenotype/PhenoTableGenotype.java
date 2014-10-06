@@ -58,7 +58,7 @@ public class PhenoTableGenotype {
 	@OneToMany(targetEntity=PhenoTableProvider.class, fetch=FetchType.EAGER)
 	@BatchSize(size=250)
 	@JoinColumn(name="phenotable_genotype_key")
-    @OrderBy("providerSeq")
+//    @OrderBy("providerSeq")
 	public List<PhenoTableProvider> getPhenoTableProviders() {
 		return phenoTableProviders;
 	}
