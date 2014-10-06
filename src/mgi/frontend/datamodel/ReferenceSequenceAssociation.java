@@ -22,7 +22,6 @@ import javax.persistence.Table;
 public class ReferenceSequenceAssociation extends Association {
 
 	protected int referenceKey;
-	protected Reference reference;
 	protected Sequence sequence;
 
     // ================= Getters and Setters ===================== //

@@ -14,7 +14,6 @@ import javax.persistence.Table;
 @Table(name="allele_synonym")
 public class AlleleSynonym {
 	private int alleleKey;
-	private String jnumID;
 	private String synonym;
 	private String synonymType;
 	private int uniqueKey;
@@ -68,7 +67,7 @@ public class AlleleSynonym {
 
 	@Override
     public String toString() {
-        return "AlleleSynonym [alleleKey=" + alleleKey + ", jnumID=" + jnumID
+        return "AlleleSynonym [alleleKey=" + alleleKey
                 + ", synonym=" + synonym + ", synonymType=" + synonymType
                 + ", uniqueKey=" + uniqueKey + "]";
     }
