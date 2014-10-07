@@ -5,12 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SecondaryTable;
-import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -160,7 +156,7 @@ public class PhenoTableProvider {
 		if (ic != null) {
 			if (ic.equals("MGI")) {
 				return "MGI Curated Data";
-			} else if (ic.equals("EuPh")) {
+			} else if (ic.equals("EuroPhenome")) {
 				return "Phenotype annotations from <B>EuroPhenome</B>";
 			}
 			sb.append("Data Interpretation Center: <B>");
