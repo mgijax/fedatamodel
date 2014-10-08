@@ -22,6 +22,7 @@ public class PhenoTableProvider {
 	private int phenotableGenotypeKey;
 	private PhenoTableCenter phenotypingCenter;
 	private PhenoTableCenter interpretationCenter;
+	private int sequenceNum;
 
 	/*--- fields from the phenotable_provider table ---*/
 
@@ -33,6 +34,14 @@ public class PhenoTableProvider {
 
 	public void setUniqueKey(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
+	}
+
+	@Column(name="sequence_num")
+	public int getSequenceNum() {
+		return sequenceNum;
+	}
+	public void setSequenceNum(int sequenceNum) {
+		this.sequenceNum = sequenceNum;
 	}
 
 	@Column(name="phenotable_genotype_key")
