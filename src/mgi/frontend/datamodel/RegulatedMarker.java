@@ -1,12 +1,16 @@
 package mgi.frontend.datamodel;
 
-import javax.persistence.*;
-import java.util.List;
 import java.util.Comparator;
 
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import mgi.frontend.datamodel.sort.SmartAlphaComparator;
 
 /** This is the base class for regulated-marker objects.
@@ -223,16 +227,14 @@ public class RegulatedMarker {
     }
 
     @Transient
-    public Comparator getComparator() {
-	return new RegulatedMarkerComparator();
+    public Comparator<RegulatedMarker> getComparator() {
+    	return new RegulatedMarkerComparator();
     }
 
-    private class RegulatedMarkerComparator extends SmartAlphaComparator {
-	public int compare(Object o1, Object o2) {
-	    RegulatedMarker r1 = (RegulatedMarker) o1;
-	    RegulatedMarker r2 = (RegulatedMarker) o2;
-	    return super.compare(r1.getRegulatedMarkerSymbol(),
-		r2.getRegulatedMarkerSymbol());
-	}
+    private class RegulatedMarkerComparator extends SmartAlphaComparator<RegulatedMarker> {
+	public int compare(RegulatedMarker o1, RegulatedMarker o2) {
+	    return super.compare(o1.getRegulatedMarkerSymbol(),
+	    		o2.getRegulatedMarkerSymbol());
+		}
     }
 }

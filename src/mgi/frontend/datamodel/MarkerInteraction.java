@@ -1,12 +1,16 @@
 package mgi.frontend.datamodel;
 
-import javax.persistence.*;
-import java.util.List;
 import java.util.Comparator;
 
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import mgi.frontend.datamodel.sort.SmartAlphaComparator;
 
 /** This is the base class for marker interaction objects.
@@ -233,16 +237,15 @@ public class MarkerInteraction {
     }
 
     @Transient
-    public Comparator getComparator() {
-	return new MarkerInteractionComparator();
+    public Comparator<MarkerInteraction> getComparator() {
+    	return new MarkerInteractionComparator();
     }
 
-    private class MarkerInteractionComparator extends SmartAlphaComparator {
-	public int compare(Object o1, Object o2) {
-	    MarkerInteraction r1 = (MarkerInteraction) o1;
-	    MarkerInteraction r2 = (MarkerInteraction) o2;
-	    return super.compare(r1.getInteractingMarkerSymbol(),
-		r2.getInteractingMarkerSymbol());
-	}
+    
+    private class MarkerInteractionComparator extends SmartAlphaComparator<MarkerInteraction> {
+	public int compare(MarkerInteraction o1, MarkerInteraction o2) {
+	    return super.compare(o1.getInteractingMarkerSymbol(),
+	    		o2.getInteractingMarkerSymbol());
+		}
     }
 }
