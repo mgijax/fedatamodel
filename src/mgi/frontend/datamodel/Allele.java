@@ -481,6 +481,13 @@ public class Allele {
 	return sublist;
     }
 
+    /* get the set of 'expresses component' related markers
+     */
+    @Transient
+    public List<AlleleRelatedMarker> getExpressesComponentMarkers() {
+	return this.filterRelatedMarkers("expresses_component");
+    }
+
     /* get the set of 'mutation involves' related markers
      */
     @Transient
