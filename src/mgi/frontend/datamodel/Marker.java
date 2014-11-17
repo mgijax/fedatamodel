@@ -1,7 +1,7 @@
 package mgi.frontend.datamodel;
 
-import java.text.NumberFormat;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -198,7 +198,7 @@ public class Marker {
        private void sortMarkerInteractionsBySymbol (List<MarkerInteraction> rmList) {
 	   if (rmList.size() > 1) {
 	       Collections.sort(rmList,
-		   ((MarkerInteraction) rmList.get(0)).getComparator());
+		   rmList.get(0).getComparator());
 	   }
        }
 
@@ -735,6 +735,11 @@ public class Marker {
 	@Transient
 	public MarkerID getEntrezGeneID() {
 		return this.getSingleID("Entrez Gene");
+	}
+	
+	@Transient
+	public MarkerID getHgncID() {
+		return this.getSingleID("HGNC");
 	}
 
 	@OneToMany (fetch=FetchType.LAZY)
