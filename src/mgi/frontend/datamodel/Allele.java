@@ -29,6 +29,7 @@ import mgi.frontend.datamodel.phenotype.PhenoTableSystem;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.LazyToOne;
@@ -57,7 +58,9 @@ import org.hibernate.annotations.LazyToOneOption;
 
 @FilterDefs({
 @FilterDef(name="noDiseaseHeaders"),
-@FilterDef(name="teaserMarkers")
+@FilterDef(name="teaserMarkers"),
+@FilterDef(name="mutationInvolvesMarkers"),
+@FilterDef(name="expressesComponentMarkers")
 })
 @JsonIgnoreProperties({"references", "notes", "molecularDescription", "ids"})
 public class Allele {
@@ -103,7 +106,8 @@ public class Allele {
     private RecombinaseInfo recombinaseInfo;
     private List<AlleleGenotypeAssociation> genotypeAssociations;
     private List<Annotation> annotations;
-    private List<AlleleRelatedMarker> relatedMarkers;
+    private List<AlleleRelatedMarker> mutationInvolvesMarkers;
+    private List<AlleleRelatedMarker> expressesComponentMarkers;
 	private List<PhenoTableSystem> phenoTableSystems;
 	private List<PhenoTableGenotype> phenotableGenotypes;
 	private boolean hasDiseaseModel;
@@ -460,7 +464,7 @@ public class Allele {
     /* go through list of AlleleRelatedMarker objects and return
      * only those with the specified relationship category.
      */
-    @Transient
+/*    @Transient
     private List<AlleleRelatedMarker> filterRelatedMarkers (String category) {
 
 	ArrayList<AlleleRelatedMarker> sublist =
@@ -480,12 +484,35 @@ public class Allele {
 	}
 	return sublist;
     }
-
+*/
+    /* get the set of 'expresses component' related markers
+     */
+/*    @Transient
+    public List<AlleleRelatedMarker> getExpressesComponentMarkers() {
+	return this.filterRelatedMarkers("expresses_component");
+    }
+*/
     /* get the set of 'mutation involves' related markers
      */
-    @Transient
+/*    @Transient
     public List<AlleleRelatedMarker> getMutationInvolvesMarkers() {
 	return this.filterRelatedMarkers("mutation_involves");
+    }
+*/
+    /** return set of related markers, currently used for 'mutation involves'
+     * relationships but can be expanded in the future.
+     */
+    @OneToMany (targetEntity=AlleleRelatedMarker.class, fetch=FetchType.LAZY)
+    @JoinColumn(name="allele_key")
+    @OrderBy("sequenceNum")
+    @Filters({
+        @Filter(name="mutationInvolvesMarkers",
+	    condition="relationship_category = 'mutation_involves'"),
+        @Filter(name="teaserMarkers",
+	    condition="in_teaser = 1")
+    })
+    public List<AlleleRelatedMarker> getMutationInvolvesMarkers() {
+	return mutationInvolvesMarkers;
     }
 
     /** return set of related markers, currently used for 'mutation involves'
@@ -495,13 +522,11 @@ public class Allele {
     @JoinColumn(name="allele_key")
     @OrderBy("sequenceNum")
     @Filter(
-	// enable this filter to only retrive markers flagged for usage in a
-	// teaser on the allele detail page (big performance gain)
-	name = "teaserMarkers",
-	condition = "in_teaser = 1"
+	name="expressesComponentMarkers",
+	condition="relationship_category = 'expresses_component' "
     )
-    public List<AlleleRelatedMarker> getRelatedMarkers() {
-	return relatedMarkers;
+    public List<AlleleRelatedMarker> getExpressesComponentMarkers() {
+	return expressesComponentMarkers;
     }
 
     /** Return the RecombinaseInfo object associated with this allele.
@@ -1028,9 +1053,14 @@ public class Allele {
         this.diseaseTableGenotypes=diseaseTableGenotypes;
 	}
 
-	public void setRelatedMarkers (
-	    List<AlleleRelatedMarker> relatedMarkers) {
-		this.relatedMarkers = relatedMarkers;
+	public void setMutationInvolvesMarkers (
+	    List<AlleleRelatedMarker> mutationInvolvesMarkers) {
+		this.mutationInvolvesMarkers = mutationInvolvesMarkers;
+	}
+
+	public void setExpressesComponentMarkers (
+	    List<AlleleRelatedMarker> expressesComponentMarkers) {
+		this.expressesComponentMarkers = expressesComponentMarkers;
 	}
 
 	public void setPhenoTableGenotypeAssociations(List<PhenoTableGenotype> phenotableGenotypes) {
