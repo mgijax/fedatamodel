@@ -16,6 +16,7 @@ public class AnnotationInferredFromID {
     private Boolean isPreferred;
     private Boolean isPrivate;
     private String sequenceNum;
+    private String organism;
     
     @Id
     @Column(name="unique_key")
@@ -31,6 +32,11 @@ public class AnnotationInferredFromID {
     @Column(name="logical_db")
     public String getLogicalDB() {
         return logicalDB;
+    }
+    
+    @Column(name="organism")
+    public String getOrganism() {
+        return organism;
     }
     
     @Column(name="acc_id")
@@ -60,6 +66,9 @@ public class AnnotationInferredFromID {
     }
     public void setLogicalDB(String logicalDB) {
         this.logicalDB = logicalDB;
+    }
+    public void setOrganism(String organism) {
+        this.organism = organism;
     }
     public void setAccID(String accID) {
         this.accID = accID;

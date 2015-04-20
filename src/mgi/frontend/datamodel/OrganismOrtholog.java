@@ -8,7 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -41,7 +41,7 @@ public class OrganismOrtholog {
 		this.organism = organism;
 	}
 	
-	@OneToMany
+	@ManyToMany
 	@JoinTable (name="homology_cluster_organism_to_marker",
 			joinColumns=@JoinColumn(name="cluster_organism_key"),
 			inverseJoinColumns=@JoinColumn(name="marker_key")

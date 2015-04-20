@@ -38,6 +38,7 @@ public class Annotation {
 	private String byVocab;
 	private String dagName;
 	private String evidenceCode;
+	private String evidenceTerm;
 	private List <AnnotationInferredFromID> inferredFromList;
 	private String inferredIDCount;
 	private String objectType;
@@ -84,6 +85,11 @@ public class Annotation {
     @Column(name="dag_name")
     public String getDagName() {
         return dagName;
+    }
+
+    @Column(name="evidence_term")
+    public String getEvidenceTerm() {
+        return evidenceTerm;
     }
 
     @Column(name="evidence_code")
@@ -198,6 +204,9 @@ public class Annotation {
     }
     public void setEvidenceCode(String evidenceCode) {
         this.evidenceCode = evidenceCode;
+    }
+    public void setEvidenceTerm(String evidenceTerm) {
+        this.evidenceTerm = evidenceTerm;
     }
     public void setInferredFromList(List<AnnotationInferredFromID> inferredFromList) {
         this.inferredFromList = inferredFromList;

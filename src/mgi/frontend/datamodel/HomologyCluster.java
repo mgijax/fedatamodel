@@ -31,6 +31,7 @@ public class HomologyCluster {
 	private String primaryID;
 	private String version;
 	private String source;
+	private String secondarySource;
 	private Date date;	
 	private List<OrganismOrtholog> orthologs;
 	private Integer mouseMarkerCount;
@@ -160,6 +161,13 @@ public class HomologyCluster {
 	}
 	public void setSource(String source) {
 		this.source = source;
+	}
+	@Column(name="secondary_source")
+	public String getSecondarySource() {
+		return secondarySource;
+	}
+	public void setSecondarySource(String secondarySource) {
+		this.secondarySource = secondarySource;
 	}
 	@Column(name="cluster_date")
 	public Date getDate() {

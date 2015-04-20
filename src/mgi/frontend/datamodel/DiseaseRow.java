@@ -36,18 +36,15 @@ public class DiseaseRow {
     // ================= Convenience Methods ===================== //
 
 	@Transient
-	private List<DiseaseRowToMarker> filterDiseaseRowToMarkers(
-			String organism) {
+	private List<DiseaseRowToMarker> filterDiseaseRowToMarkers(String organism) {
 
-		ArrayList<DiseaseRowToMarker> sublist = 
-			new ArrayList<DiseaseRowToMarker>();
+		ArrayList<DiseaseRowToMarker> sublist = new ArrayList<DiseaseRowToMarker>();
 
-		if (this.diseaseRowToMarkers == null) {
+		if (diseaseRowToMarkers == null) {
 			return sublist;
 		}
 
-		Iterator<DiseaseRowToMarker> it =
-			this.diseaseRowToMarkers.iterator();
+		Iterator<DiseaseRowToMarker> it = diseaseRowToMarkers.iterator();
 		DiseaseRowToMarker drtm;
 
 		while (it.hasNext()) {
@@ -65,8 +62,7 @@ public class DiseaseRow {
 		ArrayList<Marker> sublist = new ArrayList<Marker>();
 
 		// walks through all mouse markers
-		Iterator<DiseaseRowToMarker> drtmIt =
-			this.getMouseMarkers().iterator();
+		Iterator<DiseaseRowToMarker> drtmIt = getMouseMarkers().iterator();
 
 		// one item from 'drtmIt'
 		DiseaseRowToMarker drtm;
@@ -83,12 +79,12 @@ public class DiseaseRow {
 
 	@Transient
 	public List<DiseaseRowToMarker> getMouseMarkers() {
-		return this.filterDiseaseRowToMarkers("mouse");
+		return filterDiseaseRowToMarkers("mouse");
 	}
 
 	@Transient
 	public List<DiseaseRowToMarker> getHumanMarkers() {
-		return this.filterDiseaseRowToMarkers("human");
+		return filterDiseaseRowToMarkers("human");
 	}
  
 	@Transient
@@ -100,8 +96,7 @@ public class DiseaseRow {
 			return models;
 		}
 
-		Iterator<DiseaseRowToModel> it =
-			this.diseaseRowToModels.iterator();
+		Iterator<DiseaseRowToModel> it = diseaseRowToModels.iterator();
 
 		while (it.hasNext()) {
 			models.add(it.next().getDiseaseModel());
@@ -111,16 +106,14 @@ public class DiseaseRow {
 
 	@Transient
 	private List<DiseaseModel> filterMouseModels(int isNotModel) {
-		ArrayList<DiseaseModel> models =
-			new ArrayList<DiseaseModel>();
+		ArrayList<DiseaseModel> models = new ArrayList<DiseaseModel>();
 
-		if (this.diseaseRowToModels == null) {
+		if (diseaseRowToModels == null) {
 			return models;
 		}
 
 		DiseaseModel dm;
-		Iterator<DiseaseRowToModel> it =
-			this.diseaseRowToModels.iterator();
+		Iterator<DiseaseRowToModel> it = diseaseRowToModels.iterator();
 
 		while (it.hasNext()) {
 			dm = it.next().getDiseaseModel();
@@ -133,12 +126,12 @@ public class DiseaseRow {
 
 	@Transient
 	public List<DiseaseModel> getMouseModels() {
-		return this.filterMouseModels(0);
+		return filterMouseModels(0);
 	}
  
 	@Transient
 	public List<DiseaseModel> getNotModels() {
-		return this.filterMouseModels(1);
+		return filterMouseModels(1);
 	}
  
     // ================= Getters and Setters ===================== //
