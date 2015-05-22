@@ -98,7 +98,6 @@ public class Marker {
 	private String name;
 	private List<MarkerNote> notes;
 	private String organism;
-	private List<MarkerOrthology> orthologousMarkers;
 	private List<MarkerLink> links;
 	private String primaryID;
 	private List<MarkerReferenceAssociation> referenceAssociations;
@@ -1130,18 +1129,6 @@ public class Marker {
 	}
 
 	/**
-	 * Return a collection of marker orthologs.
-	 * @return
-	 */
-	@OneToMany
-	@JoinColumn(name="mouse_marker_key")
-	@BatchSize(size=50)
-	@OrderBy("sequenceNum")
-	public List<MarkerOrthology> getOrthologousMarkers() {
-		return orthologousMarkers;
-	}
-
-	/**
 	 * Return a collection of marker links.
 	 * @return
 	 */
@@ -1767,10 +1754,6 @@ public class Marker {
 		this.links = links;
 	}
 
-	public void setOrthologousMarkers(List<MarkerOrthology> orthologousMarkers) {
-		this.orthologousMarkers = orthologousMarkers;
-	}
-
 	public void setPrimaryID(String primaryID) {
 		this.primaryID = primaryID;
 	}
@@ -1815,8 +1798,6 @@ public class Marker {
 								+ (markerType != null ? "markerType=" + markerType + ", " : "")
 								+ (name != null ? "name=" + name + ", " : "")
 								+ (organism != null ? "organism=" + organism + ", " : "")
-								+ (orthologousMarkers != null ? "orthologousMarkers="
-										+ orthologousMarkers + ", " : "")
 										+ (primaryID != null ? "primaryID=" + primaryID + ", " : "")
 										+ (status != null ? "status=" + status + ", " : "")
 										+ (symbol != null ? "symbol=" + symbol + ", " : "")

@@ -111,17 +111,4 @@ public class PhenoTableSystem {
 		this.systemCells = systemCells;
 	}
 
-
-//	@Override
-//	public String toString() {
-//		return "MarkerOrthology [mouseMarkerKey="
-//				+ mouseMarkerKey
-//				+ ", otherMarkerKey="
-//				+ otherMarkerKey
-//				+ ", "
-//				+ (otherOrganism != null ? "otherOrganism=" + otherOrganism
-//						+ ", " : "")
-//				+ (otherSymbol != null ? "otherSymbol=" + otherSymbol + ", "
-//						: "") + "uniqueKey=" + uniqueKey + "]";
-//	}
 }

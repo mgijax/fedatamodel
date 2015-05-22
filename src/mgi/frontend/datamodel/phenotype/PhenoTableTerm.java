@@ -130,16 +130,4 @@ public class PhenoTableTerm {
 		this.termCells = termCells;
 	}
 
-//    @Override
-//    public String toString() {
-//        return "MarkerOrthology [mouseMarkerKey="
-//                + mouseMarkerKey
-//                + ", otherMarkerKey="
-//                + otherMarkerKey
-//                + ", "
-//                + (otherOrganism != null ? "otherOrganism=" + otherOrganism
-//                        + ", " : "")
-//                + (otherSymbol != null ? "otherSymbol=" + otherSymbol + ", "
-//                        : "") + "uniqueKey=" + uniqueKey + "]";
-//    }
 }

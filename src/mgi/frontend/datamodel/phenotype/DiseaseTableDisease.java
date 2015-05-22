@@ -142,18 +142,4 @@ public class DiseaseTableDisease {
 	{
 		this.diseaseCells = diseaseCells;
 	}
-
-
-//	@Override
-//	public String toString() {
-//		return "MarkerOrthology [mouseMarkerKey="
-//				+ mouseMarkerKey
-//				+ ", otherMarkerKey="
-//				+ otherMarkerKey
-//				+ ", "
-//				+ (otherOrganism != null ? "otherOrganism=" + otherOrganism
-//						+ ", " : "")
-//				+ (otherSymbol != null ? "otherSymbol=" + otherSymbol + ", "
-//						: "") + "uniqueKey=" + uniqueKey + "]";
-//	}
 }
