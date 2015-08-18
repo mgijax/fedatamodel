@@ -26,7 +26,6 @@ public class Term {
     private String primaryID;
     private String term;
     private String vocabName;
-    private String abbreviation;
 
     // ================= Getters and Setters ===================== //
 
@@ -99,17 +98,8 @@ public class Term {
 	return term;
     }
 
-    @Column(name="abbreviation")
-    public String getAbbreviation() {
-	return abbreviation;
-    }
-
     public void setTerm(String term) {
 	this.term = term;
-    }
-
-    public void setAbbreviation(String abbreviation) {
-	this.abbreviation = abbreviation;
     }
 
     @Column(name="vocab_name")

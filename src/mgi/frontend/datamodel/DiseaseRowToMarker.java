@@ -1,18 +1,13 @@
 package mgi.frontend.datamodel;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.BatchSize;
 
 /**
  * DiseaseRowToMarker
@@ -30,18 +25,17 @@ public class DiseaseRowToMarker {
 	private int sequenceNum;
 	private int isCausative;
 	private String organism;
-	private List<DiseaseRow> diseaseRows;
 
     // ================= Convenience Methods ===================== //
 
 	@Transient
 	public String getSymbol() {
-		return marker.getSymbol();
+		return this.marker.getSymbol();
 	}
     
 	@Transient
 	public String getPrimaryID() {
-		return marker.getPrimaryID();
+		return this.marker.getPrimaryID();
 	}
 
     // ================= Getters and Setters ===================== //
@@ -50,17 +44,6 @@ public class DiseaseRowToMarker {
 	@JoinColumn (name="marker_key")
 	public Marker getMarker() {
 		return marker;
-	}
-	
-	@OneToMany (targetEntity=DiseaseRow.class)
-	@JoinColumn (name="disease_row_key")
-	@BatchSize(size=100)
-	public List<DiseaseRow> getDiseaseRows() {
-		return diseaseRows;
-	}
-
-	public void setDiseaseRows(List<DiseaseRow> diseaseRows) {
-		this.diseaseRows = diseaseRows;
 	}
 
 	@Id
@@ -124,5 +107,4 @@ public class DiseaseRowToMarker {
 				+ ", "
 				+ sequenceNum + "]";
 	}
-
 }
