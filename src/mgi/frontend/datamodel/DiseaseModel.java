@@ -36,25 +36,25 @@ public class DiseaseModel {
 
 	@Transient
 	public String getBackgroundStrain() {
-		return this.genotype.getBackgroundStrain();
+		return genotype.getBackgroundStrain();
 	}
     
 	@Transient
 	public String getAllelePairs() {
-		return this.genotype.getCombination1();
+		return genotype.getCombination1();
 	}
 
 	@Transient
 	public String getGenotypeID() {
-		return this.genotype.getPrimaryID();
+		return genotype.getPrimaryID();
 	}
 
 	@Transient
 	public int getReferenceCount() {
-		if (this.references == null) {
+		if (references == null) {
 			return 0;
 		}
-		return this.references.size();
+		return references.size();
 	}
 
     // ================= Getters and Setters ===================== //

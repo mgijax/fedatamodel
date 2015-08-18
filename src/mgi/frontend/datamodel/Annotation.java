@@ -8,12 +8,16 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.BatchSize;
 
 /**
  * Annotation
@@ -47,9 +51,11 @@ public class Annotation {
 	private List <Reference> references;
 	private String term;
 	private String termID;
+	private Integer termKey;
 	private String vocabName;
 	private List<Marker> markers;
 	private List<Genotype> genotypes;
+	private List<Term> headers;
 
 	@Id
 	@Column(name="annotation_key")
@@ -166,6 +172,11 @@ public class Annotation {
         return references;
     }
 
+    @Column(name="term_key")
+    public Integer getTermKey() {
+	return termKey;
+    }
+
     public String getTerm() {
         return term;
     }
@@ -178,6 +189,37 @@ public class Annotation {
     @Column(name="vocab_name")
     public String getVocabName() {
         return vocabName;
+    }
+
+    /* get a collection of slimgrid header terms
+     */
+    @ManyToMany
+    @JoinTable (name="annotation_to_header",
+	joinColumns=@JoinColumn(name="annotation_key"),
+	inverseJoinColumns=@JoinColumn(name="header_term_key")
+	)
+    @BatchSize(size=100)
+    @OrderBy("abbreviation")
+    public List<Term> getHeaders() {
+	return headers;
+    }
+
+    @Transient
+    public String getHeaderAbbreviations() {
+	StringBuffer sb = new StringBuffer();
+	boolean first = true;
+
+	for (Term t : this.getHeaders()) {
+	    if (!first) { sb.append(", "); }
+	    else { first = false; }
+
+	    sb.append(t.getAbbreviation());
+	}
+	return sb.toString();
+    }
+
+    public void setHeaders (List<Term> headers) {
+	this.headers = headers;
     }
 
     public void setAnnotationKey(int annotationKey) {
@@ -231,6 +273,9 @@ public class Annotation {
     }
     public void setReferences(List<Reference> references) {
         this.references = references;
+    }
+    public void setTermKey(Integer termKey) {
+        this.termKey = termKey;
     }
     public void setTerm(String term) {
         this.term = term;
