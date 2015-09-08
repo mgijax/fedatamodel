@@ -1,7 +1,9 @@
 package mgi.frontend.datamodel;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -18,8 +20,20 @@ public class MarkerAlleleAssociation {
 
     protected Marker marker;
     protected Allele allele;
+    protected int uniqueKey;
 
     // ================= Getters and Setters ===================== //
+    
+
+    @Id
+    @Column(name="unique_key")
+    public int getUniqueKey() {
+	    return uniqueKey;
+    }
+    
+    public void setUniqueKey(int uniqueKey) {
+	    this.uniqueKey = uniqueKey;
+    }
 
     /** Return the actual marker for this relationship.
      */
@@ -52,3 +66,4 @@ public class MarkerAlleleAssociation {
     		+ (allele != null ? "allele=" + allele : "") + "]";
     }
 }
+
