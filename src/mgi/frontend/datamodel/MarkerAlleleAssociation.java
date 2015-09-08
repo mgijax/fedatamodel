@@ -9,13 +9,12 @@ import javax.persistence.Table;
 /**
  * MarkerAlleleAssociation
  * @author jsb
- * Associates a Marker with an Allele, including a Reference and a qualifier
- * for the relationship.
+ * Associates a Marker with an Allele
  */
 
 @Entity
 @Table (name="marker_to_allele")
-public class MarkerAlleleAssociation extends Association {
+public class MarkerAlleleAssociation {
 
     protected Marker marker;
     protected Allele allele;
