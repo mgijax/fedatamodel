@@ -1,8 +1,12 @@
+TAG: fedatamodel-6-0-1-0
+DATE: 9/8/2015
+STAFF: oblod
+1) Merge TR11726 into trunk
+
 TAG: fedatamodel-6-0-0-1,fedatamodel-6-0-0-2
 DATE: 09/8/2015
 STAFF: kstone
 1) bug fix for marker allele associations
-
 
 TAG: fedatamodel-5-2-2-2
 DATE: 05/22/2015

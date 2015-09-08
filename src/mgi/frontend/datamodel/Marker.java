@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeMap;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -62,7 +63,7 @@ public class Marker {
 	private List<MarkerQtlExperiment> qtlExperiments;
 	private List<MarkerProbeset> probesets;
 	private List<MarkerAlleleAssociation> alleleAssociations;
-	List<MarkerIncidentalMutation> incidentalMutations;
+	private List<MarkerIncidentalMutation> incidentalMutations;
 	private List<BatchMarkerAllele> batchMarkerAlleles;
 	private List<Annotation> annotations;
 	private List<BatchMarkerGoAnnotation> batchMarkerGoAnnotations;
@@ -87,7 +88,12 @@ public class Marker {
 	private Integer countOfMicroarrayProbesets;
 	private Integer countForImsr;
 	private Integer countOfMutationInvolves;
-	private int isInReferenceGenome;
+	private Integer countOfAllelesMP;
+	private Integer countOfAnnotationsMP;
+	private Integer countOfGOReferences;
+	private Integer countOfPhenotypeReferences;
+	private Integer countOfBackgroundStrains;
+	private Integer countOfOtherPhenotypeAnnotations;
 	private int hasGOGraph;
 	private List<MarkerID> ids;
 	private List<MarkerLocation> locations;
@@ -116,6 +122,9 @@ public class Marker {
 	private List<OrganismOrtholog> organismOrthologs;
 	private List<RelatedMarker> relatedMarkers;
 	private List<MarkerInteraction> markerInteractions;
+	private List<MarkerGridCell> gridCells;
+	private List<DiseaseRow> diseaseRows;
+	private List<MPGenotype> mpGenotypes;
 
 	//=== methods for related markers ===//
 
@@ -243,8 +252,6 @@ public class Marker {
 	public List<MarkerCountSetItem> getInteractionCountsByType() {
 		return filterCountSetItems("Interaction");
 	}
-
-	// ================= Instance Methods ===================== //
 
 	/** used to make other convenience methods to extract only a certain types
 	 * of annotations from the full List of annotations
@@ -468,6 +475,8 @@ public class Marker {
 		this.incidentalMutations = incidentalMutations;
 	}
 
+
+	
 	/** return the list of counts of alleles by type
 	 */
 	@Transient
@@ -555,6 +564,42 @@ public class Marker {
 	@JoinColumn(name="marker_key")
 	public Integer getCountOfMutationInvolves() {
 		return countOfMutationInvolves;
+	}
+
+	@Column(table="marker_counts", name="mp_allele_count")
+	@JoinColumn(name="marker_key")
+	public Integer getCountOfAllelesMP() {
+		return countOfAllelesMP;
+	}
+
+	@Column(table="marker_counts", name="mp_annotation_count")
+	@JoinColumn(name="marker_key")
+	public Integer getCountOfAnnotationsMP() {
+		return countOfAnnotationsMP;
+	}
+
+	@Column(table="marker_counts", name="go_reference_count")
+	@JoinColumn(name="marker_key")
+	public Integer getCountOfGOReferences() {
+		return countOfGOReferences;
+	}
+
+	@Column(table="marker_counts", name="phenotype_reference_count")
+	@JoinColumn(name="marker_key")
+	public Integer getCountOfPhenotypeReferences() {
+		return countOfPhenotypeReferences;
+	}
+
+	@Column(table="marker_counts", name="mp_background_count")
+	@JoinColumn(name="marker_key")
+	public Integer getCountOfBackgroundStrains() {
+		return countOfBackgroundStrains;
+	}
+
+	@Column(table="marker_counts", name="mp_multigenic_annotation_count")
+	@JoinColumn(name="marker_key")
+	public Integer getCountOfOtherPhenotypeAnnotations() {
+		return countOfOtherPhenotypeAnnotations;
 	}
 
 	@Column(table="marker_counts", name="allele_count")
@@ -824,14 +869,6 @@ public class Marker {
 		return filterCountSetItems("Expression Results by Assay Type");
 	}
 
-	/** returns 1 if this marker is in the GO Consortium reference genome
-	 * project, 0 otherwise
-	 */
-	@Column(name="is_in_reference_genome")
-	public int getIsInReferenceGenome() {
-		return isInReferenceGenome;
-	}
-
 	/** returns 1 if this marker has a GO graph, or 0 if not
 	 */
 	@Column(name="has_go_graph")
@@ -988,7 +1025,129 @@ public class Marker {
 	public String getOrganism() {
 		return organism;
 	}
+	
+	
+	@OneToMany(targetEntity=DiseaseRow.class)
+	@JoinTable(
+		name="disease_row_to_marker",
+		joinColumns = @JoinColumn( name="marker_key"),
+		inverseJoinColumns = @JoinColumn( name="disease_row_key")
+	)
+	@BatchSize(size=100)
+	public List<DiseaseRow> getDiseaseRows() {
+		return diseaseRows;
+	}
 
+	public void setDiseaseRows(List<DiseaseRow> diseaseRows) {
+		this.diseaseRows = diseaseRows;
+	}
+	
+	@OneToMany(targetEntity=MPGenotype.class, fetch=FetchType.LAZY)
+	@JoinColumn(name="marker_key")
+	@BatchSize(size=200)
+	@OrderBy("sequence_num")
+	public List<MPGenotype> getMpGenotypes() {
+		return mpGenotypes;
+	}
+
+	@Transient
+	public List<MPGenotype> filterMpGenotypes(int multigenic) {
+		List<MPGenotype> sublist = new ArrayList<MPGenotype>();
+
+		MPGenotype mpg;
+		Iterator<MPGenotype> it = getMpGenotypes().iterator();
+
+		while (it.hasNext()) {
+			mpg = it.next();
+
+			if (multigenic == mpg.getIsMultigenic()) {
+				sublist.add(mpg);
+			}
+		}
+		return sublist;
+	}
+
+	@Transient
+	public List<MPGenotype> getRolledUpMpGenotypes() {
+		return this.filterMpGenotypes(0);
+	}
+
+	@Transient
+	public List<MPGenotype> getMultigenicMpGenotypes() {
+		return this.filterMpGenotypes(1);
+	}
+
+	public void setMpGenotypes(List<MPGenotype> mpGenotypes) {
+		this.mpGenotypes = mpGenotypes;
+	}
+
+	// Marker (self) -> OrganismOrtholog (mouse) -> HomologyCluster (hybrid) -> OrganismOrtholog (human) -> Marker -> HumanAnnotations (OMIM)
+	// TODO Remove this comment
+	
+	@Transient
+	public HashMap<String, HashMap<String, Annotation>> getHumanHomologOMIMAnnotations() {
+		HashMap<String, HashMap<String, Annotation>> map = new HashMap<String, HashMap<String, Annotation>>();
+		//System.out.println("getHumanHomologOMIMAnnotations: ");
+		if(organism.equals("mouse")) {
+			//System.out.println("-Organism: " + organism);
+			for(OrganismOrtholog o: organismOrthologs) {
+				//System.out.println("--" + o.getHomologyCluster().getSource());
+				if(o.getHomologyCluster().getSource().equals("HomoloGene and HGNC")) {
+					for(OrganismOrtholog oo: o.getHomologyCluster().getOrthologs()) {
+						//System.out.println("---" + oo.getOrganism());
+						if(oo.getOrganism().equals("human")) {
+							//return oo.getMarkers();
+							for(Marker mm: oo.getMarkers()) {
+								//System.out.println("----" + mm.getSymbol());
+								for(Annotation a: mm.getOMIMHumanAnnotations()) {
+									//System.out.println("-----OMIM: " + a.getQualifier());
+									HashMap<String, Annotation> list = map.get(mm.getSymbol());
+									if(list == null) {
+										list = new HashMap<String, Annotation>();
+										map.put(mm.getSymbol(), list);
+									}
+									if(!list.containsKey(a.getTermID())) {
+										list.put(a.getTermID(), a);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return map;
+	}
+	
+	@Transient
+	public HashMap<String, ArrayList<DiseaseModel>> getMouseModelsMap() {
+		return getMouseModelsMap(0);
+	}
+	
+	@Transient
+	public HashMap<String, ArrayList<DiseaseModel>> getNotMouseModelsMap() {
+		return getMouseModelsMap(1);
+	}
+	
+	@Transient
+	public HashMap<String, ArrayList<DiseaseModel>> getMouseModelsMap(int filter) {
+		HashMap<String, ArrayList<DiseaseModel>> ret = new HashMap<String, ArrayList<DiseaseModel>>();
+		for(DiseaseRow dr: diseaseRows) {
+			for(DiseaseRowToModel drtmo: dr.getDiseaseRowToModels()) {
+				DiseaseModel m = drtmo.getDiseaseModel();
+				if(m.getIsNotModel() == filter) {
+					ArrayList<DiseaseModel> list = ret.get(m.getDiseaseID());
+					if(list == null) {
+						list = new ArrayList<DiseaseModel>();
+						ret.put(m.getDiseaseID(), list);
+					}
+					list.add(m);
+				}
+			}
+		}
+		return ret;
+	}
+	
 	/* get the first OrganismOrtholog object with the given 'source'
 	 */
 	@Transient
@@ -1126,6 +1285,74 @@ public class Marker {
 		}
 
 		return sourceList;
+	}
+
+	/* filters the full set of slimgrid cells to only extract those for a
+	 * certain grid name
+	 */
+	@Transient
+	public List<MarkerGridCell> filterSlimgridCells (String name) {
+		ArrayList<MarkerGridCell> sublist = new ArrayList<MarkerGridCell>();
+		Iterator<MarkerGridCell> it = getGridCells().iterator();
+		MarkerGridCell m;
+
+		while (it.hasNext()) {
+			m = it.next();
+			if (m.getGridName().equals(name)) {
+				sublist.add(m);
+			}
+		}
+		return sublist;
+	}
+
+	/* returns a list of MarkerGridCell obejcts for the Anatomy slimgrid
+	 * (expression data pulled up to high-level EMAPA terms)
+	 */
+	@Transient
+	public List<MarkerGridCell> getSlimgridCellsAnatomy() {
+		return this.filterSlimgridCells("Anatomy");
+	}
+
+	/* returns a list of MarkerGridCell obejcts for the Mammalian
+	 * Phenotype (MP) slimgrid
+	 */
+	@Transient
+	public List<MarkerGridCell> getSlimgridCellsMP() {
+		return this.filterSlimgridCells("Mammalian Phenotype");
+	}
+
+	/* returns a list of MarkerGridCell obejcts for the biological 
+	 * process slimgrid (in GO)
+	 */
+	@Transient
+	public List<MarkerGridCell> getSlimgridCellsProcess() {
+		return this.filterSlimgridCells("Biological Process");
+	}
+
+	/* returns a list of MarkerGridCell obejcts for the molecular
+	 * function slimgrid (in GO)
+	 */
+	@Transient
+	public List<MarkerGridCell> getSlimgridCellsFunction() {
+		return this.filterSlimgridCells("Molecular Function");
+	}
+
+	/* returns a list of MarkerGridCell obejcts for the cellular
+	 * component slimgrid (in GO)
+	 */
+	@Transient
+	public List<MarkerGridCell> getSlimgridCellsComponent() {
+		return this.filterSlimgridCells("Cellular Component");
+	}
+
+	/** returns a list of slimgrid cells for the marker
+	 */
+	@OneToMany (targetEntity=MarkerGridCell.class)
+	@JoinColumn(name="marker_key")
+	@BatchSize(size=300)
+	@OrderBy("sequenceNum")
+	public List<MarkerGridCell> getGridCells() {
+		return gridCells;
 	}
 
 	/**
@@ -1605,6 +1832,28 @@ public class Marker {
 		this.countOfMutationInvolves = countOfMutationInvolves;
 	}
 
+	public void setCountOfAllelesMP (Integer countOfAllelesMP) {
+		this.countOfAllelesMP = countOfAllelesMP;
+	}
+
+	public void setCountOfAnnotationsMP (Integer countOfAnnotationsMP) {
+		this.countOfAnnotationsMP = countOfAnnotationsMP;
+	}
+	public void setCountOfGOReferences (Integer countOfGOReferences) {
+		this.countOfGOReferences = countOfGOReferences;
+	}
+	public void setCountOfPhenotypeReferences (Integer countOfPhenotypeReferences) {
+		this.countOfPhenotypeReferences = countOfPhenotypeReferences;
+	}
+
+	public void setCountOfBackgroundStrains (Integer countOfBackgroundStrains) {
+		this.countOfBackgroundStrains = countOfBackgroundStrains;
+	}
+
+	public void setCountOfOtherPhenotypeAnnotations (Integer countOfOtherPhenotypeAnnotations) {
+		this.countOfOtherPhenotypeAnnotations = countOfOtherPhenotypeAnnotations;
+	}
+
 	public void setCountOfAlleles(Integer countOfAlleles) {
 		this.countOfAlleles = countOfAlleles;
 	}
@@ -1702,8 +1951,8 @@ public class Marker {
 		this.expressionAssays = expressionAssays;
 	}
 
-	public void setIsInReferenceGenome(int isInReferenceGenome) {
-		this.isInReferenceGenome = isInReferenceGenome;
+	public void setGridCells(List<MarkerGridCell> gridCells) {
+		this.gridCells = gridCells;
 	}
 
 	public void setHasGOGraph(int hasGOGraph) {
@@ -1803,6 +2052,8 @@ public class Marker {
 										+ (symbol != null ? "symbol=" + symbol + ", " : "")
 										+ (synonyms != null ? "synonyms=" + synonyms : "") + "]";
 	}
+
+
 
 	private class MarkerComparator extends SmartAlphaComparator<Marker>
 	{
