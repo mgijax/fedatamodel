@@ -770,6 +770,13 @@ public class Marker {
 		return getSingleID("Ensembl Gene Model");
 	}
 
+	/** get all the Entrez Gene IDs for this marker, or null if none
+	 */
+	@Transient
+	public List<MarkerID> getEntrezGeneIDs() {
+		return filterMarkerIDs("Entrez Gene");
+	}
+
 	/** get the Entrez Gene ID for this marker, or null if none
 	 */
 	@Transient
