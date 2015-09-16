@@ -1,6 +1,7 @@
 package mgi.frontend.datamodel;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.BatchSize;
 
 import mgi.frontend.datamodel.phenotype.MPSystem;
 
@@ -54,6 +56,7 @@ public class Genotype implements Comparable<Genotype>
 	private Image primaryImageThumbnail=null;
 	private String cellLines;
 	private String existsAs;
+	private List<Allele> alleles;
 
 
 	// ================= Getters and Setters ===================== //
@@ -199,6 +202,36 @@ public class Genotype implements Comparable<Genotype>
 	}
 
 
+	@OneToMany
+	@JoinTable (name="allele_to_genotype",
+		joinColumns=@JoinColumn(name="genotype_key"),
+		inverseJoinColumns=@JoinColumn(name="allele_key")
+		)
+	@BatchSize(size=15)
+	@OrderBy("symbol")
+	public List<Allele> getAlleles() {
+		return alleles;
+	}
+
+	public void setAlleles(List<Allele> alleles) {
+		this.alleles = alleles;
+	}
+
+	// get the list of Allele objects which have IMSR strain data
+	@Transient
+	public List<Allele> getImsrAlleles() {
+		List<Allele> sublist = new ArrayList<Allele>();
+
+		for (Allele a : this.getAlleles()) {
+			if ((a.getImsrStrainCount() > 0) || (a.getImsrCountForMarker() > 0)) {
+				if (a.getIsWildType() == 0) {
+					sublist.add(a);
+				}
+			}
+		}
+		return sublist;
+	}
+
 	@OneToMany (targetEntity=AlleleGenotypeAssociation.class)
 	@JoinColumn(name="genotype_key")
 	public List<AlleleGenotypeAssociation> getAlleleAssociations() {
@@ -225,11 +258,6 @@ public class Genotype implements Comparable<Genotype>
 	@JoinColumn(name="genotype_key")
 	public List<GenotypeDisease> getDiseases()
 	{
-//		List<GenotypeDisease> diseases = new ArrayList<GenotypeDisease>();
-//		for(AlleleGenotypeAssociation aa : this.getAlleleAssociations())
-//		{
-//			diseases.addAll(aa.getDiseases());
-//		}
 		return diseases;
 	}
 
