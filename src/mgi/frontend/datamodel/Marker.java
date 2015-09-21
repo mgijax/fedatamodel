@@ -1567,7 +1567,8 @@ public class Marker {
 		return primaryID;
 	}
 
-	/** get the Interpro annotations for this marker
+	/** get the Interpro annotations for this marker plus the Protein
+	 * Ontology annotations
 	 */
 	@Transient
 	public List<Annotation> getProteinAnnotations () {
@@ -1575,6 +1576,20 @@ public class Marker {
 		List<Annotation> proteinOntology = filterAnnotations("Protein Ontology/Marker");
 		interpro.addAll(proteinOntology);
 		return interpro;
+	}
+
+	/** get the Interpro annotations for this marker
+	 */
+	@Transient
+	public List<Annotation> getInterProAnnotations () {
+		return filterAnnotations("InterPro/Marker");
+	}
+
+	/** get the Protein Ontology annotations for this marker
+	 */
+	@Transient
+	public List<Annotation> getProteinOntologyAnnotations () {
+		return filterAnnotations("Protein Ontology/Marker");
 	}
 
 	/** convenience method to pull the QTL coordinate note out of the list
@@ -1773,6 +1788,20 @@ public class Marker {
 		List<MarkerID> ids = filterMarkerIDs ("SWISS-PROT");
 		ids.addAll(filterMarkerIDs("TrEMBL"));
 		return ids;
+	}
+
+	/** retrieve the PDB IDs for the marker
+	 */
+	@Transient
+	public List<MarkerID> getPdbIDs () {
+		return filterMarkerIDs ("PDB");
+	}
+
+	/** retrieve the EC (Enzyme Commission) IDs for the marker
+	 */
+	@Transient
+	public List<MarkerID> getEcIDs () {
+		return filterMarkerIDs ("EC");
 	}
 
 	/** get the VEGA Gene Model ID for this marker, or null if none
