@@ -1790,6 +1790,20 @@ public class Marker {
 		return ids;
 	}
 
+	/** retrieve the Consensus CDS Project IDs for the marker
+	 */
+	@Transient
+	public List<MarkerID> getCcdsIDs () {
+		return filterMarkerIDs ("Consensus CDS Project");
+	}
+
+	/** retrieve the UniGene IDs for the marker
+	 */
+	@Transient
+	public List<MarkerID> getUniGeneIDs () {
+		return filterMarkerIDs ("UniGene");
+	}
+
 	/** retrieve the PDB IDs for the marker
 	 */
 	@Transient
