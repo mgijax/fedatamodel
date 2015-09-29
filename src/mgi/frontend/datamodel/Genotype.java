@@ -2,6 +2,7 @@ package mgi.frontend.datamodel;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -230,6 +231,38 @@ public class Genotype implements Comparable<Genotype>
 			}
 		}
 		return sublist;
+	}
+
+	// get the list of non-wild-type Allele objects 
+	@Transient
+	public List<Allele> getMutantAlleles() {
+		List<Allele> sublist = new ArrayList<Allele>();
+
+		for (Allele a : this.getAlleles()) {
+			if (a.getIsWildType() == 0) {
+				sublist.add(a);
+			}
+		}
+		return sublist;
+	}
+
+	// get the list of markers with mutations (distinct list of markers,
+	// even if multiple alleles per marker) -- ordered by symbol
+	@Transient
+	public List<Marker> getMutatedMarkers() {
+		List<Marker> markers = new ArrayList<Marker>();
+
+		for (Allele a : getMutantAlleles()) {
+			if (!markers.contains(a.getMarker())) {
+				markers.add(a.getMarker());
+			}
+		}
+
+		if (markers.size() > 0) {
+			Collections.sort(markers,
+				markers.get(0).getComparator());
+		}
+		return markers; 
 	}
 
 	@OneToMany (targetEntity=AlleleGenotypeAssociation.class)
