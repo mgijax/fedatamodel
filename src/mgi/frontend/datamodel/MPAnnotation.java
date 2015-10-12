@@ -87,12 +87,16 @@ public class MPAnnotation {
 		return this.headers;
 	}
 
+	/* hacked to generate header abbreviations, rathern than pulling them
+	* from the now-null abbreviations in the database
+	*/
 	@Transient
 	public List<String> getMPHeaders() {
 		List<String> abbrevs = new ArrayList<String>();
 
 		for (Term t : this.getHeaders()) {
-			abbrevs.add(t.getAbbreviation());
+			//abbrevs.add(t.getAbbreviation());
+			abbrevs.add(t.getTerm().replace(" phenotype", ""));
 		}
 		return abbrevs;
 	}
