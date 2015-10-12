@@ -1,3 +1,8 @@
+TAG: fedatamodel-6-0-1-3
+DATE: 10/12/2015
+STAFF: jsb
+CHANGES: bug fix for now-null MP header term abbreviations
+
 TAG: fedatamodel-6-0-1-2
 TAG: fedatamodel-6-0-1-1
 DATE: 09/22/2015
