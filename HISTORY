@@ -1,3 +1,8 @@
+TAG: fedatamodel-6-0-1-4
+DATE: 10/13/2015
+STAFF: jsb
+CHANGES: added methods to retreive special slimgrid header abbreviation for MP header terms, supporting links from slimgrid to HMDC
+
 TAG: fedatamodel-6-0-1-3
 DATE: 10/12/2015
 STAFF: jsb
