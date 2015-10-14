@@ -1,9 +1,18 @@
 package mgi.frontend.datamodel;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Transient;
+import javax.persistence.FetchType;
+import org.hibernate.annotations.BatchSize;
 
 /**
  * Base object for a vocabulary term.
@@ -27,6 +36,7 @@ public class Term {
     private String term;
     private String vocabName;
     private String abbreviation;
+    private List<MarkerGridHeading> gridHeadings;
 
     // ================= Getters and Setters ===================== //
 
@@ -119,6 +129,33 @@ public class Term {
 
     public void setVocabName(String vocabName) {
 	this.vocabName = vocabName;
+    }
+
+    @ManyToMany(fetch=FetchType.LAZY)
+    @JoinTable(name="marker_grid_heading_to_term",
+	joinColumns=@JoinColumn(name="term_key"),
+	inverseJoinColumns=@JoinColumn(name="heading_key")
+	)
+    @BatchSize(size=100)
+    @OrderBy("heading_abbreviation")
+    public List<MarkerGridHeading> getGridHeadings() {
+	return gridHeadings;
+    }
+
+    public void setGridHeadings(List<MarkerGridHeading> gridHeadings) {
+	this.gridHeadings = gridHeadings;
+    }
+
+    // get the first slimgrid heading associated with this term (normally only
+    // one anyway, but it's theoretically possible to have multiples in the
+    // database schema.
+    @Transient
+    public String getSlimGridHeading() {
+	List<MarkerGridHeading> headings = this.getGridHeadings();
+	if ((headings != null) && (headings.size() > 0)) {
+	    return headings.get(0).getHeadingAbbreviation();
+	}
+	return null;
     }
 
     public String toString() {
