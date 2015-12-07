@@ -1830,6 +1830,67 @@ public class Marker {
 		return getMarkerType().equals("DNA Segment");
 	}
 
+	/* get a list of the homologous human markers using the hybrid
+	 * homology definitions.  can be null (if not in a hybrid homology
+	 * cluster) or empty (if the hybrid homology cluster has no human
+	 * markers).
+	 */
+	@Transient
+	public List<Marker> getHumanHomologsViaHybrid() {
+		List<Marker> humanMarkers = null;	// list to return
+
+		OrganismOrtholog mouseOO = this.getHybridOrganismOrtholog();
+		if (mouseOO == null) {
+			return humanMarkers;
+		}
+
+		HomologyCluster hc = mouseOO.getHomologyCluster();
+		if (hc == null) {
+			// should not happen, but just in case...
+			return humanMarkers;
+		}
+
+		OrganismOrtholog humanOO = hc.getOrganismOrtholog("human");
+		if (humanOO == null) {
+			return humanMarkers;
+		}
+
+		return humanOO.getMarkers();
+	}
+
+	/* get the marker symbol to use for the MyGene link to wikipedia, or
+	 * null if we do not have a single homologous human marker via the
+	 * hybrid homology.
+	 */
+	@Transient
+	public String getMyGeneSymbol() {
+		List<Marker> humanMarkers = this.getHumanHomologsViaHybrid();
+		if ((humanMarkers != null) && (humanMarkers.size() == 1)) {
+			return humanMarkers.get(0).getSymbol();
+		}
+		return null;
+	}
+
+	/* get the MyGene ID to use in making the MyGene link to wikipedia, or
+	 * null if either:
+	 * 1. we do not have a single homologous human marker via the hybrid
+	 * 	homomlogy, or
+	 * 2. that human marker doesn't have a MyGene ID
+	 */
+	@Transient
+	public MarkerID getMyGeneID() {
+		List<Marker> humanMarkers = this.getHumanHomologsViaHybrid();
+		if ((humanMarkers != null) && (humanMarkers.size() == 1)) {
+			Marker hm = humanMarkers.get(0);
+
+			List<MarkerID> myGeneIDs = hm.filterMarkerIDs("MyGene");
+			if (myGeneIDs.size() == 1) {
+				return myGeneIDs.get(0);
+			}
+		}
+		return null;
+	}
+
 	@Transient
 	public Comparator<Marker> getComparator() {
 		return new MarkerComparator();
