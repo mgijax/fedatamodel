@@ -19,6 +19,7 @@ import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import mgi.frontend.datamodel.group.RecombinaseEntity;
 import mgi.frontend.datamodel.phenotype.AlleleSummaryDisease;
 import mgi.frontend.datamodel.phenotype.AlleleSummarySystem;
 import mgi.frontend.datamodel.phenotype.DiseaseTableDisease;
@@ -29,9 +30,9 @@ import mgi.frontend.datamodel.phenotype.PhenoTableSystem;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
+import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
@@ -63,7 +64,7 @@ import org.hibernate.annotations.LazyToOneOption;
 @FilterDef(name="expressesComponentMarkers")
 })
 @JsonIgnoreProperties({"references", "notes", "molecularDescription", "ids"})
-public class Allele {
+public class Allele implements RecombinaseEntity {
     private int alleleKey;
     private String alleleSubType;
     private List<AlleleIncidentalMutation> incidentalMutations;

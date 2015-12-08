@@ -14,6 +14,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import mgi.frontend.datamodel.group.RecombinaseEntity;
 import mgi.frontend.datamodel.util.DatamodelUtils;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -25,7 +26,7 @@ import org.hibernate.annotations.BatchSize;
 @Entity
 @Table (name="recombinase_allele_system")
 @JsonIgnoreProperties({"images"})
-public class AlleleSystem {
+public class AlleleSystem implements RecombinaseEntity {
 
     private int alleleSystemKey;
     private Integer systemKey;

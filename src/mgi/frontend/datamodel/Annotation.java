@@ -1,5 +1,6 @@
 package mgi.frontend.datamodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -44,6 +45,7 @@ public class Annotation {
 	private String evidenceCode;
 	private String evidenceTerm;
 	private List <AnnotationInferredFromID> inferredFromList;
+	private List <AnnotationProperty> propertyList;
 	private String inferredIDCount;
 	private String objectType;
 	private String qualifier;
@@ -103,6 +105,8 @@ public class Annotation {
         return evidenceCode;
     }
 
+    /** inferred-from handling
+     */
     @Transient
     public String getInferredFrom() {
 	StringBuffer sb = new StringBuffer();
@@ -116,6 +120,7 @@ public class Annotation {
     }
 
     @OneToMany (fetch=FetchType.LAZY)
+    @BatchSize(size=100)
     @JoinColumn(name="annotation_key")
     public List<AnnotationInferredFromID> getInferredFromList() {
         return inferredFromList;
@@ -125,6 +130,66 @@ public class Annotation {
     public String getInferredIDCount() {
         return inferredIDCount;
     }
+
+    
+    /** property handling
+     */
+    @OneToMany (fetch=FetchType.LAZY)
+    @BatchSize(size=100)
+    @JoinColumn(name="annotation_key")
+    public List<AnnotationProperty> getPropertyList() {
+        return propertyList;
+    }
+    
+    /*
+     * Return a filtered list of AnnotationProperty
+     * 	where property type is one of annotationTypes 
+     */
+    protected List<AnnotationProperty> filterPropertyList(String ... annotationTypes ) {
+    	
+    	List<AnnotationProperty> properties = new ArrayList<AnnotationProperty>();
+    	
+    	for (AnnotationProperty property : this.getPropertyList()) {
+    		
+    		for (int i=0; i < annotationTypes.length; i++) {
+    			if ( annotationTypes[i].equalsIgnoreCase(property.getType()) ) {
+    				properties.add(property);
+    			}
+    		}
+    	}
+    	
+    	return properties;
+    }
+    
+    /*
+     * Get the annotation extension properties
+     */
+    @Transient
+    public List<AnnotationProperty> getAnnotationExtensions() {
+    	return this.filterPropertyList("Annotation Extension");
+    }
+    
+    /*
+     * Get the Isoform properties
+     */
+    @Transient
+    public List<AnnotationProperty> getIsoforms() {
+    	return this.filterPropertyList("Isoform");
+    }
+    
+    
+    @Transient
+    public String getAnnotation() {
+	StringBuffer sb = new StringBuffer();
+	for (AnnotationInferredFromID id : this.getInferredFromList()) {
+	    if (sb.length() > 0) {
+		sb.append (", ");
+	    }
+	    sb.append (id.getAccID());
+	}
+	return sb.toString();
+    }
+    
 
     /** returns a collection of genotypes for this annotation
      */
@@ -253,6 +318,9 @@ public class Annotation {
     public void setInferredFromList(List<AnnotationInferredFromID> inferredFromList) {
         this.inferredFromList = inferredFromList;
     }
+    public void setPropertyList(List<AnnotationProperty> propertyList) {
+        this.propertyList = propertyList;
+    }
     public void setInferredIDCount(String inferredIDCount) {
         this.inferredIDCount = inferredIDCount;
     }
@@ -287,5 +355,44 @@ public class Annotation {
     public void setVocabName(String vocabName) {
         this.vocabName = vocabName;
     }
+    
+    
+    // Helpers
+
+    /**
+     * Returns all of the annotation extension properties
+     * 	in a format suitable for text reports and downloads
+     * 
+     * unit-tested in AnnotationTest.java
+     */
+    @Transient
+	public String getAnnotationExtensionTextOutput() {
+		
+    	StringBuilder sb = new StringBuilder();
+    	String stanzaDelim = "|";
+    	String propertyDelim = ",";
+    	
+    	Integer currentStanza = null;
+    	for (AnnotationProperty property : this.getAnnotationExtensions()){
+    		
+    		if (currentStanza == null) {
+    			currentStanza = property.getStanza();
+    		}
+    		else if (currentStanza != property.getStanza()) {
+    			
+    			sb.append(stanzaDelim);
+    			currentStanza = property.getStanza();
+    		}
+    		else {
+    			sb.append(propertyDelim);
+    		}
+    		
+    		sb.append(property.getProperty())
+    			.append(" ")
+    			.append(property.getValue());
+    	}
+    	
+		return sb.toString();
+	}
 
 }

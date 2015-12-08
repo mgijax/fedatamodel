@@ -13,8 +13,6 @@ public class AnnotationInferredFromID {
     private String annotationKey;
     private String logicalDB;
     private String accID;
-    private Boolean isPreferred;
-    private Boolean isPrivate;
     private String sequenceNum;
     private String organism;
     
@@ -44,16 +42,6 @@ public class AnnotationInferredFromID {
         return accID;
     }
     
-    @Column(name="preferred")
-    public Boolean getIsPreferred() {
-        return isPreferred;
-    }
-    
-    @Column(name="private")
-    public Boolean getIsPrivate() {
-        return isPrivate;
-    }
-    
     @Column(name="sequence_num")
     public String getSequenceNum() {
         return sequenceNum;
@@ -72,12 +60,6 @@ public class AnnotationInferredFromID {
     }
     public void setAccID(String accID) {
         this.accID = accID;
-    }
-    public void setIsPreferred(Boolean isPreferred) {
-        this.isPreferred = isPreferred;
-    }
-    public void setIsPrivate(Boolean isPrivate) {
-        this.isPrivate = isPrivate;
     }
     public void setSequenceNum(String sequenceNum) {
         this.sequenceNum = sequenceNum;

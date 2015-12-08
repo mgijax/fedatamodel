@@ -25,15 +25,15 @@ public class MarkerAlleleAssociation {
     // ================= Getters and Setters ===================== //
     
 
-    @Id
-    @Column(name="unique_key")
-    public int getUniqueKey() {
-	    return uniqueKey;
-    }
-    
-    public void setUniqueKey(int uniqueKey) {
-	    this.uniqueKey = uniqueKey;
-    }
+	@Id
+	@Column(name="unique_key")
+	public int getUniqueKey() {
+		return uniqueKey;
+	}
+	
+	public void setUniqueKey(int uniqueKey) {
+		this.uniqueKey = uniqueKey;
+	}
 
     /** Return the actual marker for this relationship.
      */

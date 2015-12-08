@@ -9,9 +9,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import mgi.frontend.datamodel.group.RecombinaseEntity;
+
 @Entity
 @Table (name="recombinase_assay_result")
-public class AlleleSystemAssayResult {
+public class AlleleSystemAssayResult implements RecombinaseEntity {
 
     private String age;
     private int alleleSystemKey;

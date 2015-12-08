@@ -1,4 +1,4 @@
-package mgi.frontend.test;
+package unittest.mgi.frontend.util;
 
 import static org.junit.Assert.assertEquals;
 import mgi.frontend.datamodel.util.DatamodelUtils;
