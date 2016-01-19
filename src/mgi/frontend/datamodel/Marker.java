@@ -1397,13 +1397,6 @@ public class Marker {
 		return filterLinks("xenbase expression links");
 	}
 
-	/**
-	 * Return a collection of marker links for the homologene class page.
-	 */
-	@Transient
-	public List<MarkerLink> getHomologyLinks() {
-		return filterLinks("homology gene links");
-	}
 
 	/** retrieve the IDs from which are flagged for being part of
 	 * the "other database links" section
