@@ -1,4 +1,4 @@
-TAG: fedatamodel-6-0-2-2
+TAG: fedatamodel-6-0-2-2, fedatamodel-6-0-2-3
 DATE: 1/19/2015
 STAFF: kstone
 1) Obsoleting "homology gene links" data, as it is no longer used.
