@@ -13,7 +13,6 @@ public class AlleleSystemOtherSystem {
 	private int alleleSystemKey;
 	private String alleleID;
     private String otherSystem;
-    private int otherSystemKey;
     
     // ================= Getters and Setters ===================== //
     
@@ -31,11 +30,6 @@ public class AlleleSystemOtherSystem {
     public String getOtherSystem() {
         return otherSystem;
     }
-
-	@Column(name="other_system_key")
-	public int getOtherSystemKey() {
-		return otherSystemKey;
-	}
 
     @Id
     @Column(name="unique_key")
@@ -55,9 +49,6 @@ public class AlleleSystemOtherSystem {
         this.otherSystem = system;
     }
         
-    public void setOtherSystemKey(int otherSystemKey) {
-		this.otherSystemKey = otherSystemKey;
-	}
     public void setUniqueKey(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
 	}
@@ -70,7 +61,7 @@ public class AlleleSystemOtherSystem {
 				+ alleleSystemKey
 				+ ", "
 				+ (otherSystem != null ? "otherSystem=" + otherSystem + ", "
-						: "") + "otherSystemKey=" + otherSystemKey
+						: "") 
 				+ ", uniqueKey=" + uniqueKey + "]";
 	}
 }
