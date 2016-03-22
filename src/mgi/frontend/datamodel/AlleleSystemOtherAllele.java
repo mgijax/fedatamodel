@@ -21,7 +21,6 @@ public class AlleleSystemOtherAllele {
 	private int otherAlleleKey;
 	private String otherAlleleID;
 	private String otherAlleleSymbol;
-	private String systemKey;
 	
 	@Column(name="allele_system_key")
 	public int getAlleleSystemKey() {
@@ -41,11 +40,6 @@ public class AlleleSystemOtherAllele {
 	@Column(name="other_allele_symbol")
 	public String getOtherAlleleSymbol() {
 		return otherAlleleSymbol;
-	}
-	
-	@Column(name="system_key")
-	public String getSystemKey() {
-		return systemKey;
 	}
 	
 	@Id
@@ -70,10 +64,6 @@ public class AlleleSystemOtherAllele {
 		this.otherAlleleSymbol = otherAlleleSymbol;
 	}
     
-    public void setSystemKey(String systemKey) {
-		this.systemKey = systemKey;
-	}
-    
     public void setUniqueKey(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
 	}
@@ -90,7 +80,6 @@ public class AlleleSystemOtherAllele {
 				+ ", "
 				+ (otherAlleleSymbol != null ? "otherAlleleSymbol="
 						+ otherAlleleSymbol + ", " : "")
-				+ (systemKey != null ? "systemKey=" + systemKey + ", " : "")
 				+ "uniqueKey=" + uniqueKey + "]";
 	}
 }
