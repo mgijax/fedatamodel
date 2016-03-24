@@ -533,8 +533,7 @@ public class Allele implements RecombinaseEntity {
     /** Return the RecombinaseInfo object associated with this allele.
      */
 	@OneToOne (targetEntity=RecombinaseInfo.class,
-			fetch=FetchType.LAZY,
-			optional=false)
+			fetch=FetchType.LAZY)
 	@LazyToOne(value = LazyToOneOption.NO_PROXY)
 	@JoinColumn (name="allele_key")
     public RecombinaseInfo getRecombinaseInfo() {
