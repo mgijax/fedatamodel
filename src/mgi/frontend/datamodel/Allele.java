@@ -182,26 +182,26 @@ public class Allele implements RecombinaseEntity {
      * @return
      */
 
-    @OneToMany(fetch=FetchType.LAZY)
-    @JoinTable (name="recombinase_allele_system",
-    	joinColumns=@JoinColumn(name="allele_key")
-    )
+    @OneToMany(targetEntity=AlleleSystem.class, fetch=FetchType.LAZY)
+    @JoinColumn (name="allele_key")
     @BatchSize(size=50)
     public List<AlleleSystem> getAlleleSystems() {
         return alleleSystems;
     }
     
-    @OneToMany (targetEntity=AlleleSystem.class)
+    @OneToMany(targetEntity=AlleleSystem.class, fetch=FetchType.LAZY)
     @JoinTable (name="recombinase_affected_system",
-            joinColumns=@JoinColumn(name="allele_key")
+            joinColumns=@JoinColumn(name="allele_key"),
+            inverseJoinColumns=@JoinColumn(name="allele_system_key")
     )
 	public List<AlleleSystem> getAffectedSystems() {
 		return affectedSystems;
 	}
     
-    @OneToMany (targetEntity=AlleleSystem.class)
+    @OneToMany(targetEntity=AlleleSystem.class, fetch=FetchType.LAZY)
     @JoinTable (name="recombinase_unaffected_system",
-            joinColumns=@JoinColumn(name="allele_key")
+            joinColumns=@JoinColumn(name="allele_key"),
+            inverseJoinColumns=@JoinColumn(name="allele_system_key")
     )
 	public List<AlleleSystem> getUnaffectedSystems() {
 		return unaffectedSystems;
@@ -840,18 +840,6 @@ public class Allele implements RecombinaseEntity {
 	this.sequenceAssociations = sequenceAssociations;
     }
 
-//	@Transient
-//	public List<Genotype> getPhenoTableGenotypes()
-//	{
-//		this.getPhenoTableGenotypeAssociations().size(); // Trick to have hibernate fetch entire list at once
-//		List<Genotype> genotypes = new ArrayList<Genotype>();
-//		for(PhenoTableGenotype ptg : this.getPhenoTableGenotypeAssociations())
-//		{
-//			genotypes.add(ptg.getGenotype());
-//		}
-//		return genotypes;
-//	}
-
     public String getSymbol() {
         return symbol;
     }
@@ -874,12 +862,12 @@ public class Allele implements RecombinaseEntity {
         this.alleleSystems = alleleSystems;
     }
     
-    public void setAffectedSystems(List<AlleleSystem> alleleSystems) {
-        this.alleleSystems = alleleSystems;
+    public void setAffectedSystems(List<AlleleSystem> affectedSystems) {
+        this.affectedSystems = affectedSystems;
     }
     
-    public void setUnaffectedSystems(List<AlleleSystem> alleleSystems) {
-        this.alleleSystems = alleleSystems;
+    public void setUnaffectedSystems(List<AlleleSystem> unaffectedSystems) {
+        this.unaffectedSystems =  unaffectedSystems;
     }
 
     public void setAlleleType(String alleleType) {
