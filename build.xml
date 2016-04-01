@@ -69,7 +69,6 @@
      <jar jarfile="${dist}/fedatamodel.jar"
           basedir="${build}"
           excludes="**/*Test.class">
-     <fileset dir="lib"/>
      </jar>          
   </target>
 
