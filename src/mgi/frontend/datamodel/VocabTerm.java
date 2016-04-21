@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -46,6 +45,7 @@ public class VocabTerm implements Serializable{
 	private VocabTermEmapInfo emapInfo;
 	private List<VocabTerm> emapsChildren;
 	private List<VocabTerm> children;
+	private List<VocabChild> parentEdges;
 	
 	/* Vocab specific optional associations */
 	// For vocabName=OMIM
@@ -118,83 +118,6 @@ public class VocabTerm implements Serializable{
 	@Transient
 	public boolean getIsEmaps() {
 		return this.isFromVocabulary("EMAPS");
-	}
-
-	// get a distinct list of parents for this term.
-	// assumes the ancestors are sorted by edge label and then by term.
-	@Transient
-	public List<VocabTermAncestor> getParents() {
-		// basic algorithm:
-		// 1. get the list of ancestors sorted by edge label and term
-		// 2. walk through the list of ancestors
-		//    a. if this ancestor has a greater depth for its path
-		//       than the highest depth for this path so far, 
-		//       remember it
-		// 3. Coalesce the set of parents (per path) into a distinct
-		//    list of parents.
-		// 4. sort the list by edge type and term text
-
-		List<VocabTermAncestor> myAncestors = this.getAncestors();
-
-		// maps from path number to the max depth seen so far
-		HashMap<Integer,Integer> maxDepth = 
-			new HashMap<Integer,Integer>();
-
-		// maps from path number to deepest ancestor seen so far
-		HashMap<Integer,VocabTermAncestor> parents =
-			new HashMap<Integer,VocabTermAncestor>();
-
-		int myPath = 0;
-		int myDepth = 0;
-		Integer myPathInteger;
-		Integer myDepthInteger;
-		int maxPathDepth = 0;
-
-		for (VocabTermAncestor a : myAncestors) {
-			myPath = a.getPathNumber();
-			myDepth = a.getDepth();
-
-			myPathInteger = new Integer(myPath);
-			myDepthInteger = new Integer(myDepth);
-
-			if (!maxDepth.containsKey(myPathInteger)) {
-				maxDepth.put(myPathInteger, myDepthInteger);
-				parents.put(myPathInteger, a);
-			} else {
-				maxPathDepth =
-				    maxDepth.get(myPathInteger).intValue();
-
-				if (myDepth > maxPathDepth) {
-				    maxDepth.put(myPathInteger, myDepthInteger);
-				    parents.put(myPathInteger, a);
-
-				}
-			}
-		}
-
-		// at this point, parents has the closest ancestor on each
-		// path
-
-		HashMap<String,String> parentIDs = new HashMap<String,String>();
-		VocabTermAncestor anc;
-
-		for (Integer pathNumber : parents.keySet()) {
-			anc = parents.get(pathNumber);
-			parentIDs.put(anc.getAncestorID(), anc.getAncestorID());
-		}
-
-		ArrayList<VocabTermAncestor> toReturn =
-			new ArrayList<VocabTermAncestor>();
-
-		for (VocabTermAncestor b : myAncestors) {
-			if (parentIDs.containsKey(b.getAncestorID())) {
-				toReturn.add (b);
-
-				// remove the ID so we don't duplicate ancestors
-				parentIDs.remove (b.getAncestorID());
-			}
-		}
-		return toReturn;
 	}
 
 	/* Getters */
@@ -315,6 +238,23 @@ public class VocabTerm implements Serializable{
 	public List<VocabTerm> getChildren() {
 		return this.children;
 	}
+	
+	/*
+	 * Reverse join to voc_child to get to parents
+	 */
+	@OneToMany(targetEntity=VocabChild.class)
+	@JoinColumn(name="child_term_key", referencedColumnName="term_key")
+	@BatchSize(size=100)
+	public List<VocabChild> getParentEdges() {
+		return parentEdges;
+	}
+	
+	@Transient
+	public List<VocabChild> getEmapParentEdges() {
+		List<VocabChild> emapParentEdges = this.getParentEdges();
+		Collections.sort(emapParentEdges, new EmapParentEdgeComparator());
+		return emapParentEdges;
+	}
 
 	/* Setters */
 
@@ -376,6 +316,9 @@ public class VocabTerm implements Serializable{
 	public void setDiseaseModels(List<DiseaseModel> diseaseModels) {
 		this.diseaseModels = diseaseModels;
 	}
+	public void setParentEdges(List<VocabChild> parentEdges) {
+		this.parentEdges = parentEdges;
+	}
 	
 	/* Transient methods */
 	@Transient
@@ -425,5 +368,27 @@ public class VocabTerm implements Serializable{
 		}
 		return o1.getTerm().compareTo(o2.getTerm());
 	    }
+	}
+	
+	/*
+	 * Compare parent endges by edgeLabel then by term name
+	 */
+	private class EmapParentEdgeComparator implements Comparator<VocabChild> {
+		public int compare (VocabChild o1, VocabChild o2) {
+
+			
+			if ((o1.getEdgeLabel() != null) 
+					&& (o2.getEdgeLabel()!=null) 
+					&& (o1.getEdgeLabel() != o2.getEdgeLabel())
+			) {
+				return o1.getEdgeLabel().compareTo(o2.getEdgeLabel());
+			}
+			
+			
+			VocabTerm parent1 = o1.getParent();
+			VocabTerm parent2 = o2.getParent();
+
+			return parent1.getTerm().compareTo(parent2.getTerm());
+		    }
 	}
 }
