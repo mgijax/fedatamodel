@@ -251,7 +251,7 @@ public class VocabTerm implements Serializable{
 	
 	@Transient
 	public List<VocabChild> getEmapParentEdges() {
-		List<VocabChild> emapParentEdges = this.getParentEdges();
+		List<VocabChild> emapParentEdges = new ArrayList<VocabChild>(this.getParentEdges());
 		Collections.sort(emapParentEdges, new EmapParentEdgeComparator());
 		return emapParentEdges;
 	}
@@ -379,7 +379,7 @@ public class VocabTerm implements Serializable{
 			
 			if ((o1.getEdgeLabel() != null) 
 					&& (o2.getEdgeLabel()!=null) 
-					&& (o1.getEdgeLabel() != o2.getEdgeLabel())
+					&& !(o1.getEdgeLabel().equals(o2.getEdgeLabel()))
 			) {
 				return o1.getEdgeLabel().compareTo(o2.getEdgeLabel());
 			}
