@@ -124,6 +124,7 @@ public class Marker {
 	private List<MarkerGridCell> gridCells;
 	private List<DiseaseRow> diseaseRows;
 	private List<MPGenotype> mpGenotypes;
+	private List<MinimapMarker> minimapMarkers;
 
 	//=== methods for related markers ===//
 
@@ -173,6 +174,17 @@ public class Marker {
 
 	public void setRelatedMarkers(List<RelatedMarker> relatedMarkers) {
 		this.relatedMarkers = relatedMarkers;
+	}
+	
+	@OneToMany (targetEntity=MinimapMarker.class, fetch=FetchType.LAZY)
+	@JoinColumn(name="marker_key")
+	@OrderBy("cmOffset")
+	public List<MinimapMarker> getMinimapMarkers() {
+		return minimapMarkers;
+	}
+
+	public void setMinimapMarkers(List<MinimapMarker> minimapMarkers) {
+		this.minimapMarkers = minimapMarkers;
 	}
 
 	//=== methods for marker interactions ===//
