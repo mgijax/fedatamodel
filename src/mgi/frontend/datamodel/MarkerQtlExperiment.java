@@ -21,6 +21,7 @@ public class MarkerQtlExperiment {
 	private int mgdExptKey;
 	private String jnumID;
 	private String note;
+	private String refNote;
 	private String noteType;
 	private int sequenceNum;
 	
@@ -48,6 +49,11 @@ public class MarkerQtlExperiment {
 	@Column(name="note")
 	public String getNote() {
 		return note;
+	}
+	
+	@Column(name="ref_note")
+	public String getRefNote() {
+		return refNote;
 	}
 	
 	@Column(name="note_type")
@@ -84,6 +90,10 @@ public class MarkerQtlExperiment {
 	
 	public void setNote(String note) {
 		this.note = note;
+	}
+	
+	public void setRefNote(String refNote) {
+		this.refNote = refNote;
 	}
 	
 	public void setNoteType(String noteType) {

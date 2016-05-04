@@ -29,7 +29,6 @@ import org.hibernate.annotations.BatchSize;
 public class AlleleSystem implements RecombinaseEntity {
 
     private int alleleSystemKey;
-    private Integer systemKey;
     private String alleleID;
     private String system;
     private Allele allele;
@@ -62,19 +61,6 @@ public class AlleleSystem implements RecombinaseEntity {
     public void setAlleleSystemKey(int alleleSystemKey) {
         this.alleleSystemKey = alleleSystemKey;
     }
-
-
-    /**
-     * system key
-     * @return Integer
-     */
-    @Column(name="system_key")
-    public Integer getSystemKey() {
-		return systemKey;
-	}
-	public void setSystemKey(Integer systemKey) {
-		this.systemKey = systemKey;
-	}
 
 
     /**
@@ -296,7 +282,7 @@ public class AlleleSystem implements RecombinaseEntity {
                 + ", alleleSystemKey=" + alleleSystemKey + ", images=" + images
                 + ", otherAlleles=" + otherAlleles + ", otherSystems="
                 + otherSystems + ", system=" + system + ", systemKey="
-                + systemKey + "]";
+                + "]";
     }
 
 }

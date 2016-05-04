@@ -8,7 +8,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.TreeMap;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -125,6 +124,7 @@ public class Marker {
 	private List<MarkerGridCell> gridCells;
 	private List<DiseaseRow> diseaseRows;
 	private List<MPGenotype> mpGenotypes;
+	private List<MinimapMarker> minimapMarkers;
 
 	//=== methods for related markers ===//
 
@@ -174,6 +174,17 @@ public class Marker {
 
 	public void setRelatedMarkers(List<RelatedMarker> relatedMarkers) {
 		this.relatedMarkers = relatedMarkers;
+	}
+	
+	@OneToMany (targetEntity=MinimapMarker.class, fetch=FetchType.LAZY)
+	@JoinColumn(name="marker_key")
+	@OrderBy("cmOffset")
+	public List<MinimapMarker> getMinimapMarkers() {
+		return minimapMarkers;
+	}
+
+	public void setMinimapMarkers(List<MinimapMarker> minimapMarkers) {
+		this.minimapMarkers = minimapMarkers;
 	}
 
 	//=== methods for marker interactions ===//
