@@ -35,7 +35,8 @@ public class Disease {
     private String disease;
     private String primaryID;
     private String logicalDB;
-    private List<DiseaseSynonym> diseaseSynonyms;
+    private int diseaseReferenceCount;
+	private List<DiseaseSynonym> diseaseSynonyms;
     private List<DiseaseGroup> diseaseGroups;
 
     // =========== Convenience Methods =============== //
@@ -288,6 +289,11 @@ public class Disease {
         return logicalDB;
     }
 
+    @Column(name="disease_reference_count")
+    public int getDiseaseReferenceCount() {
+		return diseaseReferenceCount;
+	}
+
     /** get an ordered list of synonyms for the disease
      */
     @OneToMany (targetEntity=DiseaseGroup.class)
@@ -316,14 +322,6 @@ public class Disease {
 
     // ================= Setters ===================== //
 
-/*    public void setMouseModelCount(Integer mouseModelCount) {
-	this.mouseModelCount = mouseModelCount;
-    }
-
-    public void setReferenceCount(Integer referenceCount) {
-	this.referenceCount = referenceCount;
-    }
-*/
     public void setDisease(String disease) {
         this.disease = disease;
     }
@@ -347,6 +345,10 @@ public class Disease {
     public void setDiseaseSynonyms(List<DiseaseSynonym> diseaseSynonyms) {
 	this.diseaseSynonyms = diseaseSynonyms;
     }
+
+	public void setDiseaseReferenceCount(int diseaseReferenceCount) {
+		this.diseaseReferenceCount = diseaseReferenceCount;
+	}
 
     // ================= Convenience ================= //
 
