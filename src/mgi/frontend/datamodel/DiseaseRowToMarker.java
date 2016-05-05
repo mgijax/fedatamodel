@@ -1,6 +1,5 @@
 package mgi.frontend.datamodel;
 
-import java.beans.ConstructorProperties;
 import java.util.List;
 
 import javax.persistence.Column;
