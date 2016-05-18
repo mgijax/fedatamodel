@@ -37,7 +37,7 @@
 
   <!-- compile -->
   <target name="compile" depends="clean, init" >
-    <javac debug="on" srcdir="${src}" destdir="${build}" >
+    <javac debug="on" srcdir="${src}" destdir="${build}" includeantruntime="false">
 	<classpath>
 		<fileset dir="lib">
 			<include name="**/*.jar"/>
