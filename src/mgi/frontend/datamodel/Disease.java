@@ -36,6 +36,7 @@ public class Disease {
     private String primaryID;
     private String logicalDB;
     private int diseaseReferenceCount;
+    private int hpoTermCount;
 	private List<DiseaseSynonym> diseaseSynonyms;
     private List<DiseaseGroup> diseaseGroups;
 
@@ -320,7 +321,16 @@ public class Disease {
         return diseaseKey;
     }
 
+    @Column(name="hpo_term_count")
+	public int getHpoTermCount() {
+		return hpoTermCount;
+	}
+
     // ================= Setters ===================== //
+
+	public void setHpoTermCount(int hpoTermCount) {
+		this.hpoTermCount = hpoTermCount;
+	}
 
     public void setDisease(String disease) {
         this.disease = disease;
