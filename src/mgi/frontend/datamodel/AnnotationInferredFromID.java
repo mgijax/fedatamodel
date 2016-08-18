@@ -14,7 +14,7 @@ public class AnnotationInferredFromID {
     private String logicalDB;
     private String accID;
     private String sequenceNum;
-    private String organism;
+    private String tooltip;
     
     @Id
     @Column(name="unique_key")
@@ -32,9 +32,9 @@ public class AnnotationInferredFromID {
         return logicalDB;
     }
     
-    @Column(name="organism")
-    public String getOrganism() {
-        return organism;
+    @Column(name="tooltip")
+    public String getTooltip() {
+        return tooltip;
     }
     
     @Column(name="acc_id")
@@ -55,8 +55,8 @@ public class AnnotationInferredFromID {
     public void setLogicalDB(String logicalDB) {
         this.logicalDB = logicalDB;
     }
-    public void setOrganism(String organism) {
-        this.organism = organism;
+    public void setTooltip(String tooltip) {
+        this.tooltip = tooltip;
     }
     public void setAccID(String accID) {
         this.accID = accID;
