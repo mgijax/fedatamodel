@@ -29,7 +29,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 	  @SecondaryTable (name="reference_book", pkJoinColumns= {
 		@PrimaryKeyJoinColumn(name="reference_key", referencedColumnName="reference_key") } )
 	} )
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Reference {
 
 	private String authors;
