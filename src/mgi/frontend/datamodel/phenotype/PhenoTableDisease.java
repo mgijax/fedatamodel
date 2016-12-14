@@ -24,7 +24,7 @@ public class PhenoTableDisease {
 	private int alleleKey;
 	private String disease;
 	private int diseaseSeq;
-	private String omimID;
+	private String doID;
 	private boolean isHeader;
 	private List<PhenoTableDiseaseCell> diseaseCells;
 	
@@ -51,9 +51,9 @@ public class PhenoTableDisease {
 		return diseaseSeq;
 	}
 
-	@Column(name="omim_id")
-	public String getOmimID() {
-		return omimID;
+	@Column(name="do_id")
+	public String getDoID() {
+		return doID;
 	}
 	
 	@Column(name="is_header")
@@ -126,8 +126,8 @@ public class PhenoTableDisease {
 		this.diseaseSeq = diseaseSeq;
 	}
 
-	public void setOmimID(String omimID) {
-		this.omimID= omimID;
+	public void setDoID(String doID) {
+		this.doID= doID;
 	}
 
 	public void setIsHeader(boolean isHeader)

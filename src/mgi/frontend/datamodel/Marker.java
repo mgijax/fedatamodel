@@ -1026,18 +1026,18 @@ public class Marker {
 		return filterAnnotations("Mammalian Phenotype/Marker");
 	}
 
-	/** get the OMIM annotations for this marker's alleles
+	/** get the DO annotations for this marker's alleles
 	 */
 	@Transient
-	public List<Annotation> getOMIMAnnotations () {
-		return filterAnnotations("OMIM/Marker");
+	public List<Annotation> getDOAnnotations () {
+		return filterAnnotations("DO/Marker");
 	}
 
-	/** get the OMIM annotations for this marker's alleles
+	/** get the DO annotations for this marker's alleles
 	 */
 	@Transient
-	public List<Annotation> getOMIMHumanAnnotations () {
-		return filterAnnotations("OMIM/Human Marker");
+	public List<Annotation> getDOHumanAnnotations () {
+		return filterAnnotations("DO/Human Marker");
 	}
 
 	public String getOrganism() {
@@ -1099,13 +1099,12 @@ public class Marker {
 		this.mpGenotypes = mpGenotypes;
 	}
 
-	// Marker (self) -> OrganismOrtholog (mouse) -> HomologyCluster (hybrid) -> OrganismOrtholog (human) -> Marker -> HumanAnnotations (OMIM)
-	// TODO Remove this comment
+	// Marker (self) -> OrganismOrtholog (mouse) -> HomologyCluster (hybrid) -> OrganismOrtholog (human) -> Marker -> HumanAnnotations (DO)
 	
 	@Transient
-	public HashMap<String, HashMap<String, Annotation>> getHumanHomologOMIMAnnotations() {
+	public HashMap<String, HashMap<String, Annotation>> getHumanHomologDOAnnotations() {
 		HashMap<String, HashMap<String, Annotation>> map = new HashMap<String, HashMap<String, Annotation>>();
-		//System.out.println("getHumanHomologOMIMAnnotations: ");
+		//System.out.println("getHumanHomologDOAnnotations: ");
 		if(organism.equals("mouse")) {
 			//System.out.println("-Organism: " + organism);
 			for(OrganismOrtholog o: organismOrthologs) {
@@ -1117,8 +1116,8 @@ public class Marker {
 							//return oo.getMarkers();
 							for(Marker mm: oo.getMarkers()) {
 								//System.out.println("----" + mm.getSymbol());
-								for(Annotation a: mm.getOMIMHumanAnnotations()) {
-									//System.out.println("-----OMIM: " + a.getQualifier());
+								for(Annotation a: mm.getDOHumanAnnotations()) {
+									//System.out.println("-----DO: " + a.getQualifier());
 									HashMap<String, Annotation> list = map.get(mm.getSymbol());
 									if(list == null) {
 										list = new HashMap<String, Annotation>();

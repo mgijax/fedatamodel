@@ -17,7 +17,7 @@ public class AlleleSummaryDisease {
 	private int alleleSummaryDiseaseKey;
 	private int alleleKey;
 	private String disease;
-	private String omimID;
+	private String doID;
 	
     // ================= Getters ======================================== //
 	@Id
@@ -36,9 +36,9 @@ public class AlleleSummaryDisease {
 		return disease;
 	}
 
-	@Column(name="omim_id")
-	public String getOmimID() {
-		return omimID;
+	@Column(name="do_id")
+	public String getDoID() {
+		return doID;
 	}
 	
     // ================= Setters ======================================== //
@@ -54,14 +54,14 @@ public class AlleleSummaryDisease {
 		this.disease= disease;
 	}
 
-	public void setOmimID(String omimID) {
-		this.omimID= omimID;
+	public void setDoID(String doID) {
+		this.doID = doID;
 	}
 
 	@Override
 	public String toString() {
 		return "AlleleSummaryDisease [alleleSummaryDiseaseKey="
 				+ alleleSummaryDiseaseKey + ", alleleKey=" + alleleKey
-				+ ", disease=" + disease + ", omimID=" + omimID + "]";
+				+ ", disease=" + disease + ", doID=" + doID + "]";
 	}
 }
