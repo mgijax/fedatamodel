@@ -36,7 +36,8 @@ public class AlleleSummaryDisease {
 		return disease;
 	}
 
-	@Column(name="do_id")
+	// TODO change femover column name
+	@Column(name="omim_id")
 	public String getDoID() {
 		return doID;
 	}
