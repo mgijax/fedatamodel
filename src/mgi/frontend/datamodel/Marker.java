@@ -270,11 +270,7 @@ public class Marker {
 	@Transient
 	private List<Annotation> filterAnnotations (String annotationType) {
 		ArrayList<Annotation> sublist = new ArrayList<Annotation>();
-		Iterator<Annotation> it = getAnnotations().iterator();
-		Annotation annotation;
-
-		while (it.hasNext()) {
-			annotation = it.next();
+		for(Annotation annotation: getAnnotations()) {
 			if (annotation.getAnnotationType().equals(annotationType)) {
 				sublist.add(annotation);
 			}
@@ -1100,7 +1096,7 @@ public class Marker {
 	}
 
 	// Marker (self) -> OrganismOrtholog (mouse) -> HomologyCluster (hybrid) -> OrganismOrtholog (human) -> Marker -> HumanAnnotations (DO)
-	
+	// TODO figure out why these are empty
 	@Transient
 	public HashMap<String, HashMap<String, Annotation>> getHumanHomologDOAnnotations() {
 		HashMap<String, HashMap<String, Annotation>> map = new HashMap<String, HashMap<String, Annotation>>();

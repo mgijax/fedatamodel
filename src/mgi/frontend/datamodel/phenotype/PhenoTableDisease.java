@@ -51,8 +51,7 @@ public class PhenoTableDisease {
 		return diseaseSeq;
 	}
 
-	// TODO Change femover column name
-	@Column(name="omim_id")
+	@Column(name="do_id")
 	public String getDoID() {
 		return doID;
 	}
