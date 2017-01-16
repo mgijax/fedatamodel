@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -39,6 +40,7 @@ public class Disease {
     private int hpoTermCount;
 	private List<DiseaseSynonym> diseaseSynonyms;
     private List<DiseaseGroup> diseaseGroups;
+    private VocabTerm vocabTerm; 
 
     // =========== Convenience Methods =============== //
 
@@ -326,6 +328,13 @@ public class Disease {
 		return hpoTermCount;
 	}
 
+	@OneToOne (targetEntity=VocabTerm.class)
+	@JoinColumn (name="disease_key")
+	public VocabTerm getVocabTerm() {
+		return this.vocabTerm;
+	}
+
+    
     // ================= Setters ===================== //
 
 	public void setHpoTermCount(int hpoTermCount) {
@@ -359,6 +368,10 @@ public class Disease {
 	public void setDiseaseReferenceCount(int diseaseReferenceCount) {
 		this.diseaseReferenceCount = diseaseReferenceCount;
 	}
+
+    public void setVocabTerm(VocabTerm vocabTerm) {
+	this.vocabTerm = vocabTerm;
+    }
 
     // ================= Convenience ================= //
 
