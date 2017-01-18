@@ -20,7 +20,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.WhereJoinTable;
 @Entity
 @FilterDef(name="termDiseaseModelExcludeNots")
 @Table(name="term")
