@@ -20,7 +20,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
-
+import org.hibernate.annotations.WhereJoinTable;
 @Entity
 @FilterDef(name="termDiseaseModelExcludeNots")
 @Table(name="term")
@@ -41,6 +41,7 @@ public class VocabTerm implements Serializable{
 	private String definition;
 	private List<Marker> associatedMarkers;
 	private List<VocabTermSynonym> synonyms;
+	private List<VocabTermID> secondaryIds;
 	private List<VocabTermAncestor> ancestors;
 	private VocabTermEmapInfo emapInfo;
 	private List<VocabTerm> emapsChildren;
@@ -204,6 +205,13 @@ public class VocabTerm implements Serializable{
 		return synonyms;
 	}
 
+	@OneToMany (targetEntity=VocabTermID.class)
+	@JoinColumn (name="term_key")
+	@OrderBy ("accID")
+	public List<VocabTermID> getSecondaryIds() {
+		return secondaryIds;
+	}
+
 	@OneToOne (targetEntity=VocabTermEmapInfo.class)
 	@JoinColumn (name="term_key")
 	public VocabTermEmapInfo getEmapInfo() {
@@ -276,6 +284,10 @@ public class VocabTerm implements Serializable{
 
 	public void setSynonyms (List<VocabTermSynonym> synonyms) {
 		this.synonyms = synonyms;
+	}
+
+	public void setSecondaryIds (List<VocabTermID> secondaryIds) {
+		this.secondaryIds = secondaryIds;
 	}
 
 	public void setAssociatedMarkers(List<Marker> associatedMarkers) {

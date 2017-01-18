@@ -2,3 +2,5 @@
 /build
 /dist
 unittest-results
+Configuration
+*.swp

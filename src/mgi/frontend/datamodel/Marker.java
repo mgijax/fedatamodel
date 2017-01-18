@@ -1741,6 +1741,22 @@ public class Marker {
 		return status;
 	}
 
+	/** convenience method to pull the location note out of the list of notes
+	 */
+	@Transient
+	public String getLocationNote() {
+		Iterator<MarkerNote> it = getNotes().iterator();
+		MarkerNote note;
+
+		while (it.hasNext()) {
+			note = it.next();
+			if (note.getNoteType().equals("Location")) {
+				return note.getNote();
+			}
+		}
+		return null;
+	}
+
 	/** convenience method to pull the strain-specific note out of the list
 	 * of notes
 	 */

@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -39,10 +40,43 @@ public class Disease {
     private int hpoTermCount;
 	private List<DiseaseSynonym> diseaseSynonyms;
     private List<DiseaseGroup> diseaseGroups;
+    private VocabTerm vocabTerm; 
 
     // =========== Convenience Methods =============== //
 
-    // ----- methods to pull out groups for the disease detail page -----
+    // ----- method to order IDs on disease browser -----
+    @Transient
+    public List<VocabTermID> getOrderedSecondaryIDs() {
+
+    	// Disease browser requires secondary IDs ordered first by 
+    	// OMIM ID, and then other IDs sorted by alpha.  This depends on
+    	// alpha sort ordering in vocabTerm secondary ID retrieval
+    	
+    	List<VocabTermID> omimIDs  = new ArrayList<VocabTermID>();
+    	List<VocabTermID> otherIDs = new ArrayList<VocabTermID>();
+    	VocabTermID vocabTermID;
+    	    	
+    	Iterator<VocabTermID> iter = vocabTerm.getSecondaryIds().iterator();
+
+    	while (iter.hasNext()) {
+			vocabTermID = iter.next();
+			//remove preferred and private IDs
+    		if(!vocabTermID.isPreferred() && !vocabTermID.isPrivate()){
+    			if(vocabTermID.getLogicalDB().equals("OMIM")){
+    				omimIDs.add(vocabTermID);
+    			}
+    			else {
+    				otherIDs.add(vocabTermID);
+    			}
+    		}
+    	}
+    	// omim IDs first, than all other IDs
+    	omimIDs.addAll(otherIDs);
+    	return omimIDs;
+    }
+    
+    
+    // ----- methods to pull out groups for the disease browser page -----
 
     @Transient
     private DiseaseGroup getDiseaseGroup (String groupType) {
@@ -295,7 +329,7 @@ public class Disease {
 		return diseaseReferenceCount;
 	}
 
-    /** get an ordered list of synonyms for the disease
+    /** get an ordered list of disease groups for the disease
      */
     @OneToMany (targetEntity=DiseaseGroup.class)
     @JoinColumn(name="disease_key")
@@ -326,6 +360,15 @@ public class Disease {
 		return hpoTermCount;
 	}
 
+    /** get a vocab term object representing this disease
+     */
+	@OneToOne (targetEntity=VocabTerm.class)
+	@JoinColumn (name="disease_key")
+	public VocabTerm getVocabTerm() {
+		return this.vocabTerm;
+	}
+
+    
     // ================= Setters ===================== //
 
 	public void setHpoTermCount(int hpoTermCount) {
@@ -359,6 +402,10 @@ public class Disease {
 	public void setDiseaseReferenceCount(int diseaseReferenceCount) {
 		this.diseaseReferenceCount = diseaseReferenceCount;
 	}
+
+    public void setVocabTerm(VocabTerm vocabTerm) {
+	this.vocabTerm = vocabTerm;
+    }
 
     // ================= Convenience ================= //
 
