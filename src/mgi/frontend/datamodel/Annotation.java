@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
@@ -53,11 +54,11 @@ public class Annotation {
 	private List <Reference> references;
 	private String term;
 	private String termID;
-	private Integer termKey;
 	private String vocabName;
 	private List<Marker> markers;
 	private List<Genotype> genotypes;
 	private List<Term> headers;
+	private VocabTerm vocabTerm; 
 
 	@Id
 	@Column(name="annotation_key")
@@ -237,11 +238,6 @@ public class Annotation {
         return references;
     }
 
-    @Column(name="term_key")
-    public Integer getTermKey() {
-	return termKey;
-    }
-
     public String getTerm() {
         return term;
     }
@@ -342,9 +338,6 @@ public class Annotation {
     public void setReferences(List<Reference> references) {
         this.references = references;
     }
-    public void setTermKey(Integer termKey) {
-        this.termKey = termKey;
-    }
     public void setTerm(String term) {
         this.term = term;
     }
@@ -356,6 +349,16 @@ public class Annotation {
         this.vocabName = vocabName;
     }
     
+	/** get a vocab term object representing this disease
+	 */
+	@OneToOne (targetEntity=VocabTerm.class)
+	@JoinColumn (name="term_key")
+	public VocabTerm getVocabTerm() {
+		return vocabTerm;
+	}
+	public void setVocabTerm(VocabTerm vocabTerm) {
+		this.vocabTerm = vocabTerm;
+	}
     
     // Helpers
 
