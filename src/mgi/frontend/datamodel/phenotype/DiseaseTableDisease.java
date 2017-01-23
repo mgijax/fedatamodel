@@ -8,8 +8,11 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
+import mgi.frontend.datamodel.VocabTerm;
 
 import org.hibernate.annotations.BatchSize;
 
@@ -22,6 +25,7 @@ public class DiseaseTableDisease {
 	private String disease;
 	private int diseaseSeq;
 	private String diseaseID;
+	private VocabTerm vocabTerm;
 
 	private boolean isHeader;
 	private List<DiseaseTableDiseaseCell> diseaseCells;
@@ -56,6 +60,15 @@ public class DiseaseTableDisease {
 	public boolean getIsHeader()
 	{
 		return isHeader;
+	}
+	
+	@OneToOne (targetEntity=VocabTerm.class)
+	@JoinColumn (name="term_key")
+	public VocabTerm getVocabTerm() {
+		return vocabTerm;
+	}
+	public void setVocabTerm(VocabTerm vocabTerm) {
+		this.vocabTerm = vocabTerm;
 	}
 
 	@OneToMany (targetEntity=DiseaseTableDiseaseCell.class,fetch=FetchType.EAGER)
