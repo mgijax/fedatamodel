@@ -45,10 +45,12 @@ public class VocabTerm implements Serializable{
 	private VocabTermEmapInfo emapInfo;
 	private List<VocabTerm> emapsChildren;
 	private List<VocabTerm> children;
+	private List<VocabChild> vocabChildren;
+	private List<VocabTerm> siblings;
 	private List<VocabChild> parentEdges;
 	
 	/* Vocab specific optional associations */
-	// For vocabName=OMIM
+	// For Disease Ontology
 	private List<DiseaseModel> diseaseModels;
 	
 	/* Convenience methods */
@@ -224,6 +226,14 @@ public class VocabTerm implements Serializable{
 		return this.ancestors;
 	}
 
+	@OneToMany (targetEntity=VocabChild.class)
+	@JoinColumn (name="term_key")
+	@OrderBy ("childTerm")
+	public List<VocabChild> getVocabChildren() {
+		return this.vocabChildren;
+	}
+
+	
 	@OneToMany
 	@JoinTable (name="term_emaps_child",
 		joinColumns=@JoinColumn(name="emapa_term_key"),
@@ -245,7 +255,18 @@ public class VocabTerm implements Serializable{
 	public List<VocabTerm> getChildren() {
 		return this.children;
 	}
-	
+
+	@OneToMany
+	@JoinTable (name="term_sibling",
+		joinColumns=@JoinColumn(name="term_key"),
+		inverseJoinColumns=@JoinColumn(name="sibling_term_key")
+		)
+	@BatchSize(size=100)
+	@OrderBy("sequenceNum")
+	public List<VocabTerm> getSiblings() {
+		return this.siblings;
+	}
+
 	/*
 	 * Reverse join to voc_child to get to parents
 	 */
@@ -267,6 +288,14 @@ public class VocabTerm implements Serializable{
 
 	public void setChildren (List<VocabTerm> children) {
 		this.children = children;
+	}
+
+	public void setVocabChildren (List<VocabChild> vocabChildren) {
+		this.vocabChildren = vocabChildren;
+	}
+
+	public void setSiblings (List<VocabTerm> siblings) {
+		this.siblings = siblings;
 	}
 
 	public void setEmapsChildren (List<VocabTerm> emapsChildren) {
