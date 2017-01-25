@@ -3,7 +3,11 @@ package mgi.frontend.datamodel.phenotype;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import mgi.frontend.datamodel.VocabTerm;
 
 /**
  * AlleleSummaryDisease
@@ -18,6 +22,7 @@ public class AlleleSummaryDisease {
 	private int alleleKey;
 	private String disease;
 	private String doID;
+	private VocabTerm vocabTerm;
 	
     // ================= Getters ======================================== //
 	@Id
@@ -40,6 +45,16 @@ public class AlleleSummaryDisease {
 	@Column(name="do_id")
 	public String getDoID() {
 		return doID;
+	}
+	
+	
+	@OneToOne (targetEntity=VocabTerm.class)
+	@JoinColumn (name="term_key")
+	public VocabTerm getVocabTerm() {
+		return vocabTerm;
+	}
+	public void setVocabTerm(VocabTerm vocabTerm) {
+		this.vocabTerm = vocabTerm;
 	}
 	
     // ================= Setters ======================================== //
