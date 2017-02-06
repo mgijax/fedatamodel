@@ -12,6 +12,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.BatchSize;
+
 /**
  * Probe
  * @author mhall, jsb
@@ -43,6 +45,7 @@ public class Probe {
     private List<ProbeCloneCollection> probeCloneCollection;
     private List<ProbeID> ids;
     private List<ProbeNote> notes;
+	private List<ProbeMarkerAssociation> markerAssociations;
     
     /* need to figure out how to pull in ProbePrimerPair, which may or may not be null.
      */
@@ -95,7 +98,14 @@ public class Probe {
 		return age;
 	}
 
-    @Column(name="cell_line")
+	@OneToMany (targetEntity=ProbeMarkerAssociation.class)
+	@BatchSize(size=200)
+	@JoinColumn(name="probe_key")
+    public List<ProbeMarkerAssociation> getMarkerAssociations() {
+		return markerAssociations;
+	}
+
+	@Column(name="cell_line")
     public String getCellLine() {
 		return cellLine;
 	}
@@ -241,6 +251,10 @@ public class Probe {
 	public void setLogicalDB(String logicaldb) {
         this.logicalDB = logicaldb;
     }
+
+	public void setMarkerAssociations(List<ProbeMarkerAssociation> markerAssociations) {
+		this.markerAssociations = markerAssociations;
+	}
 
 	public void setName(String name) {
         this.name = name;
