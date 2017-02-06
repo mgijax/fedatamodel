@@ -46,6 +46,7 @@ public class Probe {
     private List<ProbeID> ids;
     private List<ProbeNote> notes;
 	private List<ProbeMarkerAssociation> markerAssociations;
+    private List<ProbePrimerPair> primerPairs;
     
     /* need to figure out how to pull in ProbePrimerPair, which may or may not be null.
      */
@@ -91,6 +92,40 @@ public class Probe {
     	return null;
     }
 
+    /* get the first set of primer pairs (or null, if none), as we assume only one per probe
+     */
+    @Transient
+    private ProbePrimerPair getPrimerPair() {
+    	// short-cut for performance; if the segment type isn't "primer", don't bother to look
+    	// for primer pairs in the database.
+    	if (!"primer".equals(segmentType)) {
+    		return null;
+    	}
+    	List<ProbePrimerPair> pairs = this.getPrimerPairs();
+    	if ((pairs != null) && (pairs.size() > 0)) {
+    		return pairs.get(0);
+    	}
+    	return null;
+    }
+
+    @Transient
+    public String getPrimerSequence1() {
+    	ProbePrimerPair ppp = getPrimerPair();
+    	if (ppp != null) {
+    		return ppp.getPrimerSequence1();
+    	}
+    	return null;
+    }
+
+    @Transient
+    public String getPrimerSequence2() {
+    	ProbePrimerPair ppp = getPrimerPair();
+    	if (ppp != null) {
+    		return ppp.getPrimerSequence2();
+    	}
+    	return null;
+    }
+
     // ================= Getters and Setters ===================== //
 
     @Column(name="age")
@@ -125,6 +160,12 @@ public class Probe {
     @OrderBy("accID")
     public List<ProbeID> getIds() {
 		return ids;
+	}
+
+	@OneToMany (targetEntity=ProbePrimerPair.class)
+    @JoinColumn (name="probe_key")
+    public List<ProbePrimerPair> getPrimerPairs() {
+		return primerPairs;
 	}
 
 	@Column(name="insert_site")
@@ -230,6 +271,10 @@ public class Probe {
 
 	public void setExpressionResultCount(Integer expressionResultCount) {
 		this.expressionResultCount = expressionResultCount;
+	}
+
+	public void setPrimerPairs(List<ProbePrimerPair> primerPairs) {
+		this.primerPairs = primerPairs;
 	}
 
 	public void setIds(List<ProbeID> ids) {
