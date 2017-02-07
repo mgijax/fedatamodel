@@ -1,18 +1,26 @@
 package mgi.frontend.datamodel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
+
+import mgi.frontend.datamodel.sort.SmartAlphaComparator;
 
 /**
  * Probe
@@ -48,8 +56,71 @@ public class Probe {
 	private List<ProbeMarkerAssociation> markerAssociations;
     private List<ProbePrimerPair> primerPairs;
     private List<ProbeRelative> relatives;
+    private List<ProbeReferenceAssociation> referenceAssociations;
+    private List<Reference> references;
     
     /*--- transient methods ---*/
+    
+    /* get the distinct list of sequences across all references, sorted smart-alpha by published ID
+     * then by primary ID (for cases that they differ)
+     */
+    @Transient
+    public List<ProbeSequence> getSequences() {
+    	/* References may mention sequences by their primary ID or by a secondary ID.  We want to show
+    	 * the unique set of sequence IDs across all references.  The sequenceID in the ProbeSequence
+    	 * is the ID cited in the paper, while the primaryID in the sequence object is the actual primary
+    	 * ID for the sequence.  So, we keep a list of the ProbeSequence objects for display, and we
+    	 * track which ID/primaryID pairs we've already seen and added to the list.
+    	 */
+    	List<ProbeSequence> sequences = new ArrayList<ProbeSequence>();
+    	Map<String,Set<String>> sequencesSeen = new HashMap<String,Set<String>>();
+    	
+    	for (ProbeReferenceAssociation ref : getReferenceAssociations()) {
+    		if (ref.getProbeSequences() != null) {
+    			for (ProbeSequence seq : ref.getProbeSequences()) {
+    				String publishedID = seq.getSequenceID();
+    				String primaryID = seq.getPrimaryID();
+    				
+    				if (!sequencesSeen.containsKey(publishedID)) {
+    					sequences.add(seq);
+    					sequencesSeen.put(publishedID, new HashSet<String>());
+    					sequencesSeen.get(publishedID).add(primaryID);
+    				} else if (!sequencesSeen.get(publishedID).contains(primaryID)) {
+    					sequences.add(seq);
+    					sequencesSeen.get(publishedID).add(primaryID);
+    				}
+    			}
+    		}
+    	}
+
+    	if (sequences.size() == 0) {
+    		return null;
+    	}
+    	
+    	Collections.sort(sequences, sequences.get(0).getComparator());
+    	return sequences;
+    }
+    
+    /* get the distinct list of aliases (aka- synonyms) across all references, smart-alpha sorted
+     */
+    @Transient
+    public List<String> getSynonyms() {
+    	List<String> aliases = new ArrayList<String>();
+    	for (ProbeReferenceAssociation pra : getReferenceAssociations()) {
+    		if (pra.getHasAliases() != 0) {
+    			for (ProbeAlias pa : pra.getAliases()) {
+    				if (!aliases.contains(pa.getAlias())) {
+    					aliases.add(pa.getAlias());
+    				}
+    			}
+    		}
+    	}
+    	if (aliases.size() == 0) {
+    		return null;
+    	}
+    	Collections.sort(aliases, new SmartAlphaComparator<String>());
+    	return aliases;
+    }
     
     /* get relatives of this probe that are either derived from it (1) or probes from which
      * it was derived (0).
@@ -84,11 +155,6 @@ public class Probe {
     	return filterRelatives(1);
     }
     
-    @Transient
-    public List<String> getSynonyms() {
-    	return null;
-    }
-
     @Transient
     public List<ProbeID> getSecondaryIds() {
     	List<ProbeID> secIDs = new ArrayList<ProbeID>();
@@ -172,6 +238,23 @@ public class Probe {
     @OrderBy("sequenceNum")
 	public List<ProbeRelative> getRelatives() {
 		return relatives;
+	}
+
+	@OneToMany (targetEntity=ProbeReferenceAssociation.class)
+	@BatchSize(size=300)
+	@JoinColumn(name="probe_key")
+	public List<ProbeReferenceAssociation> getReferenceAssociations() {
+		return referenceAssociations;
+	}
+
+	@OneToMany
+	@JoinTable (name="probe_to_reference",
+		joinColumns=@JoinColumn(name="probe_key"),
+		inverseJoinColumns=@JoinColumn(name="reference_key") )
+	@BatchSize(size=300)
+	@OrderBy("year, jnumNumeric")
+	public List<Reference> getReferences() {
+		return references;
 	}
 
 	@OneToMany (targetEntity=ProbeMarkerAssociation.class)
@@ -372,6 +455,14 @@ public class Probe {
 
 	public void setProductSize(String productSize) {
 		this.productSize = productSize;
+	}
+
+	public void setReferenceAssociations(List<ProbeReferenceAssociation> referenceAssociations) {
+		this.referenceAssociations = referenceAssociations;
+	}
+
+	public void setReferences(List<Reference> references) {
+		this.references = references;
 	}
 
 	public void setRegionCovered(String regionCovered) {

@@ -281,7 +281,7 @@ public class Sequence {
             joinColumns=@JoinColumn(name="sequence_key"),
             inverseJoinColumns=@JoinColumn(name="probe_key")
             )
-    @OrderBy("cloneid")
+    @OrderBy("cloneID")
 	public Set<Probe> getProbes() {
         return probes;
     }
