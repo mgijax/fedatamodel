@@ -240,6 +240,24 @@ public class Probe {
     	return null;
     }
 
+    @Transient
+    public List<Reference> getUniqueReferences() {
+    	List<Reference> subset = new ArrayList<Reference>();
+    	Set<String> alreadySeen = new HashSet<String>();
+
+    	if (this.getReferences() == null) {
+    		return null;
+    	}
+    	
+    	for (Reference ref : this.getReferences()) {
+    		if (!alreadySeen.contains(ref.getJnumID())) {
+    			alreadySeen.add(ref.getJnumID());
+    			subset.add(ref);
+    		}
+    	}
+    	return subset;
+    }
+    
     // ================= Getters and Setters ===================== //
 
     @Column(name="age")
