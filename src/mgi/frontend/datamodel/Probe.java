@@ -177,10 +177,7 @@ public class Probe {
     public List<ProbeID> getSecondaryIds() {
     	List<ProbeID> secIDs = new ArrayList<ProbeID>();
     	for (ProbeID p : this.getIds()) {
-    		boolean preferred = p.isPreferred();
-    		String logicalDB = p.getLogicalDB();
-
-    		if ((!"MGI".equals(logicalDB)) && (!preferred)) {
+    		if (!"MGI".equals(p.getLogicalDB()) || !p.isPreferred()) {
     			secIDs.add(p);
     		}
     	}
