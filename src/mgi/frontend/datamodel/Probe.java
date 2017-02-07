@@ -47,10 +47,43 @@ public class Probe {
     private List<ProbeNote> notes;
 	private List<ProbeMarkerAssociation> markerAssociations;
     private List<ProbePrimerPair> primerPairs;
+    private List<ProbeRelative> relatives;
     
-    /* need to figure out how to pull in ProbePrimerPair, which may or may not be null.
+    /*--- transient methods ---*/
+    
+    /* get relatives of this probe that are either derived from it (1) or probes from which
+     * it was derived (0).
      */
+    @Transient
+    private List<ProbeRelative> filterRelatives(int isChild) {
+    	List<ProbeRelative> subset = new ArrayList<ProbeRelative>();
+    	for (ProbeRelative pr : getRelatives()) {
+    		if (pr.getIsChild() == isChild) {
+    			subset.add(pr);
+    		}
+    	}
+    	return subset;
+    }
+    
+    /* a probe can only have one parent from which it was derived; find and return it
+     * (or null, if not available)
+     */
+    @Transient
+    public ProbeRelative getParentProbe() {
+    	List<ProbeRelative> parents = filterRelatives(0);
+    	if ((parents != null) && (parents.size() == 1)) {
+    		return parents.get(0);
+    	}
+    	return null;
+    }
 
+    /* a probe can have many children (probes that are derived from it); find and return them
+     */
+    @Transient
+    public List<ProbeRelative> getChildProbes() {
+    	return filterRelatives(1);
+    }
+    
     @Transient
     public List<String> getSynonyms() {
     	return null;
@@ -131,6 +164,14 @@ public class Probe {
     @Column(name="age")
     public String getAge() {
 		return age;
+	}
+
+	@OneToMany (targetEntity=ProbeRelative.class)
+	@BatchSize(size=20)
+	@JoinColumn(name="probe_key")
+    @OrderBy("sequenceNum")
+	public List<ProbeRelative> getRelatives() {
+		return relatives;
 	}
 
 	@OneToMany (targetEntity=ProbeMarkerAssociation.class)
@@ -296,6 +337,10 @@ public class Probe {
 	public void setLogicalDB(String logicaldb) {
         this.logicalDB = logicaldb;
     }
+
+	public void setRelatives(List<ProbeRelative> relatives) {
+		this.relatives = relatives;
+	}
 
 	public void setMarkerAssociations(List<ProbeMarkerAssociation> markerAssociations) {
 		this.markerAssociations = markerAssociations;
