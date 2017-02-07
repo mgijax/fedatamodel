@@ -61,6 +61,24 @@ public class Probe {
     
     /*--- transient methods ---*/
     
+    /* get the list of references that have polymorphism data for this probe.  Sort by year then jnum.
+     */
+    @Transient
+    public List<ProbeReferenceAssociation> getPolymorphismReferences() {
+    	List<ProbeReferenceAssociation> refs = new ArrayList<ProbeReferenceAssociation>();
+    	for (ProbeReferenceAssociation pra : getReferenceAssociations()) {
+    		List<ProbePolymorphism> polymorphisms = pra.getProbePolymorphisms();
+    		if ((polymorphisms != null) && (polymorphisms.size() > 0)) {
+    			refs.add(pra);
+    		}
+    	}
+    	if (refs.size() == 0) {
+    		return null;
+    	}
+    	Collections.sort(refs, refs.get(0).getComparator());
+    	return refs;
+    }
+    
     /* get the distinct list of sequences across all references, sorted smart-alpha by published ID
      * then by primary ID (for cases that they differ)
      */
