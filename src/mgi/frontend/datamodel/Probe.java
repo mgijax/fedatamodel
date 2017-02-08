@@ -46,6 +46,7 @@ public class Probe {
     private String insertSize;
     private String productSize;
     private String library;
+    private String libraryJnum;
     private String tissue;
     private String regionCovered;
     private String strain;
@@ -340,7 +341,12 @@ public class Probe {
 		return library;
 	}
 
-    @Column(name="logical_db")
+    @Column(name="library_jnum")
+    public String getLibraryJnum() {
+		return libraryJnum;
+	}
+
+	@Column(name="logical_db")
     public String getLogicalDB() {
         return logicalDB;
     }
@@ -448,6 +454,10 @@ public class Probe {
 
 	public void setLibrary(String library) {
 		this.library = library;
+	}
+
+	public void setLibraryJnum(String libraryJnum) {
+		this.libraryJnum = libraryJnum;
 	}
 
 	public void setLogicalDB(String logicaldb) {
