@@ -25,6 +25,7 @@ public class DiseaseGroup {
 	private int diseaseKey;
 	private String groupType;
 	private int sequenceNum;
+	private List<DiseaseGroupRow> diseaseGroupRows;
 	private List<DiseaseRow> diseaseRows;
 
     // ================= Getters and Setters ===================== //
@@ -46,6 +47,14 @@ public class DiseaseGroup {
 	@OrderBy ("sequenceNum")
 	public List<DiseaseRow> getDiseaseRows() {
 		return diseaseRows;
+	}
+
+	@OneToMany (targetEntity=DiseaseGroupRow.class)
+	@JoinColumn (name="disease_group_key")
+	@BatchSize(size=100)
+	@OrderBy ("annotatedDisease")
+	public List<DiseaseGroupRow> getDiseaseGroupRows() {
+		return diseaseGroupRows;
 	}
 
 	@Column(name="group_type")
@@ -72,6 +81,10 @@ public class DiseaseGroup {
 
 	public void setDiseaseRows(List<DiseaseRow> diseaseRows) {
 		this.diseaseRows = diseaseRows;
+	}
+
+	public void setDiseaseGroupRows(List<DiseaseGroupRow> diseaseGroupRows) {
+		this.diseaseGroupRows = diseaseGroupRows;
 	}
 
 	public void setSequenceNum(int sequenceNum) {
