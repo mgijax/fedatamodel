@@ -32,9 +32,11 @@ public class DiseaseRow {
 	private HomologyCluster homologyCluster;
 	private List<DiseaseRowToMarker> diseaseRowToMarkers;
 	private List<DiseaseRowToModel> diseaseRowToModels;
+	private List<DiseaseGroupRow> diseaseGroupRows;
 
     // ================= Convenience Methods ===================== //
 
+	
 	@Transient
 	private List<DiseaseRowToMarker> filterDiseaseRowToMarkers(String organism) {
 
@@ -136,6 +138,15 @@ public class DiseaseRow {
  
     // ================= Getters and Setters ===================== //
 
+	@OneToMany (targetEntity=DiseaseGroupRow.class )
+	public List<DiseaseGroupRow> getDiseaseGroupRows() {
+		return diseaseGroupRows;
+	}
+
+	public void setDiseaseGroupRows(List<DiseaseGroupRow> diseaseGroupRows) {
+		this.diseaseGroupRows = diseaseGroupRows;
+	}
+	
 	@ManyToOne (targetEntity=HomologyCluster.class, fetch=FetchType.LAZY)
 	@BatchSize(size=100)
 	@JoinColumn (name="cluster_key")
