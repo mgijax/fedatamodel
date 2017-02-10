@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -35,7 +37,7 @@ public class ExpressionAssay {
 	private int hasImage;
 	private int isDirectDetection;
 
-	private Integer probeKey;
+	private Probe probe;
 	private String probeName;
 	private String probePreparation;
 	private String visualizedWith;
@@ -68,11 +70,32 @@ public class ExpressionAssay {
 	private List<String> uniqueBlotNotes=new ArrayList<String>();
 	private Boolean hasLaneNotes=null;
 
+    // ================= Transient methods ===================== //
+	
+	@Transient
+	public String getProbeID() {
+		Probe p = getProbe();
+		if (p != null) {
+			return p.getPrimaryID();
+		}
+		return null;
+	}
+
     // ================= Getters ===================== //
 
     @Column(name="antibody")
 	public String getAntibody() {
 		return antibody;
+	}
+
+    @ManyToOne (targetEntity=Probe.class, fetch=FetchType.LAZY)
+    @JoinColumn (name="probe_key")
+	public Probe getProbe() {
+		return probe;
+	}
+
+	public void setProbe(Probe probe) {
+		this.probe = probe;
 	}
 
 	@Column(name="antibody_key")
@@ -139,11 +162,6 @@ public class ExpressionAssay {
 	@Column(name="primary_id")
 	public String getPrimaryID() {
 		return primaryID;
-	}
-
-	@Column(name="probe_key")
-	public Integer getProbeKey() {
-		return probeKey;
 	}
 
 	@Column(name="probe_name")
@@ -397,10 +415,6 @@ public class ExpressionAssay {
 		this.primaryID = primaryID;
 	}
 
-	public void setProbeKey(Integer probeKey) {
-		this.probeKey = probeKey;
-	}
-
 	public void setAntibodyKey(Integer antibodyKey) {
 		this.antibodyKey = antibodyKey;
 	}
@@ -413,9 +427,6 @@ public class ExpressionAssay {
 		this.probePreparation = probePreparation;
 	}
 
-//	public void setReferenceKey(int referenceKey) {
-//		this.referenceKey = referenceKey;
-//	}
 	public void setReference(Reference reference)
 	{
 		this.reference = reference;
@@ -460,15 +471,9 @@ public class ExpressionAssay {
 						: "")
 				+ (note != null ? "note=" + note + ", " : "")
 				+ (primaryID != null ? "primaryID=" + primaryID + ", " : "")
-				+ "probeKey="
-				+ probeKey
-				+ ", "
 				+ (probeName != null ? "probeName=" + probeName + ", " : "")
 				+ (probePreparation != null ? "probePreparation="
 						+ probePreparation + ", " : "")
-//				+ "referenceKey="
-//				+ referenceKey
-//				+ ", "
 				+ (reporterGene != null ? "reporterGene=" + reporterGene + ", "
 						: "")
 				+ (visualizedWith != null ? "visualizedWith=" + visualizedWith
