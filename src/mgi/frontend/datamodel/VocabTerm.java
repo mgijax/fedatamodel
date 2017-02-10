@@ -210,6 +210,19 @@ public class VocabTerm implements Serializable{
 	@JoinColumn (name="term_key")
 	@OrderBy ("accID")
 	public List<VocabTermID> getSecondaryIds() {
+		int i = 0;
+		boolean found = false;
+		while(i < secondaryIds.size()) {
+			if(secondaryIds.get(i).getAccID().equals(primaryId)) {
+				found = true;
+				break;
+			}
+			i++;
+		}
+		if(found) {
+			VocabTermID primary = secondaryIds.remove(i);
+			secondaryIds.add(0, primary);
+		}
 		return secondaryIds;
 	}
 

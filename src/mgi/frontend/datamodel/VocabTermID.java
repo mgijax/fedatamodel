@@ -28,7 +28,7 @@ public class VocabTermID extends AccessionID {
 
 	@Override
 	public String toString() {
-		return "TermID ["
+		return "VocabTermID ["
 				+ (accID != null ? "accID=" + accID + ", " : "")
 				+ "isPreferred=" + isPreferred + ", isPrivate=" + isPrivate
 				+ ", "
