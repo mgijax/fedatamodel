@@ -2,6 +2,8 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -14,6 +16,7 @@ import javax.persistence.Table;
 @Table (name="term_id")
 public class VocabTermID extends AccessionID {
 	private Integer termKey;
+	private VocabTerm vocabTerm;
 	
     // ================= Getters and Setters ===================== //
 
@@ -26,6 +29,17 @@ public class VocabTermID extends AccessionID {
 		this.termKey = termKey;
 	}
 
+	/** get a vocab term */
+	@OneToOne (targetEntity=VocabTerm.class)
+	@JoinColumn (name="term_key", insertable = false, updatable = false)
+	public VocabTerm getVocabTerm() {
+		return vocabTerm;
+	}
+	
+	public void setVocabTerm(VocabTerm vocabTerm) {
+		this.vocabTerm = vocabTerm;
+	}
+	
 	@Override
 	public String toString() {
 		return "VocabTermID ["
