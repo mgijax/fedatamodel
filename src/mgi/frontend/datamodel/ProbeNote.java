@@ -1,8 +1,12 @@
 package mgi.frontend.datamodel;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Object representing probe notes
@@ -12,6 +16,28 @@ import javax.persistence.Table;
 @Table (name="probe_note")
 public class ProbeNote extends Note {
 	protected Integer probeKey;
+
+    // ================= Transient methods ===================== //
+	
+	// examines the note, splits up any contiguous strings of letters into 40-character chunks
+	// (separated by HTML line breaks -- yes, it's ugly, but it works for now) so they can wrap well,
+	// and returns the resulting string
+	@Transient
+	public String getNoteWithSplitSequence() {
+		StringBuffer sb = new StringBuffer();
+		Pattern pattern = Pattern.compile("([A-Za-z]{40})");
+		Matcher matcher = pattern.matcher(getNote());
+		boolean foundOne = false;
+		while (matcher.find()) {
+			matcher.appendReplacement(sb, "<br/>" + matcher.group(1));
+			foundOne = true;
+		}
+		if (foundOne) {
+			sb.append("<br/>");
+		}
+		matcher.appendTail(sb);
+		return sb.toString();
+	}
 
     // ================= Getters and Setters ===================== //
 	

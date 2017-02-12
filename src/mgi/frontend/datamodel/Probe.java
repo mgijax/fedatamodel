@@ -201,7 +201,7 @@ public class Probe {
     	
     	for (ProbeNote pn : this.getNotes()) {
     		if (noteType.equals(pn.getNoteType())) {
-    			return pn.getNote();
+    			return pn.getNoteWithSplitSequence();
     		}
     	}
     	return null;
