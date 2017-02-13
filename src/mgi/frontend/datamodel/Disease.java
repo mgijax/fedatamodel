@@ -179,18 +179,18 @@ public class Disease {
 		ArrayList<DiseaseModel> models = new ArrayList<DiseaseModel>();
 		if (dg == null) { return models; }
 
-		Iterator<DiseaseRow> drIt = dg.getDiseaseRows().iterator();
-		DiseaseRow row;
+		Iterator<DiseaseGroupRow> dgrIt = dg.getDiseaseGroupRows().iterator();
+		DiseaseGroupRow dgr;
 
-		while (drIt.hasNext()) {
-			row = drIt.next();
+		while (dgrIt.hasNext()) {
+			dgr = dgrIt.next();
 			if (notModels == 0) {
-				models.addAll (row.getMouseModels());
+				models.addAll (dgr.getDiseaseRow().getMouseModels());
 			} else if (notModels == -1) {
-				models.addAll (row.getMouseModels());
-				models.addAll (row.getNotModels());
+				models.addAll (dgr.getDiseaseRow().getMouseModels());
+				models.addAll (dgr.getDiseaseRow().getNotModels());
 			} else {
-				models.addAll (row.getNotModels());
+				models.addAll (dgr.getDiseaseRow().getNotModels());
 			}
 		}
 		return uniqueModels(models);
