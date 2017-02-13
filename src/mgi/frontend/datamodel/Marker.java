@@ -1523,39 +1523,6 @@ public class Marker {
 		return filterLocations("cytogenetic");
 	}
 
-	/** get a nicely formatted string with the marker's genomic location, but omitting the strand
-	 */
-	@Transient
-	public String getCoordinates() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("Chr");
-		if (getChromosome().equals("UN")) {
-			sb.append(" Unknown");
-			return sb.toString();
-		}
-		sb.append(getChromosome());
-
-		MarkerLocation loc = getPreferredCoordinates();
-		if (loc == null) {
-			return sb.toString();
-		}
-		
-		NumberFormat nf = new DecimalFormat("#0");
-
-		sb.append (":");
-		sb.append (nf.format(loc.getStartCoordinate()));
-		sb.append ("-");
-		sb.append (nf.format(loc.getEndCoordinate()));
-		
-		if (loc.getStrand() != null) {
-			sb.append(" (");
-			sb.append(loc.getStrand());
-			sb.append(")");
-		}
-
-		return sb.toString();
-	}
-
 	/** get a nicely formatted string with the marker's location, preferring:
 	 * coordinates over centimorgans over cytogenetic band
 	 */
