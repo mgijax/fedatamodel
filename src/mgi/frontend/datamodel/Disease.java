@@ -1,9 +1,11 @@
 package mgi.frontend.datamodel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Comparator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
+
+import mgi.frontend.datamodel.sort.SmartAlphaComparator;
 
 /**
  * Base object for diseases.
@@ -122,6 +126,12 @@ public class Disease {
 		return getDiseaseGroup ("additional");
 	}
 
+	@Transient
+	public Comparator<DiseaseModel> getDiseaseModelComparator()
+	{
+		return new DiseaseModelComparator();
+	}
+
 	// ----- methods to pull out mouse models for the 'all models' page -----
 
 	/* given a list of DiseaseModels, filter out duplicates and return a
@@ -147,6 +157,13 @@ public class Disease {
 				unique.add(dm);
 			}
 		}
+
+	    // sort the models
+		if (unique != null) {
+	        Collections.sort(unique,
+	        		this.getDiseaseModelComparator());
+	    }
+		
 		return unique;
 	}
 
@@ -414,4 +431,18 @@ public class Disease {
 		sb.append (primaryID);
 		return sb.toString();
 	}
+
+	// ================= Private Classes ================= //
+
+	private class DiseaseModelComparator extends SmartAlphaComparator<DiseaseModel>
+	{
+		public int compare(DiseaseModel o1, DiseaseModel o2)
+		{
+			DiseaseModel i1 = (DiseaseModel) o1;
+			DiseaseModel i2 = (DiseaseModel) o2;
+			return super.compare(i1.getDisease(),i2.getDisease());
+		}
+	}
+
+
 }
