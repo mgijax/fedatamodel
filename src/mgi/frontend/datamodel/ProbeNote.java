@@ -19,13 +19,13 @@ public class ProbeNote extends Note {
 
     // ================= Transient methods ===================== //
 	
-	// examines the note, splits up any contiguous strings of letters into 40-character chunks
+	// examines the note, splits up any contiguous strings of letters into 60-character chunks
 	// (separated by HTML line breaks -- yes, it's ugly, but it works for now) so they can wrap well,
 	// and returns the resulting string
 	@Transient
 	public String getNoteWithSplitSequence() {
 		StringBuffer sb = new StringBuffer();
-		Pattern pattern = Pattern.compile("([A-Za-z]{40})");
+		Pattern pattern = Pattern.compile("([A-Za-z]{60})");
 		Matcher matcher = pattern.matcher(getNote());
 		boolean foundOne = false;
 		while (matcher.find()) {
