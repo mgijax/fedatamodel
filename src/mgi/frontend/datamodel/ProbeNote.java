@@ -28,14 +28,20 @@ public class ProbeNote extends Note {
 		Pattern pattern = Pattern.compile("([A-Za-z]{60})");
 		Matcher matcher = pattern.matcher(getNote());
 		boolean foundOne = false;
+		String openTag = "<div style='font-family: Courier, monospace'>";
+		String closeTag = "</div>";
 		while (matcher.find()) {
-			matcher.appendReplacement(sb, "<br/>" + matcher.group(1));
+			matcher.appendReplacement(sb, "<br/>" + openTag + matcher.group(1));
 			foundOne = true;
+			openTag = "";
 		}
 		if (foundOne) {
 			sb.append("<br/>");
 		}
 		matcher.appendTail(sb);
+		if (foundOne) {
+			sb.append(closeTag);
+		}
 		return sb.toString();
 	}
 
