@@ -40,14 +40,17 @@ public class MappingExperiment {
     private String chromosome;
     private String primaryID;
     private List<MappingMarker> markers;
+    private List<MappingRIRC> rircData;
 
     /*--- transient methods ---*/
     
+    // get reference note with selected tweaks made for HTML formatting
     @Transient
     public String getNoteHtml() {
     	return tweakHTML(getNote());
     }
     
+    // get reference note with selected tweaks made for HTML formatting
     @Transient
     public String getReferenceNoteHtml() {
     	return tweakHTML(getReferenceNote());
@@ -55,11 +58,22 @@ public class MappingExperiment {
     
     // 1. convert <..> notation into superscripts
     // 2. convert newlines (\n) into HTML line breaks
+    @Transient
     private String tweakHTML(String s) {
     	String t = s.replaceAll("<", "@@@").replaceAll(">", "</sup>").replaceAll("@@@", "<sup>");
     	return t.replaceAll("\n", "<br/>");
     }
     
+    // return the extra RI/RC data for this experiment
+    @Transient
+    public MappingRIRC getRirc() {
+    	List<MappingRIRC> r = getRircData();
+    	if ((r != null) || (r.size() > 0)) {
+    		return r.get(0);
+    	}
+    	return null;
+    }
+
     // ================= Getters and Setters ===================== //
 
     @Column(name="chromosome")
@@ -101,12 +115,19 @@ public class MappingExperiment {
 		return referenceNote;
 	}
 
+	@OneToMany (targetEntity=MappingRIRC.class)
+	@BatchSize(size=300)
+	@JoinColumn(name="experiment_key")
+    public List<MappingRIRC> getRircData() {
+		return rircData;
+	}
+
     @Column(name="experiment_type")
 	public String getType() {
 		return type;
 	}
 
-    public void setChromosome(String chromosome) {
+	public void setChromosome(String chromosome) {
 		this.chromosome = chromosome;
 	}
 
@@ -127,6 +148,9 @@ public class MappingExperiment {
 	}
 	public void setReferenceNote(String referenceNote) {
 		this.referenceNote = referenceNote;
+	}
+	public void setRircData(List<MappingRIRC> rircData) {
+		this.rircData = rircData;
 	}
 	public void setType(String type) {
 		this.type = type;
