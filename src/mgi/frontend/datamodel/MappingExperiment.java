@@ -43,6 +43,23 @@ public class MappingExperiment {
 
     /*--- transient methods ---*/
     
+    @Transient
+    public String getNoteHtml() {
+    	return tweakHTML(getNote());
+    }
+    
+    @Transient
+    public String getReferenceNoteHtml() {
+    	return tweakHTML(getReferenceNote());
+    }
+    
+    // 1. convert <..> notation into superscripts
+    // 2. convert newlines (\n) into HTML line breaks
+    private String tweakHTML(String s) {
+    	String t = s.replaceAll("<", "@@@").replaceAll(">", "</sup>").replaceAll("@@@", "<sup>");
+    	return t.replaceAll("\n", "<br/>");
+    }
+    
     // ================= Getters and Setters ===================== //
 
     @Column(name="chromosome")
