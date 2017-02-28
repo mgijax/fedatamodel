@@ -45,6 +45,8 @@ public class MappingExperiment {
     private List<MappingTable> tables;
     private List<MappingLink> links;
     private List<MappingHybrid> hybridData;
+    private List<MappingFish> fishData;
+    private List<MappingInSitu> inSituData;
 
     /*--- transient methods ---*/
     
@@ -76,6 +78,18 @@ public class MappingExperiment {
     	return null;
     }
     
+    // get the table of matrix data for a FISH experiment
+    @Transient
+    public MappingTable getFishMatrix() {
+    	return getTable("FISH MATRIX");
+    }
+
+    // get the table of matrix data for an IN SITU experiment
+    @Transient
+    public MappingTable getInSituMatrix() {
+    	return getTable("INSITU MATRIX");
+    }
+
     // get the table of matrix data for a HYBRID experiment
     @Transient
     public MappingTable getHybridMatrix() {
@@ -151,6 +165,26 @@ public class MappingExperiment {
     	return null;
     }
 
+    // return the extra FISH data for this experiment
+    @Transient
+    public MappingFish getFish() {
+    	List<MappingFish> r = getFishData();
+    	if ((r != null) && (r.size() > 0)) {
+    		return r.get(0);
+    	}
+    	return null;
+    }
+
+    // return the extra IN SITU data for this experiment
+    @Transient
+    public MappingInSitu getInSitu() {
+    	List<MappingInSitu> r = getInSituData();
+    	if ((r != null) && (r.size() > 0)) {
+    		return r.get(0);
+    	}
+    	return null;
+    }
+
     // return the extra HYBRID data for this experiment
     @Transient
     public MappingHybrid getHybrid() {
@@ -218,6 +252,20 @@ public class MappingExperiment {
 		return referenceNote;
 	}
 
+	@OneToMany (targetEntity=MappingFish.class)
+	@BatchSize(size=300)
+	@JoinColumn(name="experiment_key")
+	public List<MappingFish> getFishData() {
+		return fishData;
+	}
+
+	@OneToMany (targetEntity=MappingInSitu.class)
+	@BatchSize(size=300)
+	@JoinColumn(name="experiment_key")
+	public List<MappingInSitu> getInSituData() {
+		return inSituData;
+	}
+
 	@OneToMany (targetEntity=MappingCross.class)
 	@BatchSize(size=300)
 	@JoinColumn(name="experiment_key")
@@ -282,6 +330,13 @@ public class MappingExperiment {
 	public void setHybridData(List<MappingHybrid> hybridData) {
 		this.hybridData = hybridData;
 	}
+	public void setFishData(List<MappingFish> fishData) {
+		this.fishData = fishData;
+	}
+	public void setInSituData(List<MappingInSitu> inSituData) {
+		this.inSituData = inSituData;
+	}
+
 	public void setRircData(List<MappingRIRC> rircData) {
 		this.rircData = rircData;
 	}
