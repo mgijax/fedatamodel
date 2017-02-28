@@ -44,6 +44,7 @@ public class MappingExperiment {
     private List<MappingCross> crossData;
     private List<MappingTable> tables;
     private List<MappingLink> links;
+    private List<MappingHybrid> hybridData;
 
     /*--- transient methods ---*/
     
@@ -75,6 +76,12 @@ public class MappingExperiment {
     	return null;
     }
     
+    // get the table of matrix data for a HYBRID experiment
+    @Transient
+    public MappingTable getHybridMatrix() {
+    	return getTable("HYBRID MATRIX");
+    }
+
     // get the table of 2x2 data for an RI/RC experiment
     @Transient
     public MappingTable getRirc2x2() {
@@ -123,11 +130,14 @@ public class MappingExperiment {
     	return tweakHTML(getReferenceNote());
     }
     
-    // 1. convert <..> notation into superscripts
-    // 2. convert newlines (\n) into HTML line breaks
+    // 1. convert any stray < or > into &lt; or &gt; notation
+    // 2. convert <..> notation into superscripts
+    // 3. convert newlines (\n) into HTML line breaks
     @Transient
     private String tweakHTML(String s) {
-    	String t = s.replaceAll("<", "@@@").replaceAll(">", "</sup>").replaceAll("@@@", "<sup>");
+    	String t = s.replaceAll("<([^ <]+)>", "@@@sup:::$1@@@/sup:::");
+    	t = t.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+    	t = t.replaceAll("@@@", "<").replaceAll(":::", ">");
     	return t.replaceAll("\n", "<br/>");
     }
     
@@ -135,6 +145,16 @@ public class MappingExperiment {
     @Transient
     public MappingCross getCross() {
     	List<MappingCross> r = getCrossData();
+    	if ((r != null) && (r.size() > 0)) {
+    		return r.get(0);
+    	}
+    	return null;
+    }
+
+    // return the extra HYBRID data for this experiment
+    @Transient
+    public MappingHybrid getHybrid() {
+    	List<MappingHybrid> r = getHybridData();
     	if ((r != null) && (r.size() > 0)) {
     		return r.get(0);
     	}
@@ -205,6 +225,13 @@ public class MappingExperiment {
 		return crossData;
 	}
 
+	@OneToMany (targetEntity=MappingHybrid.class)
+	@BatchSize(size=300)
+	@JoinColumn(name="experiment_key")
+    public List<MappingHybrid> getHybridData() {
+		return hybridData;
+	}
+
 	@OneToMany (targetEntity=MappingRIRC.class)
 	@BatchSize(size=300)
 	@JoinColumn(name="experiment_key")
@@ -251,6 +278,9 @@ public class MappingExperiment {
 	}
 	public void setCrossData(List<MappingCross> crossData) {
 		this.crossData = crossData;
+	}
+	public void setHybridData(List<MappingHybrid> hybridData) {
+		this.hybridData = hybridData;
 	}
 	public void setRircData(List<MappingRIRC> rircData) {
 		this.rircData = rircData;
