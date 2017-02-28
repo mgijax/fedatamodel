@@ -41,9 +41,39 @@ public class MappingExperiment {
     private String primaryID;
     private List<MappingMarker> markers;
     private List<MappingRIRC> rircData;
+    private List<MappingTable> tables;
 
     /*--- transient methods ---*/
     
+    // get the data table with the specified name
+    @Transient
+    private MappingTable getTable(String tableType) {
+    	for (MappingTable t : getTables()) {
+    		if (tableType.equals(t.getTableType())) {
+    			return t;
+    		}
+    	}
+    	return null;
+    }
+    
+    // get the table of 2x2 data for an RI/RC experiment
+    @Transient
+    public MappingTable getRirc2x2() {
+    	return getTable("RI 2x2");
+    }
+
+    // get the table of matrix data for an RI/RC experiment
+    @Transient
+    public MappingTable getRircMatrix() {
+    	return getTable("RI MATRIX");
+    }
+
+    // get the table of statistics for an RI/RC experiment
+    @Transient
+    public MappingTable getRircStatistics() {
+    	return getTable("RI STATISTICS");
+    }
+
     // get reference note with selected tweaks made for HTML formatting
     @Transient
     public String getNoteHtml() {
@@ -122,6 +152,13 @@ public class MappingExperiment {
 		return rircData;
 	}
 
+    @OneToMany (targetEntity=MappingTable.class)
+    @JoinColumn(name="experiment_key")
+    @OrderBy("sequenceNum")
+	public List<MappingTable> getTables() {
+		return tables;
+	}
+
     @Column(name="experiment_type")
 	public String getType() {
 		return type;
@@ -151,6 +188,9 @@ public class MappingExperiment {
 	}
 	public void setRircData(List<MappingRIRC> rircData) {
 		this.rircData = rircData;
+	}
+	public void setTables(List<MappingTable> tables) {
+		this.tables = tables;
 	}
 	public void setType(String type) {
 		this.type = type;
