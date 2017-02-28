@@ -41,9 +41,28 @@ public class MappingExperiment {
     private String primaryID;
     private List<MappingMarker> markers;
     private List<MappingRIRC> rircData;
+    private List<MappingCross> crossData;
     private List<MappingTable> tables;
+    private List<MappingLink> links;
 
     /*--- transient methods ---*/
+    
+    // get the link with the specified type
+    @Transient
+    private MappingLink getLink(String linkType) {
+    	for (MappingLink t : getLinks()) {
+    		if (linkType.equals(t.getType())) {
+    			return t;
+    		}
+    	}
+    	return null;
+    }
+    
+    // get the link for the Jac RH Panel (aka- from the "Lucy Load")
+    @Transient
+    public MappingLink getRhPanelLink() {
+    	return getLink("RH Panel");
+    }
     
     // get the data table with the specified name
     @Transient
@@ -74,6 +93,24 @@ public class MappingExperiment {
     	return getTable("RI STATISTICS");
     }
 
+    // get the table of 2x2 data for an CROSS experiment
+    @Transient
+    public MappingTable getCross2x2() {
+    	return getTable("CROSS 2x2");
+    }
+
+    // get the table of matrix data for an CROSS experiment
+    @Transient
+    public MappingTable getCrossMatrix() {
+    	return getTable("CROSS MATRIX");
+    }
+
+    // get the table of statistics for an CROSS experiment
+    @Transient
+    public MappingTable getCrossStatistics() {
+    	return getTable("CROSS STATISTICS");
+    }
+
     // get reference note with selected tweaks made for HTML formatting
     @Transient
     public String getNoteHtml() {
@@ -94,11 +131,21 @@ public class MappingExperiment {
     	return t.replaceAll("\n", "<br/>");
     }
     
+    // return the extra CROSS data for this experiment
+    @Transient
+    public MappingCross getCross() {
+    	List<MappingCross> r = getCrossData();
+    	if ((r != null) && (r.size() > 0)) {
+    		return r.get(0);
+    	}
+    	return null;
+    }
+
     // return the extra RI/RC data for this experiment
     @Transient
     public MappingRIRC getRirc() {
     	List<MappingRIRC> r = getRircData();
-    	if ((r != null) || (r.size() > 0)) {
+    	if ((r != null) && (r.size() > 0)) {
     		return r.get(0);
     	}
     	return null;
@@ -117,7 +164,13 @@ public class MappingExperiment {
 		return experimentKey;
 	}
 
-    @OneToMany (targetEntity=MappingMarker.class)
+	@OneToMany (targetEntity=MappingLink.class)
+    @JoinColumn(name="experiment_key")
+    public List<MappingLink> getLinks() {
+		return links;
+	}
+
+	@OneToMany (targetEntity=MappingMarker.class)
     @JoinColumn(name="experiment_key")
     @OrderBy("sequenceNum")
 	public List<MappingMarker> getMarkers() {
@@ -143,6 +196,13 @@ public class MappingExperiment {
 	@Column(name="reference_note")
 	public String getReferenceNote() {
 		return referenceNote;
+	}
+
+	@OneToMany (targetEntity=MappingCross.class)
+	@BatchSize(size=300)
+	@JoinColumn(name="experiment_key")
+    public List<MappingCross> getCrossData() {
+		return crossData;
 	}
 
 	@OneToMany (targetEntity=MappingRIRC.class)
@@ -171,6 +231,9 @@ public class MappingExperiment {
 	public void setExperimentKey(int experimentKey) {
 		this.experimentKey = experimentKey;
 	}
+	public void setLinks(List<MappingLink> links) {
+		this.links = links;
+	}
 	public void setMarkers(List<MappingMarker> markers) {
 		this.markers = markers;
 	}
@@ -185,6 +248,9 @@ public class MappingExperiment {
 	}
 	public void setReferenceNote(String referenceNote) {
 		this.referenceNote = referenceNote;
+	}
+	public void setCrossData(List<MappingCross> crossData) {
+		this.crossData = crossData;
 	}
 	public void setRircData(List<MappingRIRC> rircData) {
 		this.rircData = rircData;
