@@ -125,6 +125,30 @@ public class Marker {
 	private List<DiseaseRow> diseaseRows;
 	private List<MPGenotype> mpGenotypes;
 	private List<MinimapMarker> minimapMarkers;
+	private List<MarkerPolymorphism> polymorphisms;
+
+	//=== methods for polymorphisms ===//
+	
+	@Transient
+	private List<MarkerPolymorphism> filterPolymorphisms(String type) {
+		List<MarkerPolymorphism> sublist = new ArrayList<MarkerPolymorphism>();
+		for (MarkerPolymorphism p : this.getPolymorphisms()) {
+			if (type.equals(p.getType())) {
+				sublist.add(p);
+			}
+		}
+		return sublist;
+	}
+	
+	@Transient
+	public List<MarkerPolymorphism> getRflpPolymorphisms() {
+		return filterPolymorphisms("RFLP");
+	}
+
+	@Transient
+	public List<MarkerPolymorphism> getPcrPolymorphisms() {
+		return filterPolymorphisms("PCR");
+	}
 
 	//=== methods for related markers ===//
 
@@ -439,6 +463,14 @@ public class Marker {
 	@Transient
 	public List<MarkerQtlExperiment> getQtlCandidateGeneNotes() {
 		return filterQtlExperiments("TEXT-QTL-Candidate Genes");
+	}
+
+	@OneToMany (targetEntity=MarkerPolymorphism.class)
+	@JoinColumn(name="marker_key")
+	@BatchSize(size=100)
+	@OrderBy("sequenceNum")
+	public List<MarkerPolymorphism> getPolymorphisms() {
+		return polymorphisms;
 	}
 
 	/** returns a collection of QTL mapping experiment notes for the mkr
@@ -1920,6 +1952,10 @@ public class Marker {
 
 	public void setAliases(List<MarkerAlias> aliases) {
 		this.aliases = aliases;
+	}
+
+	public void setPolymorphisms(List<MarkerPolymorphism> polymorphisms) {
+		this.polymorphisms = polymorphisms;
 	}
 
 	public void setQtlExperiments(List<MarkerQtlExperiment> qtlExperiments) {
