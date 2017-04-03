@@ -42,6 +42,8 @@ public class Disease {
 	private String logicalDB;
 	private int diseaseReferenceCount;
 	private int hpoTermCount;
+	private int genesTabCount;
+	private int modelsTabCount;
 	private List<DiseaseSynonym> diseaseSynonyms;
 	private List<DiseaseGroup> diseaseGroups;
 	private VocabTerm vocabTerm; 
@@ -369,6 +371,17 @@ public class Disease {
 		return hpoTermCount;
 	}
 
+	@Column(name="genes_tab_count",insertable=false,updatable=false)
+	public int getGenesTabCount() {
+		return genesTabCount;
+	}
+
+	@Column(name="models_tab_count",insertable=false,updatable=false)
+	public int getModelsTabCount() {
+		return modelsTabCount;
+	}
+
+	
 	/** get a vocab term object representing this disease
 	 */
 	@OneToOne (targetEntity=VocabTerm.class)
@@ -415,6 +428,14 @@ public class Disease {
 	public void setVocabTerm(VocabTerm vocabTerm) {
 		this.vocabTerm = vocabTerm;
 	}
+
+	public void setGenesTabCount(int genesTabCount) {
+		this.genesTabCount = genesTabCount;
+	}
+	
+	public void setModelsTabCount(int modelsTabCount) {
+		this.modelsTabCount = modelsTabCount;
+	}	
 
 	// ================= Convenience ================= //
 
