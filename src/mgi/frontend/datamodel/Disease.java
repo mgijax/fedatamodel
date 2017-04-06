@@ -440,9 +440,15 @@ public class Disease {
 		{
 			DiseaseModel i1 = (DiseaseModel) o1;
 			DiseaseModel i2 = (DiseaseModel) o2;
-			return super.compare(i1.getDisease(),i2.getDisease());
+			int stateCompare = super.compare(i1.getDisease(),i2.getDisease());
+			if (stateCompare == 0) {
+				stateCompare = super.compare(i1.getBackgroundStrain(),i2.getBackgroundStrain());
+			}
+			if (stateCompare == 0) {
+				stateCompare = super.compare(i1.getAllelePairs(),i2.getAllelePairs());
+			}
+			return stateCompare;
 		}
 	}
-
 
 }
