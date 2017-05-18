@@ -1,9 +1,13 @@
 package mgi.frontend.datamodel;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="statistic")
@@ -12,7 +16,7 @@ public class Statistic {
 	private int uniqueKey;
 	private int statisticKey;
 	private String name;
-	private String abbreviation;
+	private String tooltip;
 	private int value;
 	private int sequenceNum;
 	private String groupName;
@@ -34,9 +38,9 @@ public class Statistic {
 		return name;
 	}
 
-	@Column(name="abbreviation")
-	public String getAbbreviation() {
-		return abbreviation;
+	@Column(name="tooltip")
+	public String getTooltip() {
+		return tooltip;
 	}
 
 	@Column(name="value")
@@ -67,8 +71,8 @@ public class Statistic {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setAbbreviation(String abbreviation) {
-		this.abbreviation = abbreviation;
+	public void setTooltip(String tooltip) {
+		this.tooltip = tooltip;
 	}
 	public void setValue(int value) {
 		this.value = value;
@@ -84,5 +88,10 @@ public class Statistic {
 	}
 	public void setUniqueKey(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
+	}
+	
+	@Transient
+	public String getCommaDelimitedValue() {
+		return NumberFormat.getNumberInstance(Locale.US).format(this.value);
 	}
 }
