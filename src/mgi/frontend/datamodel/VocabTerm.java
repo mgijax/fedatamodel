@@ -41,7 +41,6 @@ public class VocabTerm implements Serializable{
 	private List<Marker> associatedMarkers;
 	private List<VocabTermSynonym> synonyms;
 	private List<VocabTermID> secondaryIds;
-	private List<VocabTermAncestor> ancestors;
 	private VocabTermEmapInfo emapInfo;
 	private List<VocabTerm> emapsChildren;
 	private List<VocabTerm> children;
@@ -232,13 +231,6 @@ public class VocabTerm implements Serializable{
 		return this.emapInfo;
 	}
 
-	@OneToMany (targetEntity=VocabTermAncestor.class)
-	@JoinColumn (name="term_key")
-	@OrderBy ("edgeLabel, ancestorTerm")
-	public List<VocabTermAncestor> getAncestors() {
-		return this.ancestors;
-	}
-
 	@OneToMany (targetEntity=VocabChild.class)
 	@JoinColumn (name="term_key")
 	@OrderBy ("childTerm")
@@ -313,10 +305,6 @@ public class VocabTerm implements Serializable{
 
 	public void setEmapsChildren (List<VocabTerm> emapsChildren) {
 		this.emapsChildren = emapsChildren;
-	}
-
-	public void setAncestors (List<VocabTermAncestor> ancestors) {
-		this.ancestors = ancestors;
 	}
 
 	public void setEmapInfo (VocabTermEmapInfo emapInfo) {
