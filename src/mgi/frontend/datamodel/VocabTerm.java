@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -47,6 +48,8 @@ public class VocabTerm implements Serializable{
 	private List<VocabChild> vocabChildren;
 	private List<VocabTerm> siblings;
 	private List<VocabChild> parentEdges;
+	private List<RelatedTermForward> relatedTermsForward;
+	private List<RelatedTermBackward> relatedTermsBackward;
 	
 	/* Vocab specific optional associations */
 	// For Disease Ontology
@@ -133,6 +136,38 @@ public class VocabTerm implements Serializable{
 		return term;
 	}
 	
+	@Transient
+	public List<VocabTerm> getRelatedTerms(String relationshipType) {
+		List<VocabTerm> relatives = new ArrayList<VocabTerm>();
+		if (relationshipType == null) { return relatives; }
+		
+		for (RelatedTermForward term : this.getRelatedTermsForward()) {
+			if (relationshipType.equals(term.getRelationshipType())) {
+				relatives.add(term.getRelatedTerm());
+			}
+		}
+		
+		for (RelatedTermBackward term : this.getRelatedTermsBackward()) {
+			if (relationshipType.equals(term.getRelationshipType())) {
+				relatives.add(term.getRelatedTerm());
+			}
+		}
+		
+		return relatives;
+	}
+	
+	@OneToMany (targetEntity=RelatedTermForward.class, fetch=FetchType.LAZY)
+	@JoinColumn(name="term_key_1")
+	public List<RelatedTermForward> getRelatedTermsForward() {
+		return relatedTermsForward;
+	}
+
+	@OneToMany (targetEntity=RelatedTermBackward.class, fetch=FetchType.LAZY)
+	@JoinColumn(name="term_key_2")
+	public List<RelatedTermBackward> getRelatedTermsBackward() {
+		return relatedTermsBackward;
+	}
+
 	@Column(name="definition")
 	public String getDefinition() {
 		return definition;
@@ -354,6 +389,14 @@ public class VocabTerm implements Serializable{
 		this.isLeaf = isLeaf;
 	}
 	
+	public void setRelatedTermsForward(List<RelatedTermForward> relatedTermsForward) {
+		this.relatedTermsForward = relatedTermsForward;
+	}
+
+	public void setRelatedTermsBackward(List<RelatedTermBackward> relatedTermsBackward) {
+		this.relatedTermsBackward = relatedTermsBackward;
+	}
+
 	public void setDiseaseModels(List<DiseaseModel> diseaseModels) {
 		this.diseaseModels = diseaseModels;
 	}
