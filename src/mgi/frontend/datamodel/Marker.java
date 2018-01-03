@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
@@ -58,6 +59,7 @@ import org.hibernate.annotations.FilterJoinTable;
 //@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Marker {
 
+	private MarkerFlags flags;
 	private List<MarkerAlias> aliases;
 	private List<MarkerQtlExperiment> qtlExperiments;
 	private List<MarkerProbeset> probesets;
@@ -463,6 +465,27 @@ public class Marker {
 	@Transient
 	public List<MarkerQtlExperiment> getQtlCandidateGeneNotes() {
 		return filterQtlExperiments("TEXT-QTL-Candidate Genes");
+	}
+
+	@Transient
+	public boolean getHasPhenotypesRelatedToAnatomy() {
+		return this.getFlags().getHasPhenotypesRelatedToAnatomy() > 0;
+	}
+	
+	@Transient
+	public boolean getHasWildTypeExpressionData() {
+		return this.getFlags().getHasWildTypeExpressionData() > 0;
+	}
+	
+	@OneToOne (targetEntity=MarkerFlags.class)
+	@JoinColumn(name="marker_key")
+	@BatchSize(size=1)
+	public MarkerFlags getFlags() {
+		return flags;
+	}
+
+	public void setFlags(MarkerFlags flags) {
+		this.flags = flags;
 	}
 
 	@OneToMany (targetEntity=MarkerPolymorphism.class)
