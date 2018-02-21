@@ -60,6 +60,7 @@ import org.hibernate.annotations.FilterJoinTable;
 public class Marker {
 
 	private MarkerFlags flags;
+	private List<Allele> drivenAlleles;		// set of (recombinase) alleles for which this marker is a driver
 	private List<MarkerAlias> aliases;
 	private List<MarkerQtlExperiment> qtlExperiments;
 	private List<MarkerProbeset> probesets;
@@ -432,6 +433,24 @@ public class Marker {
 		return aliases;
 	}
 
+	/** returns a collection of alleles for which this marker is a driver
+	 */
+	@OneToMany (targetEntity=Allele.class)
+	@JoinColumn(name="driver_key")
+	@BatchSize(size=50)
+	@OrderBy("symbol")
+	public List<Allele> getDrivenAlleles() {
+		return drivenAlleles;
+	}
+
+	/* returns true if this marker is a driver of (recombinase) alleles or false if not
+	 */
+	@Transient
+	public boolean isDriver() {
+		List<Allele> myDrivenAlleles = this.getDrivenAlleles();
+		return (myDrivenAlleles != null) && (myDrivenAlleles.size() > 0);
+	}
+	
 	/** need to be able to filter the list of QTL experiments to be only
 	 * those of a particular type
 	 */
@@ -1975,6 +1994,10 @@ public class Marker {
 
 	public void setAliases(List<MarkerAlias> aliases) {
 		this.aliases = aliases;
+	}
+
+	public void setDrivenAlleles(List<Allele> drivenAlleles) {
+		this.drivenAlleles = drivenAlleles;
 	}
 
 	public void setPolymorphisms(List<MarkerPolymorphism> polymorphisms) {
