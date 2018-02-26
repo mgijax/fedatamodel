@@ -451,6 +451,20 @@ public class Marker {
 		return (myDrivenAlleles != null) && (myDrivenAlleles.size() > 0);
 	}
 	
+	/* returns count of recombinase alleles driven by this marker, where those alleles
+	 * have expression data
+	 */
+	@Transient
+	public int getCountOfRecombinaseAllelesWithExpressionData() {
+		int count = 0;
+		for (Allele allele : this.getDrivenAlleles()) {
+			if ((allele.getAlleleSystems() != null) && (allele.getAlleleSystems().size() > 0)) {
+				count++;
+			}
+		}
+		return count;
+	}
+	
 	/** need to be able to filter the list of QTL experiments to be only
 	 * those of a particular type
 	 */

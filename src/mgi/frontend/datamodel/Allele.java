@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
@@ -100,6 +101,7 @@ public class Allele implements RecombinaseEntity {
     private Integer imsrCellLineCount;
     private Integer imsrStrainCount;
     private Integer imsrCountForMarker;
+    private Marker driverMarker;
     
     // Recombinase objects
     // attributes from recombinase_allele_system
@@ -138,6 +140,12 @@ public class Allele implements RecombinaseEntity {
     public String getAlleleSubType() {
         return alleleSubType;
     }
+
+	@OneToOne (targetEntity=Marker.class)
+	@JoinColumn(name="driver_key")
+	public Marker getDriverMarker() {
+		return driverMarker;
+	}
 
 	@OneToMany (targetEntity=PhenoTableSystem.class)
 	@BatchSize(size=100)
@@ -1004,6 +1012,10 @@ public class Allele implements RecombinaseEntity {
 	public void setPrimaryID(String primaryID) {
         this.primaryID = primaryID;
     }
+
+	public void setDriverMarker(Marker driverMarker) {
+		this.driverMarker = driverMarker;
+	}
 
     public void setImageAssociations(List<AlleleImageAssociation> imageAssociations) {
         this.imageAssociations = imageAssociations;
