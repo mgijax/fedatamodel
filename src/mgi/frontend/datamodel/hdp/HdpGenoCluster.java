@@ -8,7 +8,6 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -28,7 +27,7 @@ import org.hibernate.annotations.Where;
 public class HdpGenoCluster {
 
     private int genoClusterKey;
-    private Marker marker;
+    private List<HdpGenoClusterMarker> markers;
     private List<Genotype> genotypes;
     
     private List<HdpGenoClusterAnnotation> mpTerms;
@@ -45,14 +44,25 @@ public class HdpGenoCluster {
 		this.genoClusterKey = genoClusterKey;
 	}
 
-	@ManyToOne (targetEntity=Marker.class, fetch=FetchType.LAZY)
-	@JoinColumn (name="marker_key")
-	public Marker getMarker() {
-		return marker;
+	@OneToMany (targetEntity=HdpGenoClusterMarker.class, fetch=FetchType.LAZY)
+	@JoinColumn (name="hdp_genocluster_key")
+	public List<HdpGenoClusterMarker> getMarkers() {
+		return markers;
 	}
-	public void setMarker(Marker marker)
+	public void setMarkers(List<HdpGenoClusterMarker> markers)
 	{
-		this.marker=marker;
+		this.markers = markers;
+	}
+	
+	// Return the first marker for the genocluster that is not a Transgene, if there is one.  Null otherwise.
+	@Transient
+	public Marker getNonTransgeneMarker() {
+		for (HdpGenoClusterMarker m : this.getMarkers()) {
+			if (!"Transgene".equals(m.getMarkerType())) {
+				return m.getMarker();
+			}
+		}
+		return null;
 	}
 	
 	@OneToMany(fetch=FetchType.LAZY)
