@@ -17,7 +17,7 @@ public class MarkerIncidentalMutation
 {
 	private int uniqueKey;
 	private int markerKey;
-	private String filename;
+	private String provider;
 
 
     // ================= Getters ======================================== //
@@ -32,23 +32,10 @@ public class MarkerIncidentalMutation
 		return markerKey;
 	}
 
-	@Column(name="filename")
-	public String getFilename() {
-		return filename;
+	@Column(name="provider")
+	public String getProvider() {
+		return provider;
 	}
-
-	@Transient
-	public String getFilenameNoExtension() {
-		String fileNameNoExt = new String();
-		if(filename.contains(".")) {
-			fileNameNoExt = filename.substring(0, filename.lastIndexOf('.'));
-		} else {
-			fileNameNoExt = filename;
-		}
-		return fileNameNoExt;
-	}
-
-
 
     // ================= Setters ======================================== //
 	public void setUniqueKey(int uniqueKey) {
@@ -59,12 +46,12 @@ public class MarkerIncidentalMutation
 		this.markerKey = markerKey;
 	}
 
-	public void setFilename(String filename) {
-		this.filename= filename;
+	public void setProvider(String provider) {
+		this.provider= provider;
 	}
 
 	@Override
 	public String toString() {
-		return filename;
+		return provider;
 	}
 }
