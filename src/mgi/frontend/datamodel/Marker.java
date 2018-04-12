@@ -129,6 +129,7 @@ public class Marker {
 	private List<MPGenotype> mpGenotypes;
 	private List<MinimapMarker> minimapMarkers;
 	private List<MarkerPolymorphism> polymorphisms;
+	private List<StrainMarker> strainMarkers;
 
 	//=== methods for polymorphisms ===//
 	
@@ -527,6 +528,13 @@ public class Marker {
 	@OrderBy("sequenceNum")
 	public List<MarkerPolymorphism> getPolymorphisms() {
 		return polymorphisms;
+	}
+	@OneToMany (targetEntity=StrainMarker.class)
+	@JoinColumn(name="canonical_marker_key")
+	@BatchSize(size=100)
+	@OrderBy("sequence_num")
+	public List<StrainMarker> getStrainMarkers() {
+		return strainMarkers;
 	}
 
 	/** returns a collection of QTL mapping experiment notes for the mkr
@@ -2016,6 +2024,9 @@ public class Marker {
 
 	public void setPolymorphisms(List<MarkerPolymorphism> polymorphisms) {
 		this.polymorphisms = polymorphisms;
+	}
+	public void setStrainMarkers(List<StrainMarker> strainMarkers) {
+		this.strainMarkers = strainMarkers;
 	}
 
 	public void setQtlExperiments(List<MarkerQtlExperiment> qtlExperiments) {
