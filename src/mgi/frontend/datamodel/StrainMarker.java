@@ -31,7 +31,7 @@ public class StrainMarker {
 	private Double startCoordinate;
 	private Double endCoordinate;
 	private String strand;
-	private int length;
+	private Integer length;
 	private int sequenceNum;
 	List<StrainMarkerGeneModel> geneModels;
 	
@@ -66,7 +66,7 @@ public class StrainMarker {
 	}
 
 	@Column(name="length")
-	public int getLength() {
+	public Integer getLength() {
 		return length;
 	}
 
@@ -121,12 +121,20 @@ public class StrainMarker {
 		this.geneModels = geneModels;
 	}
 
-	public void setLength(int length) {
+	public void setLength(Integer length) {
 		this.length = length;
 	}
 
 	@Transient
+	public boolean getNoAnnotation() {
+		return (this.featureType == null) || (this.featureType.equals(""));
+	}
+	
+	@Transient
 	public String getLocation() {
+		if (this.chromosome == null) {
+			return "";
+		}
 		StringBuffer sb = new StringBuffer();
 		sb.append("Chr");
 		sb.append(this.chromosome);
