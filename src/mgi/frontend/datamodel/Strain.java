@@ -25,6 +25,7 @@ public class Strain {
     private String name;
     private String primaryID;
     private List<StrainMutation> mutations;
+    private List<StrainQTL> qtls;
 
     // ================= Getters and Setters ===================== //
 
@@ -44,6 +45,18 @@ public class Strain {
     	return strainKey;
     }
 
+	@OneToMany (targetEntity=StrainQTL.class)
+	@JoinColumn(name="strain_key")
+	@BatchSize(size=100)
+	@OrderBy("sequenceNum")
+    public List<StrainQTL> getQtls() {
+		return qtls;
+	}
+
+	public void setQtls(List<StrainQTL> qtls) {
+		this.qtls = qtls;
+	}
+
 	@OneToMany (targetEntity=StrainMutation.class)
 	@JoinColumn(name="strain_key")
 	@BatchSize(size=100)
@@ -55,6 +68,7 @@ public class Strain {
 	public void setMutations(List<StrainMutation> mutations) {
 		this.mutations = mutations;
 	}
+
 	public void setName(String name) {
 		this.name = name;
     }
