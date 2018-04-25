@@ -1,9 +1,16 @@
 package mgi.frontend.datamodel;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.BatchSize;
 
 /**
  * Strain
@@ -17,6 +24,7 @@ public class Strain {
     private int strainKey;
     private String name;
     private String primaryID;
+    private List<StrainMutation> mutations;
 
     // ================= Getters and Setters ===================== //
 
@@ -33,11 +41,22 @@ public class Strain {
     @Id
     @Column(name="strain_key")
     public int getStrainKey() {
-	return strainKey;
+    	return strainKey;
     }
 
-    public void setName(String name) {
-	this.name = name;
+	@OneToMany (targetEntity=StrainMutation.class)
+	@JoinColumn(name="strain_key")
+	@BatchSize(size=100)
+	@OrderBy("sequenceNum")
+    public List<StrainMutation> getMutations() {
+		return mutations;
+	}
+
+	public void setMutations(List<StrainMutation> mutations) {
+		this.mutations = mutations;
+	}
+	public void setName(String name) {
+		this.name = name;
     }
 
     public void setPrimaryID(String primaryID) {
@@ -45,7 +64,7 @@ public class Strain {
     }
 
     public void setStrainKey(int strainKey) {
-	this.strainKey = strainKey;
+    	this.strainKey = strainKey;
     }
 
 	@Override
