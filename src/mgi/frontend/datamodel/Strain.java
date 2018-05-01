@@ -27,6 +27,7 @@ public class Strain {
     private int strainKey;
     private String name;
     private String primaryID;
+    private int isStandard;
     private List<StrainMutation> mutations;
     private List<StrainQTL> qtls;
 	private List<StrainReferenceAssociation> referenceAssociations;
@@ -94,6 +95,11 @@ public class Strain {
 		return strainAttributes;
 	}
 
+    @Column(name="is_standard")
+    public int getIsStandard() {
+        return isStandard;
+    }
+	
 	public void setReferenceAssociations(List<StrainReferenceAssociation> referenceAssociations) {
 		this.referenceAssociations = referenceAssociations;
 	}
@@ -121,6 +127,10 @@ public class Strain {
 	public void setStrainAttributes(List<StrainAttribute> strainAttributes) {
 		this.strainAttributes = strainAttributes;
 	}
+
+    public void setIsStandard(int isStandard) {
+        this.isStandard = isStandard;
+    }
     
 	@Override
 	public String toString() {
