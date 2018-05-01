@@ -27,6 +27,7 @@ public class Strain {
     private int strainKey;
     private String name;
     private String primaryID;
+    private List<StrainImsrData> imsrData;
     private List<StrainMutation> mutations;
     private List<StrainQTL> qtls;
 	private List<StrainReferenceAssociation> referenceAssociations;
@@ -70,6 +71,14 @@ public class Strain {
 		this.qtls = qtls;
 	}
 
+	@OneToMany (targetEntity=StrainImsrData.class)
+	@JoinColumn(name="strain_key")
+	@BatchSize(size=100)
+	@OrderBy("imsrID")
+    public List<StrainImsrData> getImsrData() {
+		return imsrData;
+	}
+
 	@OneToMany (targetEntity=StrainMutation.class)
 	@JoinColumn(name="strain_key")
 	@BatchSize(size=100)
@@ -96,6 +105,10 @@ public class Strain {
 
 	public void setReferenceAssociations(List<StrainReferenceAssociation> referenceAssociations) {
 		this.referenceAssociations = referenceAssociations;
+	}
+
+	public void setImsrData(List<StrainImsrData> imsrData) {
+		this.imsrData = imsrData;
 	}
 
 	public void setMutations(List<StrainMutation> mutations) {
