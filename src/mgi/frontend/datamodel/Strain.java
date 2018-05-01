@@ -30,7 +30,9 @@ public class Strain {
     private List<StrainMutation> mutations;
     private List<StrainQTL> qtls;
 	private List<StrainReferenceAssociation> referenceAssociations;
-
+    private List<StrainSynonym> strainSynonyms;
+    private List<StrainAttribute> strainAttributes;
+	
     // ================= Getters and Setters ===================== //
 
     @Column(name="name")
@@ -76,6 +78,22 @@ public class Strain {
 		return mutations;
 	}
 
+	@OneToMany (targetEntity=StrainSynonym.class)
+	@JoinColumn(name="strain_key")
+	@BatchSize(size=100)
+	@OrderBy("sequenceNum")
+    public List<StrainSynonym> getStrainSynonyms() {
+		return strainSynonyms;
+	}
+
+	@OneToMany (targetEntity=StrainAttribute.class)
+	@JoinColumn(name="strain_key")
+	@BatchSize(size=100)
+	@OrderBy("sequenceNum")
+    public List<StrainAttribute> getStrainAttributes() {
+		return strainAttributes;
+	}
+
 	public void setReferenceAssociations(List<StrainReferenceAssociation> referenceAssociations) {
 		this.referenceAssociations = referenceAssociations;
 	}
@@ -96,6 +114,14 @@ public class Strain {
     	this.strainKey = strainKey;
     }
 
+	public void setStrainSynonyms(List<StrainSynonym> strainSynonyms) {
+		this.strainSynonyms = strainSynonyms;
+	}
+    
+	public void setStrainAttributes(List<StrainAttribute> strainAttributes) {
+		this.strainAttributes = strainAttributes;
+	}
+    
 	@Override
 	public String toString() {
 		return "Strain [strainKey=" + strainKey + ", name=" + name + ", primaryID=" + primaryID + "]";
