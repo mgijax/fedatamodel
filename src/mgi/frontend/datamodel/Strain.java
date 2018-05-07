@@ -30,6 +30,7 @@ public class Strain {
     private List<StrainImsrData> imsrData;
     private List<StrainMpdData> mpdData;
     private int isStandard;
+    private int isSequenced;
     private List<StrainMutation> mutations;
     private List<StrainQTL> qtls;
 	private List<StrainReferenceAssociation> referenceAssociations;
@@ -127,6 +128,11 @@ public class Strain {
         return isStandard;
     }
 	
+    @Column(name="is_sequenced")
+    public int getIsSequenced() {
+        return isSequenced;
+    }
+	
 	public void setReferenceAssociations(List<StrainReferenceAssociation> referenceAssociations) {
 		this.referenceAssociations = referenceAssociations;
 	}
@@ -165,6 +171,10 @@ public class Strain {
 
     public void setIsStandard(int isStandard) {
         this.isStandard = isStandard;
+    }
+    
+    public void setIsSequenced(int isSequenced) {
+        this.isSequenced = isSequenced;
     }
     
 	@Override
