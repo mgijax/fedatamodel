@@ -28,6 +28,7 @@ public class Strain {
     private String name;
     private String primaryID;
     private List<StrainImsrData> imsrData;
+    private List<StrainMpdData> mpdData;
     private int isStandard;
     private List<StrainMutation> mutations;
     private List<StrainQTL> qtls;
@@ -80,6 +81,23 @@ public class Strain {
 		return imsrData;
 	}
 
+	@OneToMany (targetEntity=StrainMpdData.class)
+	@JoinColumn(name="strain_key")
+	@BatchSize(size=100)
+	@OrderBy("mpdID")
+    public List<StrainMpdData> getMpdData() {
+		return mpdData;
+	}
+
+	// Return the first instance of StrainMpdData, if there is one.
+	@Transient
+	public StrainMpdData getFirstMpdData() {
+		if (getMpdData().size() > 0) {
+			return getMpdData().get(0);
+		}
+		return null;
+	}
+	
 	@OneToMany (targetEntity=StrainMutation.class)
 	@JoinColumn(name="strain_key")
 	@BatchSize(size=100)
@@ -115,6 +133,10 @@ public class Strain {
 
 	public void setImsrData(List<StrainImsrData> imsrData) {
 		this.imsrData = imsrData;
+	}
+
+	public void setMpdData(List<StrainMpdData> mpdData) {
+		this.mpdData = mpdData;
 	}
 
 	public void setMutations(List<StrainMutation> mutations) {
