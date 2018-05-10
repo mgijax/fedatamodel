@@ -47,6 +47,7 @@ public class Reference {
 	private Integer countOfMarkers;
 	private Integer countOfOrthologs;
 	private Integer countOfProbes;
+	private Integer countOfStrains;
 	private Integer countOfSequences;
     private Set<ReferenceID> ids;
     private String issue;
@@ -260,6 +261,17 @@ public class Reference {
     }
 
 	/**
+     * Return the count of associated probes,
+     * joined by reference_key
+     * @return
+     */
+	@Column(table="reference_counts", name="strain_count")
+    @JoinColumn(name="reference_key")
+    public Integer getCountOfStrains() {
+        return countOfStrains;
+    }
+
+	/**
      * Return the count of associated sequences,
      * joined by reference_key
      * @return
@@ -467,6 +479,10 @@ public class Reference {
 
 	public void setCountOfProbes(Integer countOfProbes) {
         this.countOfProbes = countOfProbes;
+    }
+
+	public void setCountOfStrains(Integer countOfStrains) {
+        this.countOfStrains = countOfStrains;
     }
 
 	public void setCountOfSequenceResults(Integer countOfSequences) {
