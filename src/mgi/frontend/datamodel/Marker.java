@@ -1936,13 +1936,6 @@ public class Marker {
 		return filterMarkerIDs ("EC");
 	}
 
-	/** get the VEGA Gene Model ID for this marker, or null if none
-	 */
-	@Transient
-	public MarkerID getVegaGeneModelID() {
-		return getSingleID("VEGA Gene Model");
-	}
-
 	@Transient
 	public boolean getIsSTS(){
 		return getMarkerType().equals("DNA Segment");
