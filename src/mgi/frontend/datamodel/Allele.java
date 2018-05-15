@@ -86,6 +86,7 @@ public class Allele implements RecombinaseEntity {
     private int isMixed;
     private Integer primaryImageKey;
     private String strain;
+    private String strainID;
     private String strainLabel;
     private String molecularDescription;
     private String name;
@@ -382,7 +383,12 @@ public class Allele implements RecombinaseEntity {
         return strain;
     }
 
-    @Column(name="strain_type")
+    @Column(name="strain_id")
+    public String getStrainID() {
+		return strainID;
+	}
+
+	@Column(name="strain_type")
     public String getStrainLabel() {
         return strainLabel;
     }
@@ -983,6 +989,10 @@ public class Allele implements RecombinaseEntity {
     public void setStrain(String strain) {
 	this.strain = strain;
     }
+
+	public void setStrainID(String strainID) {
+		this.strainID = strainID;
+	}
 
     public void setStrainLabel(String strainLabel) {
 	this.strainLabel = strainLabel;

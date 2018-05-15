@@ -41,6 +41,7 @@ public class Genotype implements Comparable<Genotype>
 	private Integer byAlleles;				// for sorting genotypes
 	private int genotypeKey;
 	private String backgroundStrain;
+	private String strainID;
 	private String primaryID;
 	private List<Image> images;
 	private List<GenotypeImageAssociation> imageAssociations;
@@ -71,6 +72,11 @@ public class Genotype implements Comparable<Genotype>
     @Column(name="background_strain")
 	public String getBackgroundStrain() {
 		return backgroundStrain;
+	}
+
+    @Column(name="strain_id")
+	public String getStrainID() {
+		return strainID;
 	}
 
 	@Column(table="genotype_sequence_num", name="by_alleles")
@@ -143,6 +149,10 @@ public class Genotype implements Comparable<Genotype>
 
 	public void setBackgroundStrain(String backgroundStrain) {
 		this.backgroundStrain = backgroundStrain;
+	}
+
+	public void setStrainID(String strainID) {
+		this.strainID = strainID;
 	}
 
 	public void setByAlleles(int byAlleles) {
