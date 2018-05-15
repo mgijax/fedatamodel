@@ -38,6 +38,7 @@ public class Strain {
     private List<StrainSynonym> strainSynonyms;
     private List<StrainAttribute> strainAttributes;
 	private List<StrainID> ids;
+	private List<StrainDisease> diseases;
 	
     // ================= Getters and Setters ===================== //
 
@@ -158,6 +159,14 @@ public class Strain {
 		return strainAttributes;
 	}
 
+	@OneToMany (targetEntity=StrainDisease.class)
+	@JoinColumn(name="strain_key")
+	@BatchSize(size=100)
+	@OrderBy("sequenceNum")
+    public List<StrainDisease> getDiseases() {
+		return diseases;
+	}
+
 	@Id
     @Column(name="strain_key")
     public int getStrainKey() {
@@ -214,6 +223,10 @@ public class Strain {
 
 	public void setStrainAttributes(List<StrainAttribute> strainAttributes) {
 		this.strainAttributes = strainAttributes;
+	}
+
+	public void setDiseases(List<StrainDisease> diseases) {
+		this.diseases = diseases;
 	}
 
 	public void setStrainKey(int strainKey) {
