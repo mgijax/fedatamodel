@@ -37,6 +37,7 @@ public class Strain {
 	private List<StrainReferenceAssociation> referenceAssociations;
     private List<StrainSynonym> strainSynonyms;
     private List<StrainAttribute> strainAttributes;
+    private List<StrainGenotype> genotypes;
 	private List<StrainID> ids;
 	private List<StrainDisease> diseases;
 	
@@ -159,6 +160,14 @@ public class Strain {
 		return strainAttributes;
 	}
 
+	@OneToMany (targetEntity=StrainGenotype.class)
+	@JoinColumn(name="strain_key")
+	@BatchSize(size=100)
+	@OrderBy("sequenceNum")
+    public List<StrainGenotype> getGenotypes() {
+		return genotypes;
+	}
+
 	@OneToMany (targetEntity=StrainDisease.class)
 	@JoinColumn(name="strain_key")
 	@BatchSize(size=100)
@@ -225,6 +234,10 @@ public class Strain {
 		this.strainAttributes = strainAttributes;
 	}
 
+	public void setGenotypes(List<StrainGenotype> genotypes) {
+		this.genotypes = genotypes;
+	}
+
 	public void setDiseases(List<StrainDisease> diseases) {
 		this.diseases = diseases;
 	}
@@ -242,6 +255,7 @@ public class Strain {
 		return "Strain [strainKey=" + strainKey + ", name=" + name + ", primaryID=" + primaryID + "]";
 	}
 	
+	// return accession IDs that are not the primary ID for the strain
 	@Transient
 	public List<StrainID> getOtherIDs() {
 		List<StrainID> otherIDs = new ArrayList<StrainID>();
@@ -251,5 +265,17 @@ public class Strain {
 			}
 		}
 		return otherIDs;
+	}
+	
+	// return genotypes that have disease associations for this strain
+	@Transient
+	public List<StrainGenotype> getDiseaseGenotypes() {
+		List<StrainGenotype> withDiseases = new ArrayList<StrainGenotype>();
+		for (StrainGenotype gt : this.getGenotypes()) {
+			if (gt.getHasDisease() != 0) {
+				withDiseases.add(gt);
+			}
+		}
+		return withDiseases;
 	}
 }
