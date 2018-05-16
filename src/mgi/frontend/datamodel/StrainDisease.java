@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name="strain_disease")
 public class StrainDisease {
     
-	private int uniqueKey;
+	private int strainDiseaseKey;
 	private int strainKey;
 	private int diseaseKey;
 	private String diseaseID;
@@ -48,9 +48,9 @@ public class StrainDisease {
 	}
 
 	@Id
-	@Column(name="unique_key")
-	public int getUniqueKey() {
-		return uniqueKey;
+	@Column(name="strain_disease_key")
+	public int getStrainDiseaseKey() {
+		return strainDiseaseKey;
 	}
 
 	public void setDisease(String disease) {
@@ -73,13 +73,13 @@ public class StrainDisease {
 		this.strainKey = strainKey;
 	}
 
-	public void setUniqueKey(int uniqueKey) {
-		this.uniqueKey = uniqueKey;
+	public void setStrainDiseaseKey(int strainDiseaseKey) {
+		this.strainDiseaseKey = strainDiseaseKey;
 	}
 
 	@Override
 	public String toString() {
-		return "StrainDisease [uniqueKey=" + uniqueKey + ", strainKey=" + strainKey + ", diseaseKey=" + diseaseKey
+		return "StrainDisease [uniqueKey=" + strainDiseaseKey + ", strainKey=" + strainKey + ", diseaseKey=" + diseaseKey
 				+ ", diseaseID=" + diseaseID + ", disease=" + disease + ", sequenceNum=" + sequenceNum + "]";
 	}
 }
