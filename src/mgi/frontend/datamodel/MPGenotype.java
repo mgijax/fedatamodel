@@ -24,6 +24,7 @@ public class MPGenotype {
 	private int isMultigenic;
 	private String allelePairs;
 	private String strain;
+	private String strainID;
 	private String primaryID;
 	private int sequenceNum;
 	private List<MPAnnotation> mpAnnotations;
@@ -54,6 +55,11 @@ public class MPGenotype {
 	@Column(name="strain")
 	public String getStrain() {
 		return strain;
+	}
+
+	@Column(name="strain_id")
+	public String getStrainID() {
+		return strainID;
 	}
 
 	@Column(name="sequence_num")
@@ -94,6 +100,10 @@ public class MPGenotype {
 
 	public void setStrain(String strain) {
 		this.strain = strain;
+	}
+
+	public void setStrainID(String strainID) {
+		this.strainID = strainID;
 	}
 
 	public void setSequenceNum(int sequenceNum) {
