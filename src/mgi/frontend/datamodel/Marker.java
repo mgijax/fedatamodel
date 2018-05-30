@@ -112,6 +112,7 @@ public class Marker {
 	private List<MarkerSequenceAssociation> sequenceAssociations;
 	private List<Reference> references;
 	private String status;
+	private String strain;
 	private String symbol;
 	private List<MarkerSynonym> synonyms;
 	private List<MarkerTissueCount> markerTissueCounts;
@@ -1833,6 +1834,12 @@ public class Marker {
 		return null;
 	}
 
+	// strain is C57BL/6J for any mouse marker with coordinates, null otherwise (computed by femover)
+	@Column(name="strain")
+	public String getStrain() {
+		return strain;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -2252,6 +2259,10 @@ public class Marker {
 	public void setSequenceAssociations(
 			List<MarkerSequenceAssociation> sequenceAssociations) {
 		this.sequenceAssociations = sequenceAssociations;
+	}
+
+	public void setStrain(String strain) {
+		this.strain = strain;
 	}
 
 	public void setStatus(String status) {
