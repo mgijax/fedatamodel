@@ -22,7 +22,10 @@ import org.hibernate.annotations.BatchSize;
 @Table(name="strain_marker")
 public class StrainMarker {
 	private int strainMarkerKey;
-	private int canonicalMarkerKey;
+	private Integer canonicalMarkerKey;
+	private String canonicalMarkerID;
+	private String canonicalMarkerSymbol;
+	private String canonicalMarkerName;
 	private int strainKey;
 	private String strainName;
 	private String strainID;
@@ -37,9 +40,33 @@ public class StrainMarker {
 	
     // ================= Getters and Setters ===================== //
 	
+	@Transient
+	public String getFirstGeneModelID() {
+		List<StrainMarkerGeneModel> models = this.getGeneModels();
+		if (models != null) {
+			return models.get(0).getGeneModelID();
+		}
+		return null;
+	}
+	
+	@Column(name="canonical_marker_id")
+	public String getCanonicalMarkerID() {
+		return canonicalMarkerID;
+	}
+
 	@Column(name="canonical_marker_key")
-	public int getCanonicalMarkerKey() {
+	public Integer getCanonicalMarkerKey() {
 		return canonicalMarkerKey;
+	}
+
+	@Column(name="canonical_marker_symbol")
+	public String getCanonicalMarkerSymbol() {
+		return canonicalMarkerSymbol;
+	}
+
+	@Column(name="canonical_marker_name")
+	public String getCanonicalMarkerName() {
+		return canonicalMarkerName;
 	}
 
 	@Column(name="chromosome")
@@ -68,6 +95,40 @@ public class StrainMarker {
 	@Column(name="length")
 	public Integer getLength() {
 		return length;
+	}
+
+	@Transient
+	public String getLocation() {
+		if (this.chromosome == null) {
+			return "";
+		}
+		StringBuffer sb = new StringBuffer();
+		sb.append("Chr");
+		sb.append(this.chromosome);
+
+		NumberFormat nf = new DecimalFormat("#0");
+
+		sb.append (":");
+		sb.append (nf.format(this.startCoordinate));
+		sb.append ("-");
+		sb.append (nf.format(this.endCoordinate));
+
+		if (this.strand != null) {
+			sb.append (" (");
+			sb.append (strand);
+			sb.append (")");
+		}
+		return sb.toString();
+	}
+
+	@Transient
+	public boolean getNoAnnotation() {
+		return (this.featureType == null) || (this.featureType.equals(""));
+	}
+
+	@Column(name="sequence_num")
+	public int getSequenceNum() {
+		return sequenceNum;
 	}
 
 	@Column(name="start_coordinate")
@@ -101,8 +162,20 @@ public class StrainMarker {
 		return strand;
 	}
 
-	public void setCanonicalMarkerKey(int canonicalMarkerKey) {
+	public void setCanonicalMarkerID(String canonicalMarkerID) {
+		this.canonicalMarkerID = canonicalMarkerID;
+	}
+
+	public void setCanonicalMarkerKey(Integer canonicalMarkerKey) {
 		this.canonicalMarkerKey = canonicalMarkerKey;
+	}
+
+	public void setCanonicalMarkerSymbol(String canonicalMarkerSymbol) {
+		this.canonicalMarkerSymbol = canonicalMarkerSymbol;
+	}
+
+	public void setCanonicalMarkerName(String canonicalMarkerName) {
+		this.canonicalMarkerName = canonicalMarkerName;
 	}
 
 	public void setChromosome(String chromosome) {
@@ -124,34 +197,9 @@ public class StrainMarker {
 	public void setLength(Integer length) {
 		this.length = length;
 	}
-
-	@Transient
-	public boolean getNoAnnotation() {
-		return (this.featureType == null) || (this.featureType.equals(""));
-	}
 	
-	@Transient
-	public String getLocation() {
-		if (this.chromosome == null) {
-			return "";
-		}
-		StringBuffer sb = new StringBuffer();
-		sb.append("Chr");
-		sb.append(this.chromosome);
-
-		NumberFormat nf = new DecimalFormat("#0");
-
-		sb.append (":");
-		sb.append (nf.format(this.startCoordinate));
-		sb.append ("-");
-		sb.append (nf.format(this.endCoordinate));
-
-		if (this.strand != null) {
-			sb.append (" (");
-			sb.append (strand);
-			sb.append (")");
-		}
-		return sb.toString();
+	public void setSequenceNum(int sequenceNum) {
+		this.sequenceNum = sequenceNum;
 	}
 	
 	public void setStartCoordinate(Double startCoordinate) {
