@@ -178,6 +178,22 @@ public class Marker {
 		return sublist;
 	}
 
+	/* retrieve related markers, where this marker is a TSS (transcription start site) and the
+	 * related markers are the markers that this is a TSS for.
+	 */
+	@Transient
+	public List<RelatedMarker> getTssFor() {
+		return filterRelatedMarkers("tss_to_gene", "is TSS for");
+	}
+
+	/* retrieve related markers, where this marker has transcription start sites (TSS) and the
+	 * related markers are those TSS.
+	 */
+	@Transient
+	public List<RelatedMarker> getTss() {
+		return filterRelatedMarkers("tss_to_gene", "has TSS");
+	}
+
 	/* retrieve related markers, where this marker is a cluster and the
 	 * related markers are members of this cluster
 	 */
