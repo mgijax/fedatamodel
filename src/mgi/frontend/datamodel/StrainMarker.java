@@ -2,6 +2,7 @@ package mgi.frontend.datamodel;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -47,6 +48,21 @@ public class StrainMarker {
 			return models.get(0).getGeneModelID();
 		}
 		return null;
+	}
+	
+	/* If this strain marker has an MGI-generated ID, then we want to prefer just
+	 * that one and skip any others.  Otherwise, just return them all.
+	 */
+	@Transient
+	public List<StrainMarkerGeneModel> getPreferredGeneModels() {
+		for (StrainMarkerGeneModel gm : this.getGeneModels()) {
+			if ("MGI Strain Gene".equals(gm.getLogicalDB())) {
+				List<StrainMarkerGeneModel> mgiOnly = new ArrayList<StrainMarkerGeneModel>();
+				mgiOnly.add(gm);
+				return mgiOnly;
+			}
+		}
+		return this.getGeneModels();
 	}
 	
 	@Column(name="canonical_marker_id")
