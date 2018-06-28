@@ -2,10 +2,16 @@ package mgi.frontend.datamodel;
 
 import javax.persistence.Transient;
 import javax.persistence.Id;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
@@ -24,17 +30,19 @@ public class StrainGridCell {
     private int value;
     private int sequenceNum;
     private StrainGridHeading gridHeading;
+    private List<StrainGridPopupRow> popupRows;
 
     // ================= Getters and Setters ===================== //
 	
+    @Column(name="color_level")
+    public int getColorLevel() {
+    	return colorLevel;
+    }
+
     @Id
     @Column(name="grid_cell_key")
     public int getGridCellKey() {
     	return gridCellKey;
-    }
-
-    public void setGridCellKey(int gridCellKey) {
-    	this.gridCellKey = gridCellKey;
     }
 
     @ManyToOne(targetEntity=StrainGridHeading.class)
@@ -43,75 +51,57 @@ public class StrainGridCell {
     public StrainGridHeading getGridHeading() {
     	return gridHeading;
     }
+
+	@Transient
+    public String getGridName() {
+    	return this.gridHeading.getGridName();
+    }
+
+	@Transient
+    public String getGridNameAbbreviation() {
+    	return this.gridHeading.getGridNameAbbreviation();
+    }
 	
-    public void setGridHeading(StrainGridHeading gridHeading) {
-    	this.gridHeading = gridHeading;
+    @Transient
+    public String getHeading() {
+    	return this.gridHeading.getHeading();
     }
 
-    @Column(name="strain_key")
-    public int getStrainKey() {
-    	return strainKey;
+    @Transient
+    public String getHeadingID() {
+    	return this.gridHeading.getTermIDs().get(0);
+    }
+    
+    @Transient
+    public String getHeadingAbbreviation() {
+    	return this.gridHeading.getHeadingAbbreviation();
     }
 
-    public void setStrainKey(int strainKey) {
-    	this.strainKey = strainKey;
-    }
+    @OneToMany(targetEntity=StrainGridPopupRow.class)
+    @BatchSize(size=30)
+    @JoinColumn(name="row_key")
+    @OrderBy("sequenceNum")
+    public List<StrainGridPopupRow> getPopupRows() {
+		return popupRows;
+	}
 
-    @Column(name="color_level")
-    public int getColorLevel() {
-    	return colorLevel;
+    @Transient
+    public List<String> getPopupColumnHeaders() {
+    	List<String> terms = new ArrayList<String>();
+    	for (StrainGridPopupCell cell : this.getPopupRows().get(0).getCells()) {
+    		terms.add(cell.getTerm());
+    	}
+   		return terms;
     }
-
-    public void setColorLevel(int colorLevel) {
-    	this.colorLevel = colorLevel;
-    }
-
-    @Column(name="value")
-    public int getValue() {
-    	return value;
-    }
-
-    public void setValue(int value) {
-    	this.value = value;
-    }
-
+    
     @Column(name="sequence_num")
     public int getSequenceNum() {
     	return sequenceNum;
     }
 
-    public void setSequenceNum(int sequenceNum) {
-    	this.sequenceNum = sequenceNum;
-    }
-
-    @Override
-    public String toString() {
-	return "StrainGridCell [gridCellKey=" + gridCellKey
-		+ "strainKey=" + strainKey + ", "
-		+ "colorLevel=" + colorLevel + ", "
-		+ "value=" + value + ", ]";
-    }
-
-    //=============== transient (convenience) methods ===============//
- 
-    @Transient
-    public String getHeading() {
-    	return this.gridHeading.getHeading();
-    }
- 
-    @Transient
-    public String getHeadingAbbreviation() {
-    	return this.gridHeading.getHeadingAbbreviation();
-    }
- 
-    @Transient
-    public String getGridName() {
-    	return this.gridHeading.getGridName();
-    }
- 
-    @Transient
-    public String getGridNameAbbreviation() {
-    	return this.gridHeading.getGridNameAbbreviation();
+    @Column(name="strain_key")
+    public int getStrainKey() {
+    	return strainKey;
     }
 
     @Transient
@@ -122,5 +112,48 @@ public class StrainGridCell {
 	    sb.append(id);
 	}
 	return sb.toString();
+    }
+
+    @Column(name="value")
+    public int getValue() {
+    	return value;
+    }
+
+    public void setColorLevel(int colorLevel) {
+    	this.colorLevel = colorLevel;
+    }
+
+    public void setGridCellKey(int gridCellKey) {
+    	this.gridCellKey = gridCellKey;
+    }
+
+    public void setGridHeading(StrainGridHeading gridHeading) {
+    	this.gridHeading = gridHeading;
+    }
+
+    //=============== transient (convenience) methods ===============//
+ 
+    public void setPopupRows(List<StrainGridPopupRow> popupRows) {
+		this.popupRows = popupRows;
+	}
+ 
+    public void setSequenceNum(int sequenceNum) {
+    	this.sequenceNum = sequenceNum;
+    }
+ 
+    public void setStrainKey(int strainKey) {
+    	this.strainKey = strainKey;
+    }
+ 
+    public void setValue(int value) {
+    	this.value = value;
+    }
+
+    @Override
+    public String toString() {
+	return "StrainGridCell [gridCellKey=" + gridCellKey
+		+ "strainKey=" + strainKey + ", "
+		+ "colorLevel=" + colorLevel + ", "
+		+ "value=" + value + ", ]";
     }
 }

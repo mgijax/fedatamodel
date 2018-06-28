@@ -120,6 +120,21 @@ public class Strain {
 		return gridCells;
 	}
 
+	/** get the StrainGridCell for the given MP header term, or None if no match
+	 */
+	@Transient
+	public StrainGridCell getGridCell(String header) {
+		List<StrainGridCell> sgCells = this.getGridCells();
+		if ((header != null) && (sgCells != null)) {
+			for (StrainGridCell cell : sgCells) {
+				if (header.equals(cell.getHeading())) {
+					return cell;
+				}
+			}
+		}
+		return null;
+	}
+	
 	@OneToMany (targetEntity=StrainID.class)
 	@JoinColumn(name="strain_key")
 	@BatchSize(size=100)
