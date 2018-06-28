@@ -79,7 +79,7 @@ public class StrainGridCell {
 
     @OneToMany(targetEntity=StrainGridPopupRow.class)
     @BatchSize(size=30)
-    @JoinColumn(name="row_key")
+    @JoinColumn(name="grid_cell_key")
     @OrderBy("sequenceNum")
     public List<StrainGridPopupRow> getPopupRows() {
 		return popupRows;
@@ -131,8 +131,6 @@ public class StrainGridCell {
     	this.gridHeading = gridHeading;
     }
 
-    //=============== transient (convenience) methods ===============//
- 
     public void setPopupRows(List<StrainGridPopupRow> popupRows) {
 		this.popupRows = popupRows;
 	}
