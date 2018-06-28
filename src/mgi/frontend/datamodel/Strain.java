@@ -40,6 +40,7 @@ public class Strain {
     private List<StrainGenotype> genotypes;
 	private List<StrainID> ids;
 	private List<StrainDisease> diseases;
+	private List<StrainGridCell> gridCells;
     private String description;
 	
     // ================= Getters and Setters ===================== //
@@ -107,6 +108,16 @@ public class Strain {
 	@OrderBy("sequenceNum")
     public List<StrainGenotype> getGenotypes() {
 		return genotypes;
+	}
+
+	/** returns a list of slimgrid cells for the strain
+	 */
+	@OneToMany (targetEntity=StrainGridCell.class)
+	@JoinColumn(name="strain_key")
+	@BatchSize(size=300)
+	@OrderBy("sequenceNum")
+	public List<StrainGridCell> getGridCells() {
+		return gridCells;
 	}
 
 	@OneToMany (targetEntity=StrainID.class)
@@ -276,6 +287,10 @@ public class Strain {
 		this.strainAttributes = strainAttributes;
 	}
 	
+	public void setGridCells(List<StrainGridCell> gridCells) {
+		this.gridCells = gridCells;
+	}
+
 	public void setStrainKey(int strainKey) {
     	this.strainKey = strainKey;
     }
