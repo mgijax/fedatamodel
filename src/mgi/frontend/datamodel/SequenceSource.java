@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 @Table (name="sequence_source")
 public class SequenceSource extends Source {
 	protected Integer sequenceKey;
+	protected String strainID;
 	
     // ================= Getters and Setters ===================== //
 	
@@ -25,6 +26,15 @@ public class SequenceSource extends Source {
 
 	public void setSequenceKey(Integer sequenceKey) {
 		this.sequenceKey = sequenceKey;
+	}
+
+	@Column(name="strain_id")
+	public String getStrainID() {
+		return strainID;
+	}
+
+	public void setStrainID(String strainID) {
+		this.strainID = strainID;
 	}
 
 	/** returns true if the source uses raw values.  (These values are 
