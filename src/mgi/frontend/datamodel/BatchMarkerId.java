@@ -17,7 +17,6 @@ public class BatchMarkerId {
 	private String term;
 	private String termType;
 	private Marker marker;
-	private StrainMarker strainMarker;
 
 	@Id
 	@Column(name="unique_key")
@@ -55,26 +54,5 @@ public class BatchMarkerId {
 
 	public void setMarker(Marker marker) {
 		this.marker = marker;
-	}
-
-	@OneToOne (targetEntity=StrainMarker.class,fetch=FetchType.LAZY)
-	@JoinColumn(name="strain_marker_key", referencedColumnName="strain_marker_key", nullable=true)
-	public StrainMarker getStrainMarker() {
-		return strainMarker;
-	}
-
-	public void setStrainMarker(StrainMarker strainMarker) {
-		this.strainMarker = strainMarker;
-	}
-	
-	@Transient
-	public String getUniqueKey() {
-		if (marker != null) {
-			return "m" + marker.getMarkerKey();
-		}
-		if (strainMarker != null) {
-			return "c" + strainMarker.getStrainMarkerKey();
-		}
-		return "missing";
 	}
 }
