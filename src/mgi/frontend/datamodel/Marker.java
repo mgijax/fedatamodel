@@ -546,6 +546,18 @@ public class Marker {
 	public List<MarkerPolymorphism> getPolymorphisms() {
 		return polymorphisms;
 	}
+	
+	@Transient
+	public int getAnnotatedStrainMarkerCount() {
+		int ct = 0;
+		for (StrainMarker sm : this.getStrainMarkers()) {
+			if (!sm.getNoAnnotation()) {
+				ct++;
+			}
+		}
+		return ct;
+	}
+	
 	@OneToMany (targetEntity=StrainMarker.class)
 	@JoinColumn(name="canonical_marker_key")
 	@BatchSize(size=100)
