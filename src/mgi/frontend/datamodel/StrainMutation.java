@@ -15,6 +15,7 @@ public class StrainMutation {
 	private int strainKey;
 	private Integer markerKey;
 	private String markerSymbol;
+	private String markerName;
 	private String markerID;
 	private Integer alleleKey;
 	private String alleleSymbol;
@@ -46,6 +47,11 @@ public class StrainMutation {
 	@Column(name="marker_key")
 	public Integer getMarkerKey() {
 		return markerKey;
+	}
+
+	@Column(name="marker_name")
+	public String getMarkerName() {
+		return markerName;
 	}
 
 	@Column(name="marker_symbol")
@@ -87,6 +93,10 @@ public class StrainMutation {
 
 	public void setMarkerKey(Integer markerKey) {
 		this.markerKey = markerKey;
+	}
+
+	public void setMarkerName(String markerName) {
+		this.markerName = markerName;
 	}
 
 	public void setMarkerSymbol(String markerSymbol) {
