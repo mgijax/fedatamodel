@@ -42,6 +42,7 @@ public class Strain {
 	private List<StrainDisease> diseases;
 	private List<StrainGridCell> gridCells;
     private String description;
+    private List<StrainCollection> collections;
 	
     // ================= Getters and Setters ===================== //
 
@@ -61,12 +62,31 @@ public class Strain {
 		return null;
 	}
 
-	@Column(name="description")
+	@OneToMany (targetEntity=StrainCollection.class)
+	@JoinColumn(name="strain_key")
+	@BatchSize(size=100)
+	@OrderBy("collection")
+	public List<StrainCollection> getCollections() {
+		return collections;
+	}
+
+    @Transient
+	public List<String> getCollectionStrings() {
+		List<String> out = new ArrayList<String>();
+		if (this.getCollections() != null) {
+			for (StrainCollection collection : this.getCollections()) {
+				out.add(collection.getCollection());
+			}
+		}
+		return out;
+	}
+
+    @Column(name="description")
     public String getDescription() {
 		return description;
 	}
-
-    // return genotypes that have disease associations for this strain
+    
+	// return genotypes that have disease associations for this strain
 	@Transient
 	public List<StrainGenotype> getDiseaseGenotypes() {
 		List<StrainGenotype> withDiseases = new ArrayList<StrainGenotype>();
@@ -110,16 +130,6 @@ public class Strain {
 		return genotypes;
 	}
 
-	/** returns a list of slimgrid cells for the strain
-	 */
-	@OneToMany (targetEntity=StrainGridCell.class)
-	@JoinColumn(name="strain_key")
-	@BatchSize(size=300)
-	@OrderBy("sequenceNum")
-	public List<StrainGridCell> getGridCells() {
-		return gridCells;
-	}
-
 	/** get the StrainGridCell for the given MP header term, or None if no match
 	 */
 	@Transient
@@ -135,6 +145,16 @@ public class Strain {
 		return null;
 	}
 	
+	/** returns a list of slimgrid cells for the strain
+	 */
+	@OneToMany (targetEntity=StrainGridCell.class)
+	@JoinColumn(name="strain_key")
+	@BatchSize(size=300)
+	@OrderBy("sequenceNum")
+	public List<StrainGridCell> getGridCells() {
+		return gridCells;
+	}
+
 	@OneToMany (targetEntity=StrainID.class)
 	@JoinColumn(name="strain_key")
 	@BatchSize(size=100)
@@ -151,6 +171,11 @@ public class Strain {
 		return imsrData;
 	}
 
+	@Transient
+    public boolean getIsFounder() {
+    	return this.getCollectionStrings().contains("DOCCFounders");
+    }
+	
 	@Column(name="is_sequenced")
     public int getIsSequenced() {
         return isSequenced;
@@ -160,7 +185,7 @@ public class Strain {
     public int getIsStandard() {
         return isStandard;
     }
-	
+
 	@OneToMany (targetEntity=StrainMpdData.class)
 	@JoinColumn(name="strain_key")
 	@BatchSize(size=100)
@@ -169,20 +194,20 @@ public class Strain {
 		return mpdData;
 	}
 
-	@OneToMany (targetEntity=StrainMutation.class)
+    @OneToMany (targetEntity=StrainMutation.class)
 	@JoinColumn(name="strain_key")
 	@BatchSize(size=100)
 	@OrderBy("sequenceNum")
     public List<StrainMutation> getMutations() {
 		return mutations;
 	}
-
-	@Column(name="name")
+	
+    @Column(name="name")
     public String getName() {
 	return name;
     }
-
-    // return accession IDs that are not the primary ID for the strain
+	
+	// return accession IDs that are not the primary ID for the strain
 	@Transient
 	public List<StrainID> getOtherIDs() {
 		List<StrainID> otherIDs = new ArrayList<StrainID>();
@@ -193,8 +218,8 @@ public class Strain {
 		}
 		return otherIDs;
 	}
-	
-    @Column(name="primary_id")
+
+	@Column(name="primary_id")
     public String getPrimaryID() {
     	return primaryID;
     }
@@ -246,6 +271,10 @@ public class Strain {
 		return strainSynonyms;
 	}
 
+	public void setCollections(List<StrainCollection> collections) {
+		this.collections = collections;
+	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -258,22 +287,26 @@ public class Strain {
 		this.genotypes = genotypes;
 	}
 
+	public void setGridCells(List<StrainGridCell> gridCells) {
+		this.gridCells = gridCells;
+	}
+    
 	public void setIds(List<StrainID> ids) {
 		this.ids = ids;
 	}
-    
-	public void setImsrData(List<StrainImsrData> imsrData) {
+
+    public void setImsrData(List<StrainImsrData> imsrData) {
 		this.imsrData = imsrData;
 	}
-
+    
     public void setIsSequenced(int isSequenced) {
         this.isSequenced = isSequenced;
     }
     
-    public void setIsStandard(int isStandard) {
+	public void setIsStandard(int isStandard) {
         this.isStandard = isStandard;
     }
-    
+
 	public void setMpdData(List<StrainMpdData> mpdData) {
 		this.mpdData = mpdData;
 	}
@@ -297,13 +330,9 @@ public class Strain {
 	public void setReferenceAssociations(List<StrainReferenceAssociation> referenceAssociations) {
 		this.referenceAssociations = referenceAssociations;
 	}
-
+	
 	public void setStrainAttributes(List<StrainAttribute> strainAttributes) {
 		this.strainAttributes = strainAttributes;
-	}
-	
-	public void setGridCells(List<StrainGridCell> gridCells) {
-		this.gridCells = gridCells;
 	}
 
 	public void setStrainKey(int strainKey) {
