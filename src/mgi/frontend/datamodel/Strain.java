@@ -43,6 +43,7 @@ public class Strain {
 	private List<StrainGridCell> gridCells;
     private String description;
     private List<StrainCollection> collections;
+    private List<StrainSnpRow> snpRows;
 	
     // ================= Getters and Setters ===================== //
 
@@ -70,7 +71,7 @@ public class Strain {
 		return collections;
 	}
 
-    @Transient
+	@Transient
 	public List<String> getCollectionStrings() {
 		List<String> out = new ArrayList<String>();
 		if (this.getCollections() != null) {
@@ -249,6 +250,47 @@ public class Strain {
 		return 0;
 	}
 
+	@Transient
+	public int getCountOfSnpComparisonStrains() {
+		if (this.getSnpRows() != null) {
+			return this.getSnpRows().size();
+		}
+		return 0;
+	}
+	
+	// get the ordered list of chromosomes with SNPs for this strain
+	@Transient
+	public List<String> getSnpChromosomes() {
+		List<String> chrom = new ArrayList<String>();
+		if (this.getSnpRows() != null) {
+			StrainSnpRow row = this.getSnpRows().get(0);
+			for (StrainSnpCell cell : row.getCells()) {
+				chrom.add(cell.getChromosome());
+			}
+		}
+		return chrom;
+	}
+	
+	// get count of total number of SNPs across all strains
+	@Transient
+	public int getSnpCount() {
+		int ct = 0;
+		if (this.getSnpRows() != null) {
+			for (StrainSnpRow row : this.getSnpRows()) {
+				ct = ct + row.getSnpTotal();
+			}
+		}
+		return ct;
+	}
+	
+	@OneToMany (targetEntity=StrainSnpRow.class)
+	@JoinColumn(name="strain_key")
+	@BatchSize(size=100)
+	@OrderBy("sequence_num")
+    public List<StrainSnpRow> getSnpRows() {
+		return snpRows;
+	}
+
 	@OneToMany (targetEntity=StrainAttribute.class)
 	@JoinColumn(name="strain_key")
 	@BatchSize(size=100)
@@ -331,6 +373,10 @@ public class Strain {
 		this.referenceAssociations = referenceAssociations;
 	}
 	
+	public void setSnpRows(List<StrainSnpRow> snpRows) {
+		this.snpRows = snpRows;
+	}
+
 	public void setStrainAttributes(List<StrainAttribute> strainAttributes) {
 		this.strainAttributes = strainAttributes;
 	}
