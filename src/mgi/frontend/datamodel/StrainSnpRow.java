@@ -3,7 +3,10 @@ package mgi.frontend.datamodel;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -108,10 +111,49 @@ public class StrainSnpRow {
 		this.strainKey = strainKey;
 	}
 
+	@Transient
+	public int getCountForChromosome(String chromosome) {
+		for (StrainSnpCell cell : this.getCells()) {
+			if (cell.getChromosome().equals(chromosome)) {
+				return cell.getAllCount();
+			}
+		}
+		return 0;
+	}
+	
+	@Transient
+	public StrainSnpRowComparator getComparator(String sortBy) {
+		return new StrainSnpRowComparator(sortBy);
+	}
+	
 	@Override
 	public String toString() {
 		return "StrainSnpRow [rowKey=" + rowKey + ", strainKey=" + strainKey + ", comparisonStrainKey="
 				+ comparisonStrainKey + ", comparisonStrainName=" + comparisonStrainName + ", comparisonStrainID="
 				+ comparisonStrainID + ", sequenceNum=" + sequenceNum + ", cells=" + cells + "]";
 	}
+
+    private class StrainSnpRowComparator implements Comparator<StrainSnpRow> {
+    	private String sortBy = "strain";
+    	private Map<StrainSnpRow,Integer> cachedValues = new HashMap<StrainSnpRow,Integer>();
+
+    	public StrainSnpRowComparator(String sortBy) {
+    		this.sortBy = sortBy;
+    	}
+
+    	public int compare(StrainSnpRow a, StrainSnpRow b) {
+    		if ((sortBy == null) || (sortBy.equals("strain"))) {
+    			return a.getComparisonStrainName().compareTo(b.getComparisonStrainName());
+    		}
+
+    		// For performance, we'll remember the sort value for each row rather than recomputing it.
+    		if (!cachedValues.containsKey(a)) {
+    			cachedValues.put(a, a.getCountForChromosome(sortBy));
+    		}
+    		if (!cachedValues.containsKey(b)) {
+    			cachedValues.put(b, b.getCountForChromosome(sortBy));
+    		}
+    		return Integer.compare(cachedValues.get(a), cachedValues.get(b));
+		}
+    }
 }
