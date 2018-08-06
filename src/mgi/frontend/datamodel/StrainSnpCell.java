@@ -31,6 +31,16 @@ public class StrainSnpCell {
 	}
 	
 	@Transient
+	public String getSameCountComma() {
+		return this.getCountComma(this.sameCount);
+	}
+	
+	@Transient
+	public String getDiffCountComma() {
+		return this.getCountComma(this.differentCount);
+	}
+	
+	@Transient
 	public int getColorBin() {
 		if (allCount == 0) return 0;
 		if (allCount < 10) return 1;

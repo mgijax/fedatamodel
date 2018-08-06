@@ -112,18 +112,24 @@ public class StrainSnpRow {
 	}
 
 	@Transient
-	public int getCountForChromosome(String chromosome) {
+	public int getCountForChromosome(String chromosome, String mode) {
 		for (StrainSnpCell cell : this.getCells()) {
 			if (cell.getChromosome().equals(chromosome)) {
-				return cell.getAllCount();
+				if ("all".equals(mode)) {
+					return cell.getAllCount();
+				} else if ("same".equals(mode)) {
+					return cell.getSameCount();
+				} else {
+					return cell.getDifferentCount();
+				}
 			}
 		}
 		return 0;
 	}
 	
 	@Transient
-	public StrainSnpRowComparator getComparator(String sortBy) {
-		return new StrainSnpRowComparator(sortBy);
+	public StrainSnpRowComparator getComparator(String sortBy, String mode) {
+		return new StrainSnpRowComparator(sortBy, mode);
 	}
 	
 	@Override
@@ -135,10 +141,12 @@ public class StrainSnpRow {
 
     private class StrainSnpRowComparator implements Comparator<StrainSnpRow> {
     	private String sortBy = "strain";
+    	private String mode = "all";
     	private Map<StrainSnpRow,Integer> cachedValues = new HashMap<StrainSnpRow,Integer>();
 
-    	public StrainSnpRowComparator(String sortBy) {
+    	public StrainSnpRowComparator(String sortBy, String mode) {
     		this.sortBy = sortBy;
+    		this.mode = mode;
     	}
 
     	public int compare(StrainSnpRow a, StrainSnpRow b) {
@@ -148,10 +156,10 @@ public class StrainSnpRow {
 
     		// For performance, we'll remember the sort value for each row rather than recomputing it.
     		if (!cachedValues.containsKey(a)) {
-    			cachedValues.put(a, a.getCountForChromosome(sortBy));
+    			cachedValues.put(a, a.getCountForChromosome(sortBy, mode));
     		}
     		if (!cachedValues.containsKey(b)) {
-    			cachedValues.put(b, b.getCountForChromosome(sortBy));
+    			cachedValues.put(b, b.getCountForChromosome(sortBy, mode));
     		}
     		return Integer.compare(cachedValues.get(a), cachedValues.get(b));
 		}
