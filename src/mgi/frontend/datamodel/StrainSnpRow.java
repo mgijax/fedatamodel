@@ -118,8 +118,16 @@ public class StrainSnpRow {
 				if ("all".equals(mode)) {
 					return cell.getAllCount();
 				} else if ("same".equals(mode)) {
+					if (cell.getAllCount() == 0) {
+						// sort "no data" lower than "0 SNPs" in 'same' mode
+						return -1;
+					}
 					return cell.getSameCount();
 				} else {
+					if (cell.getAllCount() == 0) {
+						// sort "no data" lower than "0 SNPs" in 'different' mode
+						return -1;
+					}
 					return cell.getDifferentCount();
 				}
 			}
