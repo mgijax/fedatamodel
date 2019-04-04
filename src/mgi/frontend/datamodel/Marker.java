@@ -1110,13 +1110,6 @@ public class Marker {
 		return filterCountSetItems("Molecular reagents");
 	}
 
-	/** get the Mouse Cyc annotations for this marker
-	 */
-	@Transient
-	public List<Annotation> getMouseCycAnnotations () {
-		return filterAnnotations("MouseCyc/Marker");
-	}
-
 	public String getName() {
 		return name;
 	}
