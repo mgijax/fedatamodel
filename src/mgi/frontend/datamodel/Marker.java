@@ -1223,7 +1223,7 @@ public class Marker {
 			//System.out.println("-Organism: " + organism);
 			for(OrganismOrtholog o: organismOrthologs) {
 				//System.out.println("--" + o.getHomologyCluster().getSource());
-				if(o.getHomologyCluster().getSource().equals("HomoloGene and HGNC")) {
+				if(o.getHomologyCluster().getSource().equals("Alliance Clustered")) {
 					for(OrganismOrtholog oo: o.getHomologyCluster().getOrthologs()) {
 						//System.out.println("---" + oo.getOrganism());
 						if(oo.getOrganism().equals("human")) {
@@ -1296,43 +1296,35 @@ public class Marker {
 		return null;
 	}
 
-	/* return the OrganismOrtholog object which ties this marker to a 
-	 * HomoloGene cluster
-	 */
-	@Transient
-	public OrganismOrtholog getHomoloGeneOrganismOrtholog() {
-		return filterOrganismOrthologs("HomoloGene");
-	}
-
 	/* return the OrganismOrtholog object which ties this marker to an 
-	 * MGI-generated hybrid homology cluster
+	 * Alliance Clustered homology cluster
 	 */
 	@Transient
-	public OrganismOrtholog getHybridOrganismOrtholog() {
-		return filterOrganismOrthologs("HomoloGene and HGNC");
+	public OrganismOrtholog getAllianceClusteredOrganismOrtholog() {
+		return filterOrganismOrthologs("Alliance Clustered");
 	}
 
-	/* return the OrganismOrtholog object which ties this marker to HGNC
+	/* return the OrganismOrtholog object which ties this marker to an Alliance Direct
 	 * homology cluster
 	 */
 	@Transient
-	public OrganismOrtholog getHgncOrganismOrtholog() {
-		return filterOrganismOrthologs("HGNC");
+	public OrganismOrtholog getAllianceDirectOrganismOrtholog() {
+		return filterOrganismOrthologs("Alliance Direct");
 	}
 
 	/* method name retained for backward-compatibility
 	 */
 	@Transient
 	public OrganismOrtholog getOrganismOrtholog() {
-		return getHomoloGeneOrganismOrtholog();
+		return getAllianceDirectOrganismOrtholog();
 	}
 
-	/* get the cluster key for the HomoloGene cluster containing this
+	/* get the cluster key for the Alliance Clustered cluster containing this
 	 * marker
 	 */
 	@Transient
-	public String getHomoloGeneClusterKey() {
-		OrganismOrtholog oo = getHomoloGeneOrganismOrtholog();
+	public String getAllianceClusteredClusterKey() {
+		OrganismOrtholog oo = getAllianceClusteredOrganismOrtholog();
 		if (oo != null) {
 			return Integer.toString(
 				oo.getHomologyCluster().getClusterKey() );
@@ -1340,11 +1332,11 @@ public class Marker {
 		return null;
 	}
 
-	/* get the cluster key for the HGNC cluster containing this marker
+	/* get the cluster key for the Alliance Direct cluster containing this marker
 	 */
 	@Transient
-	public String getHgncClusterKey() {
-		OrganismOrtholog oo = getHgncOrganismOrtholog();
+	public String getAllianceDirectClusterKey() {
+		OrganismOrtholog oo = getAllianceDirectOrganismOrtholog();
 		if (oo != null) {
 			return Integer.toString(
 				oo.getHomologyCluster().getClusterKey() );
@@ -1522,7 +1514,7 @@ public class Marker {
 	}
 
 	/**
-	 * Return a collection of marker links for the homologene class page.
+	 * Return a collection of marker links for the homology class page.
 	 */
 	@Transient
 	public List<MarkerLink> getHomologyLinks() {
@@ -1969,16 +1961,16 @@ public class Marker {
 		return getMarkerType().equals("DNA Segment");
 	}
 
-	/* get a list of the homologous human markers using the hybrid
-	 * homology definitions.  can be null (if not in a hybrid homology
-	 * cluster) or empty (if the hybrid homology cluster has no human
+	/* get a list of the homologous human markers using the Alliance Clustered
+	 * homology definitions.  can be null (if not in an Alliance Clustered homology
+	 * cluster) or empty (if the Alliance Clustered homology cluster has no human
 	 * markers).
 	 */
 	@Transient
-	public List<Marker> getHumanHomologsViaHybrid() {
+	public List<Marker> getHumanHomologsViaAllianceClustered() {
 		List<Marker> humanMarkers = null;	// list to return
 
-		OrganismOrtholog mouseOO = this.getHybridOrganismOrtholog();
+		OrganismOrtholog mouseOO = this.getAllianceClusteredOrganismOrtholog();
 		if (mouseOO == null) {
 			return humanMarkers;
 		}
@@ -2003,7 +1995,7 @@ public class Marker {
 	 */
 	@Transient
 	public String getMyGeneSymbol() {
-		List<Marker> humanMarkers = this.getHumanHomologsViaHybrid();
+		List<Marker> humanMarkers = this.getHumanHomologsViaAllianceClustered();
 		if ((humanMarkers != null) && (humanMarkers.size() == 1)) {
 			return humanMarkers.get(0).getSymbol();
 		}
@@ -2018,7 +2010,7 @@ public class Marker {
 	 */
 	@Transient
 	public MarkerID getMyGeneID() {
-		List<Marker> humanMarkers = this.getHumanHomologsViaHybrid();
+		List<Marker> humanMarkers = this.getHumanHomologsViaAllianceClustered();
 		if ((humanMarkers != null) && (humanMarkers.size() == 1)) {
 			Marker hm = humanMarkers.get(0);
 
