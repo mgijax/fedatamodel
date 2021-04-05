@@ -1360,14 +1360,9 @@ public class Marker {
 	@Transient
 	public List<OrganismOrtholog> getOrganismOrthologsFiltered() {
 		List<OrganismOrtholog> ret = new ArrayList<OrganismOrtholog>();
-		for(OrganismOrtholog o: getOrganismOrthologs()) {
-			if((o.getHomologyCluster().getSecondarySource() == null ||
-					o.getHomologyCluster().getSecondarySource().equals("") ||
-					o.getHomologyCluster().getSecondarySource().length() == 0) &&
-					!o.getHomologyCluster().getSource().equals("hybrid")
-			) {
-				ret.add(o);
-			}
+		OrganismOrtholog oo = this.getAllianceDirectOrganismOrtholog();
+		if (oo != null) {
+			ret.add(oo);
 		}
 		return ret;
 	}
