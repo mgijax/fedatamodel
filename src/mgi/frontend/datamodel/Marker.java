@@ -1972,39 +1972,6 @@ public class Marker {
 		return humanOO.getMarkers();
 	}
 
-	/* get the marker symbol to use for the MyGene link to wikipedia, or
-	 * null if we do not have a single homologous human marker via the
-	 * hybrid homology.
-	 */
-	@Transient
-	public String getMyGeneSymbol() {
-		List<Marker> humanMarkers = this.getHumanHomologsViaAllianceClustered();
-		if ((humanMarkers != null) && (humanMarkers.size() == 1)) {
-			return humanMarkers.get(0).getSymbol();
-		}
-		return null;
-	}
-
-	/* get the MyGene ID to use in making the MyGene link to wikipedia, or
-	 * null if either:
-	 * 1. we do not have a single homologous human marker via the hybrid
-	 * 	homomlogy, or
-	 * 2. that human marker doesn't have a MyGene ID
-	 */
-	@Transient
-	public MarkerID getMyGeneID() {
-		List<Marker> humanMarkers = this.getHumanHomologsViaAllianceClustered();
-		if ((humanMarkers != null) && (humanMarkers.size() == 1)) {
-			Marker hm = humanMarkers.get(0);
-
-			List<MarkerID> myGeneIDs = hm.filterMarkerIDs("MyGene");
-			if (myGeneIDs.size() == 1) {
-				return myGeneIDs.get(0);
-			}
-		}
-		return null;
-	}
-
 	@Transient
 	public Comparator<Marker> getComparator() {
 		return new MarkerComparator();
