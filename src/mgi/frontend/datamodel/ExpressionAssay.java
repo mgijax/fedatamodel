@@ -205,10 +205,6 @@ public class ExpressionAssay {
         return this.gelLanes;
     }
 	
-//	@Column(name="gel_imagepane_key")
-//	public Integer getGelImagePaneKey() {
-//		return gelImagePaneKey;
-//	}
 	@OneToOne(targetEntity=ImagePane.class)
 	@JoinColumn(name="gel_imagepane_key")
 	public ImagePane getGelImagePane() {
