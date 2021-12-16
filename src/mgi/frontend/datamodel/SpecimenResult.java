@@ -3,8 +3,10 @@ package mgi.frontend.datamodel;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Transient;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.OrderBy;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -31,6 +33,7 @@ public class SpecimenResult {
 	private String  pattern;
 	private String  note;
     List<ImagePane> imagepanes;
+    List<SpecimenResultCellType> cellTypes;
 
 	@Id
 	@Column(name="specimen_result_key")
@@ -80,10 +83,32 @@ public class SpecimenResult {
             inverseJoinColumns=@JoinColumn(name="imagepane_key")
             )
     @BatchSize(size=50)
-//    @OrderBy ("jnumID,figureLabel")
     public List<ImagePane> getImagepanes() {
         return imagepanes;
     }
+
+	@OneToMany (targetEntity=SpecimenResultCellType.class, fetch=FetchType.EAGER)
+	@JoinColumn(name="specimen_result_key")
+	@BatchSize(size=100)
+	@OrderBy("sequenceNum")
+    public List<SpecimenResultCellType> getCellTypes() {
+        return cellTypes;
+    }
+
+	@Transient
+	public String getCellTypeString() {
+		String out = "";
+		if (cellTypes != null) {
+			for (SpecimenResultCellType cellType : cellTypes) {
+				if (out.length() > 0) {
+					out = out + ", " + cellType.getCellType();
+				} else {
+					out = cellType.getCellType();
+				}
+			}
+		}
+		return out;
+	}
 
 	public void setSpecimenResultKey(int specimenResultKey) {
 		this.specimenResultKey = specimenResultKey;
@@ -121,13 +146,7 @@ public class SpecimenResult {
       this.imagepanes = imagepanes;
     }
 
-
-//	@Override
-//	public String toString() {
-//		return "AssaySpecimen ["
-//				+ "assayKey=" + assayKey + ", "
-//				+ "specimenKey=" + specimenKey + ", "
-//				+ "specimenLable=" + specimenLable + ", "
-//				+ "]";
-//	}
+    public void setCellTypes(List<SpecimenResultCellType> cellTypes) {
+      this.cellTypes = cellTypes;
+    }
 }

@@ -188,6 +188,23 @@ public class AssaySpecimen {
 
     // ===================== Transient ===================== //
 
+	// Identify whether (true) or not (false) this specimen has any cell types identified for any of its results.
+	@Transient
+	public boolean getHasCellTypeData() {
+		if (specimenResults != null) {
+			for (SpecimenResult result : specimenResults) {
+				if (result.cellTypes != null) {
+					for (SpecimenResultCellType cellType : result.cellTypes) {
+						if ((cellType != null) && (cellType.getCellType() != null) && (cellType.getCellType().trim().length() > 0)) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 	@Transient
 	public List<ImagePane> getImagePanes()
 	{
