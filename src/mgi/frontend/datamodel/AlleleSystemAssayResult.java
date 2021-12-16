@@ -36,6 +36,7 @@ public class AlleleSystemAssayResult implements RecombinaseEntity {
     private String sex;
     private String specimenNote;
     private String structure;
+    private String cellTypes;
     
 
     // ================= Getters and Setters ===================== //
@@ -137,6 +138,16 @@ public class AlleleSystemAssayResult implements RecombinaseEntity {
     public String getStructure() {
         return structure;
     }
+
+    @Column(name="cell_types")
+    public String getCellTypes() {
+		return cellTypes;
+	}
+
+	public void setCellTypes(String cellTypes) {
+		this.cellTypes = cellTypes;
+	}
+
     public void setAge(String age) {
         this.age = age;
     }
