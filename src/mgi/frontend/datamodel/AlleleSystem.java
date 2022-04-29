@@ -39,6 +39,7 @@ public class AlleleSystem implements RecombinaseEntity {
     private Integer ageP2;
     private Integer ageP3;
     private Integer hasImage;
+    private String cellData;
     private List<AlleleSystemOtherAllele> otherAlleles;
     private List<AlleleSystemOtherSystem> otherSystems;
     private List<AlleleSystemAssayResult> alleleSystemAssayResults;
@@ -172,6 +173,18 @@ public class AlleleSystem implements RecombinaseEntity {
 	}
 	public void setHasImage(Integer hasImage) {
 		this.hasImage = hasImage;
+	}
+
+    /**
+     * Cell data - JSON string encoding multiple counts per cell in this row
+     * @return String
+     */
+    @Column(name="cell_data")
+    public String getCellData() {
+		return cellData;
+	}
+	public void setCellData(String cellData) {
+		this.cellData = cellData;
 	}
 
     /**
