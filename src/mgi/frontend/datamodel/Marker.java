@@ -73,6 +73,7 @@ public class Marker {
 	private List<MarkerBiotypeConflict> biotypeConflicts;
 	private List<String> batchMarkerSnps;
 	private Integer countOfAlleles;
+	private Integer countOfRecombinaseAllelesWithActivityData;
 	private Integer countOfGOTerms;
 	private Integer countOfGxdAssays;
 	private Integer countOfOrthologs;
@@ -108,6 +109,8 @@ public class Marker {
 	private String organism;
 	private List<MarkerLink> links;
 	private String primaryID;
+	private Integer mouseMarkerKey;
+	private String mouseMarkerId;
 	private List<MarkerReferenceAssociation> referenceAssociations;
 	private List<MarkerSequenceAssociation> sequenceAssociations;
 	private List<Reference> references;
@@ -453,8 +456,9 @@ public class Marker {
 	 */
 	@Transient
 	public boolean isDriver() {
+                Integer nrad = this.getCountOfRecombinaseAllelesWithActivityData();
 		List<Allele> myDrivenAlleles = this.getDrivenAlleles();
-		return (myDrivenAlleles != null) && (myDrivenAlleles.size() > 0);
+		return (nrad > 0) || ((myDrivenAlleles != null) && (myDrivenAlleles.size() > 0));
 	}
 	
 	/* returns count of recombinase alleles driven by this marker, where those alleles
@@ -726,6 +730,12 @@ public class Marker {
 	@JoinColumn(name="marker_key")
 	public Integer getCountOfAlleles() {
 		return countOfAlleles;
+	}
+
+	@Column(table="marker_counts", name="rec_allele_count")
+	@JoinColumn(name="marker_key")
+	public Integer getCountOfRecombinaseAllelesWithActivityData() {
+		return countOfRecombinaseAllelesWithActivityData;
 	}
 
 	@Column(table="marker_counts", name="alleles_with_human_disease_count")
@@ -1840,6 +1850,16 @@ public class Marker {
 		return status;
 	}
 
+	@Column(name="mouse_marker_key")
+	public Integer getMouseMarkerKey() {
+		return mouseMarkerKey;
+	}
+
+	@Column(name="mouse_marker_id")
+	public String getMouseMarkerId() {
+		return mouseMarkerId;
+	}
+
 	/** convenience method to pull the location note out of the list of notes
 	 */
 	@Transient
@@ -2061,6 +2081,10 @@ public class Marker {
 		this.countOfAlleles = countOfAlleles;
 	}
 
+        public void setCountOfRecombinaseAllelesWithActivityData(Integer countOfRecombinaseAllelesWithActivityData) {
+                this.countOfRecombinaseAllelesWithActivityData = countOfRecombinaseAllelesWithActivityData;
+        }
+
 	public void setCountOfAllelesWithHumanDiseases(
 			Integer countOfAllelesWithHumanDiseases) {
 		this.countOfAllelesWithHumanDiseases = countOfAllelesWithHumanDiseases;
@@ -2208,6 +2232,14 @@ public class Marker {
 
 	public void setPrimaryID(String primaryID) {
 		this.primaryID = primaryID;
+	}
+
+	public void setMouseMarkerKey(Integer mouseMarkerKey) {
+		this.mouseMarkerKey = mouseMarkerKey;
+	}
+
+	public void setMouseMarkerId(String mouseMarkerId) {
+		this.mouseMarkerId = mouseMarkerId;
 	}
 
 	public void setReferenceAssociations(
