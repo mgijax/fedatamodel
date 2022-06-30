@@ -914,10 +914,32 @@ public class Marker {
 		return getSingleID("Entrez Gene");
 	}
 
-	@Transient
-	public MarkerID getHgncID() {
-		return getSingleID("HGNC");
-	}
+        @Transient
+        public MarkerID getHgncID() {
+                return getSingleID("HGNC");
+        }
+
+        /** Get the appropriate ID to use for linking to the Alliance for this gene, or null
+         *  if no such ID exists. Only mouse, human, rat, and zebrafish genes link to the alliance.
+         */
+        @Transient
+        public String getAllianceLinkID () {
+            if ("mouse".equals(organism)) {
+                return primaryID;
+            } else if ("human".equals(organism)) {
+                MarkerID mid = getHgncID();
+                if (mid == null) {
+                    return null;
+                } else {
+                    return mid.getAccID();
+                }
+            } else if ("rat".equals(organism)) {
+                return primaryID;
+            } else if ("zebrafish".equals(organism)) {
+                return "ZFIN:" + primaryID;
+            }
+            return null;
+        }
 
 	@OneToMany (fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")

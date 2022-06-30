@@ -85,6 +85,7 @@ public class Allele implements RecombinaseEntity {
     private int isRecombinase;
     private int isWildType;
     private int isMixed;
+    private int hasTumorData;
     private Integer primaryImageKey;
     private String strain;
     private String strainID;
@@ -383,6 +384,13 @@ public class Allele implements RecombinaseEntity {
     @Column(name="is_mixed")
     public int getIsMixed() {
 	return isMixed;
+    }
+
+    /** does this allele have data in MMHCdb?  (1 if yes, 0 if no)
+     */
+    @Column(name="has_tumor_data")
+    public int getHasTumorData() {
+	return hasTumorData;
     }
 
     @Column(name="strain")
@@ -997,13 +1005,17 @@ public class Allele implements RecombinaseEntity {
 	this.isMixed = isMixed;
     }
 
+    public void setHasTumorData(int hasTumorData) {
+	this.hasTumorData = hasTumorData;
+    }
+
     public void setStrain(String strain) {
 	this.strain = strain;
     }
 
-	public void setStrainID(String strainID) {
-		this.strainID = strainID;
-	}
+    public void setStrainID(String strainID) {
+            this.strainID = strainID;
+    }
 
     public void setStrainLabel(String strainLabel) {
 	this.strainLabel = strainLabel;
