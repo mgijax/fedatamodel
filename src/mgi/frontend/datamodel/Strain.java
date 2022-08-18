@@ -114,6 +114,17 @@ public class Strain {
 		return filterReferences("earliest");
 	}
 
+	// Return the MPD id of this strain, if there is one
+	@Transient
+	public String getMpdID() {
+		for (StrainID id : this.getIds()) {
+			if ("MPD".equals(id.getLogicalDB())) {
+				return id.getAccID();
+			}
+		}
+		return null;
+        }
+
 	// Return the first instance of StrainMpdData, if there is one.
 	@Transient
 	public StrainMpdData getFirstMpdData() {
