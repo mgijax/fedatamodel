@@ -463,7 +463,7 @@ public class Disease {
 			DiseaseModel i2 = (DiseaseModel) o2;
 			int stateCompare = super.compare(i1.getDisease(),i2.getDisease());
 			if (stateCompare == 0) {
-				stateCompare = super.compare(i1.getAllelePairs(),i2.getAllelePairs());
+				stateCompare = super.compare(i1.getAllelePairsPlain(),i2.getAllelePairsPlain());
 			}
 			if (stateCompare == 0) {
 				stateCompare = super.compare(i1.getBackgroundStrain(),i2.getBackgroundStrain());
