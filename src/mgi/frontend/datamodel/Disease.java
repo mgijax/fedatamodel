@@ -457,16 +457,16 @@ public class Disease {
 
 	private class DiseaseModelComparator extends SmartAlphaComparator<DiseaseModel>
 	{
-		public int compare(DiseaseModel o1, DiseaseModel o2)
+ 		public int compare(DiseaseModel o1, DiseaseModel o2)
 		{
 			DiseaseModel i1 = (DiseaseModel) o1;
 			DiseaseModel i2 = (DiseaseModel) o2;
 			int stateCompare = super.compare(i1.getDisease(),i2.getDisease());
 			if (stateCompare == 0) {
-				stateCompare = super.compare(i1.getBackgroundStrain(),i2.getBackgroundStrain());
+				stateCompare = super.compare(i1.getAllelePairs(),i2.getAllelePairs());
 			}
 			if (stateCompare == 0) {
-				stateCompare = super.compare(i1.getAllelePairs(),i2.getAllelePairs());
+				stateCompare = super.compare(i1.getBackgroundStrain(),i2.getBackgroundStrain());
 			}
 			return stateCompare;
 		}

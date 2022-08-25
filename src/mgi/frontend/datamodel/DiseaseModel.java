@@ -41,6 +41,11 @@ public class DiseaseModel {
     
 	@Transient
 	public String getAllelePairs() {
+		return genotype.getCombination3();
+	}
+
+	@Transient
+	public String getAllelePairsPlain() {
 		return genotype.getCombination1();
 	}
 

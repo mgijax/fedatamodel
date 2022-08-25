@@ -49,6 +49,7 @@ public class Genotype implements Comparable<Genotype>
 	private String note;
 	private String combination1;
 	private String combination2;
+	private String combination3;
 	private String genotypeType;
 	private List<Annotation> annotations;
 	private List<MPSystem> systems;
@@ -92,6 +93,11 @@ public class Genotype implements Comparable<Genotype>
 	@Column(name="combination_2")
 	public String getCombination2() {
 		return combination2;
+	}
+
+	@Column(name="combination_3")
+	public String getCombination3() {
+		return combination3;
 	}
 
 	@Id
@@ -165,6 +171,10 @@ public class Genotype implements Comparable<Genotype>
 
 	public void setCombination2(String combination2) {
 		this.combination2 = combination2;
+	}
+
+	public void setCombination3(String combination3) {
+		this.combination3 = combination3;
 	}
 
 	public void setGenotypeKey(int genotypeKey) {
@@ -401,6 +411,8 @@ public class Genotype implements Comparable<Genotype>
 				+ (combination1 != null ? "combination1=" + combination1 + ", "
 						: "")
 				+ (combination2 != null ? "combination2=" + combination2 + ", "
+						: "") + "genotypeKey=" + genotypeKey
+				+ (combination3 != null ? "combination3=" + combination3 + ", "
 						: "") + "genotypeKey=" + genotypeKey
 				+ ", isConditional=" + isConditional + ", "
 				+ (note != null ? "note=" + note + ", " : "")
