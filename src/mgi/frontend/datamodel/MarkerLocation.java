@@ -21,27 +21,27 @@ public class MarkerLocation extends Location implements Serializable
 	
     protected Integer markerKey;
     protected Float cmOffset;
-	private int uniqueKey;
-	protected String cytogeneticOffset;
+    private int uniqueKey;
+    protected String cytogeneticOffset;
 	
     // ================= Getters and Setters ===================== //
 	
-	@Column(name="cm_offset")
+    @Column(name="cm_offset")
     public Float getCmOffset() {
         return cmOffset;
     }
 
-	@Column(name = "cytogenetic_offset")
+    @Column(name = "cytogenetic_offset")
     public String getCytogeneticOffset() {
-		return cytogeneticOffset;
-	}
+        return cytogeneticOffset;
+    }
 
-	@Column(name = "marker_key")
-	public Integer getMarkerKey() {
-		return markerKey;
-	}
+    @Column(name = "marker_key")
+    public Integer getMarkerKey() {
+        return markerKey;
+    }
 
-	@Id
+    @Id
     @Column(name="unique_key")
     public int getUniqueKey() {
         return uniqueKey;
@@ -51,34 +51,34 @@ public class MarkerLocation extends Location implements Serializable
         this.cmOffset = cmOffset;
     }    
     
-	public void setCytogeneticOffset(String cytogeneticOffset) {
-		this.cytogeneticOffset = cytogeneticOffset;
-	}
+    public void setCytogeneticOffset(String cytogeneticOffset) {
+        this.cytogeneticOffset = cytogeneticOffset;
+    }
 
-	public void setMarkerKey(Integer markerKey) {
-		this.markerKey = markerKey;
-	}
+    public void setMarkerKey(Integer markerKey) {
+        this.markerKey = markerKey;
+    }
 
     public void setUniqueKey(int uniqueKey) {
         this.uniqueKey = uniqueKey;
     }	
 	
-	@Override
-	public String toString() {
-		return "MarkerLocation ["
-				+ (markerKey != null ? "markerKey=" + markerKey + ", " : "")
-				+ (buildIdentifier != null ? "buildIdentifier="
-						+ buildIdentifier + ", " : "")
-				+ (chromosome != null ? "chromosome=" + chromosome + ", " : "")
-				+ ", "
-				+ "endCoordinate="
-				+ endCoordinate
-				+ ", "
-				+ (locationType != null ? "locationType=" + locationType + ", "
-						: "")
-				+ (mapUnits != null ? "mapUnits=" + mapUnits + ", " : "")
-				+ (provider != null ? "provider=" + provider + ", " : "")
-				+ "sequenceNum=" + sequenceNum + ", startCoordinate="
-				+ startCoordinate + ", uniqueKey=" + uniqueKey + "]";
+    @Override
+    public String toString() {
+        return "MarkerLocation ["
+                + (markerKey != null ? "markerKey=" + markerKey + ", " : "")
+                + (buildIdentifier != null ? "buildIdentifier="
+                + buildIdentifier + ", " : "")
+                + (chromosome != null ? "chromosome=" + chromosome + ", " : "")
+                + ", "
+                + "endCoordinate="
+                + endCoordinate
+                + ", "
+                + (locationType != null ? "locationType=" + locationType + ", "
+                                : "")
+                + (mapUnits != null ? "mapUnits=" + mapUnits + ", " : "")
+                + (provider != null ? "provider=" + provider + ", " : "")
+                + "sequenceNum=" + sequenceNum + ", startCoordinate="
+                + startCoordinate + ", uniqueKey=" + uniqueKey + "]";
 	}
 }

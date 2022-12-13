@@ -212,6 +212,20 @@ public class Marker {
 		return filterRelatedMarkers("cluster_has_member", "is member of");
 	}
 
+	/* retrieve related QTL markers, where this marker is a candidate gene
+	 */
+	@Transient
+	public List<RelatedMarker> getCandidateFor() {
+		return filterRelatedMarkers("qtl_to_candidate_gene", "is_candidate_for");
+	}
+
+	/* retrieve related candidate gene markers for this QTL marker
+	 */
+	@Transient
+	public List<RelatedMarker> getCandidates() {
+		return filterRelatedMarkers("qtl_to_candidate_gene", "has_candidate");
+	}
+
 	@OneToMany (targetEntity=RelatedMarker.class, fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")

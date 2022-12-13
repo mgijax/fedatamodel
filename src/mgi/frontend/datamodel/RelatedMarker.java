@@ -200,6 +200,47 @@ public class RelatedMarker {
     }
 
     @Transient
+    // Returns the related marker's genetic (cM) location as a formatted string.
+    // If the marker has no genetic location, returns an empty string.
+    public String getRelatedMarkerGeneticLocation() {
+        Marker rm = this.getRelatedMarker();
+        MarkerLocation ml = rm.getPreferredCentimorgans();
+        if (ml == null) return "";
+        StringBuffer sb = new StringBuffer();
+        sb.append("Chr");
+        sb.append(rm.getChromosome());
+        sb.append(", ");
+        sb.append(String.format("%.2f", ml.getCmOffset()));
+        sb.append(" cM");
+        return sb.toString();
+    }
+
+    @Transient
+    // Returns the related marker's genomic location as a formatted string.
+    // If the marker has no genomic location, returns an empty string.
+    public String getRelatedMarkerGenomicLocation() {
+        Marker rm = this.getRelatedMarker();
+	MarkerLocation ml = rm.getPreferredCoordinates();
+        if (ml == null) return "";
+        StringBuffer sb = new StringBuffer();
+        sb.append("Chr");
+        sb.append(ml.getChromosome());
+        sb.append(":");
+        sb.append(ml.getStartCoordinate().longValue());
+        sb.append("-");
+        sb.append(ml.getEndCoordinate().longValue());
+
+        if (ml.getStrand() != null) {
+            if (!ml.getStrand().equals("")) {
+                sb.append(" (");
+                sb.append(ml.getStrand());
+                sb.append(")");
+            }
+        }
+        return sb.toString();
+    }
+
+    @Transient
     public String getRelatedMarkerLocation() {
 	StringBuffer sb = new StringBuffer();
 	Marker m = this.getRelatedMarker();
