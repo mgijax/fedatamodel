@@ -172,7 +172,7 @@ public class Marker {
 		while (it.hasNext()) {
 			m = it.next();
 			if (m.getRelationshipCategory().equals(category)) {
-				if (m.getRelationshipTerm().equals(relationshipTerm)) {
+				if (relationshipTerm == null || m.getRelationshipTerm().equals(relationshipTerm)) {
 					sublist.add(m);
 				}
 			}
@@ -224,6 +224,13 @@ public class Marker {
 	@Transient
 	public List<RelatedMarker> getCandidates() {
 		return filterRelatedMarkers("qtl_to_candidate_gene", "has_candidate");
+	}
+
+	/* retrieve interacting QTLs for this QTL marker
+	 */
+	@Transient
+	public List<RelatedMarker> getInteractingQTL() {
+		return filterRelatedMarkers("qtl_qtl_interaction", null);
 	}
 
 	@OneToMany (targetEntity=RelatedMarker.class, fetch=FetchType.LAZY)

@@ -34,6 +34,7 @@ public class RelatedMarker {
     private String relatedMarkerID;
     private String relationshipCategory;
     private String relationshipTerm;
+    private Term   relationshipTermObj;
     private String qualifier;
     private String evidenceCode;
     private String jnumID;
@@ -125,6 +126,16 @@ public class RelatedMarker {
 	this.relationshipTerm = relationshipTerm;
     }
 
+    @ManyToOne (targetEntity=Term.class, fetch=FetchType.LAZY)
+    @JoinColumn(name="relationship_term_key")
+    public Term getRelationshipTermObj() {
+	return relationshipTermObj;
+    }
+
+    public void setRelationshipTermObj(Term relationshipTermObj) {
+	this.relationshipTermObj = relationshipTermObj;
+    }
+
     @Column(name="relationship_category")
     public String getRelationshipCategory() {
 	return relationshipCategory;
@@ -210,8 +221,12 @@ public class RelatedMarker {
         sb.append("Chr");
         sb.append(rm.getChromosome());
         sb.append(", ");
-        sb.append(String.format("%.2f", ml.getCmOffset()));
-        sb.append(" cM");
+        if (ml.getCmOffset() == -1.0) {
+            sb.append(" syntenic");
+        } else {
+            sb.append(String.format("%.2f", ml.getCmOffset()));
+            sb.append(" cM");
+        }
         return sb.toString();
     }
 
