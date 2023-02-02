@@ -216,14 +216,14 @@ public class Marker {
 	 */
 	@Transient
 	public List<RelatedMarker> getCandidateFor() {
-		return filterRelatedMarkers("qtl_to_candidate_gene", "is_candidate_for");
+		return filterRelatedMarkers("qtl_to_candidate_gene", "is candidate for");
 	}
 
 	/* retrieve related candidate gene markers for this QTL marker
 	 */
 	@Transient
 	public List<RelatedMarker> getCandidates() {
-		return filterRelatedMarkers("qtl_to_candidate_gene", "has_candidate");
+		return filterRelatedMarkers("qtl_to_candidate_gene", "has candidate");
 	}
 
 	/* retrieve interacting QTLs for this QTL marker
