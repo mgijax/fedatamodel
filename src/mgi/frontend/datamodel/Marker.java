@@ -1353,6 +1353,32 @@ public class Marker {
 		return filterOrganismOrthologs("Alliance Direct");
 	}
 
+	/* Return the Alliance Direct orthologs of the specified organism for this marker.
+	 * If no organism specified (arg is null) returns all Alliance Direct orthologs for this marker.
+	 */
+	@Transient
+	public List<Marker> getAllianceDirectOrthologs (String organism) {
+		List<Marker> orthologs = new ArrayList<Marker>();
+		HomologyCluster hc = getAllianceDirectCluster();
+		if (hc != null) {
+			List<OrganismOrtholog> oos = new ArrayList<OrganismOrtholog>();
+			if (organism == null) {
+				oos = hc.getOrthologs();
+			} else {
+				OrganismOrtholog oo = hc.getOrganismOrtholog(organism);
+				if (oo != null) {
+					oos.add(oo);
+				}
+			}
+			for (OrganismOrtholog oo : oos) {
+				for (Marker m : oo.getMarkers()) {
+					orthologs.add(m);
+				}
+			}
+		}
+		return orthologs;
+	}
+
 	/* method name retained for backward-compatibility
 	 */
 	@Transient
@@ -1373,14 +1399,24 @@ public class Marker {
 		return null;
 	}
 
+	/* get the Alliance Direct cluster containing this marker
+	 */
+	@Transient
+	public HomologyCluster getAllianceDirectCluster() {
+		OrganismOrtholog oo = getAllianceDirectOrganismOrtholog();
+		if (oo != null) {
+			return oo.getHomologyCluster();
+		}
+		return null;
+	}
+
 	/* get the cluster key for the Alliance Direct cluster containing this marker
 	 */
 	@Transient
 	public String getAllianceDirectClusterKey() {
-		OrganismOrtholog oo = getAllianceDirectOrganismOrtholog();
-		if (oo != null) {
-			return Integer.toString(
-				oo.getHomologyCluster().getClusterKey() );
+		HomologyCluster hc = getAllianceDirectCluster();
+		if (hc != null) {
+			return Integer.toString(hc.getClusterKey());
 		}
 		return null;
 	}
