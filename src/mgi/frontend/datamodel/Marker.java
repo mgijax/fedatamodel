@@ -1353,28 +1353,27 @@ public class Marker {
 		return filterOrganismOrthologs("Alliance Direct");
 	}
 
-	/* Return the Alliance Direct orthologs of the specified organism for this marker.
-	 * If no organism specified (arg is null) returns all Alliance Direct orthologs for this marker.
+	/* Return the Alliance Direct mouse orthologs of this non-mouse marker.
+	 *
+	 * NOTE WELL: Unlike all the other homology-related methods in this class which assume this is a mouse marker,
+	 * this method assumes this is a NON-mouse marker. The big difference: a mouse marker can only appear 
+	 * in one Alliance Direct cluster, but a non-mouse marker can appear in multiple.
+	 *
 	 */
 	@Transient
-	public List<Marker> getAllianceDirectOrthologs (String organism) {
+	public List<Marker> getAllianceDirectMouseOrthologs () {
 		List<Marker> orthologs = new ArrayList<Marker>();
-		HomologyCluster hc = getAllianceDirectCluster();
-		if (hc != null) {
-			List<OrganismOrtholog> oos = new ArrayList<OrganismOrtholog>();
-			if (organism == null) {
-				oos = hc.getOrthologs();
-			} else {
-				OrganismOrtholog oo = hc.getOrganismOrtholog(organism);
-				if (oo != null) {
-					oos.add(oo);
+		for (OrganismOrtholog oo : getOrganismOrthologs()) {
+			HomologyCluster hc = oo.getHomologyCluster();
+			if (!"Alliance Direct".equals(hc.getSource())) continue;
+			for (OrganismOrtholog oo2 : hc.getOrthologs()) {
+				if ("mouse".equals(oo2.getOrganism())){
+					for (Marker m : oo2.getMarkers()) {
+						orthologs.add(m);
+					}
 				}
 			}
-			for (OrganismOrtholog oo : oos) {
-				for (Marker m : oo.getMarkers()) {
-					orthologs.add(m);
-				}
-			}
+
 		}
 		return orthologs;
 	}
