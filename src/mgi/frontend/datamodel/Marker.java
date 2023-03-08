@@ -233,6 +233,13 @@ public class Marker {
 		return filterRelatedMarkers("qtl_qtl_interaction", null);
 	}
 
+	/* retrieve PAR partner gene
+	 */
+	@Transient
+	public List<RelatedMarker> getParGenes() {
+		return filterRelatedMarkers("PARtner_of", null);
+	}
+
 	@OneToMany (targetEntity=RelatedMarker.class, fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
