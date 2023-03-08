@@ -39,11 +39,7 @@ public class AlleleRelatedMarker {
     private List<AlleleRelatedMarkerProperty> properties;
     private int inTeaser;
 
-    private String EC_NOTE = "note";
-    private String EC_SYMBOL = "Non-mouse_Gene_Symbol";
-    private String EC_ORGANISM = "Non-mouse_Organism";
-    private String EC_NCBI_ID = "Non-mouse_NCBI_Gene_ID";
-
+    private String NOTE = "note";
     /*---- Getters and Setters ----*/
 
     @Id
@@ -193,22 +189,7 @@ public class AlleleRelatedMarker {
 
     @Transient
     public String getNote() {
-	return this.getProperty(EC_NOTE);
-    }
-
-    @Transient
-    public String getEcOrganism() {
-	return this.getProperty(EC_ORGANISM);
-    }
-
-    @Transient
-    public String getEcSymbol() {
-	return this.getProperty(EC_SYMBOL);
-    }
-
-    @Transient
-    public String getEcGeneID() {
-	return this.getProperty(EC_NCBI_ID);
+	return this.getProperty(NOTE);
     }
 
     @Transient

@@ -59,7 +59,8 @@ import org.hibernate.annotations.Filters;
 @FilterDef(name="noDiseaseHeaders"),
 @FilterDef(name="teaserMarkers"),
 @FilterDef(name="mutationInvolvesMarkers"),
-@FilterDef(name="expressesComponentMarkers")
+@FilterDef(name="expressesComponentMarkers"),
+@FilterDef(name="drivenByMarkers")
 })
 @JsonIgnoreProperties({"references", "notes", "molecularDescription", "ids"})
 public class Allele implements RecombinaseEntity {
@@ -118,6 +119,7 @@ public class Allele implements RecombinaseEntity {
     private List<Annotation> annotations;
     private List<AlleleRelatedMarker> mutationInvolvesMarkers;
     private List<AlleleRelatedMarker> expressesComponentMarkers;
+    private List<AlleleRelatedMarker> drivenByMarkers;
 	private List<PhenoTableSystem> phenoTableSystems;
 	private List<PhenoTableGenotype> phenotableGenotypes;
 	private boolean hasDiseaseModel;
@@ -567,9 +569,6 @@ public class Allele implements RecombinaseEntity {
 	return mutationInvolvesMarkers;
     }
 
-    /** return set of related markers, currently used for 'mutation involves'
-     * relationships but can be expanded in the future.
-     */
     @OneToMany (targetEntity=AlleleRelatedMarker.class, fetch=FetchType.LAZY)
     @JoinColumn(name="allele_key")
     @OrderBy("sequenceNum")
@@ -579,6 +578,17 @@ public class Allele implements RecombinaseEntity {
     )
     public List<AlleleRelatedMarker> getExpressesComponentMarkers() {
 	return expressesComponentMarkers;
+    }
+
+    @OneToMany (targetEntity=AlleleRelatedMarker.class, fetch=FetchType.LAZY)
+    @JoinColumn(name="allele_key")
+    @OrderBy("sequenceNum")
+    @Filter(
+	name="drivenByMarkers",
+	condition="relationship_category = 'allele_to_driver_gene' "
+    )
+    public List<AlleleRelatedMarker> getDrivenByMarkers() {
+	return drivenByMarkers;
     }
 
     @Transient
@@ -1110,6 +1120,11 @@ public class Allele implements RecombinaseEntity {
 	public void setExpressesComponentMarkers (
 	    List<AlleleRelatedMarker> expressesComponentMarkers) {
 		this.expressesComponentMarkers = expressesComponentMarkers;
+	}
+
+	public void setDrivenByMarkers (
+	    List<AlleleRelatedMarker> drivenByMarkers) {
+		this.drivenByMarkers = drivenByMarkers;
 	}
 
 	public void setPhenoTableGenotypeAssociations(List<PhenoTableGenotype> phenotableGenotypes) {

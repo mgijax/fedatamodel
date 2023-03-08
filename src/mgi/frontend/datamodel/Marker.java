@@ -1360,6 +1360,31 @@ public class Marker {
 		return filterOrganismOrthologs("Alliance Direct");
 	}
 
+	/* Return the Alliance Direct mouse orthologs of this non-mouse marker.
+	 *
+	 * NOTE WELL: Unlike all the other homology-related methods in this class which assume this is a mouse marker,
+	 * this method assumes this is a NON-mouse marker. The big difference: a mouse marker can only appear 
+	 * in one Alliance Direct cluster, but a non-mouse marker can appear in multiple.
+	 *
+	 */
+	@Transient
+	public List<Marker> getAllianceDirectMouseOrthologs () {
+		List<Marker> orthologs = new ArrayList<Marker>();
+		for (OrganismOrtholog oo : getOrganismOrthologs()) {
+			HomologyCluster hc = oo.getHomologyCluster();
+			if (!"Alliance Direct".equals(hc.getSource())) continue;
+			for (OrganismOrtholog oo2 : hc.getOrthologs()) {
+				if ("mouse".equals(oo2.getOrganism())){
+					for (Marker m : oo2.getMarkers()) {
+						orthologs.add(m);
+					}
+				}
+			}
+
+		}
+		return orthologs;
+	}
+
 	/* method name retained for backward-compatibility
 	 */
 	@Transient
@@ -1380,14 +1405,24 @@ public class Marker {
 		return null;
 	}
 
+	/* get the Alliance Direct cluster containing this marker
+	 */
+	@Transient
+	public HomologyCluster getAllianceDirectCluster() {
+		OrganismOrtholog oo = getAllianceDirectOrganismOrtholog();
+		if (oo != null) {
+			return oo.getHomologyCluster();
+		}
+		return null;
+	}
+
 	/* get the cluster key for the Alliance Direct cluster containing this marker
 	 */
 	@Transient
 	public String getAllianceDirectClusterKey() {
-		OrganismOrtholog oo = getAllianceDirectOrganismOrtholog();
-		if (oo != null) {
-			return Integer.toString(
-				oo.getHomologyCluster().getClusterKey() );
+		HomologyCluster hc = getAllianceDirectCluster();
+		if (hc != null) {
+			return Integer.toString(hc.getClusterKey());
 		}
 		return null;
 	}
