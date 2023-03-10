@@ -1687,6 +1687,32 @@ public class Marker {
 		if (loc != null) {
 			return loc.getChromosome();
 		}
+
+		return "UN";		// default to Unknown chromosome
+	}
+
+	/* get the genetic chromosome for this marker, preferring to take it from the
+	 * cM first, cytoband second, and default third
+	 */
+	@Transient
+	public String getGeneticChromosome() {
+		MarkerLocation loc = getPreferredCentimorgans();
+
+		loc = getPreferredCentimorgans();
+		if (loc != null) {
+			return loc.getChromosome();
+		}
+
+		loc = getPreferredCytoband();
+		if (loc != null) {
+			return loc.getChromosome();
+		}
+
+		loc = getPreferredCoordinates();
+		if (loc != null) {
+			return loc.getChromosome();
+		}
+
 		return "UN";		// default to Unknown chromosome
 	}
 
