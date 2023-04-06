@@ -233,6 +233,13 @@ public class Marker {
 		return filterRelatedMarkers("qtl_qtl_interaction", null);
 	}
 
+	/* retrieve PAR partner gene
+	 */
+	@Transient
+	public List<RelatedMarker> getParGenes() {
+		return filterRelatedMarkers("PARtner_of", null);
+	}
+
 	@OneToMany (targetEntity=RelatedMarker.class, fetch=FetchType.LAZY)
 	@JoinColumn(name="marker_key")
 	@OrderBy("sequenceNum")
@@ -1680,6 +1687,32 @@ public class Marker {
 		if (loc != null) {
 			return loc.getChromosome();
 		}
+
+		return "UN";		// default to Unknown chromosome
+	}
+
+	/* get the genetic chromosome for this marker, preferring to take it from the
+	 * cM first, cytoband second, and default third
+	 */
+	@Transient
+	public String getGeneticChromosome() {
+		MarkerLocation loc = getPreferredCentimorgans();
+
+		loc = getPreferredCentimorgans();
+		if (loc != null) {
+			return loc.getChromosome();
+		}
+
+		loc = getPreferredCytoband();
+		if (loc != null) {
+			return loc.getChromosome();
+		}
+
+		loc = getPreferredCoordinates();
+		if (loc != null) {
+			return loc.getChromosome();
+		}
+
 		return "UN";		// default to Unknown chromosome
 	}
 
