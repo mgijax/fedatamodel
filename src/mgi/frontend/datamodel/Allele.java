@@ -77,7 +77,16 @@ public class Allele implements RecombinaseEntity {
     private Integer countOfMarkers;
     private Integer countOfMutationInvolvesMarkers;
     private Integer countOfReferences;
+
+    // As of March 2023, any allele can have a driver, and actually can have more than one driver.
+    // (See method getDrivenByMarkers() below.)
+    // HOWEVER, by curatorial policy, recombinase alleles will ONLY be annotated to the ONE recombinase 
+    // driver, even if there are other drivers present. 
+    // The following fields are historical (used by recombinase code). They set only if the allele is a recombinase. 
+    // Non-recombinase allele with drivers do not use these fields.
     private String driver;
+    private Marker driverMarker;
+
     private String holder;
     private String companyID;
     private String geneName;
@@ -105,7 +114,6 @@ public class Allele implements RecombinaseEntity {
     private Integer imsrCellLineCount;
     private Integer imsrStrainCount;
     private Integer imsrCountForMarker;
-    private Marker driverMarker;
     
     // Recombinase objects
     // attributes from recombinase_allele_system
@@ -477,11 +485,6 @@ public class Allele implements RecombinaseEntity {
     @Transient
     public String getRecombinaseUserNote() {
 	return this.filterNotes("User (Cre)");
-    }
-
-    @Transient
-    public String getDriverNote() {
-	return this.filterNotes("Driver");
     }
 
     @Transient
