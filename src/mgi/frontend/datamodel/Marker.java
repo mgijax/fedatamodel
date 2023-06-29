@@ -61,7 +61,6 @@ public class Marker {
 
 	private MarkerFlags flags;
 	private List<Allele> drivenAlleles;		// set of (recombinase) alleles for which this marker is a driver
-	private List<MarkerAlias> aliases;
 	private List<MarkerQtlExperiment> qtlExperiments;
 	private List<MarkerProbeset> probesets;
 	private List<MarkerAlleleAssociation> alleleAssociations;
@@ -458,16 +457,6 @@ public class Marker {
 			}
 		}
 		return null;
-	}
-
-	/** returns a collection of aliases for the marker
-	 */
-	@OneToMany (targetEntity=MarkerAlias.class)
-	@JoinColumn(name="marker_key")
-	@BatchSize(size=50)
-	@OrderBy("aliasSymbol")
-	public List<MarkerAlias> getAliases() {
-		return aliases;
 	}
 
 	/** returns a collection of alleles for which this marker is a driver
@@ -2106,10 +2095,6 @@ public class Marker {
 	@Transient
 	public Comparator<Marker> getComparator() {
 		return new MarkerComparator();
-	}
-
-	public void setAliases(List<MarkerAlias> aliases) {
-		this.aliases = aliases;
 	}
 
 	public void setDrivenAlleles(List<Allele> drivenAlleles) {
