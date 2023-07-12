@@ -954,6 +954,8 @@ public class Marker {
                 return primaryID;
             } else if ("zebrafish".equals(organism)) {
                 return "ZFIN:" + primaryID;
+            } else if (organism.startsWith("frog, ")) {
+                return "Xenbase:" + primaryID;
             }
             return null;
         }
