@@ -1,8 +1,5 @@
 package org.jax.mgi.fe.datamodel;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;

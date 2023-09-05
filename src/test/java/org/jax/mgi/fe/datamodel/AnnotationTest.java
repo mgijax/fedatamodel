@@ -3,8 +3,6 @@ package org.jax.mgi.fe.datamodel;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jax.mgi.fe.datamodel.Annotation;
-import org.jax.mgi.fe.datamodel.AnnotationProperty;
 import org.junit.Assert;
 import org.junit.Test;
 

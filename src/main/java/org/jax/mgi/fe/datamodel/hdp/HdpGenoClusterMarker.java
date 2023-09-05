@@ -1,21 +1,13 @@
 package org.jax.mgi.fe.datamodel.hdp;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Where;
-import org.jax.mgi.fe.datamodel.Genotype;
 import org.jax.mgi.fe.datamodel.Marker;
 
 /**

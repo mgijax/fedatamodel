@@ -1,15 +1,8 @@
 package org.jax.mgi.fe.datamodel;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.BatchSize;
 
 /**
  * StrainID

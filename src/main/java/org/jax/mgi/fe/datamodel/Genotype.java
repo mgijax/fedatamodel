@@ -1,8 +1,8 @@
 package org.jax.mgi.fe.datamodel;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +17,7 @@ import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.hibernate.annotations.BatchSize;
 import org.jax.mgi.fe.datamodel.phenotype.MPSystem;
 

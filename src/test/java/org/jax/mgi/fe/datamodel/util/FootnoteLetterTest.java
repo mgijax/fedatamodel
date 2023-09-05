@@ -2,7 +2,6 @@ package org.jax.mgi.fe.datamodel.util;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jax.mgi.fe.datamodel.util.DatamodelUtils;
 import org.junit.Test;
 
 public class FootnoteLetterTest {

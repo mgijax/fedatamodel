@@ -1,7 +1,7 @@
 package org.jax.mgi.fe.datamodel;
 
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
