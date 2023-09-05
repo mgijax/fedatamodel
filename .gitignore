@@ -4,3 +4,7 @@
 unittest-results
 Configuration
 *.swp
+/target/
+.project
+.classpath
+.settings
