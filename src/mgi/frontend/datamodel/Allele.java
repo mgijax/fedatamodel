@@ -73,6 +73,7 @@ public class Allele implements RecombinaseEntity {
     private String chromosome;
     private String collection;
     private Integer countOfExpressionAssayResults;
+    private Integer countOfHtExperiments;
     private Integer countOfRecombinaseResults;
     private Integer countOfMarkers;
     private Integer countOfMutationInvolvesMarkers;
@@ -277,6 +278,12 @@ public class Allele implements RecombinaseEntity {
     @JoinColumn(name="allele_key")
     public Integer getCountOfExpressionAssayResults() {
         return countOfExpressionAssayResults;
+    }
+
+    @Column(table="allele_counts", name="htexperiment_count")
+    @JoinColumn(name="allele_key")
+    public Integer getCountOfHtExperiments() {
+        return countOfHtExperiments;
     }
 
     @Column(table="allele_counts", name="recombinase_result_count")
@@ -949,6 +956,10 @@ public class Allele implements RecombinaseEntity {
 
     public void setCountOfExpressionAssayResults(Integer countOfExpressionAssayResults) {
         this.countOfExpressionAssayResults = countOfExpressionAssayResults;
+    }
+
+    public void setCountOfHtExperiments(Integer countOfHtExperiments) {
+        this.countOfHtExperiments = countOfHtExperiments;
     }
 
     public void setCountOfRecombinaseResults(Integer countOfRecombinaseResults) {
