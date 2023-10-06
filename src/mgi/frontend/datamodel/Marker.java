@@ -1,5 +1,8 @@
 package mgi.frontend.datamodel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -58,6 +61,8 @@ import org.hibernate.annotations.FilterJoinTable;
 })
 //@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Marker {
+
+private final Logger logger = LoggerFactory.getLogger(Marker.class);
 
 	private MarkerFlags flags;
 	private List<Allele> drivenAlleles;		// set of (recombinase) alleles for which this marker is a driver
@@ -128,6 +133,7 @@ public class Marker {
 	private List<RelatedMarker> relatedMarkers;
 	private List<MarkerInteraction> markerInteractions;
 	private List<MarkerGridCell> gridCells;
+	private List<MarkerGridGoNd> goNdRecords;
 	private List<DiseaseRow> diseaseRows;
 	private List<MPGenotype> mpGenotypes;
 	private List<MarkerPolymorphism> polymorphisms;
@@ -1547,6 +1553,30 @@ public class Marker {
 		return gridCells;
 	}
 
+	/** returns a list of goNd records for the marker
+	 */
+	@OneToMany (targetEntity=MarkerGridGoNd.class)
+	@JoinColumn(name="marker_key")
+	@BatchSize(size=300)
+	public List<MarkerGridGoNd> getGoNdRecords() {
+		return goNdRecords;
+	}
+
+        /** Returns true if this Marker has an ND annotation and no other annotations, for the given GO dag.
+         *  Returns false if this Marker has a non-ND annotation for the given GO dag.
+         *  Returns null if the Marker has no GO annotations for the given Go dag.
+         *  The dag is specified as "P", "F", or "C".
+         */
+        @Transient
+        public Boolean isGoNd(String goDag) {
+            for (MarkerGridGoNd goNdRec : getGoNdRecords()) {
+                if (goNdRec.getGoDag().equals(goDag)) {
+                    return goNdRec.getIsNd();
+                }
+            }
+            return null;
+        }
+        
 	/**
 	 * Return a collection of marker links.
 	 * @return
@@ -2278,6 +2308,10 @@ public class Marker {
 
 	public void setGridCells(List<MarkerGridCell> gridCells) {
 		this.gridCells = gridCells;
+	}
+
+	public void setGoNdRecords (List<MarkerGridGoNd> goNdRecords) {
+		this.goNdRecords = goNdRecords;
 	}
 
 	public void setHasGOGraph(int hasGOGraph) {
