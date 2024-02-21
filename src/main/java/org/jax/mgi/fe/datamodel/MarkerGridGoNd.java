@@ -1,5 +1,5 @@
 
-package mgi.frontend.datamodel;
+package org.jax.mgi.fe.datamodel;
 
 import javax.persistence.Transient;
 import javax.persistence.Id;

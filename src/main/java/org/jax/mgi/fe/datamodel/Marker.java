@@ -1,8 +1,5 @@
 package org.jax.mgi.fe.datamodel;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -60,8 +57,6 @@ import org.jax.mgi.fe.datamodel.sort.SmartAlphaComparator;
 })
 //@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Marker {
-
-private final Logger logger = LoggerFactory.getLogger(Marker.class);
 
 	private MarkerFlags flags;
 	private List<Allele> drivenAlleles;		// set of (recombinase) alleles for which this marker is a driver
