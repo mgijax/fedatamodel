@@ -1833,6 +1833,13 @@ private final Logger logger = LoggerFactory.getLogger(Marker.class);
 		return filterAnnotations("Protein Ontology/Marker");
 	}
 
+	/** get the GlyGen annotations for this marker
+	 */
+	@Transient
+	public List<Annotation> getGlyGenAnnotations () {
+		return filterAnnotations("GlyGen/Marker");
+	}
+
 	/** convenience method to pull the QTL coordinate note out of the list
 	 *  of notes
 	 */
