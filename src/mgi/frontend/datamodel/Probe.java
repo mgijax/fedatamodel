@@ -8,12 +8,14 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 
+import javax.persistence.FetchType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -42,6 +44,7 @@ public class Probe {
     private String sex;
     private String cellLine;
     private String vector;
+    private Probe ampprimer;
     private String insertSite;
     private String insertSize;
     private String productSize;
@@ -419,6 +422,17 @@ public class Probe {
 	public String getVector() {
 		return vector;
 	}
+
+        @ManyToOne (targetEntity=Probe.class, fetch=FetchType.LAZY)
+        @JoinColumn (name="ampprimer_key", referencedColumnName="probe_key")
+	public Probe getAmpPrimer() {
+		return ampprimer;
+	}
+
+	public void setAmpPrimer(Probe ampprimer) {
+		this.ampprimer = ampprimer;
+	}
+
 
 	public void setAge(String age) {
 		this.age = age;
