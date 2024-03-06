@@ -2,6 +2,7 @@ package mgi.frontend.datamodel;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
@@ -45,6 +47,7 @@ public class Reference {
     private Integer countOfGXDStructures;
 	private Integer countOfMappingResults;
 	private Integer countOfMarkers;
+	private Integer countOfDiseaseModels;
 	private Integer countOfOrthologs;
 	private Integer countOfProbes;
 	private Integer countOfStrains;
@@ -56,6 +59,7 @@ public class Reference {
     private String journal;
 	private String longCitation;
 	private Set<Marker> markers;
+        private List<DiseaseModel> diseaseModels;
 	private String miniCitation;
 	private String pages;
 	private String primaryAuthor;
@@ -240,6 +244,17 @@ public class Reference {
 	}
 
 	/**
+     * Return the count of associated disease models,
+     * joined by reference_key
+     * @return
+     */
+	@Column(table="reference_counts", name="disease_model_count")
+	@JoinColumn(name="reference_key")
+	public Integer getCountOfDiseaseModels() {
+		return countOfDiseaseModels;
+	}
+
+	/**
 	 * Return the count of Orthologs, this currently isn't
 	 * in the database, so will have to be overriden when it is.
 	 * @return
@@ -343,6 +358,46 @@ public class Reference {
 		return markers;
 	}
 
+    /**
+	 * Returns the list of DiseaseModel objects for this reference.
+         * There is one DiseaseModel object per genotype/disease for the ref.
+	 * @return
+	 */
+	@OneToMany (targetEntity=DiseaseModel.class, fetch=FetchType.LAZY)
+	@JoinTable (name="disease_model_to_reference",
+			joinColumns=@JoinColumn(name="reference_key"),
+			inverseJoinColumns=@JoinColumn(name="disease_model_key")
+			)
+	public List<DiseaseModel> getDiseaseModels() {
+		return diseaseModels;
+	}
+
+    /**
+     * Returns disease models for this reference, grouped by genotype. 
+     */
+    @Transient
+    public List<List<DiseaseModel>> getDiseaseModelsGrouped() {
+        List<List<DiseaseModel>> grouped = new ArrayList<List<DiseaseModel>> ();
+        String prevID = null;
+        List<DiseaseModel> current = null;
+        for (DiseaseModel dm : getDiseaseModels()) {
+            if (prevID != null && dm.getGenotype().getPrimaryID().equals(prevID)) {
+                current.add(dm);
+            } else {
+                if (current != null) {
+                    grouped.add(current);
+                }
+                current = new ArrayList<DiseaseModel>();
+                current.add(dm);
+            }
+            prevID = dm.getGenotype().getPrimaryID();
+        }
+        if (current != null) {
+            grouped.add(current);
+        }
+        return grouped;
+    }
+    
     @Column(name="mini_citation")
 	public String getMiniCitation() {
 		return miniCitation;
@@ -473,6 +528,10 @@ public class Reference {
 		this.countOfMarkers = countOfMarkers;
 	}
 
+	public void setCountOfDiseaseModels(Integer countOfDiseaseModels) {
+		this.countOfDiseaseModels = countOfDiseaseModels;
+	}
+
 	public void setCountOfOrthologs(Integer countOfOrthologs) {
         this.countOfOrthologs = countOfOrthologs;
     }
@@ -515,6 +574,10 @@ public class Reference {
 
     public void setMarkers(Set<Marker> markers) {
 		this.markers = markers;
+	}
+
+    public void setDiseaseModels(List<DiseaseModel> diseaseModels) {
+		this.diseaseModels = diseaseModels;
 	}
 
     public void setMiniCitation(String citation) {
@@ -581,8 +644,8 @@ public class Reference {
                 + ", countOfSequences=" + countOfSequences + ", ids=" + ids
                 + ", issue=" + issue + ", jnumID=" + jnumID + ", jnumNumeric="
                 + jnumNumeric + ", journal=" + journal + ", longCitation="
-                + longCitation + ", markers=" + markers + ", miniCitation="
-                + miniCitation + ", pages=" + pages + ", primaryAuthor="
+                + longCitation + ", markers=" + markers + ", diseaseModels=" + diseaseModels
+                + ", miniCitation=" + miniCitation + ", pages=" + pages + ", primaryAuthor="
                 + primaryAuthor + ", pubDate=" + pubDate + ", pubmedid="
                 + pubmedid + ", refAbstract=" + refAbstract + ", referenceKey="
                 + referenceKey + ", referenceType=" + referenceType
