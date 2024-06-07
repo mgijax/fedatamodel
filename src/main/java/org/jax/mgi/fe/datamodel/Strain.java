@@ -282,10 +282,11 @@ public class Strain {
 		return chrom;
 	}
 	
-	// get count of total number of SNPs across all strains
+	// get count of total number of SNP calls across all strains
+        // This number can be in the billions, so we're changing from int to long.
 	@Transient
-	public int getSnpCount() {
-		int ct = 0;
+	public long getSnpCount() {
+		long ct = 0;
 		if (this.getSnpRows() != null) {
 			for (StrainSnpRow row : this.getSnpRows()) {
 				ct = ct + row.getSnpTotal();
