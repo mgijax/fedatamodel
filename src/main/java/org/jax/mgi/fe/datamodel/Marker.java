@@ -211,6 +211,22 @@ public class Marker {
 		return filterRelatedMarkers("cluster_has_member", "is member of");
 	}
 
+	/* retrieve related markers, where this marker regulates the expression
+	 * of other markers
+	 */
+	@Transient
+	public List<RelatedMarker> getRegulatedMarkers() {
+		return filterRelatedMarkers("regulates_expression", "regulates expression of");
+	}
+
+	/* retrieve related markers, where this marker is regulated by the
+	 * expression of other markers
+	 */
+	@Transient
+	public List<RelatedMarker> getRegulatingMarkers() {
+		return filterRelatedMarkers("regulates_expression", "expression regulated by");
+	}
+
 	/* retrieve related QTL markers, where this marker is a candidate gene
 	 */
 	@Transient
