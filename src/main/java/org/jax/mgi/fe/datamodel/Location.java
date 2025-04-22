@@ -3,6 +3,7 @@ package org.jax.mgi.fe.datamodel;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 /**
  * Base object for location. 
@@ -124,6 +125,20 @@ public class Location {
 	public void setUniqueKey(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
 	}
+	
+    @Transient
+	/** get strand display, converting '.' value to null for now and for everything else just 
+	 * return the value.
+	 */
+    public String getStrandDisplay() {
+    	if (this.strand == null) {
+    		return null;
+    	}
+    	if (this.strand.equals(".")) {
+    		return null;
+    	}
+    	return this.strand;
+    }	
 
     @Override
 	public String toString() {
