@@ -242,15 +242,15 @@ public class RelatedMarker {
         sb.append(ml.getChromosome());
         sb.append(":");
         sb.append(ml.getStartCoordinate().longValue());
+        
         sb.append("-");
         sb.append(ml.getEndCoordinate().longValue());
 
-        if (ml.getStrand() != null) {
-            if (!ml.getStrand().equals("")) {
-                sb.append(" (");
-                sb.append(ml.getStrand());
-                sb.append(")");
-            }
+        String strandDisplay = ml.getStrandDisplay();
+        if (strandDisplay != null) {
+            sb.append(" (");
+            sb.append(strandDisplay);
+            sb.append(")");
         }
         return sb.toString();
     }
@@ -274,12 +274,11 @@ public class RelatedMarker {
 	    sb.append("-");
 	    sb.append(ml.getEndCoordinate().longValue());
 
-	    if (ml.getStrand() != null) {
-		if (!ml.getStrand().equals("")) {
+	    String strandDisplay = ml.getStrandDisplay();
+	    if (strandDisplay != null) {
 		    sb.append(" (");
-		    sb.append(ml.getStrand());
+		    sb.append(strandDisplay);
 		    sb.append(")");
-		}
 	    }
 
 	} else {
