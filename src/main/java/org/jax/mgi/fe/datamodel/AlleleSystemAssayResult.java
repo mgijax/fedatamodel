@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.jax.mgi.fe.datamodel.group.RecombinaseEntity;
@@ -36,7 +38,8 @@ public class AlleleSystemAssayResult implements RecombinaseEntity {
     private String sex;
     private String specimenNote;
     private String structure;
-    private String cellTypes;
+    private String cellTypes;   
+    private Term term;
     
 
     // ================= Getters and Setters ===================== //
@@ -219,7 +222,15 @@ public class AlleleSystemAssayResult implements RecombinaseEntity {
     }
     public void setStructure(String structure) {
         this.structure = structure;
+    }   
+    @OneToOne (fetch=FetchType.LAZY)
+    @JoinColumn(name="structure_key", referencedColumnName="term_key", nullable=true, insertable=false, updatable=false)
+    public Term getTerm() {
+        return this.term;
     }
+    public void setTerm(Term term) {
+        this.term = term;
+    }    
     @Override
     public String toString() {
         return "AlleleSystemAssayResult [age=" + age + ", allele_system_key="
@@ -235,6 +246,5 @@ public class AlleleSystemAssayResult implements RecombinaseEntity {
                 + ", specimenNote=" + specimenNote + ", structure=" + structure
                 + "]";
     }
-
 
 }
