@@ -1950,14 +1950,6 @@ public class Marker {
 		return sequenceAssociations;
 	}
 
-	/** get the neXtProt IDs for this (human) marker; mouse markers don't have
-	 * these IDs
-	 */
-	@Transient
-	public List<MarkerID> getNeXtProtIDs() {
-		return filterMarkerIDs("neXtProt");
-	}
-
 	/** get the Genbank/RefSeq IDs for this marker
 	 */
 	@Transient
