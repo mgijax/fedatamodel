@@ -1,5 +1,6 @@
 package org.jax.mgi.fe.datamodel;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -15,8 +16,10 @@ import org.jax.mgi.fe.datamodel.group.RecombinaseEntity;
 
 @Entity
 @Table (name="recombinase_assay_result")
-public class AlleleSystemAssayResult implements RecombinaseEntity {
+public class AlleleSystemAssayResult implements RecombinaseEntity, Serializable {
 
+	private static final long serialVersionUID = 1L;
+	 
     private String age;
     private int alleleSystemKey;
     private String allelicComposition;
@@ -40,7 +43,7 @@ public class AlleleSystemAssayResult implements RecombinaseEntity {
     private String structure;
     private String cellTypes;   
     private Term term;
-    
+    private List<Term> cellTypeTerms;    
 
     // ================= Getters and Setters ===================== //
     
@@ -230,7 +233,17 @@ public class AlleleSystemAssayResult implements RecombinaseEntity {
     }
     public void setTerm(Term term) {
         this.term = term;
-    }    
+    }
+
+    @OneToMany(fetch=FetchType.LAZY)
+    @JoinColumn(name="term", referencedColumnName="cell_types", insertable=false, updatable=false)    
+	public List<Term> getCellTypeTerms() {
+		return cellTypeTerms;
+	}
+	public void setCellTypeTerms(List<Term> cellTypeTerms) {
+		this.cellTypeTerms = cellTypeTerms;
+	}
+	
     @Override
     public String toString() {
         return "AlleleSystemAssayResult [age=" + age + ", allele_system_key="
