@@ -226,7 +226,7 @@ public class AlleleSystemAssayResult implements RecombinaseEntity, Serializable 
     public void setStructure(String structure) {
         this.structure = structure;
     }   
-    @OneToOne (fetch=FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="structure_key", referencedColumnName="term_key", nullable=true, insertable=false, updatable=false)
     public Term getTerm() {
         return this.term;
@@ -235,7 +235,7 @@ public class AlleleSystemAssayResult implements RecombinaseEntity, Serializable 
         this.term = term;
     }
 
-    @OneToMany(fetch=FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name="term", referencedColumnName="cell_types", insertable=false, updatable=false)    
 	public List<Term> getCellTypeTerms() {
 		return cellTypeTerms;
