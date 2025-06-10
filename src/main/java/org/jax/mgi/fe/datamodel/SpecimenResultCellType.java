@@ -17,6 +17,7 @@ public class SpecimenResultCellType {
     private int uniqueKey;
     private int specimenResultKey;
     private String cellType;
+    private String cellTypeId;
     private int sequenceNum;
 
     // ================= Getters and Setters ===================== //
@@ -37,6 +38,11 @@ public class SpecimenResultCellType {
 		return cellType;
 	}
 
+	@Column(name="cell_type_id")
+	public String getCellTypeId() {
+		return cellTypeId;
+	}
+
 	@Column(name="sequence_num")
 	public int getSequenceNum() {
 		return sequenceNum;
@@ -54,6 +60,10 @@ public class SpecimenResultCellType {
 		this.cellType = cellType;
 	}
     
+	public void setCellTypeId(String cellTypeId) {
+		this.cellTypeId = cellTypeId;
+	}	
+
 	public void setSequenceNum(int sequenceNum) {
 		this.sequenceNum = sequenceNum;
 	}
