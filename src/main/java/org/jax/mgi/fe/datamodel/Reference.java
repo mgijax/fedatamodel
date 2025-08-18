@@ -39,6 +39,7 @@ public class Reference {
 	private Integer countOfAlleles;
 	private Integer countOfGOAnnotations;
 	private Integer countOfGXDAssays;
+	private Integer countOfGXDHtExperiments;
 	private Integer countOfGXDIndex;
     private Integer countOfGXDResults;
     private Integer countOfGXDStructures;
@@ -181,6 +182,17 @@ public class Reference {
     @JoinColumn(name="reference_key")
     public Integer getCountOfGXDAssays() {
         return countOfGXDAssays;
+    }
+
+	/**
+     * Return the count of associated gxd high-throughput experiments,
+     * joined by reference_key
+     * @return
+     */
+	@Column(table="reference_counts", name="gxd_htexp_count")
+    @JoinColumn(name="reference_key")
+    public Integer getCountOfGXDHtExperiments() {
+        return countOfGXDHtExperiments;
     }
 
 	/**
@@ -503,6 +515,10 @@ public class Reference {
 
 	public void setCountOfGXDAssays(Integer countOfGXDAssays) {
         this.countOfGXDAssays = countOfGXDAssays;
+    }
+
+	public void setCountOfGXDHtExperiments(Integer countOfGXDHtExperiments) {
+        this.countOfGXDHtExperiments = countOfGXDHtExperiments;
     }
 
 	public void setCountOfGXDIndex(Integer countOfGXDIndex) {
