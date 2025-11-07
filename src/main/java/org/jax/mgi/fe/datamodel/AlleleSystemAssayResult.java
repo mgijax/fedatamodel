@@ -41,7 +41,7 @@ public class AlleleSystemAssayResult implements RecombinaseEntity, Serializable 
     private String sex;
     private String specimenNote;
     private String structure;
-    private String cellTypes;   
+    private String cellType;   
     private Term term;
     private List<Term> cellTypeTerms;    
 
@@ -145,13 +145,13 @@ public class AlleleSystemAssayResult implements RecombinaseEntity, Serializable 
         return structure;
     }
 
-    @Column(name="cell_types")
-    public String getCellTypes() {
-		return cellTypes;
+    @Column(name="cell_type")
+    public String getCellType() {
+		return cellType;
 	}
 
-	public void setCellTypes(String cellTypes) {
-		this.cellTypes = cellTypes;
+	public void setCellType(String cellType) {
+		this.cellType = cellType;
 	}
 
     public void setAge(String age) {
@@ -236,7 +236,7 @@ public class AlleleSystemAssayResult implements RecombinaseEntity, Serializable 
     }
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name="term", referencedColumnName="cell_types", insertable=false, updatable=false)    
+    @JoinColumn(name="term", referencedColumnName="cell_type", insertable=false, updatable=false)    
 	public List<Term> getCellTypeTerms() {
 		return cellTypeTerms;
 	}
