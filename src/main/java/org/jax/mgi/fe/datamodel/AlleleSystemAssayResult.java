@@ -257,6 +257,7 @@ public class AlleleSystemAssayResult implements RecombinaseEntity, Serializable 
                 + ", reporterGene=" + reporterGene + ", resultKey=" + resultKey
                 + ", resultNote=" + resultNote + ", sex=" + sex
                 + ", specimenNote=" + specimenNote + ", structure=" + structure
+		+ ", cellType=" + cellType
                 + "]";
     }
 

@@ -138,6 +138,7 @@ public class Allele implements RecombinaseEntity {
 	private List<Marker> markers;
 	private List<AlleleMutation> mutations;
 	private List<AlleleCellLine> cellLines;
+	private List<RecombinaseAffectedCellType> affectedCellTypes;
 	private List<AlleleSequenceAssociation> sequenceAssociations;
 
 
@@ -777,6 +778,14 @@ public class Allele implements RecombinaseEntity {
 	    return this.cellLines;
 	}
 
+	@OneToMany(targetEntity=RecombinaseAffectedCellType.class)
+	@BatchSize(size=250)
+	@JoinColumn(name="allele_key")
+	@OrderBy("cell_type_header")
+	public List<RecombinaseAffectedCellType> getAffectedCellTypes() {
+	    return this.affectedCellTypes;
+	}
+
 	@Transient
 	public List<String> getMutations() {
 	    ArrayList<String> m = new ArrayList<String>();
@@ -1093,6 +1102,10 @@ public class Allele implements RecombinaseEntity {
 
 	public void setAlleleCellLines(List<AlleleCellLine> cellLines) {
 		this.cellLines = cellLines;
+	}
+
+	public void setAffectedCellTypes(List<RecombinaseAffectedCellType> affectedCellTypes) {
+		this.affectedCellTypes = affectedCellTypes;
 	}
 
 	public void setAlleleMutations(List<AlleleMutation> mutations) {
