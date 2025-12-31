@@ -35,9 +35,20 @@ public class Antibody {
     private String antibodyType;
     private String antibodyClass;
     private int expressionResultCount;
-    private Antigen antigen;
     private String synonyms;
     private String note;
+
+    // Antigen fields
+    private String agRegionCovered;
+    private String agNote;
+    private String agSpecies;
+    private String agStrain;
+    private String agSex;
+    private String agAge;
+    private String agTissue;
+    private String agTissueDescription;
+    private String agCellLine;
+
     private List<Marker> markers;
     private List<Reference> relatedReferences;
     private List<Reference> primaryReferences;
@@ -109,21 +120,86 @@ public class Antibody {
 	this.synonyms = synonyms;
     }
 
+    @Column(name="ag_region_covered")
+    public String getAgRegionCovered() {
+	return agRegionCovered;
+    }
+    public void setAgRegionCovered(String agRegionCovered) {
+	this.agRegionCovered = agRegionCovered;
+    }
+
+    @Column(name="ag_note")
+    public String getAgNote() {
+	return agNote;
+    }
+    public void setAgNote(String agNote) {
+	this.agNote = agNote;
+    }
+
+    @Column(name="ag_species")
+    public String getAgSpecies() {
+	return agSpecies;
+    }
+    public void setAgSpecies(String agSpecies) {
+	this.agSpecies = agSpecies;
+    }
+
+    @Column(name="ag_strain")
+    public String getAgStrain() {
+	return agStrain;
+    }
+    public void setAgStrain(String agStrain) {
+	this.agStrain = agStrain;
+    }
+
+    @Column(name="ag_sex")
+    public String getAgSex() {
+	return agSex;
+    }
+    public void setAgSex(String agSex) {
+	this.agSex = agSex;
+    }
+
+    @Column(name="ag_age")
+    public String getAgAge() {
+	return agAge;
+    }
+    public void setAgAge(String agAge) {
+	this.agAge = agAge;
+    }
+
+    @Column(name="ag_cell_line")
+    public String getAgCellLine() {
+	return agCellLine;
+    }
+    public void setAgCellLine(String agCellLine) {
+	this.agCellLine = agCellLine;
+    }
+
+    @Column(name="ag_tissue")
+    public String getAgTissue() {
+	return agTissue;
+    }
+    public void setAgTissue(String agTissue) {
+	this.agTissue = agTissue;
+    }
+
+    @Column(name="ag_tissue_description")
+    public String getAgTissueDescription() {
+	return agTissueDescription;
+    }
+    public void setAgTissueDescription(String agTissueDescription) {
+	this.agTissueDescription = agTissueDescription;
+    }
+
+    
+
     @Column(name="expression_result_count")
     public int getExpressionResultCount() {
 	return expressionResultCount;
     }
     public void setExpressionResultCount(int expressionResultCount) {
 	this.expressionResultCount = expressionResultCount;
-    }
-
-    @ManyToOne (targetEntity=Antigen.class, fetch=FetchType.LAZY)
-    @JoinColumn(name="antigen_key")
-    public Antigen getAntigen() {
-	return antigen;
-    }
-    public void setAntigen(Antigen antigen) {
-	this.antigen = antigen;
     }
 
     /* note the existence of the getSortedMarkers() method below if you'd like
