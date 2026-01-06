@@ -48,6 +48,7 @@ public class Reference {
 	private Integer countOfDiseaseModels;
 	private Integer countOfOrthologs;
 	private Integer countOfProbes;
+	private Integer countOfAntibodies;
 	private Integer countOfStrains;
 	private Integer countOfSequences;
     private Set<ReferenceID> ids;
@@ -274,15 +275,26 @@ public class Reference {
     }
 
 	/**
-     * Return the count of associated probes,
-     * joined by reference_key
-     * @return
-     */
+	 * Return the count of associated probes,
+	 * joined by reference_key
+	 * @return
+	 */
 	@Column(table="reference_counts", name="probe_count")
-    @JoinColumn(name="reference_key")
-    public Integer getCountOfProbes() {
-        return countOfProbes;
-    }
+	@JoinColumn(name="reference_key")
+	public Integer getCountOfProbes() {
+	    return countOfProbes;
+	}
+
+	/**
+	 * Return the count of associated antibodies,
+	 * joined by reference_key
+	 * @return
+	 */
+	@Column(table="reference_counts", name="antibody_count")
+	@JoinColumn(name="reference_key")
+	public Integer getCountOfAntibodies() {
+	    return countOfAntibodies;
+	}
 
 	/**
      * Return the count of associated probes,
@@ -551,6 +563,10 @@ public class Reference {
 
 	public void setCountOfProbes(Integer countOfProbes) {
         this.countOfProbes = countOfProbes;
+    }
+
+	public void setCountOfAntibodies(Integer countOfAntibodies) {
+        this.countOfAntibodies = countOfAntibodies;
     }
 
 	public void setCountOfStrains(Integer countOfStrains) {
