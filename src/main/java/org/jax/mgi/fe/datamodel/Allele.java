@@ -3,6 +3,8 @@ package org.jax.mgi.fe.datamodel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,7 +64,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @FilterDef(name="expressesComponentMarkers"),
 @FilterDef(name="drivenByMarkers")
 })
-@JsonIgnoreProperties({"references", "notes", "molecularDescription", "ids"})
+@JsonIgnoreProperties({"references", "notes", "molecularDescription", "molecularIMPCDescription", "ids"})
 public class Allele implements RecombinaseEntity {
     private int alleleKey;
     private String alleleSubType;
@@ -102,6 +104,7 @@ public class Allele implements RecombinaseEntity {
     private String strainID;
     private String strainLabel;
     private String molecularDescription;
+    private String molecularIMPCDescription;
     private String name;
     private List<AlleleNote> notes;
     private String onlyAlleleSymbol;
@@ -424,6 +427,11 @@ public class Allele implements RecombinaseEntity {
 	@Column(name="strain_type")
     public String getStrainLabel() {
         return strainLabel;
+    }
+
+    @Column(name="molecular_impc_description")
+    public String getMolecularIMPCDescription() {
+        return molecularIMPCDescription;
     }
 
     @Column(name="molecular_description")
@@ -1052,6 +1060,38 @@ public class Allele implements RecombinaseEntity {
 
     public void setStrainLabel(String strainLabel) {
 	this.strainLabel = strainLabel;
+    }
+
+    public void setMolecularIMPCDescription(String molecularIMPCDescription) {
+	// Special code to tweak the note formatting:
+	// 1. Format embedded urls as links (in italics).
+	//    Two kinds of URLs: toe an IMPC gene detail page or to its genome browser.
+	//    Corresponsing link text either "IMPC Gene Page", or "IMPC Genome Browser"
+	// 2. Add italics to existing reference link at the end.
+
+	if (molecularIMPCDescription == null || molecularIMPCDescription.length() == 0) {
+	    this.molecularIMPCDescription = null;
+	    return;
+	}
+        String regex = "\\((https:\\/\\/www.mousephenotype.org\\/data\\/genes\\/MGI:[0-9]+\\/)\\)";
+        String subst = "<i>(<a href=\"$1\">IMPC Gene page</a>)</i>";
+        Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(molecularIMPCDescription);
+        String result1 = matcher.replaceAll(subst);
+
+	String regex2 = "\\((https:\\/\\/www.mousephenotype.org\\/data\\/genes\\/MGI:[0-9]+\\/genome-browser)\\)";
+        String subst2 = "<i>(<a href=\"$1\">IMPC Genome Browser</a>)</i>";
+        Pattern pattern2 = Pattern.compile(regex2, Pattern.MULTILINE);
+        Matcher matcher2 = pattern2.matcher(result1);
+        String result2 = matcher2.replaceAll(subst2);
+
+	String regex3 = "\\((<A href=\"https:\\/\\/www.informatics.jax.org\\/reference\\/J:[0-9]+\">J:[0-9]+<\\/A>)\\)";
+	String subst3 = "<i>($1)</i>";
+	Pattern pattern3 = Pattern.compile(regex3, Pattern.MULTILINE);
+	Matcher matcher3 = pattern3.matcher(result2);
+	String result3 = matcher3.replaceAll(subst3);
+
+        this.molecularIMPCDescription = result3;
     }
 
     public void setMolecularDescription(String molecularDescription) {
